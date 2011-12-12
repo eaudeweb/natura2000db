@@ -21,27 +21,12 @@ section_1 = Ordered_dict_of(
     fl.String.named('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
     fl.String.named('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
     fl.String.named('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
-    fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'))
-    
-    
-Species = Ordered_dict_of(
-    fl.Integer.named('code'),
-    fl.String.named('name'),
-    Ordered_dict_of(
-            fl.String.named('resident'),
-            Ordered_dict_of(
-                    fl.String.named('repro'),
-                    fl.String.named('winter'),
-                    fl.String.named('transit'),
-                ).named('migratory').with_properties(
-                    widget='dict',
-                    order=['repro', 'winter', 'transit'],
-                ),
-        ).named('population').with_properties(widget='dict'),
-    Ordered_dict_of(
-            Enum_abc.named('population'),
-            Enum_abc.named('conservation'),
-            Enum_abc.named('isolation'),
-            Enum_abc.named('global'),
-        ).named('site').with_properties(widget='dict'),
-)
+    fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC')
+    ).with_properties(label='1. IDENTIFICAREA SITULUI')
+
+section_2 = Ordered_dict_of(
+    fl.String.named('long').with_properties(label='Longitudine')).with_properties(label='2. LOCALIZAREA SITULUI')
+
+SpaDoc = Ordered_dict_of(
+    section_1.named('section1').with_properties(widget='section'),
+    section_2.named('section2').with_properties(widget='section'))

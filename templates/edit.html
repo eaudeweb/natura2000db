@@ -9,8 +9,6 @@
 
 <form method="post">
 
-  <h2>1. IDENTIFICAREA SITULUI</h2>
-
   {%- for name in doc.properties.order %}
     {{ widget(doc[name]) }}
   {%- endfor %}

@@ -3,7 +3,7 @@
 
 import flask
 from flatland.out.markup import Generator
-from schema import section_1
+from schema import SpaDoc
 from storage import Storage
 
 
@@ -41,7 +41,7 @@ def edit():
     db = Storage(flask.current_app.config['STORAGE_PATH'])
 
     if flask.request.method == 'POST':
-        doc = section_1.from_flat(flask.request.form.to_dict())
+        doc = SpaDoc.from_flat(flask.request.form.to_dict())
 
         if doc.validate():
             doc_id = db.save_document(doc_id, doc.value)
@@ -50,9 +50,9 @@ def edit():
 
     else:
         if doc_id is None:
-            doc = section_1()
+            doc = SpaDoc()
         else:
-            doc = section_1(db.load_document(doc_id))
+            doc = SpaDoc(db.load_document(doc_id))
 
     return flask.render_template('edit.html', doc=doc)
 
