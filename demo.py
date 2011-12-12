@@ -4,9 +4,14 @@
 import flask
 from flatland.out.markup import Generator
 from schema import Species
+from storage import Storage
 
 
 app = flask.Flask(__name__)
+
+import os.path
+app.config['STORAGE_PATH'] = os.path.join(os.path.dirname(__file__),
+                                          'data', 'documents')
 
 _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
 app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
@@ -40,11 +45,14 @@ def save():
     SpeciesList = flatland.List.of(Species)
     sl = SpeciesList.from_flat(flask.request.form.to_dict())
 
-    if sl.validate():
-        return "<pre>" + escape(pformat(sl.value)) + "</pre>"
-
-    else:
+    if not sl.validate():
         return flask.render_template('index.html', schema=Species(), rows=sl)
+
+    db = Storage(flask.current_app.config['STORAGE_PATH'])
+    for doc_id, species in enumerate(sl):
+        db.save_document(doc_id, species.value)
+
+    return "<pre>" + escape(pformat(sl.value)) + "</pre>"
 
 
 if __name__ == '__main__':
