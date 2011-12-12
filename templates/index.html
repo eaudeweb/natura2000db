@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-[<a href="/new">new</a>]
+[<a href="{{ url_for('edit') }}">new</a>]
 <ul>
 {% for doc_id in doc_id_list %}
   <li>
-    {{ doc_id }} [<a href="/edit/{{ doc_id }}">edit</a>]
+    {{ doc_id }} [<a href="{{ url_for('edit', doc_id=doc_id) }}">edit</a>]
   </li>
 {% endfor %}
 </ul>
