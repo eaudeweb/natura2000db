@@ -8,6 +8,7 @@ from storage import Storage
 
 
 app = flask.Flask(__name__)
+app.config['SECRET_KEY'] = 'demo'
 
 import os.path
 app.config['STORAGE_PATH'] = os.path.join(os.path.dirname(__file__),
@@ -29,30 +30,26 @@ def validated(sender, element, result, **kwargs):
 
 @app.route('/')
 def index():
-    rows = [
-        Species({'name': u'cioară', 'site': {'isolation': 'B'}}, name='1'),
-        Species({'name': u'rață', 'site': {'isolation': 'C'}}, name='2'),
-        Species(),
-    ]
-    return flask.render_template('index.html', schema=Species(), rows=rows)
-
-
-@app.route('/save', methods=['POST'])
-def save():
-    import flatland
-    from pprint import pformat
-    from werkzeug.utils import escape
-    SpeciesList = flatland.List.of(Species)
-    sl = SpeciesList.from_flat(flask.request.form.to_dict())
-
-    if not sl.validate():
-        return flask.render_template('index.html', schema=Species(), rows=sl)
-
     db = Storage(flask.current_app.config['STORAGE_PATH'])
-    for doc_id, species in enumerate(sl):
-        db.save_document(doc_id, species.value)
+    return flask.render_template('index.html', doc_id_list=db.document_ids())
 
-    return "<pre>" + escape(pformat(sl.value)) + "</pre>"
+
+@app.route('/edit/<int:doc_id>', methods=['GET', 'POST'])
+def edit(doc_id):
+    db = Storage(flask.current_app.config['STORAGE_PATH'])
+
+    if flask.request.method == 'POST':
+        species = Species.from_flat(flask.request.form.to_dict())
+
+        if species.validate():
+            db.save_document(doc_id, species.value)
+            flask.flash("Document %d saved" % doc_id)
+            return flask.redirect('/')
+
+    else:
+        species = Species(db.load_document(doc_id))
+
+    return flask.render_template('edit.html', doc=species)
 
 
 if __name__ == '__main__':

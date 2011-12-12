@@ -1,0 +1,30 @@
+{% from 'widgets.html' import widget, label -%}
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<form method="post">
+
+  <table>
+
+    <thead>
+    {%- for name in doc.properties.order %}
+      {{ label(doc[name]) }}
+    {%- endfor %}
+    </thead>
+
+    <tbody>
+      <tr>
+      {%- for name in doc.properties.order %}
+        {{- widget(doc[name]) }}
+      {%- endfor %}
+      </tr>
+    </tbody>
+
+  </table>
+
+  <input type="submit">
+
+</form>
+
+{% endblock %}
