@@ -35,8 +35,9 @@ def index():
 
 
 @app.route('/new', methods=['GET', 'POST'])
-@app.route('/edit/<int:doc_id>', methods=['GET', 'POST'])
-def edit(doc_id=None):
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    doc_id = flask.request.args.get('doc_id', None, int)
     db = Storage(flask.current_app.config['STORAGE_PATH'])
 
     if flask.request.method == 'POST':

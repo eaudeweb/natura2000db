@@ -7,10 +7,8 @@ _env = getConfiguration().environment
 BACKEND_URL = _env.get('CHMRIO_BACKEND_URL').rstrip('/')
 
 
-def get_backend_page(ctx, name, **kwargs):
-    url = BACKEND_URL + name
-    if kwargs:
-        url += '?' + urllib.urlencode(kwargs.iteritems())
+def get_backend_page(ctx, relative_url):
+    url = BACKEND_URL + relative_url
 
     my_relative_url = ctx.absolute_url(1)
     my_server_url = ctx.absolute_url()[:-len(my_relative_url)]
@@ -29,7 +27,16 @@ def get_backend_page(ctx, name, **kwargs):
 
 
 class ChmRioFormsProxy(BrowserView):
+    # TODO views are not protected by ViewManagementScreens permission :(
 
     def __call__(self):
-        # TODO view is not protected by ViewManagementScreens permission :(
-        return get_backend_page(self.aq_parent, '/')
+        name = self.request.steps[-1]
+        if name == 'index_html':
+            name = ''
+        query_string = self.request.QUERY_STRING
+
+        relative_url = '/' + name
+        if query_string:
+            relative_url += '?' + query_string
+
+        return get_backend_page(self.aq_parent, relative_url)
