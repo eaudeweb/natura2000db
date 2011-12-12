@@ -5,6 +5,7 @@
       'input': input,
       'radio': radio,
       'dict': dict,
+      'list': list,
     }[field.properties.widget] or input -%}
   {{- macro(field) -}}
 {% endmacro %}
@@ -38,6 +39,15 @@
   {%- for child_name in field.properties.order %}
   {{ widget(field[child_name]) }}
   {% endfor -%}
+{% endmacro %}
+
+{% macro list(field) %}
+  {{ field.properties.label }} <br />
+  {{ field.append('') or "" }}
+  {{ field.append('') or "" }}
+  {% for child in field %}
+  {{ widget(child) }}
+  {% endfor %}
 {% endmacro %}
 
 

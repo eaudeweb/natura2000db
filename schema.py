@@ -11,7 +11,9 @@ section_1 = Ordered_dict_of(
     fl.String.named('type').with_properties(label='Tip'),
     fl.String.named('code').with_properties(label='Codul sitului'),
     fl.String.named('release_date').with_properties(label='Data completarii'),
-    fl.String.named('last_modified').with_properties(label='Data actualizarii'))
+    fl.String.named('last_modified').with_properties(label='Data actualizarii'),
+    fl.List.named('other_sites').of(fl.String).with_properties(widget='list', 
+                                                                label='Coduri ale siturilor Natura 2000'))
     
 Species = Ordered_dict_of(
     fl.Integer.named('code'),
