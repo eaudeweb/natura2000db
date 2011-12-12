@@ -7,21 +7,26 @@ _env = getConfiguration().environment
 BACKEND_URL = _env.get('CHMRIO_BACKEND_URL').rstrip('/')
 
 
-def get_backend_page(ctx, relative_url):
+def get_backend_page(ctx, relative_url, post_data=None):
     url = BACKEND_URL + relative_url
 
     my_relative_url = ctx.absolute_url(1)
     my_server_url = ctx.absolute_url()[:-len(my_relative_url)]
 
-    request = urllib2.Request(url, headers={
+    headers = {
         'X-Forwarded-For': my_server_url,
         'X-Scheme': 'http',
         'X-Script-Name': '/' + my_relative_url,
-    })
+    }
+
+    request = urllib2.Request(url, post_data, headers)
+
+    if post_data is not None:
+        request.add_data(urllib.urlencode(post_data))
 
     f = urllib2.urlopen(request)
     try:
-        return f.read()
+        return f.code, dict(f.headers), f.read()
     finally:
         f.close()
 
@@ -39,4 +44,26 @@ class ChmRioFormsProxy(BrowserView):
         if query_string:
             relative_url += '?' + query_string
 
-        return get_backend_page(self.aq_parent, relative_url)
+        if self.request.REQUEST_METHOD == 'POST':
+            post_data = []
+            for key, value in self.request.form.iteritems():
+                if key == '-C':
+                    continue
+
+                if isinstance(value, list):
+                    for subvalue in value:
+                        post_data.append((key, subvalue))
+                else:
+                    post_data.append((key, str(value)))
+
+        else:
+            post_data = None
+
+        (status, headers, body) = get_backend_page(
+            self.aq_parent, relative_url, post_data)
+
+        response = self.request.RESPONSE
+        response.setStatus(status)
+        for name, value in headers.iteritems():
+            response.setHeader(name, value)
+        response.setBody(body)
