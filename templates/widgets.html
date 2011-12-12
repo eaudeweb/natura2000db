@@ -4,8 +4,11 @@
   {%- set macro = {
       'input': input,
       'radio': radio,
+      'checkbox': checkbox,
       'dict': dict,
       'list': list,
+      'textarea': textarea,
+      'section': section,
     }[field.properties.widget] or input -%}
   {{- macro(field) -}}
 {% endmacro %}
@@ -35,10 +38,31 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro dict(field) %}
+{% macro textarea(field) %}
+  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {{ html.label(field, contents=field.properties.label) }}
+  {{ html.textarea(field) }}
+  {{- errors(field) -}}<br />
+  {%- do html.end() %}
+{% endmacro %}
+
+{% macro checkbox(field) %}
+  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {{ html.label(field, contents=field.properties.label) }}
+  {{ html.input(field, type="checkbox") }}
+  {{- errors(field) -}}<br />
+  {%- do html.end() %}
+{% endmacro %}
+
+{% macro dict_children(field) %}
   {%- for child_name in field.properties.order %}
   {{ widget(field[child_name]) }}
   {% endfor -%}
+{% endmacro %}
+
+{% macro dict(field) %}
+  <p>{{ field.properties.label }}</p>
+  {{ dict_children(field) }}
 {% endmacro %}
 
 {% macro list(field) %}
@@ -48,6 +72,13 @@
   {% for child in field %}
   {{ widget(child) }}
   {% endfor %}
+{% endmacro %}
+
+{% macro section(field) %}
+  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  <h2>{{ field.properties.label }}</h2>
+  {{ dict_children(field) }}
+  {%- do html.end() %}
 {% endmacro %}
 
 
