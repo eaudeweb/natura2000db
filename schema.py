@@ -12,8 +12,17 @@ section_1 = Ordered_dict_of(
     fl.String.named('code').with_properties(label='Codul sitului'),
     fl.String.named('release_date').with_properties(label='Data completarii'),
     fl.String.named('last_modified').with_properties(label='Data actualizarii'),
-    fl.List.named('other_sites').of(fl.String).with_properties(widget='list', 
-                                                                label='Coduri ale siturilor Natura 2000'))
+    fl.List.named('other_sites').of(fl.String) \
+                                .with_properties(widget='list', 
+                                                label='Coduri ale siturilor Natura 2000'),
+    fl.String.named('responsible').with_properties(widget='textarea', 
+                                                    label='Responsabili'),
+    fl.String.named('sit_name').with_properties(label='Numele sitului'),
+    fl.String.named('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
+    fl.String.named('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
+    fl.String.named('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
+    fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'))
+    
     
 Species = Ordered_dict_of(
     fl.Integer.named('code'),

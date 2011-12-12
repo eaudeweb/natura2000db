@@ -6,6 +6,7 @@
       'radio': radio,
       'dict': dict,
       'list': list,
+      'textarea': textarea,
     }[field.properties.widget] or input -%}
   {{- macro(field) -}}
 {% endmacro %}
@@ -32,6 +33,14 @@
   {% endfor %}
   {{- errors(field) -}}
   </td>
+  {%- do html.end() %}
+{% endmacro %}
+
+{% macro textarea(field) %}
+  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {{ html.label(field, contents=field.properties.label) }}
+  {{ html.textarea(field) }}
+  {{- errors(field) -}}<br />
   {%- do html.end() %}
 {% endmacro %}
 
