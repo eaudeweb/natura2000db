@@ -3,7 +3,7 @@
 
 import flask
 from flatland.out.markup import Generator
-from schema import Species
+from schema import section_1
 from storage import Storage
 
 
@@ -40,20 +40,20 @@ def edit(doc_id=None):
     db = Storage(flask.current_app.config['STORAGE_PATH'])
 
     if flask.request.method == 'POST':
-        species = Species.from_flat(flask.request.form.to_dict())
+        doc = section_1.from_flat(flask.request.form.to_dict())
 
-        if species.validate():
-            doc_id = db.save_document(doc_id, species.value)
+        if doc.validate():
+            doc_id = db.save_document(doc_id, doc.value)
             flask.flash("Document %d saved" % doc_id)
             return flask.redirect('/')
 
     else:
         if doc_id is None:
-            species = Species()
+            doc = section_1()
         else:
-            species = Species(db.load_document(doc_id))
+            doc = section_1(db.load_document(doc_id))
 
-    return flask.render_template('edit.html', doc=species)
+    return flask.render_template('edit.html', doc=doc)
 
 
 if __name__ == '__main__':

@@ -3,25 +3,17 @@
 
 {% block content %}
 
+<h1>FORMULAR STANDARD</h1>
+<p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile 
+  ca situri de importanta comunitara (SCI)</p>
+
 <form method="post">
 
-  <table>
+  <h2>1. IDENTIFICAREA SITULUI</h2>
 
-    <thead>
-    {%- for name in doc.properties.order %}
-      {{ label(doc[name]) }}
-    {%- endfor %}
-    </thead>
-
-    <tbody>
-      <tr>
-      {%- for name in doc.properties.order %}
-        {{- widget(doc[name]) }}
-      {%- endfor %}
-      </tr>
-    </tbody>
-
-  </table>
+  {%- for name in doc.properties.order %}
+    {{ widget(doc[name]) }}
+  {%- endfor %}
 
   <input type="submit">
 
