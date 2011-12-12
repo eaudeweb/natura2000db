@@ -15,10 +15,14 @@ class Storage(object):
         return os.path.join(self.storage_path, 'doc_%d.json' % doc_id)
 
     def save_document(self, doc_id, data):
-        assert isinstance(doc_id, int)
+        if doc_id is None:
+            doc_id = max([-1] + self.document_ids()) + 1
+        else:
+            assert isinstance(doc_id, int)
         log.info("saving document %r", doc_id)
         with open(self._doc_path(doc_id), 'wb') as f:
             json.dump(data, f, indent=2)
+        return doc_id
 
     def load_document(self, doc_id):
         assert isinstance(doc_id, int)

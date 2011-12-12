@@ -34,20 +34,24 @@ def index():
     return flask.render_template('index.html', doc_id_list=db.document_ids())
 
 
+@app.route('/new', methods=['GET', 'POST'])
 @app.route('/edit/<int:doc_id>', methods=['GET', 'POST'])
-def edit(doc_id):
+def edit(doc_id=None):
     db = Storage(flask.current_app.config['STORAGE_PATH'])
 
     if flask.request.method == 'POST':
         species = Species.from_flat(flask.request.form.to_dict())
 
         if species.validate():
-            db.save_document(doc_id, species.value)
+            doc_id = db.save_document(doc_id, species.value)
             flask.flash("Document %d saved" % doc_id)
             return flask.redirect('/')
 
     else:
-        species = Species(db.load_document(doc_id))
+        if doc_id is None:
+            species = Species()
+        else:
+            species = Species(db.load_document(doc_id))
 
     return flask.render_template('edit.html', doc=species)
 
