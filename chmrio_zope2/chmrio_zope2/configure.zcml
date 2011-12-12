@@ -8,4 +8,18 @@
     permission="zope2.ViewManagementScreens"
     />
 
+  <browser:view
+    name="new"
+    for=".interfaces.IChmRioForms"
+    class=".proxy.ChmRioFormsProxy"
+    permission="zope2.ViewManagementScreens"
+    />
+
+  <browser:view
+    name="edit"
+    for=".interfaces.IChmRioForms"
+    class=".proxy.ChmRioFormsProxy"
+    permission="zope2.ViewManagementScreens"
+    />
+
 </configure>
