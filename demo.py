@@ -48,6 +48,9 @@ def edit():
             flask.flash("Document %d saved" % doc_id)
             return flask.redirect('/')
 
+        else:
+            flask.flash("Errors in document")
+
     else:
         if doc_id is None:
             doc = section_1()
