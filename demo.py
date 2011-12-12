@@ -57,4 +57,6 @@ def edit(doc_id=None):
 
 
 if __name__ == '__main__':
+    from revproxy import ReverseProxied
+    app.wsgi_app = ReverseProxied(app.wsgi_app)
     app.run(debug=True)
