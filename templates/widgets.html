@@ -4,6 +4,7 @@
   {%- set macro = {
       'input': input,
       'radio': radio,
+      'checkbox': checkbox,
       'dict': dict,
       'list': list,
       'textarea': textarea,
@@ -41,6 +42,14 @@
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   {{ html.label(field, contents=field.properties.label) }}
   {{ html.textarea(field) }}
+  {{- errors(field) -}}<br />
+  {%- do html.end() %}
+{% endmacro %}
+
+{% macro checkbox(field) %}
+  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {{ html.label(field, contents=field.properties.label) }}
+  {{ html.input(field, type="checkbox") }}
   {{- errors(field) -}}<br />
   {%- do html.end() %}
 {% endmacro %}

@@ -23,12 +23,36 @@ section_1 = Ordered_dict_of(
             fl.String.named('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
             fl.String.named('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
             fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
-        ).with_properties(label='1.8. Datele indicarii si desemnarii/clasificarii sitului',
+        ).with_properties(label='Datele indicarii si desemnarii/clasificarii sitului',
                             widget='dict'),
     ).with_properties(label='1. IDENTIFICAREA SITULUI')
 
 section_2 = Ordered_dict_of(
-    fl.String.named('long').with_properties(label='Longitudine')).with_properties(label='2. LOCALIZAREA SITULUI')
+    fl.String.named('long').with_properties(label='Longitudine'),
+    fl.String.named('lat').with_properties(label='Latitudine'),
+    fl.Integer.named('area').with_properties(label='Suprafata (ha)', type='float'),
+    fl.Integer.named('length').with_properties(label='Lungimea sitului (km)', type='float'),
+    Ordered_dict_of(
+            fl.Integer.named('alt_min').with_properties(label='Minima', type='float'),
+            fl.Integer.named('alt_max').with_properties(label='Maxima', type='float'),
+            fl.Integer.named('alt_med').with_properties(label='Medie', type='float'),
+        ).named('altitude').with_properties(label='Altitudine (m)',
+                            widget='dict'),
+    Ordered_dict_of(
+            fl.String.named('nuts_code').with_properties(label='Codul NUTS'),
+            fl.String.named('reg_name').with_properties(label='Numele regiunii'),
+            fl.String.named('percentage').with_properties(label='Pondere (%)'),
+        ).named('admin_region').with_properties(label='Regiunea administrativa',
+                            widget='dict'),
+    Ordered_dict_of(
+            fl.Boolean.named('alpine').with_properties(label='Alpina', widget='checkbox'),
+            fl.Boolean.named('continental').with_properties(label='Continentala', widget='checkbox'),
+            fl.Boolean.named('stepic').with_properties(label='Stepica', widget='checkbox'),
+            fl.Boolean.named('pontic').with_properties(label='Pontica', widget='checkbox'),
+            fl.Boolean.named('pannonian').with_properties(label='Panonica', widget='checkbox'),
+        ).named('bio_region').with_properties(label='Regiunea biogeografica',
+                            widget='dict'),
+    ).with_properties(label='2. LOCALIZAREA SITULUI')
 
 SpaDoc = Ordered_dict_of(
     section_1.named('section1').with_properties(widget='section'),
