@@ -18,10 +18,13 @@ section_1 = Ordered_dict_of(
     fl.String.named('responsible').with_properties(widget='textarea', 
                                                     label='Responsabili'),
     fl.String.named('sit_name').with_properties(label='Numele sitului'),
-    fl.String.named('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
-    fl.String.named('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
-    fl.String.named('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
-    fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC')
+    Ordered_dict_of(
+            fl.String.named('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
+            fl.String.named('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
+            fl.String.named('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
+            fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
+        ).with_properties(label='1.8. Datele indicarii si desemnarii/clasificarii sitului',
+                            widget='dict'),
     ).with_properties(label='1. IDENTIFICAREA SITULUI')
 
 section_2 = Ordered_dict_of(

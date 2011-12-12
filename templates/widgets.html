@@ -45,10 +45,15 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro dict(field) %}
+{% macro dict_children(field) %}
   {%- for child_name in field.properties.order %}
   {{ widget(field[child_name]) }}
   {% endfor -%}
+{% endmacro %}
+
+{% macro dict(field) %}
+  <p>{{ field.properties.label }}</p>
+  {{ dict_children(field) }}
 {% endmacro %}
 
 {% macro list(field) %}
@@ -63,7 +68,7 @@
 {% macro section(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   <h2>{{ field.properties.label }}</h2>
-  {{ dict(field) }}
+  {{ dict_children(field) }}
   {%- do html.end() %}
 {% endmacro %}
 
