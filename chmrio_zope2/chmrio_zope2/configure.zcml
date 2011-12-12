@@ -1,0 +1,11 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:view
+    name="index_html"
+    for=".interfaces.IChmRioForms"
+    class=".proxy.ChmRioFormsProxy"
+    permission="zope2.ViewManagementScreens"
+    />
+
+</configure>
