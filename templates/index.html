@@ -1,30 +1,18 @@
 {% from 'widgets.html' import widget, label -%}
 <html>
-  <body>
-    hi
-    <form action="save" method="post">
+	<body>
+		<h1>FORMULAR STANDARD</h1>
+		<p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile 
+			ca situri de importanta comunitara (SCI)</p>
+		<form action="save" method="post">
 
-      <table>
+			<h2>1. IDENTIFICAREA SITULUI</h2>
+			{%- for name in item.properties.order %}
+				{{ widget(item[name]) }}
+			{%- endfor %}
 
-        <thead>
-        {%- for name in schema.properties.order %}
-          {{ label(schema[name]) }}
-        {%- endfor %}
-        </thead>
 
-        <tbody>
-        {% for item in rows %}
-          <tr>
-          {%- for name in item.properties.order %}
-            {{- widget(item[name]) }}
-          {%- endfor %}
-          </tr>
-        {% endfor %}
-        </tbody>
-
-      </table>
-
-    <input type="submit">
-    </form>
-  </body>
+		<input type="submit">
+		</form>
+	</body>
 </html>

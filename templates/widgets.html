@@ -17,10 +17,9 @@
 
 {% macro input(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
-  <td>
+  {{ html.label(field, contents=field.properties.label) }}
   {{ html.input(field, type=field.properties.type) }}
-  {{- errors(field) -}}
-  </td>
+  {{- errors(field) -}}<br />
   {%- do html.end() %}
 {% endmacro %}
 

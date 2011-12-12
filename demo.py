@@ -3,7 +3,7 @@
 
 import flask
 from flatland.out.markup import Generator
-from schema import Species
+from schema import Species, section_1
 
 
 app = flask.Flask(__name__)
@@ -24,12 +24,7 @@ def validated(sender, element, result, **kwargs):
 
 @app.route('/')
 def index():
-    rows = [
-        Species({'name': u'cioară', 'site': {'isolation': 'B'}}, name='1'),
-        Species({'name': u'rață', 'site': {'isolation': 'C'}}, name='2'),
-        Species(),
-    ]
-    return flask.render_template('index.html', schema=Species(), rows=rows)
+    return flask.render_template('index.html', item=section_1())
 
 
 @app.route('/save', methods=['POST'])
@@ -44,7 +39,7 @@ def save():
         return "<pre>" + escape(pformat(sl.value)) + "</pre>"
 
     else:
-        return flask.render_template('index.html', schema=Species(), rows=sl)
+        return flask.render_template('index.html', item=section_1())
 
 
 if __name__ == '__main__':
