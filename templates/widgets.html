@@ -27,7 +27,10 @@
   {{ html.label(field, contents=field.properties.label) }}
   {% endif %}
   {{ html.input(field, type=field.properties.type) }}
-  {{- errors(field) -}}<br />
+  {% if errors %}
+    <br />
+    {{- errors(field) -}}
+  {% endif %}
   {%- do html.end() %}
 {% endmacro %}
 
@@ -44,6 +47,7 @@
 
 {% macro select(field, label=True) %}
   {{ html.select.open(field) }}
+  {{ html.option(field, contents='') }}
   {% for value in field.valid_values %}
     {{ html.option(field, value=value, contents=value) }}
   {% endfor %}

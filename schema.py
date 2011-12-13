@@ -56,10 +56,10 @@ section_3 = Ordered_dict_of(
             Ordered_dict_of(
                     fl.String.named('code').with_properties(label='Cod'),
                     fl.String.named('percentage').with_properties(label='Pondere'),
-                    fl.Enum.named('repres').valued('A', 'B', 'C').with_properties(label='Reprezentativitate', widget='select'),
-                    fl.String.named('relativ_area').with_properties(label='Suprafata relativa'),
-                    fl.String.named('conservation_status').with_properties(label='Stare de conservare'),
-                    fl.String.named('global_evaluation').with_properties(label='Evaluare globala'),
+                    fl.Enum.named('repres').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Reprezentativitate', widget='select'),
+                    fl.Enum.named('relativ_area').valued('A', 'B', 'C').using(optional=True).with_properties(label='Suprafata relativa', widget='select'),
+                    fl.Enum.named('conservation_status').valued('A', 'B', 'C').using(optional=True).with_properties(label='Stare de conservare', widget='select'),
+                    fl.Enum.named('global_evaluation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
                 ).named('habitat_type'),
             ).with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste'),
     ).with_properties(label='3. INFORMATII ECOLOGICE')
