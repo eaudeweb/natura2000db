@@ -25,9 +25,9 @@
 {% macro input(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   {% if label %}
-  {{ html.label(field, contents=field.properties.label) }}
+    {{ html.label(field, contents=field.properties.label) }}
   {% endif %}
-  {{ html.input(field, type=field.properties.type) }}
+  {{ html.input(field) }}
   {% if errors %}
     <br />
     {{- errors(field) -}}
@@ -41,7 +41,10 @@
   {% for value in field.valid_values %}
     {{ html.input(field, type="radio", value=value) }}
   {% endfor %}
-  {{- errors(field) -}}
+  {% if errors %}
+    <br />
+    {{- errors(field) -}}
+  {% endif %}
   </td>
   {%- do html.end() %}
 {% endmacro %}
@@ -53,14 +56,20 @@
     {{ html.option(field, value=value, contents=value) }}
   {% endfor %}
   {{ html.select.close() }}
-  {{- errors(field) -}}
+  {% if errors %}
+    <br />
+    {{- errors(field) -}}
+  {% endif %}
 {% endmacro %}
 
 {% macro textarea(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   {{ html.label(field, contents=field.properties.label) }}
   {{ html.textarea(field) }}
-  {{- errors(field) -}}<br />
+  {% if errors %}
+    <br />
+    {{- errors(field) -}}
+  {% endif %}
   {%- do html.end() %}
 {% endmacro %}
 
@@ -68,7 +77,10 @@
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   {{ html.label(field, contents=field.properties.label) }}
   {{ html.input(field, type="checkbox") }}
-  {{- errors(field) -}}<br />
+  {% if errors %}
+    <br />
+    {{- errors(field) -}}
+  {% endif %}
   {%- do html.end() %}
 {% endmacro %}
 
