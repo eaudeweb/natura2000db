@@ -267,7 +267,6 @@ section_4 = Ordered_dict_of(
         ).with_properties(widget='table', label='Istoric (se va completa de catre Comisie)'),
     ).with_properties(label='4. DESCRIEREA SITULUI')
 
-
 section_5 = Ordered_dict_of(
 
     fl.List.named('clasification').of(
@@ -331,6 +330,18 @@ section_6 = Ordered_dict_of(
 
     ).with_properties(label='6. ACTIVITATILE ANTROPICE SI EFECTELE LOR IN SIT SI IN JURUL ACESTUIA')
 
+section_7 = Ordered_dict_of(
+
+    Ordered_dict_of(
+            fl.String.named('number').with_properties(label='Numar national harta'),
+            fl.String.named('scale').with_properties(label='Scala'),
+            fl.String.named('projection').with_properties(label='Proiectie'),
+        ).named('map').with_properties(widget='dict', label='Harta fizica'),
+
+    fl.String.named('site_limits').with_properties(widget='textarea', label='Specificati daca limitele sitului sunt disponibile in format digital'),
+
+    ).with_properties(label='7. HARTA SITULUI')
+
 
 SpaDoc = Ordered_dict_of(
     section_1.named('section1').with_properties(widget='section'),
@@ -338,4 +349,5 @@ SpaDoc = Ordered_dict_of(
     section_3.named('section3').with_properties(widget='section'),
     section_4.named('section4').with_properties(widget='section'),
     section_5.named('section5').with_properties(widget='section'),
-    section_6.named('section6').with_properties(widget='section'))
+    section_6.named('section6').with_properties(widget='section'),
+    section_7.named('section7').with_properties(widget='section'))
