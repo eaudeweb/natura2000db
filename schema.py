@@ -307,9 +307,35 @@ section_5 = Ordered_dict_of(
 
     ).with_properties(label='5. STATUTUL DE PROTECTIE AL SITULUI SI LEGATURA CU BIOTOPURILE CORINE')
 
+section_6 = Ordered_dict_of(
+
+    fl.List.named('inside_activities').of(
+        Ordered_dict_of(
+                fl.String.named('code').with_properties(label='Cod'),
+                fl.Enum.named('intensity').valued('A', 'B', 'C').using(optional=True).with_properties(label='Intensitate', widget='select'),
+                fl.Integer.named('percentage').with_properties(label='% din sit', type='float'),
+                fl.Enum.named('influence').valued('+', '0', '-').using(optional=True).with_properties(label='Influenta', widget='select'),
+            ).named('record'),
+        ).with_properties(widget='table', label='Activitati si consecinte in interiorul sitului'),
+
+    fl.List.named('outside_activities').of(
+        Ordered_dict_of(
+                fl.String.named('code').with_properties(label='Cod'),
+                fl.Enum.named('intensity').valued('A', 'B', 'C').using(optional=True).with_properties(label='Intensitate', widget='select'),
+                fl.Enum.named('influence').valued('+', '0', '-').using(optional=True).with_properties(label='Influenta', widget='select'),
+            ).named('record'),
+        ).with_properties(widget='table', label='Activitati si consecinte in jurul sitului'),
+
+    fl.String.named('responsible').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
+    fl.String.named('plans').with_properties(widget='textarea', label='Planuri de management al sitului'),
+
+    ).with_properties(label='6. ACTIVITATILE ANTROPICE SI EFECTELE LOR IN SIT SI IN JURUL ACESTUIA')
+
+
 SpaDoc = Ordered_dict_of(
     section_1.named('section1').with_properties(widget='section'),
     section_2.named('section2').with_properties(widget='section'),
     section_3.named('section3').with_properties(widget='section'),
     section_4.named('section4').with_properties(widget='section'),
-    section_5.named('section5').with_properties(widget='section'))
+    section_5.named('section5').with_properties(widget='section'),
+    section_6.named('section6').with_properties(widget='section'))
