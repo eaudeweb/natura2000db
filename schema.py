@@ -21,7 +21,7 @@ section_1 = Ordered_dict_of(
             fl.String.named('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
             fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
         ).with_properties(label='Datele indicarii si desemnarii/clasificarii sitului',
-                            widget='dict'),
+                            widget='dict').named('sit_dates'),
     ).with_properties(label='1. IDENTIFICAREA SITULUI')
 
 section_2 = Ordered_dict_of(
