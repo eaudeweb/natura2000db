@@ -91,23 +91,41 @@
   {% endfor %}
 {% endmacro %}
 
+{% macro table_th(field, prefix='') %}
+  {% if field.properties.order %}
+    {% for child_name in field.properties.order %}
+      {{ table_th(field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
+    {% endfor %}
+  {% else %}
+    <td>{{ prefix[:-3] }}</td>
+  {% endif %}
+{% endmacro %}
+
+{% macro table_td(field) %}
+  {% if field.properties.order %}
+    {% for child_name in field.properties.order %}
+      {{ table_td(field[child_name]) }}
+    {% endfor %}
+  {% else %}
+    <td>{{ widget(field, label=False) }}</td>
+  {% endif %}
+{% endmacro %}
+
 {% macro table(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
-  <table>
+  <table border=1>
+    <caption>{{field.properties.label}}</caption>
     <thead>
       {{ field.append('') or "" }}
       {{ field.append('') or "" }}
       <tr>
-        {% for child_name in field[0].properties.order %}
-        <td>{{ field[0][child_name].properties.label }}</td>
-        {% endfor %}
+        {{ table_th(field[0]) }}
+      </tr>
     </thead>
     <tbody>
       {% for child in field %}
       <tr>
-        {% for name in child.properties.order %}
-        <td>{{ widget(child[name], label=False) }}</td>
-        {% endfor %}
+          {{ table_td(child) }}
       </tr>
       {% endfor %}
     </tbody>
