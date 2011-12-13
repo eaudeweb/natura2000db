@@ -4,6 +4,7 @@
   {%- set macro = {
       'input': input,
       'radio': radio,
+      'select': select,
       'checkbox': checkbox,
       'dict': dict,
       'list': list,
@@ -39,6 +40,15 @@
   {{- errors(field) -}}
   </td>
   {%- do html.end() %}
+{% endmacro %}
+
+{% macro select(field, label=True) %}
+  {{ html.select.open(field) }}
+  {% for value in field.valid_values %}
+    {{ html.option(field, value=value, contents=value) }}
+  {% endfor %}
+  {{ html.select.close() }}
+  {{- errors(field) -}}
 {% endmacro %}
 
 {% macro textarea(field, label=True) %}

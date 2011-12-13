@@ -56,7 +56,7 @@ section_3 = Ordered_dict_of(
             Ordered_dict_of(
                     fl.String.named('code').with_properties(label='Cod'),
                     fl.String.named('percentage').with_properties(label='Pondere'),
-                    fl.String.named('repres').with_properties(label='Reprezentativitate'),
+                    fl.Enum.named('repres').valued('A', 'B', 'C').with_properties(label='Reprezentativitate', widget='select'),
                     fl.String.named('relativ_area').with_properties(label='Suprafata relativa'),
                     fl.String.named('conservation_status').with_properties(label='Stare de conservare'),
                     fl.String.named('global_evaluation').with_properties(label='Evaluare globala'),
