@@ -1,8 +1,5 @@
 import flatland as fl
 
-
-Enum_abc = fl.Enum.valued('A', 'B', 'C').with_properties(widget='radio')
-
 def Ordered_dict_of(*fields):
     order = [field.name for field in fields]
     return fl.Dict.of(*fields).with_properties(order=order)

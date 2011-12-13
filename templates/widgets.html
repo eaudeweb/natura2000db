@@ -108,23 +108,3 @@
   {{ dict_children(field) }}
   {%- do html.end() %}
 {% endmacro %}
-
-
-
-{% macro label(field) %}
-  {%- set macro = {
-      'input': simple_label,
-      'dict': nested_label,
-    }[field.properties.widget] or simple_label -%}
-  {{- macro(field) -}}
-{% endmacro %}
-
-{% macro simple_label(field) %}
-  <th>{{ field.label }}</th>
-{% endmacro %}
-
-{% macro nested_label(field) %}
-  {%- for child_name in field.properties.order %}
-  {{ label(field[child_name]) }}
-  {% endfor -%}
-{% endmacro %}
