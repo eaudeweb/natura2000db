@@ -1,6 +1,6 @@
 {% set html = form_generator %}
 
-{% macro widget(field) %}
+{% macro widget(field, label=True) %}
   {%- set macro = {
       'input': input,
       'radio': radio,
@@ -9,8 +9,9 @@
       'list': list,
       'textarea': textarea,
       'section': section,
+      'table': table,
     }[field.properties.widget] or input -%}
-  {{- macro(field) -}}
+  {{- macro(field, label=label) -}}
 {% endmacro %}
 
 {% macro errors(field) %}
@@ -19,15 +20,17 @@
   {% endfor -%}
 {% endmacro %}
 
-{% macro input(field) %}
+{% macro input(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {% if label %}
   {{ html.label(field, contents=field.properties.label) }}
+  {% endif %}
   {{ html.input(field, type=field.properties.type) }}
   {{- errors(field) -}}<br />
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro radio(field) %}
+{% macro radio(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   <td>
   {% for value in field.valid_values %}
@@ -38,7 +41,7 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro textarea(field) %}
+{% macro textarea(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   {{ html.label(field, contents=field.properties.label) }}
   {{ html.textarea(field) }}
@@ -46,7 +49,7 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro checkbox(field) %}
+{% macro checkbox(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   {{ html.label(field, contents=field.properties.label) }}
   {{ html.input(field, type="checkbox") }}
@@ -60,12 +63,12 @@
   {% endfor -%}
 {% endmacro %}
 
-{% macro dict(field) %}
+{% macro dict(field, label=True) %}
   <p>{{ field.properties.label }}</p>
   {{ dict_children(field) }}
 {% endmacro %}
 
-{% macro list(field) %}
+{% macro list(field, label=True) %}
   {{ field.properties.label }} <br />
   {{ field.append('') or "" }}
   {{ field.append('') or "" }}
@@ -74,7 +77,32 @@
   {% endfor %}
 {% endmacro %}
 
-{% macro section(field) %}
+{% macro table(field, label=True) %}
+  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  <table>
+    <thead>
+      {{ field.append('') or "" }}
+      {{ field.append('') or "" }}
+      <tr>
+        {% for child_name in field[0].properties.order %}
+        <td>{{ field[0][child_name].properties.label }}</td>
+        {% endfor %}
+    </thead>
+    <tbody>
+      {% for child in field %}
+      <tr>
+        {% for name in child.properties.order %}
+        <td>{{ widget(child[name], label=False) }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {%- do html.end() %}
+{% endmacro %}
+
+
+{% macro section(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   <h2>{{ field.properties.label }}</h2>
   {{ dict_children(field) }}

@@ -54,6 +54,20 @@ section_2 = Ordered_dict_of(
                             widget='dict'),
     ).with_properties(label='2. LOCALIZAREA SITULUI')
 
+section_3 = Ordered_dict_of(
+        fl.List.named('habitat_types').of(
+            Ordered_dict_of(
+                    fl.String.named('code').with_properties(label='Cod'),
+                    fl.String.named('percentage').with_properties(label='Pondere'),
+                    fl.String.named('repres').with_properties(label='Reprezentativitate'),
+                    fl.String.named('relativ_area').with_properties(label='Suprafata relativa'),
+                    fl.String.named('conservation_status').with_properties(label='Stare de conservare'),
+                    fl.String.named('global_evaluation').with_properties(label='Evaluare globala'),
+                ).named('habitat_type'),
+            ).with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste'),
+    ).with_properties(label='3. INFORMATII ECOLOGICE')
+
 SpaDoc = Ordered_dict_of(
     section_1.named('section1').with_properties(widget='section'),
-    section_2.named('section2').with_properties(widget='section'))
+    section_2.named('section2').with_properties(widget='section'),
+    section_3.named('section3').with_properties(widget='section'))
