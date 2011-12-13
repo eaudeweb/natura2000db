@@ -11,6 +11,7 @@
       'textarea': textarea,
       'section': section,
       'table': table,
+      'habitat_breakdown': habitat_breakdown,
     }[field.properties.widget] or input -%}
   {{- macro(field, label=label) -}}
 {% endmacro %}
@@ -133,6 +134,31 @@
   {%- do html.end() %}
 {% endmacro %}
 
+{% macro habitat_breakdown(field, label=True) %}
+  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  <table border=1>
+    <thead>
+      <tr>
+        <td>{{ field.properties.label }}</td>
+        <td>pondere in %</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for child_name in field.properties.order %}
+      <tr>
+          <td>{{ field[child_name].properties.label }}</td>
+          <td>{{ widget(field[child_name], label=False) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>TOTAL SUPRAFATA HABITAT</td>
+        <td></td>
+      </tr>
+    </table>
+  {%- do html.end() %}
+{% endmacro %}
 
 {% macro section(field, label=True) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}

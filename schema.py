@@ -220,7 +220,36 @@ section_3 = Ordered_dict_of(
 
     ).with_properties(label='3. INFORMATII ECOLOGICE')
 
+section_4 = Ordered_dict_of(
+    Ordered_dict_of(
+            fl.Integer.named('areas').with_properties(label='Arii marine, privaluri', type='float'),
+            fl.Integer.named('rivers').with_properties(label='Rauri (fluvii) afectate de maree, estuare, terase mlastinoase sau nisipoase, lagune(inclusiv bazinele de colectare a sarii)', type='float'),
+            fl.Integer.named('salt surfaces').with_properties(label='Suprafete saraturate (mlastini, pajisti, stepe)', type='float'),
+            fl.Integer.named('beach').with_properties(label='Dune de coasta, plaje cu nisip, machair', type='float'),
+            fl.Integer.named('litoral').with_properties(label='Litoral cu prundis, faleze, insulite', type='float'),
+            fl.Integer.named('freshwater').with_properties(label='Ape dulci continentale (statatoare, curgatoare)', type='float'),
+            fl.Integer.named('swamps').with_properties(label='Mlastini (vegetatie de centura), smarcuri, turbarii', type='float'),
+            fl.Integer.named('maquis').with_properties(label='Lande, tufarisuri, maquis si garigue, phrygana', type='float'),
+            fl.Integer.named('steppes').with_properties(label='Pajisti uscate, stepe', type='float'),
+            fl.Integer.named('prairies').with_properties(label='Pajisti seminaturale umede, preerii mezofile', type='float'),
+            fl.Integer.named('alpine').with_properties(label='Pajisti alpine si subalpine', type='float'),
+            fl.Integer.named('crops').with_properties(label='Culturi cerealiere extensive (inclusiv culturile de rotatie cu dezmiristire)', type='float'),
+            fl.Integer.named('rice').with_properties(label='Orezarii', type='float'),
+            fl.Integer.named('meadows').with_properties(label='Pajisti ameliorate', type='float'),
+            fl.Integer.named('other_arable').with_properties(label='Alte terenuri arabile', type='float'),
+            fl.Integer.named('deciduous_forests').with_properties(label='Paduri caducifoliate', type='float'),
+            fl.Integer.named('coniferous_forests').with_properties(label='Paduri de conifere', type='float'),
+            fl.Integer.named('unconiferous_forests').with_properties(label='Paduri semperviriscente de nerasinoase', type='float'),
+            fl.Integer.named('mixt_forests').with_properties(label='Paduri mixte', type='float'),
+            fl.Integer.named('monoculture_forests').with_properties(label='Paduri de monocultura (plopi sau arbori exotici)', type='float'),
+            fl.Integer.named('plantations').with_properties(label='Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)', type='float'),
+            fl.Integer.named('rocks').with_properties(label='Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice', type='float'),
+            fl.Integer.named('other_land').with_properties(label='Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)', type='float'),
+        ).named('habitat_classes').with_properties(label='Clase de habitat', widget='habitat_breakdown'),
+    ).with_properties(label='4. DESCRIEREA SITULUI')
+
 SpaDoc = Ordered_dict_of(
     section_1.named('section1').with_properties(widget='section'),
     section_2.named('section2').with_properties(widget='section'),
-    section_3.named('section3').with_properties(widget='section'))
+    section_3.named('section3').with_properties(widget='section'),
+    section_4.named('section4').with_properties(widget='section'))
