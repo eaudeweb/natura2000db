@@ -246,6 +246,18 @@ section_4 = Ordered_dict_of(
             fl.Integer.named('rocks').with_properties(label='Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice', type='float'),
             fl.Integer.named('other_land').with_properties(label='Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)', type='float'),
         ).named('habitat_classes').with_properties(label='Clase de habitat', widget='habitat_breakdown'),
+    fl.String.named('quality').with_properties(widget='textarea', label='Calitate si importanta'),
+    fl.String.named('vulnerability').with_properties(widget='textarea', label='Vulnerabilitate'),
+    fl.String.named('designation').with_properties(widget='textarea', label='Desemnarea sitului (vezi observatiile privind datele cantitative de mai jos)'),
+    fl.String.named('property_type').with_properties(widget='textarea', label='Tip de proprietate'),
+    fl.String.named('documentation').with_properties(widget='textarea', label='Documentatie'),
+    fl.List.named('history').of(
+        Ordered_dict_of(
+                fl.String.named('date').with_properties(label='Data'),
+                fl.String.named('modified_field').with_properties(label='Campul modificat'),
+                fl.String.named('description').with_properties(label='Descriere'),
+            ).named('record'),
+        ).with_properties(widget='table', label='Istoric (se va completa de catre Comisie)'),
     ).with_properties(label='4. DESCRIEREA SITULUI')
 
 SpaDoc = Ordered_dict_of(
