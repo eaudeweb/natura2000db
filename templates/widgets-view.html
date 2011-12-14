@@ -1,0 +1,123 @@
+{% macro _label(field) %}
+  {% if not form['skip_labels'] %}
+    {{ field.properties.label }}
+  {% endif %}
+{% endmacro %}
+
+{% macro input(field) %}
+  {{ _label(field) }}
+  {{ field.value }}
+{% endmacro %}
+
+{% macro radio(field) %}
+  {{ input(field) }}
+{% endmacro %}
+
+{% macro select(field) %}
+  {{ input(field) }}
+{% endmacro %}
+
+{% macro textarea(field) %}
+  {{ input(field) }}
+{% endmacro %}
+
+{% macro checkbox(field) %}
+  {{ input(field) }}
+{% endmacro %}
+
+{% macro _dict_children(field) %}
+  {%- for child_name in field.properties.order %}
+  <div>
+  {{ form.widget(field[child_name]) }}
+  </div>
+  {% endfor -%}
+{% endmacro %}
+
+{% macro dict(field) %}
+  <p>{{ field.properties.label }}</p>
+  {{ _dict_children(field) }}
+{% endmacro %}
+
+{% macro list(field) %}
+  {{ field.properties.label }}
+  <ul>
+  {% for child in field %}
+    <li>{{ child.value }}</li>
+  {% endfor %}
+  </ul>
+{% endmacro %}
+
+{% macro _table_th(field, prefix='') %}
+  {% if field.properties.order %}
+    {% for child_name in field.properties.order %}
+      {{ _table_th(field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
+    {% endfor %}
+  {% else %}
+    <td>{{ prefix[:-3] }}</td>
+  {% endif %}
+{% endmacro %}
+
+{% macro _table_td(field) %}
+  {% if field.properties.order %}
+    {% for child_name in field.properties.order %}
+      {{ _table_td(field[child_name]) }}
+    {% endfor %}
+  {% else %}
+    {% do form.begin(skip_labels=True) -%}
+    <td>{{ form.widget(field) }}</td>
+    {%- do form.end() %}
+  {% endif %}
+{% endmacro %}
+
+{% macro table(field) %}
+  <table border=1>
+    <caption>{{field.properties.label}}</caption>
+    <thead>
+      <tr>
+        {% do field.append('') %}
+        {{ _table_th(field[0]) }}
+        {% do field.pop() %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for child in field %}
+      <tr>
+          {{ _table_td(child) }}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endmacro %}
+
+{% macro habitat_breakdown(field) %}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
+  <table border=1>
+    <thead>
+      <tr>
+        <td>{{ field.properties.label }}</td>
+        <td>pondere in %</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for child_name in field.properties.order %}
+      <tr>
+          <td>{{ field[child_name].properties.label }}</td>
+          {% do form.begin(skip_labels=True) -%}
+          <td>{{ form.widget(field[child_name]) }}</td>
+          {%- do form.end() %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>TOTAL SUPRAFATA HABITAT</td>
+        <td></td>
+      </tr>
+    </table>
+  {%- do form.end() %}
+{% endmacro %}
+
+{% macro section(field) %}
+  <h2>{{ field.properties.label }}</h2>
+  {{ _dict_children(field) }}
+{% endmacro %}

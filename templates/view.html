@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>FORMULAR STANDARD</h1>
+<p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile 
+  ca situri de importanta comunitara (SCI)</p>
+
+{% do form.begin(widgets_template='view') -%}
+{%- for name in doc.properties.order %}
+  <div>{{ form.widget(doc[name]) }}</div>
+{%- endfor %}
+{%- do form.end() %}
+
+{% endblock %}

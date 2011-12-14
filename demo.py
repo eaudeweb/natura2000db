@@ -38,6 +38,14 @@ def index():
     return flask.render_template('index.html', doc_id_list=db.document_ids())
 
 
+@app.route('/view')
+def view():
+    doc_id = flask.request.args.get('doc_id')
+    db = get_db()
+    doc = SpaDoc(db.load_document(doc_id))
+    return flask.render_template('view.html', doc=doc)
+
+
 @app.route('/new', methods=['GET', 'POST'])
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
