@@ -128,8 +128,8 @@ section_2 = Ordered_dict_of(
     String_using('long', optional=False).with_properties(label='Longitudine'),
     String_using('lat', optional=False).with_properties(label='Latitudine'),
     
-    Date_using('area').with_properties(label='Suprafata (ha)'),
-    Date_using('length').with_properties(label='Lungimea sitului (km)'),
+    Float_using('area').with_properties(label='Suprafata (ha)'),
+    Float_using('length').with_properties(label='Lungimea sitului (km)'),
 
     Ordered_dict_of(
             Float_using('alt_min').with_properties(label='Minima'),
