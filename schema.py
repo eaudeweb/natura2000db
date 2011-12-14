@@ -1,8 +1,19 @@
 import flatland as fl
 
+
+def valid_float(element, state):
+    if isinstance(element.value, float):
+        return True
+
+    else:
+        element.add_error("Value must be numeric")
+        return False
+
+
 def Ordered_dict_of(*fields):
     order = [field.name for field in fields]
     return fl.Dict.of(*fields).with_properties(order=order)
+
 
 section_1 = Ordered_dict_of(
 
@@ -30,7 +41,7 @@ section_2 = Ordered_dict_of(
 
     fl.String.named('long').with_properties(label='Longitudine'),
     fl.String.named('lat').with_properties(label='Latitudine'),
-    fl.Float.named('area').with_properties(label='Suprafata (ha)'),
+    fl.Float.named('area').using(optional=True, validators=[valid_float], format='%.2f').with_properties(label='Suprafata (ha)'),
     fl.Float.named('length').with_properties(label='Lungimea sitului (km)'),
 
     Ordered_dict_of(
