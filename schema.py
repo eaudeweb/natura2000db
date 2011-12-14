@@ -39,11 +39,10 @@ def valid_code(element, state):
 
 def valid_dict_value(element, state):
     for child in element.values():
-        if child.value is True:
-            return True
-
-    element.add_error("Please choose at least one value")
-    return False
+        if child.value is None:
+            element.add_error("Please choose at least one value")
+            return False
+    return True
 
 
 def Float(name, optional=True):
@@ -54,6 +53,9 @@ def Date(name, optional=True):
 
 def Boolean(name, optional=True):
     return fl.Boolean.named(name).using(optional=optional)
+
+def String(name, optional=True):
+    return fl.String.named(name).using(optional=optional)
 
 
 def Ordered_dict_of(*fields):
@@ -80,12 +82,9 @@ section_1 = Ordered_dict_of(
         ).
         with_properties(widget='list', label='Coduri ale siturilor Natura 2000'),
 
-    fl.String.named('responsible').
-              using(optional=True). 
-              with_properties(widget='textarea', label='Responsabili'),
+    String('responsible').with_properties(widget='textarea', label='Responsabili'),
 
-    fl.String.named('sit_name').
-              with_properties(label='Numele sitului'),
+    fl.String.named('sit_name').with_properties(label='Numele sitului'),
 
     Ordered_dict_of(
             Date('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
@@ -93,8 +92,7 @@ section_1 = Ordered_dict_of(
             Date('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
             Date('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
 
-        ).named('sit_dates').
-          with_properties(label='Datele indicarii si desemnarii/clasificarii sitului', widget='dict'),
+        ).named('sit_dates').with_properties(label='Datele indicarii si desemnarii/clasificarii sitului', widget='dict'),
 
     ).with_properties(label='1. IDENTIFICAREA SITULUI')
 
@@ -114,12 +112,11 @@ section_2 = Ordered_dict_of(
         ).named('altitude').with_properties(label='Altitudine (m)', widget='dict'),
 
     Ordered_dict_of(
-            fl.String.named('nuts_code').with_properties(label='Codul NUTS'),
-            fl.String.named('reg_name').with_properties(label='Numele regiunii'),
-            fl.String.named('percentage').with_properties(label='Pondere (%)'),
+            String('nuts_code').with_properties(label='Codul NUTS'),
+            String('reg_name').with_properties(label='Numele regiunii'),
+            String('percentage').with_properties(label='Pondere (%)'),
 
-        ).named('admin_region').
-          with_properties(label='Regiunea administrativa', widget='dict'),
+        ).named('admin_region').using(validators=[valid_dict_value]).with_properties(label='Regiunea administrativa', widget='dict'),
 
     Ordered_dict_of(
             Boolean('alpine').with_properties(label='Alpina', widget='checkbox'),
@@ -128,9 +125,7 @@ section_2 = Ordered_dict_of(
             Boolean('pontic').with_properties(label='Pontica', widget='checkbox'),
             Boolean('pannonian').with_properties(label='Panonica', widget='checkbox'),
 
-        ).named('bio_region').
-          using(validators=[valid_dict_value]).
-          with_properties(label='Regiunea biogeografica', widget='dict'),
+        ).named('bio_region').using(validators=[valid_dict_value]).with_properties(label='Regiunea biogeografica', widget='dict'),
 
     ).with_properties(label='2. LOCALIZAREA SITULUI')
 
