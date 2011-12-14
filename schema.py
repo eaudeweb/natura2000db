@@ -57,6 +57,8 @@ def Boolean(name, optional=True):
 def String(name, optional=True):
     return fl.String.named(name).using(optional=optional)
 
+def List(name, optional=True):
+    return fl.Enum.named(name).using(optional=optional)
 
 def Ordered_dict_of(*fields):
     order = [field.name for field in fields]
@@ -132,14 +134,17 @@ section_2 = Ordered_dict_of(
 section_3 = Ordered_dict_of(
 
     fl.List.named('habitat_types').of(
+
         Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('percentage').with_properties(label='Pondere'),
-                fl.Enum.named('repres').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Reprezentativitate', widget='select'),
-                fl.Enum.named('relativ_area').valued('A', 'B', 'C').using(optional=True).with_properties(label='Suprafata relativa', widget='select'),
-                fl.Enum.named('conservation_status').valued('A', 'B', 'C').using(optional=True).with_properties(label='Stare de conservare', widget='select'),
-                fl.Enum.named('global_evaluation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
+
+                String('code').with_properties(label='Cod'),
+                String('percentage').with_properties(label='Pondere'),
+                List('repres').valued('A', 'B', 'C', 'D').with_properties(label='Reprezentativitate', widget='select'),
+                List('relativ_area').valued('A', 'B', 'C').with_properties(label='Suprafata relativa', widget='select'),
+                List('conservation_status').valued('A', 'B', 'C').with_properties(label='Stare de conservare', widget='select'),
+                List('global_evaluation').valued('A', 'B', 'C').with_properties(label='Evaluare globala', widget='select'),
             ).named('habitat_type'),
+
         ).with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste'),
 
     fl.List.named('species_types').of(
