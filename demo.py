@@ -49,7 +49,7 @@ def edit():
     if flask.request.method == 'POST':
         doc = SpaDoc.from_flat(flask.request.form.to_dict())
 
-        if True or doc.validate():
+        if doc.validate():
             doc_id = db.save_document(doc_id, doc.value)
             flask.flash("Document %r saved" % doc_id)
             return flask.redirect('/')
