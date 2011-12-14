@@ -1,5 +1,3 @@
-{% set html = form_generator %}
-
 {% macro errors(field) %}
   {% for msg in field.errors %}
     <span class="error">{{ msg }}</span>
@@ -7,70 +5,70 @@
 {% endmacro %}
 
 {% macro input(field) %}
-  {%- do html.begin(auto_domid=true, auto_for=true) %}
-  {% if not html['skip_labels'] %}
-    {{ html.label(field, contents=field.properties.label) }}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
+  {% if not form['skip_labels'] %}
+    {{ form.label(field, contents=field.properties.label) }}
   {% endif %}
-  {{ html.input(field) }}
+  {{ form.input(field) }}
   {% if errors %}
     {{- errors(field) -}}
   {% endif %}
-  {%- do html.end() %}
+  {%- do form.end() %}
 {% endmacro %}
 
 {% macro radio(field) %}
-  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <td>
   {% for value in field.valid_values %}
-    {{ html.input(field, type="radio", value=value) }}
+    {{ form.input(field, type="radio", value=value) }}
   {% endfor %}
   {% if errors %}
     {{- errors(field) -}}
   {% endif %}
   </td>
-  {%- do html.end() %}
+  {%- do form.end() %}
 {% endmacro %}
 
 {% macro select(field) %}
-  {{ html.select.open(field) }}
-  {{ html.option(field, contents='') }}
+  {{ form.select.open(field) }}
+  {{ form.option(field, contents='') }}
   {% for value in field.valid_values %}
-    {{ html.option(field, value=value, contents=value) }}
+    {{ form.option(field, value=value, contents=value) }}
   {% endfor %}
-  {{ html.select.close() }}
+  {{ form.select.close() }}
   {% if errors %}
     {{- errors(field) -}}
   {% endif %}
 {% endmacro %}
 
 {% macro textarea(field) %}
-  {%- do html.begin(auto_domid=true, auto_for=true) %}
-  {% if not html['skip_labels'] %}
-    {{ html.label(field, contents=field.properties.label) }}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
+  {% if not form['skip_labels'] %}
+    {{ form.label(field, contents=field.properties.label) }}
   {% endif %}
-  {{ html.textarea(field) }}
+  {{ form.textarea(field) }}
   {% if errors %}
     {{- errors(field) -}}
   {% endif %}
-  {%- do html.end() %}
+  {%- do form.end() %}
 {% endmacro %}
 
 {% macro checkbox(field) %}
-  {%- do html.begin(auto_domid=true, auto_for=true) %}
-  {% if not html['skip_labels'] %}
-    {{ html.label(field, contents=field.properties.label) }}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
+  {% if not form['skip_labels'] %}
+    {{ form.label(field, contents=field.properties.label) }}
   {% endif %}
-  {{ html.input(field, type="checkbox") }}
+  {{ form.input(field, type="checkbox") }}
   {% if errors %}
     {{- errors(field) -}}
   {% endif %}
-  {%- do html.end() %}
+  {%- do form.end() %}
 {% endmacro %}
 
 {% macro dict_children(field) %}
   {%- for child_name in field.properties.order %}
   <div>
-  {{ widget(field[child_name]) }}
+  {{ form.widget(field[child_name]) }}
   </div>
   {% endfor -%}
 {% endmacro %}
@@ -85,7 +83,7 @@
   {{ field.append('') or "" }}
   {{ field.append('') or "" }}
   {% for child in field %}
-  {{ widget(child) }}
+  {{ form.widget(child) }}
   {% endfor %}
 {% endmacro %}
 
@@ -105,14 +103,14 @@
       {{ table_td(field[child_name]) }}
     {% endfor %}
   {% else %}
-    {% do html.begin(skip_labels=True) -%}
-    <td>{{ widget(field) }}</td>
-    {%- do html.end() %}
+    {% do form.begin(skip_labels=True) -%}
+    <td>{{ form.widget(field) }}</td>
+    {%- do form.end() %}
   {% endif %}
 {% endmacro %}
 
 {% macro table(field) %}
-  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1>
     <caption>{{field.properties.label}}</caption>
     <thead>
@@ -130,11 +128,11 @@
       {% endfor %}
     </tbody>
   </table>
-  {%- do html.end() %}
+  {%- do form.end() %}
 {% endmacro %}
 
 {% macro habitat_breakdown(field) %}
-  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1>
     <thead>
       <tr>
@@ -146,9 +144,9 @@
       {% for child_name in field.properties.order %}
       <tr>
           <td>{{ field[child_name].properties.label }}</td>
-          {% do html.begin(skip_labels=True) -%}
-          <td>{{ widget(field[child_name]) }}</td>
-          {%- do html.end() %}
+          {% do form.begin(skip_labels=True) -%}
+          <td>{{ form.widget(field[child_name]) }}</td>
+          {%- do form.end() %}
       </tr>
       {% endfor %}
     </tbody>
@@ -158,12 +156,12 @@
         <td></td>
       </tr>
     </table>
-  {%- do html.end() %}
+  {%- do form.end() %}
 {% endmacro %}
 
 {% macro section(field) %}
-  {%- do html.begin(auto_domid=true, auto_for=true) %}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <h2>{{ field.properties.label }}</h2>
   {{ dict_children(field) }}
-  {%- do html.end() %}
+  {%- do form.end() %}
 {% endmacro %}
