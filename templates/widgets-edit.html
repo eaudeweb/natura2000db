@@ -6,9 +6,9 @@
   {% endfor -%}
 {% endmacro %}
 
-{% macro input(field, label=True) %}
+{% macro input(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
-  {% if label %}
+  {% if not html['skip_labels'] %}
     {{ html.label(field, contents=field.properties.label) }}
   {% endif %}
   {{ html.input(field) }}
@@ -18,7 +18,7 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro radio(field, label=True) %}
+{% macro radio(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   <td>
   {% for value in field.valid_values %}
@@ -31,7 +31,7 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro select(field, label=True) %}
+{% macro select(field) %}
   {{ html.select.open(field) }}
   {{ html.option(field, contents='') }}
   {% for value in field.valid_values %}
@@ -43,9 +43,11 @@
   {% endif %}
 {% endmacro %}
 
-{% macro textarea(field, label=True) %}
+{% macro textarea(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
-  {{ html.label(field, contents=field.properties.label) }}
+  {% if not html['skip_labels'] %}
+    {{ html.label(field, contents=field.properties.label) }}
+  {% endif %}
   {{ html.textarea(field) }}
   {% if errors %}
     {{- errors(field) -}}
@@ -53,9 +55,11 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro checkbox(field, label=True) %}
+{% macro checkbox(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
-  {{ html.label(field, contents=field.properties.label) }}
+  {% if not html['skip_labels'] %}
+    {{ html.label(field, contents=field.properties.label) }}
+  {% endif %}
   {{ html.input(field, type="checkbox") }}
   {% if errors %}
     {{- errors(field) -}}
@@ -71,12 +75,12 @@
   {% endfor -%}
 {% endmacro %}
 
-{% macro dict(field, label=True) %}
+{% macro dict(field) %}
   <p>{{ field.properties.label }}</p>
   {{ dict_children(field) }}
 {% endmacro %}
 
-{% macro list(field, label=True) %}
+{% macro list(field) %}
   {{ field.properties.label }} <br />
   {{ field.append('') or "" }}
   {{ field.append('') or "" }}
@@ -101,11 +105,13 @@
       {{ table_td(field[child_name]) }}
     {% endfor %}
   {% else %}
-    <td>{{ widget(field, label=False) }}</td>
+    {% do html.begin(skip_labels=True) -%}
+    <td>{{ widget(field) }}</td>
+    {%- do html.end() %}
   {% endif %}
 {% endmacro %}
 
-{% macro table(field, label=True) %}
+{% macro table(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   <table border=1>
     <caption>{{field.properties.label}}</caption>
@@ -127,7 +133,7 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro habitat_breakdown(field, label=True) %}
+{% macro habitat_breakdown(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   <table border=1>
     <thead>
@@ -140,7 +146,9 @@
       {% for child_name in field.properties.order %}
       <tr>
           <td>{{ field[child_name].properties.label }}</td>
-          <td>{{ widget(field[child_name], label=False) }}</td>
+          {% do html.begin(skip_labels=True) -%}
+          <td>{{ widget(field[child_name]) }}</td>
+          {%- do html.end() %}
       </tr>
       {% endfor %}
     </tbody>
@@ -153,7 +161,7 @@
   {%- do html.end() %}
 {% endmacro %}
 
-{% macro section(field, label=True) %}
+{% macro section(field) %}
   {%- do html.begin(auto_domid=true, auto_for=true) %}
   <h2>{{ field.properties.label }}</h2>
   {{ dict_children(field) }}
