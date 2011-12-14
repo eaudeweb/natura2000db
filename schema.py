@@ -62,23 +62,37 @@ section_1 = Ordered_dict_of(
 
     fl.List.named('other_sites').of(
             fl.String.named('other_site').
-                      using(validators=[valid_code])
+                      using(optional=True, validators=[valid_code])
         ).
         with_properties(widget='list', label='Coduri ale siturilor Natura 2000'),
 
     fl.String.named('responsible').
+              using(optional=True). 
               with_properties(widget='textarea', label='Responsabili'),
 
     fl.String.named('sit_name').
               with_properties(label='Numele sitului'),
 
     Ordered_dict_of(
-            fl.String.named('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
-            fl.String.named('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
-            fl.String.named('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
-            fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
-        ).with_properties(label='Datele indicarii si desemnarii/clasificarii sitului',
-                            widget='dict').named('sit_dates'),
+            fl.String.named('sci_prop_date').
+                      using(optional=True, validators=[valid_date]).
+                      with_properties(label='Data propunerii ca sit SCI'),
+
+            fl.String.named('sci_conf_date').
+                      using(optional=True, validators=[valid_date]).
+                      with_properties(label='Data confirmarii ca sit SCI'),
+
+            fl.String.named('spa_conf_date').
+                      using(optional=True, validators=[valid_date]).
+                      with_properties(label='Data confirmarii ca sit SPA'),
+
+            fl.String.named('sac_conf_date').
+                      using(optional=True, validators=[valid_date]).
+                      with_properties(label='Data desemnarii ca sit SAC'),
+
+        ).named('sit_dates').
+          with_properties(label='Datele indicarii si desemnarii/clasificarii sitului', widget='dict'),
+
     ).with_properties(label='1. IDENTIFICAREA SITULUI')
 
 section_2 = Ordered_dict_of(
