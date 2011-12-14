@@ -4,7 +4,7 @@
 import flask
 from flatland.out.markup import Generator
 from schema import SpaDoc
-from storage import Storage
+from storage import FsStorage
 
 
 app = flask.Flask(__name__)
@@ -28,9 +28,13 @@ def validated(sender, element, result, **kwargs):
             element.add_error("required")
 
 
+def get_db():
+    return FsStorage(flask.current_app.config['STORAGE_PATH'])
+
+
 @app.route('/')
 def index():
-    db = Storage(flask.current_app.config['STORAGE_PATH'])
+    db = get_db()
     return flask.render_template('index.html', doc_id_list=db.document_ids())
 
 
@@ -38,7 +42,7 @@ def index():
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
     doc_id = flask.request.args.get('doc_id', None, int)
-    db = Storage(flask.current_app.config['STORAGE_PATH'])
+    db = get_db()
 
     if flask.request.method == 'POST':
         doc = SpaDoc.from_flat(flask.request.form.to_dict())

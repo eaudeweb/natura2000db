@@ -6,7 +6,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class Storage(object):
+class FsStorage(object):
 
     def __init__(self, storage_path):
         self.storage_path = storage_path
