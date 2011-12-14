@@ -76,6 +76,9 @@
 {% macro dict(field) %}
   <p>{{ field.properties.label }}</p>
   {{ dict_children(field) }}
+  {% if errors %}
+    {{- errors(field) -}}
+  {% endif %}
 {% endmacro %}
 
 {% macro list(field) %}

@@ -34,8 +34,31 @@ def valid_code(element, state):
         return True
 
     else:
-        element.add_error("Invalid code. Too Many Characters.")
+        element.add_error("Invalid code")
         return False
+
+def valid_dict_value(element, state):
+    for child in element.values():
+        if child.value is None:
+            element.add_error("Please choose at least one value")
+            return False
+    return True
+
+
+def Float(name, optional=True):
+    return fl.Float.named(name).using(optional=optional, validators=[valid_float], format='%.2f')
+
+def Date(name, optional=True):
+    return fl.String.named(name).using(optional=optional, validators=[valid_date])
+
+def Boolean(name, optional=True):
+    return fl.Boolean.named(name).using(optional=optional)
+
+def String(name, optional=True):
+    return fl.String.named(name).using(optional=optional)
+
+def List(name, optional=True):
+    return fl.Enum.named(name).using(optional=optional)
 
 def Ordered_dict_of(*fields):
     order = [field.name for field in fields]
@@ -52,75 +75,76 @@ section_1 = Ordered_dict_of(
               using(validators=[valid_code]).
               with_properties(label='Codul sitului'),
 
-    fl.String.named('release_date').
-              using(validators=[valid_date]).
-              with_properties(label='Data completarii'),
-
-    fl.String.named('last_modified').
-              using(validators=[valid_date]).
-              with_properties(label='Data actualizarii'),
+    Date('release_date', optional=False).with_properties(label='Data completarii'),
+    Date('last_modified', optional=False).with_properties(label='Data actualizarii'),
 
     fl.List.named('other_sites').of(
             fl.String.named('other_site').
-                      using(validators=[valid_code])
+                      using(optional=True, validators=[valid_code])
         ).
         with_properties(widget='list', label='Coduri ale siturilor Natura 2000'),
 
-    fl.String.named('responsible').
-              with_properties(widget='textarea', label='Responsabili'),
+    String('responsible').with_properties(widget='textarea', label='Responsabili'),
 
-    fl.String.named('sit_name').
-              with_properties(label='Numele sitului'),
+    fl.String.named('sit_name').with_properties(label='Numele sitului'),
 
     Ordered_dict_of(
-            fl.String.named('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
-            fl.String.named('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
-            fl.String.named('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
-            fl.String.named('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
-        ).with_properties(label='Datele indicarii si desemnarii/clasificarii sitului',
-                            widget='dict').named('sit_dates'),
+            Date('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
+            Date('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
+            Date('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
+            Date('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
+
+        ).named('sit_dates').with_properties(label='Datele indicarii si desemnarii/clasificarii sitului', widget='dict'),
+
     ).with_properties(label='1. IDENTIFICAREA SITULUI')
 
 section_2 = Ordered_dict_of(
 
     fl.String.named('long').with_properties(label='Longitudine'),
     fl.String.named('lat').with_properties(label='Latitudine'),
-    fl.Float.named('area').using(optional=True, validators=[valid_float], format='%.2f').with_properties(label='Suprafata (ha)'),
-    fl.Float.named('length').with_properties(label='Lungimea sitului (km)'),
+    
+    Date('area').with_properties(label='Suprafata (ha)'),
+    Date('length').with_properties(label='Lungimea sitului (km)'),
 
     Ordered_dict_of(
-            fl.Float.named('alt_min').with_properties(label='Minima'),
-            fl.Float.named('alt_max').with_properties(label='Maxima'),
-            fl.Float.named('alt_med').with_properties(label='Medie'),
-        ).named('altitude').with_properties(label='Altitudine (m)',
-                            widget='dict'),
+            Float('alt_min').with_properties(label='Minima'),
+            Float('alt_max').with_properties(label='Maxima'),
+            Float('alt_med').with_properties(label='Medie'),
+
+        ).named('altitude').with_properties(label='Altitudine (m)', widget='dict'),
+
     Ordered_dict_of(
-            fl.String.named('nuts_code').with_properties(label='Codul NUTS'),
-            fl.String.named('reg_name').with_properties(label='Numele regiunii'),
-            fl.String.named('percentage').with_properties(label='Pondere (%)'),
-        ).named('admin_region').with_properties(label='Regiunea administrativa',
-                            widget='dict'),
+            String('nuts_code').with_properties(label='Codul NUTS'),
+            String('reg_name').with_properties(label='Numele regiunii'),
+            String('percentage').with_properties(label='Pondere (%)'),
+
+        ).named('admin_region').using(validators=[valid_dict_value]).with_properties(label='Regiunea administrativa', widget='dict'),
+
     Ordered_dict_of(
-            fl.Boolean.named('alpine').with_properties(label='Alpina', widget='checkbox'),
-            fl.Boolean.named('continental').with_properties(label='Continentala', widget='checkbox'),
-            fl.Boolean.named('stepic').with_properties(label='Stepica', widget='checkbox'),
-            fl.Boolean.named('pontic').with_properties(label='Pontica', widget='checkbox'),
-            fl.Boolean.named('pannonian').with_properties(label='Panonica', widget='checkbox'),
-        ).named('bio_region').with_properties(label='Regiunea biogeografica',
-                            widget='dict'),
+            Boolean('alpine').with_properties(label='Alpina', widget='checkbox'),
+            Boolean('continental').with_properties(label='Continentala', widget='checkbox'),
+            Boolean('stepic').with_properties(label='Stepica', widget='checkbox'),
+            Boolean('pontic').with_properties(label='Pontica', widget='checkbox'),
+            Boolean('pannonian').with_properties(label='Panonica', widget='checkbox'),
+
+        ).named('bio_region').using(validators=[valid_dict_value]).with_properties(label='Regiunea biogeografica', widget='dict'),
+
     ).with_properties(label='2. LOCALIZAREA SITULUI')
 
 section_3 = Ordered_dict_of(
 
     fl.List.named('habitat_types').of(
+
         Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('percentage').with_properties(label='Pondere'),
-                fl.Enum.named('repres').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Reprezentativitate', widget='select'),
-                fl.Enum.named('relativ_area').valued('A', 'B', 'C').using(optional=True).with_properties(label='Suprafata relativa', widget='select'),
-                fl.Enum.named('conservation_status').valued('A', 'B', 'C').using(optional=True).with_properties(label='Stare de conservare', widget='select'),
-                fl.Enum.named('global_evaluation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
+
+                String('code').with_properties(label='Cod'),
+                String('percentage').with_properties(label='Pondere'),
+                List('repres').valued('A', 'B', 'C', 'D').with_properties(label='Reprezentativitate', widget='select'),
+                List('relativ_area').valued('A', 'B', 'C').with_properties(label='Suprafata relativa', widget='select'),
+                List('conservation_status').valued('A', 'B', 'C').with_properties(label='Stare de conservare', widget='select'),
+                List('global_evaluation').valued('A', 'B', 'C').with_properties(label='Evaluare globala', widget='select'),
             ).named('habitat_type'),
+
         ).with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste'),
 
     fl.List.named('species_types').of(
