@@ -37,11 +37,24 @@ def valid_code(element, state):
         element.add_error("Invalid code")
         return False
 
+def valid_dict_value(element, state):
+    for child in element.values():
+        if child.value is True:
+            return True
+
+    element.add_error("Please choose at least one value")
+    return False
+
+
 def Float(name, optional=True):
     return fl.Float.named(name).using(optional=optional, validators=[valid_float], format='%.2f')
 
 def Date(name, optional=True):
     return fl.String.named(name).using(optional=optional, validators=[valid_date])
+
+def Boolean(name, optional=True):
+    return fl.Boolean.named(name).using(optional=optional)
+
 
 def Ordered_dict_of(*fields):
     order = [field.name for field in fields]
@@ -104,16 +117,21 @@ section_2 = Ordered_dict_of(
             fl.String.named('nuts_code').with_properties(label='Codul NUTS'),
             fl.String.named('reg_name').with_properties(label='Numele regiunii'),
             fl.String.named('percentage').with_properties(label='Pondere (%)'),
-        ).named('admin_region').with_properties(label='Regiunea administrativa',
-                            widget='dict'),
+
+        ).named('admin_region').
+          with_properties(label='Regiunea administrativa', widget='dict'),
+
     Ordered_dict_of(
-            fl.Boolean.named('alpine').with_properties(label='Alpina', widget='checkbox'),
-            fl.Boolean.named('continental').with_properties(label='Continentala', widget='checkbox'),
-            fl.Boolean.named('stepic').with_properties(label='Stepica', widget='checkbox'),
-            fl.Boolean.named('pontic').with_properties(label='Pontica', widget='checkbox'),
-            fl.Boolean.named('pannonian').with_properties(label='Panonica', widget='checkbox'),
-        ).named('bio_region').with_properties(label='Regiunea biogeografica',
-                            widget='dict'),
+            Boolean('alpine').with_properties(label='Alpina', widget='checkbox'),
+            Boolean('continental').with_properties(label='Continentala', widget='checkbox'),
+            Boolean('stepic').with_properties(label='Stepica', widget='checkbox'),
+            Boolean('pontic').with_properties(label='Pontica', widget='checkbox'),
+            Boolean('pannonian').with_properties(label='Panonica', widget='checkbox'),
+
+        ).named('bio_region').
+          using(validators=[valid_dict_value]).
+          with_properties(label='Regiunea biogeografica', widget='dict'),
+
     ).with_properties(label='2. LOCALIZAREA SITULUI')
 
 section_3 = Ordered_dict_of(
