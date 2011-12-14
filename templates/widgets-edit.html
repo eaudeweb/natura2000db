@@ -1,3 +1,9 @@
+{% macro label(field) %}
+  {% if not form['skip_labels'] %}
+    {{ form.label(field, contents=field.properties.label) }}
+  {% endif %}
+{% endmacro %}
+
 {% macro errors(field) %}
   {% for msg in field.errors %}
     <span class="error">{{ msg }}</span>
@@ -6,9 +12,7 @@
 
 {% macro input(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {% if not form['skip_labels'] %}
-    {{ form.label(field, contents=field.properties.label) }}
-  {% endif %}
+  {{ label(field) }}
   {{ form.input(field) }}
   {% if errors %}
     {{- errors(field) -}}
@@ -43,9 +47,7 @@
 
 {% macro textarea(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {% if not form['skip_labels'] %}
-    {{ form.label(field, contents=field.properties.label) }}
-  {% endif %}
+  {{ label(field) }}
   {{ form.textarea(field) }}
   {% if errors %}
     {{- errors(field) -}}
@@ -55,9 +57,7 @@
 
 {% macro checkbox(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {% if not form['skip_labels'] %}
-    {{ form.label(field, contents=field.properties.label) }}
-  {% endif %}
+  {{ label(field) }}
   {{ form.input(field, type="checkbox") }}
   {% if errors %}
     {{- errors(field) -}}
