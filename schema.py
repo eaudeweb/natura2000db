@@ -1,3 +1,4 @@
+import re
 import flatland as fl
 
 
@@ -9,6 +10,32 @@ def valid_float(element, state):
         element.add_error("Value must be numeric")
         return False
 
+def valid_char(element, state):
+    patt = re.compile(r'^[a-k]$', re.IGNORECASE)
+    if patt.match(element.value):
+        return True
+
+    else:
+        element.add_error("Only one character from A to K is allowed")
+        return False
+
+def valid_date(element, state):
+    patt = re.compile(r'^\d{6}$')
+    if patt.match(element.value):
+        return True
+
+    else:
+        element.add_error("Invalid date. Please use the YYYYMM format")
+        return False
+
+def valid_code(element, state):
+    patt = re.compile(r'^\w{9}$')
+    if patt.match(element.value):
+        return True
+
+    else:
+        element.add_error("Invalid code. Too Many Characters.")
+        return False
 
 def Ordered_dict_of(*fields):
     order = [field.name for field in fields]
@@ -17,16 +44,33 @@ def Ordered_dict_of(*fields):
 
 section_1 = Ordered_dict_of(
 
-    fl.String.named('type').with_properties(label='Tip'),
-    fl.String.named('code').with_properties(label='Codul sitului'),
-    fl.String.named('release_date').with_properties(label='Data completarii'),
-    fl.String.named('last_modified').with_properties(label='Data actualizarii'),
-    fl.List.named('other_sites').of(fl.String) \
-                                .with_properties(widget='list', 
-                                                label='Coduri ale siturilor Natura 2000'),
-    fl.String.named('responsible').with_properties(widget='textarea', 
-                                                    label='Responsabili'),
-    fl.String.named('sit_name').with_properties(label='Numele sitului'),
+    fl.String.named('type').
+              using(validators=[valid_char]).
+              with_properties(label='Tip'),
+
+    fl.String.named('code').
+              using(validators=[valid_code]).
+              with_properties(label='Codul sitului'),
+
+    fl.String.named('release_date').
+              using(validators=[valid_date]).
+              with_properties(label='Data completarii'),
+
+    fl.String.named('last_modified').
+              using(validators=[valid_date]).
+              with_properties(label='Data actualizarii'),
+
+    fl.List.named('other_sites').of(
+            fl.String.named('other_site').
+                      using(validators=[valid_code])
+        ).
+        with_properties(widget='list', label='Coduri ale siturilor Natura 2000'),
+
+    fl.String.named('responsible').
+              with_properties(widget='textarea', label='Responsabili'),
+
+    fl.String.named('sit_name').
+              with_properties(label='Numele sitului'),
 
     Ordered_dict_of(
             fl.String.named('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
