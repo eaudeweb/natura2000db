@@ -12,20 +12,21 @@ class FsStorage(object):
         self.storage_path = storage_path
 
     def _doc_path(self, doc_id):
+        doc_id = int(doc_id)
         return os.path.join(self.storage_path, 'doc_%d.json' % doc_id)
 
     def save_document(self, doc_id, data):
         if doc_id is None:
             doc_id = max([-1] + self.document_ids()) + 1
         else:
-            assert isinstance(doc_id, int)
+            doc_id = int(doc_id)
         log.info("saving document %r", doc_id)
         with open(self._doc_path(doc_id), 'wb') as f:
             json.dump(data, f, indent=2)
         return doc_id
 
     def load_document(self, doc_id):
-        assert isinstance(doc_id, int)
+        doc_id = int(doc_id)
         with open(self._doc_path(doc_id), 'rb') as f:
             return json.load(f)
 

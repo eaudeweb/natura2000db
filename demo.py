@@ -41,7 +41,7 @@ def index():
 @app.route('/new', methods=['GET', 'POST'])
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
-    doc_id = flask.request.args.get('doc_id', None, int)
+    doc_id = flask.request.args.get('doc_id', None)
     db = get_db()
 
     if flask.request.method == 'POST':
@@ -49,7 +49,7 @@ def edit():
 
         if doc.validate():
             doc_id = db.save_document(doc_id, doc.value)
-            flask.flash("Document %d saved" % doc_id)
+            flask.flash("Document %r saved" % doc_id)
             return flask.redirect('/')
 
         else:
