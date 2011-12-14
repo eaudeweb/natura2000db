@@ -5,6 +5,7 @@ import flask
 from flatland.out.markup import Generator
 from schema import SpaDoc
 from storage import MongoStorage
+from widgets import WidgetDispatcher
 
 
 app = flask.Flask(__name__)
@@ -17,6 +18,7 @@ app.config['STORAGE_PATH'] = os.path.join(os.path.dirname(__file__),
 _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
 app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
 app.jinja_env.globals['form_generator'] = Generator('html')
+app.jinja_env.globals['widget'] = WidgetDispatcher(app.jinja_env)
 
 
 from flatland.signals import validator_validated

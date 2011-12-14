@@ -1,21 +1,5 @@
 {% set html = form_generator %}
 
-{% macro widget(field, label=True) %}
-  {%- set macro = {
-      'input': input,
-      'radio': radio,
-      'select': select,
-      'checkbox': checkbox,
-      'dict': dict,
-      'list': list,
-      'textarea': textarea,
-      'section': section,
-      'table': table,
-      'habitat_breakdown': habitat_breakdown,
-    }[field.properties.widget] or input -%}
-  {{- macro(field, label=label) -}}
-{% endmacro %}
-
 {% macro errors(field) %}
   {% for msg in field.errors %}
     <span class="error">{{ msg }}</span>
