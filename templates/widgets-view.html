@@ -1,58 +1,28 @@
 {% macro _label(field) %}
   {% if not form['skip_labels'] %}
-    {{ form.label(field, contents=field.properties.label) }}
+    {{ field.properties.label }}
   {% endif %}
 {% endmacro %}
 
-{% macro _errors(field) %}
-  {% for msg in field.errors %}
-    <span class="error">{{ msg }}</span>
-  {% endfor -%}
-{% endmacro %}
-
 {% macro input(field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   {{ _label(field) }}
-  {{ form.input(field) }}
-  {{- _errors(field) -}}
-  {%- do form.end() %}
+  {{ field.value }}
 {% endmacro %}
 
 {% macro radio(field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
-  <td>
-  {% for value in field.valid_values %}
-    {{ form.input(field, type="radio", value=value) }}
-  {% endfor %}
-  {{- _errors(field) -}}
-  </td>
-  {%- do form.end() %}
+  {{ input(field) }}
 {% endmacro %}
 
 {% macro select(field) %}
-  {{ form.select.open(field) }}
-  {{ form.option(field, contents='') }}
-  {% for value in field.valid_values %}
-    {{ form.option(field, value=value, contents=value) }}
-  {% endfor %}
-  {{ form.select.close() }}
-  {{- _errors(field) -}}
+  {{ input(field) }}
 {% endmacro %}
 
 {% macro textarea(field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {{ _label(field) }}
-  {{ form.textarea(field) }}
-  {{- _errors(field) -}}
-  {%- do form.end() %}
+  {{ input(field) }}
 {% endmacro %}
 
 {% macro checkbox(field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {{ _label(field) }}
-  {{ form.input(field, type="checkbox") }}
-  {{- _errors(field) -}}
-  {%- do form.end() %}
+  {{ input(field) }}
 {% endmacro %}
 
 {% macro _dict_children(field) %}
@@ -66,16 +36,15 @@
 {% macro dict(field) %}
   <p>{{ field.properties.label }}</p>
   {{ _dict_children(field) }}
-  {{- _errors(field) -}}
 {% endmacro %}
 
 {% macro list(field) %}
-  {{ field.properties.label }} <br />
-  {% do field.append('') %}
-  {% do field.append('') %}
+  {{ field.properties.label }}
+  <ul>
   {% for child in field %}
-  {{ form.widget(child) }}
+    <li>{{ child.value }}</li>
   {% endfor %}
+  </ul>
 {% endmacro %}
 
 {% macro _table_th(field, prefix='') %}
@@ -101,14 +70,13 @@
 {% endmacro %}
 
 {% macro table(field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1>
     <caption>{{field.properties.label}}</caption>
     <thead>
-      {% do field.append('') %}
-      {% do field.append('') %}
       <tr>
+        {% do field.append('') %}
         {{ _table_th(field[0]) }}
+        {% do field.pop() %}
       </tr>
     </thead>
     <tbody>
@@ -119,7 +87,6 @@
       {% endfor %}
     </tbody>
   </table>
-  {%- do form.end() %}
 {% endmacro %}
 
 {% macro habitat_breakdown(field) %}
@@ -151,8 +118,6 @@
 {% endmacro %}
 
 {% macro section(field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <h2>{{ field.properties.label }}</h2>
   {{ _dict_children(field) }}
-  {%- do form.end() %}
 {% endmacro %}
