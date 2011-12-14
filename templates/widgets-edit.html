@@ -1,10 +1,10 @@
-{% macro label(field) %}
+{% macro _label(field) %}
   {% if not form['skip_labels'] %}
     {{ form.label(field, contents=field.properties.label) }}
   {% endif %}
 {% endmacro %}
 
-{% macro errors(field) %}
+{% macro _errors(field) %}
   {% for msg in field.errors %}
     <span class="error">{{ msg }}</span>
   {% endfor -%}
@@ -12,11 +12,9 @@
 
 {% macro input(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {{ label(field) }}
+  {{ _label(field) }}
   {{ form.input(field) }}
-  {% if errors %}
-    {{- errors(field) -}}
-  {% endif %}
+  {{- _errors(field) -}}
   {%- do form.end() %}
 {% endmacro %}
 
@@ -26,9 +24,7 @@
   {% for value in field.valid_values %}
     {{ form.input(field, type="radio", value=value) }}
   {% endfor %}
-  {% if errors %}
-    {{- errors(field) -}}
-  {% endif %}
+  {{- _errors(field) -}}
   </td>
   {%- do form.end() %}
 {% endmacro %}
@@ -40,32 +36,26 @@
     {{ form.option(field, value=value, contents=value) }}
   {% endfor %}
   {{ form.select.close() }}
-  {% if errors %}
-    {{- errors(field) -}}
-  {% endif %}
+  {{- _errors(field) -}}
 {% endmacro %}
 
 {% macro textarea(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {{ label(field) }}
+  {{ _label(field) }}
   {{ form.textarea(field) }}
-  {% if errors %}
-    {{- errors(field) -}}
-  {% endif %}
+  {{- _errors(field) -}}
   {%- do form.end() %}
 {% endmacro %}
 
 {% macro checkbox(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {{ label(field) }}
+  {{ _label(field) }}
   {{ form.input(field, type="checkbox") }}
-  {% if errors %}
-    {{- errors(field) -}}
-  {% endif %}
+  {{- _errors(field) -}}
   {%- do form.end() %}
 {% endmacro %}
 
-{% macro dict_children(field) %}
+{% macro _dict_children(field) %}
   {%- for child_name in field.properties.order %}
   <div>
   {{ form.widget(field[child_name]) }}
@@ -75,10 +65,8 @@
 
 {% macro dict(field) %}
   <p>{{ field.properties.label }}</p>
-  {{ dict_children(field) }}
-  {% if errors %}
-    {{- errors(field) -}}
-  {% endif %}
+  {{ _dict_children(field) }}
+  {{- _errors(field) -}}
 {% endmacro %}
 
 {% macro list(field) %}
@@ -90,20 +78,20 @@
   {% endfor %}
 {% endmacro %}
 
-{% macro table_th(field, prefix='') %}
+{% macro _table_th(field, prefix='') %}
   {% if field.properties.order %}
     {% for child_name in field.properties.order %}
-      {{ table_th(field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
+      {{ _table_th(field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
     {% endfor %}
   {% else %}
     <td>{{ prefix[:-3] }}</td>
   {% endif %}
 {% endmacro %}
 
-{% macro table_td(field) %}
+{% macro _table_td(field) %}
   {% if field.properties.order %}
     {% for child_name in field.properties.order %}
-      {{ table_td(field[child_name]) }}
+      {{ _table_td(field[child_name]) }}
     {% endfor %}
   {% else %}
     {% do form.begin(skip_labels=True) -%}
@@ -120,13 +108,13 @@
       {% do field.append('') %}
       {% do field.append('') %}
       <tr>
-        {{ table_th(field[0]) }}
+        {{ _table_th(field[0]) }}
       </tr>
     </thead>
     <tbody>
       {% for child in field %}
       <tr>
-          {{ table_td(child) }}
+          {{ _table_td(child) }}
       </tr>
       {% endfor %}
     </tbody>
@@ -165,6 +153,6 @@
 {% macro section(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   <h2>{{ field.properties.label }}</h2>
-  {{ dict_children(field) }}
+  {{ _dict_children(field) }}
   {%- do form.end() %}
 {% endmacro %}
