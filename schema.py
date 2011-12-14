@@ -34,8 +34,14 @@ def valid_code(element, state):
         return True
 
     else:
-        element.add_error("Invalid code. Too Many Characters.")
+        element.add_error("Invalid code")
         return False
+
+def Float(name, optional=True):
+    return fl.Float.named(name).using(optional=optional, validators=[valid_float], format='%.2f')
+
+def Date(name, optional=True):
+    return fl.String.named(name).using(optional=optional, validators=[valid_date])
 
 def Ordered_dict_of(*fields):
     order = [field.name for field in fields]
@@ -52,13 +58,8 @@ section_1 = Ordered_dict_of(
               using(validators=[valid_code]).
               with_properties(label='Codul sitului'),
 
-    fl.String.named('release_date').
-              using(validators=[valid_date]).
-              with_properties(label='Data completarii'),
-
-    fl.String.named('last_modified').
-              using(validators=[valid_date]).
-              with_properties(label='Data actualizarii'),
+    Date('release_date', optional=False).with_properties(label='Data completarii'),
+    Date('last_modified', optional=False).with_properties(label='Data actualizarii'),
 
     fl.List.named('other_sites').of(
             fl.String.named('other_site').
@@ -74,21 +75,10 @@ section_1 = Ordered_dict_of(
               with_properties(label='Numele sitului'),
 
     Ordered_dict_of(
-            fl.String.named('sci_prop_date').
-                      using(optional=True, validators=[valid_date]).
-                      with_properties(label='Data propunerii ca sit SCI'),
-
-            fl.String.named('sci_conf_date').
-                      using(optional=True, validators=[valid_date]).
-                      with_properties(label='Data confirmarii ca sit SCI'),
-
-            fl.String.named('spa_conf_date').
-                      using(optional=True, validators=[valid_date]).
-                      with_properties(label='Data confirmarii ca sit SPA'),
-
-            fl.String.named('sac_conf_date').
-                      using(optional=True, validators=[valid_date]).
-                      with_properties(label='Data desemnarii ca sit SAC'),
+            Date('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
+            Date('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
+            Date('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
+            Date('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
 
         ).named('sit_dates').
           with_properties(label='Datele indicarii si desemnarii/clasificarii sitului', widget='dict'),
@@ -99,15 +89,17 @@ section_2 = Ordered_dict_of(
 
     fl.String.named('long').with_properties(label='Longitudine'),
     fl.String.named('lat').with_properties(label='Latitudine'),
-    fl.Float.named('area').using(optional=True, validators=[valid_float], format='%.2f').with_properties(label='Suprafata (ha)'),
-    fl.Float.named('length').with_properties(label='Lungimea sitului (km)'),
+    
+    Date('area').with_properties(label='Suprafata (ha)'),
+    Date('length').with_properties(label='Lungimea sitului (km)'),
 
     Ordered_dict_of(
-            fl.Float.named('alt_min').with_properties(label='Minima'),
-            fl.Float.named('alt_max').with_properties(label='Maxima'),
-            fl.Float.named('alt_med').with_properties(label='Medie'),
-        ).named('altitude').with_properties(label='Altitudine (m)',
-                            widget='dict'),
+            Float('alt_min').with_properties(label='Minima'),
+            Float('alt_max').with_properties(label='Maxima'),
+            Float('alt_med').with_properties(label='Medie'),
+
+        ).named('altitude').with_properties(label='Altitudine (m)', widget='dict'),
+
     Ordered_dict_of(
             fl.String.named('nuts_code').with_properties(label='Codul NUTS'),
             fl.String.named('reg_name').with_properties(label='Numele regiunii'),
