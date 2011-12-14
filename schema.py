@@ -64,6 +64,37 @@ def Ordered_dict_of(*fields):
     order = [field.name for field in fields]
     return fl.Dict.of(*fields).with_properties(order=order)
 
+def InfoColumn(name, label):
+    return Ordered_dict_of(
+                Enum_using('population').valued('A', 'B', 'C', 'D').with_properties(label='Populatie', widget='select'),
+                Enum_using('conservation').valued('A', 'B', 'C').with_properties(label='Conservare', widget='select'),
+                Enum_using('isolation').valued('A', 'B', 'C').with_properties(label='Izolare', widget='select'),
+                Enum_using('global_eval').valued('A', 'B', 'C').with_properties(label='Evaluare globala', widget='select'),
+            ).named(name).with_properties(label=label)
+
+def InfoTable(list_name, dict_name):
+    return fl.List.named(list_name).of(
+                Ordered_dict_of(
+
+                        String_using('code', optional=False).with_properties(label='Cod'),
+                        String_using('name', optional=False).with_properties(label='Nume'),
+
+                        Ordered_dict_of(
+
+                            String_using('resident').with_properties(label='Residenta'),
+                            Ordered_dict_of(
+                                String_using('reproduction').with_properties(label='Reproducere'),
+                                String_using('wintering').with_properties(label='Iernat'),
+                                String_using('passage').with_properties(label='Pasaj'),
+                                ).named('migratory').with_properties(label='Migratoare'),
+
+                            ).named('population').with_properties(label='Populatie'),
+
+                        InfoColumn('sit_evaluation', label='Evaluarea sitului'),
+
+                    ).named('dict_name'),
+                )
+
 
 section_1 = Ordered_dict_of(
 
@@ -78,7 +109,7 @@ section_1 = Ordered_dict_of(
         ).
         with_properties(widget='list', label='Coduri ale siturilor Natura 2000'),
 
-    String('responsible').with_properties(widget='textarea', label='Responsabili'),
+    String_using('responsible').with_properties(widget='textarea', label='Responsabili'),
 
     String_using('sit_name', optional=False).with_properties(label='Numele sitului'),
 
@@ -130,167 +161,56 @@ section_3 = Ordered_dict_of(
     fl.List.named('habitat_types').of(
 
         Ordered_dict_of(
-
-                String_using('code').with_properties(label='Cod'),
-                String_using('percentage').with_properties(label='Pondere'),
+                String_using('code', optional=False).with_properties(label='Cod'),
+                String_using('percentage', optional=False).with_properties(label='Pondere'),
                 Enum_using('repres').valued('A', 'B', 'C', 'D').with_properties(label='Reprezentativitate', widget='select'),
                 Enum_using('relativ_area').valued('A', 'B', 'C').with_properties(label='Suprafata relativa', widget='select'),
                 Enum_using('conservation_status').valued('A', 'B', 'C').with_properties(label='Stare de conservare', widget='select'),
                 Enum_using('global_evaluation').valued('A', 'B', 'C').with_properties(label='Evaluare globala', widget='select'),
+
             ).named('habitat_type'),
 
         ).with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste'),
 
-    fl.List.named('species_types').of(
-        Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('name').with_properties(label='Nume'),
-                Ordered_dict_of(
-                    fl.String.named('resident').with_properties(label='Residenta'),
-                    Ordered_dict_of(
-                        fl.String.named('reproduction').with_properties(label='Reproducere'),
-                        fl.String.named('wintering').with_properties(label='Iernat'),
-                        fl.String.named('passage').with_properties(label='Pasaj'),
-                        ).named('migratory').with_properties(label='Migratoare'),
-                    ).named('population').with_properties(label='Populatie'),
-                Ordered_dict_of(
-                    fl.Enum.named('population').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Populatie', widget='select'),
-                    fl.Enum.named('conservation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Conservare', widget='select'),
-                    fl.Enum.named('isolation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Izolare', widget='select'),
-                    fl.Enum.named('global_eval').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
-                    ).named('sit_evaluation').with_properties(label='Evaluarea sitului'),
-            ).named('specie_type'),
-        ).with_properties(widget='table', label='Specii de pasari enumerate in anexa I la Directiva Consiliului 79/409/CEE'),
+    InfoTable(list_name='species_types', dict_name='specie_type').
+            with_properties(widget='table', label='Specii de pasari enumerate in anexa I la Directiva Consiliului 79/409/CEE'),
 
-    fl.List.named('migratory_species_types').of(
-        Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('name').with_properties(label='Nume'),
-                Ordered_dict_of(
-                    fl.String.named('resident').with_properties(label='Residenta'),
-                    Ordered_dict_of(
-                        fl.String.named('reproduction').with_properties(label='Reproducere'),
-                        fl.String.named('wintering').with_properties(label='Iernat'),
-                        fl.String.named('passage').with_properties(label='Pasaj'),
-                        ).named('migratory').with_properties(label='Migratoare'),
-                    ).named('population').with_properties(label='Populatie'),
-                Ordered_dict_of(
-                    fl.Enum.named('population').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Populatie', widget='select'),
-                    fl.Enum.named('conservation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Conservare', widget='select'),
-                    fl.Enum.named('isolation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Izolare', widget='select'),
-                    fl.Enum.named('global_eval').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
-                    ).named('sit_evaluation').with_properties(label='Evaluarea sitului'),
-            ).named('specie_type'),
-        ).with_properties(widget='table', label='Specii de pasari cu migratie regulata nementionate in anexa I la Directiva Consiliului 79/409/CEE'),
+    InfoTable(list_name='migratory_species_types', dict_name='migratory_specie_type').
+            with_properties(widget='table', label='Specii de pasari cu migratie regulata nementionate in anexa I la Directiva Consiliului 79/409/CEE'),
 
-    fl.List.named('mammals_types').of(
-        Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('name').with_properties(label='Nume'),
-                Ordered_dict_of(
-                    fl.String.named('resident').with_properties(label='Residenta'),
-                    Ordered_dict_of(
-                        fl.String.named('reproduction').with_properties(label='Reproducere'),
-                        fl.String.named('wintering').with_properties(label='Iernat'),
-                        fl.String.named('passage').with_properties(label='Pasaj'),
-                        ).named('migratory').with_properties(label='Migratoare'),
-                    ).named('population').with_properties(label='Populatie'),
-                Ordered_dict_of(
-                    fl.Enum.named('population').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Populatie', widget='select'),
-                    fl.Enum.named('conservation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Conservare', widget='select'),
-                    fl.Enum.named('isolation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Izolare', widget='select'),
-                    fl.Enum.named('global_eval').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
-                    ).named('sit_evaluation').with_properties(label='Evaluarea sitului'),
-            ).named('mammal_types'),
-        ).with_properties(widget='table', label='Specii de mamifere enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+    InfoTable(list_name='mammals_types', dict_name='mammal_types').
+            with_properties(widget='table', label='Specii de mamifere enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
-    fl.List.named('reptiles_types').of(
-        Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('name').with_properties(label='Nume'),
-                Ordered_dict_of(
-                    fl.String.named('resident').with_properties(label='Residenta'),
-                    Ordered_dict_of(
-                        fl.String.named('reproduction').with_properties(label='Reproducere'),
-                        fl.String.named('wintering').with_properties(label='Iernat'),
-                        fl.String.named('passage').with_properties(label='Pasaj'),
-                        ).named('migratory').with_properties(label='Migratoare'),
-                    ).named('population').with_properties(label='Populatie'),
-                Ordered_dict_of(
-                    fl.Enum.named('population').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Populatie', widget='select'),
-                    fl.Enum.named('conservation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Conservare', widget='select'),
-                    fl.Enum.named('isolation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Izolare', widget='select'),
-                    fl.Enum.named('global_eval').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
-                    ).named('sit_evaluation').with_properties(label='Evaluarea sitului'),
-            ).named('reptile_types'),
-        ).with_properties(widget='table', label='Specii de amfibieni si reptile enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+    InfoTable(list_name='reptiles_types', dict_name='reptile_types').
+            with_properties(widget='table', label='Specii de amfibieni si reptile enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
-    fl.List.named('fishes_types').of(
-        Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('name').with_properties(label='Nume'),
-                Ordered_dict_of(
-                    fl.String.named('resident').with_properties(label='Residenta'),
-                    Ordered_dict_of(
-                        fl.String.named('reproduction').with_properties(label='Reproducere'),
-                        fl.String.named('wintering').with_properties(label='Iernat'),
-                        fl.String.named('passage').with_properties(label='Pasaj'),
-                        ).named('migratory').with_properties(label='Migratoare'),
-                    ).named('population').with_properties(label='Populatie'),
-                Ordered_dict_of(
-                    fl.Enum.named('population').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Populatie', widget='select'),
-                    fl.Enum.named('conservation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Conservare', widget='select'),
-                    fl.Enum.named('isolation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Izolare', widget='select'),
-                    fl.Enum.named('global_eval').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
-                    ).named('sit_evaluation').with_properties(label='Evaluarea sitului'),
-            ).named('fish_types'),
-        ).with_properties(widget='table', label='Specii de pesti enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+    InfoTable(list_name='fishes_types', dict_name='fish_types').
+            with_properties(widget='table', label='Specii de pesti enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
-    fl.List.named('invertebrates_types').of(
-        Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('name').with_properties(label='Nume'),
-                Ordered_dict_of(
-                    fl.String.named('resident').with_properties(label='Residenta'),
-                    Ordered_dict_of(
-                        fl.String.named('reproduction').with_properties(label='Reproducere'),
-                        fl.String.named('wintering').with_properties(label='Iernat'),
-                        fl.String.named('passage').with_properties(label='Pasaj'),
-                        ).named('migratory').with_properties(label='Migratoare'),
-                    ).named('population').with_properties(label='Populatie'),
-                Ordered_dict_of(
-                    fl.Enum.named('population').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Populatie', widget='select'),
-                    fl.Enum.named('conservation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Conservare', widget='select'),
-                    fl.Enum.named('isolation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Izolare', widget='select'),
-                    fl.Enum.named('global_eval').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
-                    ).named('sit_evaluation').with_properties(label='Evaluarea sitului'),
-            ).named('invertebrate_types'),
-        ).with_properties(widget='table', label='Specii de nevertebrate enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+    InfoTable(list_name='invertebrates_types', dict_name='invertebrate_types').
+            with_properties(widget='table', label='Specii de nevertebrate enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
     fl.List.named('plants_types').of(
         Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.String.named('name').with_properties(label='Nume'),
-                fl.String.named('population').with_properties(label='Populatie'),
-                Ordered_dict_of(
-                    fl.Enum.named('population').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Populatie', widget='select'),
-                    fl.Enum.named('conservation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Conservare', widget='select'),
-                    fl.Enum.named('isolation').valued('A', 'B', 'C').using(optional=True).with_properties(label='Izolare', widget='select'),
-                    fl.Enum.named('global_eval').valued('A', 'B', 'C').using(optional=True).with_properties(label='Evaluare globala', widget='select'),
-                    ).named('sit_evaluation').with_properties(label='Evaluarea sitului'),
+                String_using('code', optional=False).with_properties(label='Cod'),
+                String_using('name', optional=False).with_properties(label='Nume'),
+                String_using('population').with_properties(label='Populatie'),
+                InfoColumn('sit_evaluation', label='Evaluarea sitului'),
+
             ).named('plant_types'),
         ).with_properties(widget='table', label='Specii de plante enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
     fl.List.named('other_species').of(
         Ordered_dict_of(
-                fl.Enum.named('category').
-                        valued('pasari', 'mamifere', 'amfibieni', 'reptile', 'pesti', 'nevertebrate', 'plante').
-                        using(optional=True).
-                        with_properties(label='Categorie', widget='select'),
-                fl.String.named('scientific_name').with_properties(label='Denumire stiintifica'),
+
+                Enum_using('category', optional=False).valued('pasari', 'mamifere', 'amfibieni', 'reptile', 'pesti', 'nevertebrate', 'plante').
+                                        with_properties(label='Categorie', widget='select'),
+                String_using('scientific_name', optional=False).with_properties(label='Denumire stiintifica'),
+
                 Ordered_dict_of(
-                    fl.String.named('population_text').with_properties(label='Populatie'),
-                    fl.Enum.named('population_trend').valued('A', 'B', 'C', 'D').using(optional=True).with_properties(label='Populatie', widget='select'),
+                        String_using('population_text').with_properties(label='Populatie'),
+                        Enum_using('population_trend').valued('A', 'B', 'C', 'D').with_properties(label='Populatie', widget='select'),
+
                     ).named('population').with_properties(label='Populatie'),
             ).named('other_specie'),
         ).with_properties(widget='table', label='Alte specii importante de flora si fauna'),
