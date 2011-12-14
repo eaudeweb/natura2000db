@@ -10,7 +10,7 @@
 <form method="post">
 
   {%- for name in doc.properties.order %}
-    {{ widget(doc[name]) }}
+    <div>{{ widget(doc[name]) }}</div>
   {%- endfor %}
 
   <input type="submit">

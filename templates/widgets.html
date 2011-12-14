@@ -29,7 +29,6 @@
   {% endif %}
   {{ html.input(field) }}
   {% if errors %}
-    <br />
     {{- errors(field) -}}
   {% endif %}
   {%- do html.end() %}
@@ -42,7 +41,6 @@
     {{ html.input(field, type="radio", value=value) }}
   {% endfor %}
   {% if errors %}
-    <br />
     {{- errors(field) -}}
   {% endif %}
   </td>
@@ -57,7 +55,6 @@
   {% endfor %}
   {{ html.select.close() }}
   {% if errors %}
-    <br />
     {{- errors(field) -}}
   {% endif %}
 {% endmacro %}
@@ -67,7 +64,6 @@
   {{ html.label(field, contents=field.properties.label) }}
   {{ html.textarea(field) }}
   {% if errors %}
-    <br />
     {{- errors(field) -}}
   {% endif %}
   {%- do html.end() %}
@@ -78,7 +74,6 @@
   {{ html.label(field, contents=field.properties.label) }}
   {{ html.input(field, type="checkbox") }}
   {% if errors %}
-    <br />
     {{- errors(field) -}}
   {% endif %}
   {%- do html.end() %}
@@ -86,7 +81,9 @@
 
 {% macro dict_children(field) %}
   {%- for child_name in field.properties.order %}
+  <div>
   {{ widget(field[child_name]) }}
+  </div>
   {% endfor -%}
 {% endmacro %}
 
