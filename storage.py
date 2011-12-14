@@ -2,6 +2,8 @@ import os.path
 import json
 import re
 import logging
+import pymongo
+from bson.objectid import ObjectId
 
 log = logging.getLogger(__name__)
 
@@ -39,5 +41,34 @@ class FsStorage(object):
 
             doc_id_list.append(int(m.group('doc_id')))
 
+        doc_id_list.sort()
+        return doc_id_list
+
+
+class MongoStorage(object):
+
+    def __init__(self, db_name):
+        self.connection = pymongo.Connection('localhost', 27017)
+        self.db = self.connection[db_name]
+
+    def save_document(self, doc_id, data):
+        if doc_id is not None:
+            data = dict(data, _id=ObjectId(doc_id))
+            log.info("saving new document %r")
+        else:
+            log.info("saving document %r", doc_id)
+
+        doc_id = self.db['spadoc'].insert(data)
+        return doc_id
+
+    def load_document(self, doc_id):
+        doc = self.db['spadoc'].find_one({'_id': ObjectId(doc_id)})
+        if doc is None:
+            return {}
+        del doc['_id']
+        return doc
+
+    def document_ids(self):
+        doc_id_list = [doc['_id'] for doc in self.db['spadoc'].find()]
         doc_id_list.sort()
         return doc_id_list

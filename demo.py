@@ -4,7 +4,7 @@
 import flask
 from flatland.out.markup import Generator
 from schema import SpaDoc
-from storage import FsStorage
+from storage import MongoStorage
 
 
 app = flask.Flask(__name__)
@@ -29,7 +29,7 @@ def validated(sender, element, result, **kwargs):
 
 
 def get_db():
-    return FsStorage(flask.current_app.config['STORAGE_PATH'])
+    return MongoStorage('chm-forms-rio')
 
 
 @app.route('/')
@@ -47,7 +47,7 @@ def edit():
     if flask.request.method == 'POST':
         doc = SpaDoc.from_flat(flask.request.form.to_dict())
 
-        if doc.validate():
+        if True or doc.validate():
             doc_id = db.save_document(doc_id, doc.value)
             flask.flash("Document %r saved" % doc_id)
             return flask.redirect('/')

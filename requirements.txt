@@ -3,3 +3,4 @@ Jinja2==2.6
 Werkzeug==0.8.1
 blinker==1.2
 flatland==dev
+pymongo==2.1
