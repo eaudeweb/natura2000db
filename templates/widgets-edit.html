@@ -83,8 +83,8 @@
 
 {% macro list(field) %}
   {{ field.properties.label }} <br />
-  {{ field.append('') or "" }}
-  {{ field.append('') or "" }}
+  {% do field.append('') %}
+  {% do field.append('') %}
   {% for child in field %}
   {{ form.widget(child) }}
   {% endfor %}
@@ -117,8 +117,8 @@
   <table border=1>
     <caption>{{field.properties.label}}</caption>
     <thead>
-      {{ field.append('') or "" }}
-      {{ field.append('') or "" }}
+      {% do field.append('') %}
+      {% do field.append('') %}
       <tr>
         {{ table_th(field[0]) }}
       </tr>
