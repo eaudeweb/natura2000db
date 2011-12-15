@@ -57,7 +57,7 @@
 
 {% macro _dict_children(field) %}
   {%- for child_name in field.properties.order %}
-  <div>
+  <div class="dict_children">
   {{ form.widget(field[child_name]) }}
   </div>
   {% endfor -%}
@@ -73,12 +73,15 @@
 
 {% macro list(field) %}
   <div class="field-{{ field.name }}">
-  {{ field.properties.label }} <br />
+  <p>{{ field.properties.label }}</p> <br />
   {% do field.append('') %}
   {% do field.append('') %}
+  <p>{{ field[0].properties.label }}</p>
+  {%- do form.begin(skip_labels=True) %}
   {% for child in field %}
   {{ form.widget(child) }}
   {% endfor %}
+  {%- do form.end() %}
   </div>
 {% endmacro %}
 
