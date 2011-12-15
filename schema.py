@@ -39,10 +39,10 @@ def valid_code(element, state):
 
 def valid_dict_value(element, state):
     for child in element.values():
-        if child.value is None:
-            element.add_error("Please choose at least one value")
-            return False
-    return True
+        if child.value:
+            return True
+    element.add_error("Please choose at least one value")
+    return False
 
 
 def Float_using(name, optional=True):
@@ -170,24 +170,31 @@ section_3 = Ordered_dict_of(
 
             ).named('habitat_type'),
 
-        ).with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste'),
 
     InfoTable(list_name='species_types', dict_name='specie_type').
+            using(optional=True).
             with_properties(widget='table', label='Specii de pasari enumerate in anexa I la Directiva Consiliului 79/409/CEE'),
 
     InfoTable(list_name='migratory_species_types', dict_name='migratory_specie_type').
+            using(optional=True).
             with_properties(widget='table', label='Specii de pasari cu migratie regulata nementionate in anexa I la Directiva Consiliului 79/409/CEE'),
 
     InfoTable(list_name='mammals_types', dict_name='mammal_types').
+            using(optional=True).
             with_properties(widget='table', label='Specii de mamifere enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
     InfoTable(list_name='reptiles_types', dict_name='reptile_types').
+            using(optional=True).
             with_properties(widget='table', label='Specii de amfibieni si reptile enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
     InfoTable(list_name='fishes_types', dict_name='fish_types').
+            using(optional=True).
             with_properties(widget='table', label='Specii de pesti enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
     InfoTable(list_name='invertebrates_types', dict_name='invertebrate_types').
+            using(optional=True).
             with_properties(widget='table', label='Specii de nevertebrate enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
     fl.List.named('plants_types').of(
@@ -198,7 +205,8 @@ section_3 = Ordered_dict_of(
                 InfoColumn('sit_evaluation', label='Evaluarea sitului'),
 
             ).named('plant_types'),
-        ).with_properties(widget='table', label='Specii de plante enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Specii de plante enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
     fl.List.named('other_species').of(
         Ordered_dict_of(
@@ -213,7 +221,8 @@ section_3 = Ordered_dict_of(
 
                     ).named('population').with_properties(label='Populatie'),
             ).named('other_specie'),
-        ).with_properties(widget='table', label='Alte specii importante de flora si fauna'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Alte specii importante de flora si fauna'),
 
     ).with_properties(label='3. INFORMATII ECOLOGICE')
 
@@ -244,7 +253,9 @@ section_4 = Ordered_dict_of(
             Float_using('plantations').with_properties(label='Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)'),
             Float_using('rocks').with_properties(label='Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice'),
             Float_using('other_land').with_properties(label='Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)'),
-        ).named('habitat_classes').with_properties(label='Clase de habitat', widget='habitat_breakdown'),
+        ).named('habitat_classes').
+          using(optional=True).
+          with_properties(label='Clase de habitat', widget='habitat_breakdown'),
 
     String_using('quality').with_properties(widget='textarea', label='Calitate si importanta'),
     String_using('vulnerability').with_properties(widget='textarea', label='Vulnerabilitate'),
@@ -259,45 +270,53 @@ section_4 = Ordered_dict_of(
                 String_using('modified_field').with_properties(label='Campul modificat'),
                 String_using('description').with_properties(label='Descriere'),
             ).named('record'),
-        ).with_properties(widget='table', label='Istoric (se va completa de catre Comisie)'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Istoric (se va completa de catre Comisie)'),
     ).with_properties(label='4. DESCRIEREA SITULUI')
 
 section_5 = Ordered_dict_of(
 
     fl.List.named('clasification').of(
         Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.Float.named('percentage').with_properties(label='Pondere %'),
+                String_using('code', optional=False).with_properties(label='Cod'),
+                Float_using('percentage').with_properties(label='Pondere %'),
             ).named('record'),
-        ).with_properties(widget='table', label='Clasificare la nivel national si regional'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Clasificare la nivel national si regional'),
 
     fl.List.named('national_relations').of(
         Ordered_dict_of(
-                fl.String.named('type').with_properties(label='Tip'),
-                fl.String.named('name').with_properties(label='Numele sitului'),
-                fl.String.named('sit_type').with_properties(label='Tip'),
-                fl.Float.named('overlap').with_properties(label='Suprapunere %'),
+
+                String_using('type').with_properties(label='Tip'),
+                String_using('name', optional=False).with_properties(label='Numele sitului'),
+                String_using('sit_type').with_properties(label='Tip'),
+                Float_using('overlap').with_properties(label='Suprapunere %'),
             ).named('record'),
-        ).with_properties(widget='table', label='Relatiile sitului descris cu alte situri - desemnate la nivel national sau regional'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Relatiile sitului descris cu alte situri - desemnate la nivel national sau regional'),
 
     fl.List.named('international_relations').of(
         Ordered_dict_of(
-                fl.Enum.named('type').valued('Conventia Ramsar', 'Rezervatia biogenetica', 'Sit Eurodiploma', 
+
+                Enum_using('type').valued('Conventia Ramsar', 'Rezervatia biogenetica', 'Sit Eurodiploma', 
                                             'Rezervatia biosferei', 'Conventia Barcelona', 'Sit patrimoniu mondial', 
-                                            'Altele').using(optional=True).with_properties(label='Tip', widget='select'),
-                fl.String.named('name').with_properties(label='Numele sitului'),
-                fl.String.named('sit_type').with_properties(label='Tip'),
-                fl.Float.named('overlap').with_properties(label='Suprapunere %'),
+                                            'Altele').with_properties(label='Tip', widget='select'),
+                String_using('name', optional=False).with_properties(label='Numele sitului'),
+                String_using('sit_type').with_properties(label='Tip'),
+                Float_using('overlap').with_properties(label='Suprapunere %'),
             ).named('record'),
-        ).with_properties(widget='table', label='Relatiile sitului descris cu alte situri - desemnate la nivel international'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Relatiile sitului descris cu alte situri - desemnate la nivel international'),
 
     fl.List.named('corine_relations').of(
         Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod sit Corine'),
-                fl.String.named('type').with_properties(label='Tip'),
-                fl.Float.named('overlap').with_properties(label='Suprapunere %'),
+
+                String_using('code', optional=False).with_properties(label='Cod sit Corine'),
+                String_using('type').with_properties(label='Tip'),
+                Float_using('overlap').with_properties(label='Suprapunere %'),
             ).named('record'),
-        ).with_properties(widget='table', label='Relatiile sitului descris cu biotopuri Corine'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Relatiile sitului descris cu biotopuri Corine'),
 
     ).with_properties(label='5. STATUTUL DE PROTECTIE AL SITULUI SI LEGATURA CU BIOTOPURILE CORINE')
 
@@ -305,35 +324,39 @@ section_6 = Ordered_dict_of(
 
     fl.List.named('inside_activities').of(
         Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.Enum.named('intensity').valued('A', 'B', 'C').using(optional=True).with_properties(label='Intensitate', widget='select'),
-                fl.Float.named('percentage').with_properties(label='% din sit'),
-                fl.Enum.named('influence').valued('+', '0', '-').using(optional=True).with_properties(label='Influenta', widget='select'),
+
+                String_using('code', optional=False).with_properties(label='Cod'),
+                Enum_using('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate', widget='select'),
+                Float_using('percentage').with_properties(label='% din sit'),
+                Enum_using('influence').valued('+', '0', '-').with_properties(label='Influenta', widget='select'),
             ).named('record'),
-        ).with_properties(widget='table', label='Activitati si consecinte in interiorul sitului'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Activitati si consecinte in interiorul sitului'),
 
     fl.List.named('outside_activities').of(
         Ordered_dict_of(
-                fl.String.named('code').with_properties(label='Cod'),
-                fl.Enum.named('intensity').valued('A', 'B', 'C').using(optional=True).with_properties(label='Intensitate', widget='select'),
-                fl.Enum.named('influence').valued('+', '0', '-').using(optional=True).with_properties(label='Influenta', widget='select'),
-            ).named('record'),
-        ).with_properties(widget='table', label='Activitati si consecinte in jurul sitului'),
 
-    fl.String.named('responsible').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
-    fl.String.named('plans').with_properties(widget='textarea', label='Planuri de management al sitului'),
+                String_using('code', optional=False).with_properties(label='Cod'),
+                Enum_using('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate', widget='select'),
+                Enum_using('influence').valued('+', '0', '-').with_properties(label='Influenta', widget='select'),
+            ).named('record'),
+        ).using(optional=True).
+          with_properties(widget='table', label='Activitati si consecinte in jurul sitului'),
+
+    String_using('responsible').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
+    String_using('plans').with_properties(widget='textarea', label='Planuri de management al sitului'),
 
     ).with_properties(label='6. ACTIVITATILE ANTROPICE SI EFECTELE LOR IN SIT SI IN JURUL ACESTUIA')
 
 section_7 = Ordered_dict_of(
 
     Ordered_dict_of(
-            fl.String.named('number').with_properties(label='Numar national harta'),
-            fl.String.named('scale').with_properties(label='Scala'),
-            fl.String.named('projection').with_properties(label='Proiectie'),
+            String_using('number').with_properties(label='Numar national harta'),
+            String_using('scale').with_properties(label='Scala'),
+            String_using('projection').with_properties(label='Proiectie'),
         ).named('map').with_properties(widget='dict', label='Harta fizica'),
 
-    fl.String.named('site_limits').with_properties(widget='textarea', label='Specificati daca limitele sitului sunt disponibile in format digital'),
+    String_using('site_limits').with_properties(widget='textarea', label='Specificati daca limitele sitului sunt disponibile in format digital'),
 
     ).with_properties(label='7. HARTA SITULUI')
 

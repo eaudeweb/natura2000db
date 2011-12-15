@@ -120,6 +120,7 @@
     </tbody>
   </table>
   {%- do form.end() %}
+  {{- _errors(field) -}}
 {% endmacro %}
 
 {% macro habitat_breakdown(field) %}
@@ -148,6 +149,7 @@
       </tr>
     </table>
   {%- do form.end() %}
+  {{- _errors(field) -}}
 {% endmacro %}
 
 {% macro section(field) %}
