@@ -28,17 +28,32 @@ def load_from_sql():
             continue
         for row in imap(lower_keys, sw.iter_table(name)):
             row = lower_keys(row)
-            biotop_list[row['sitecode']]['_relations'][name].append(row)
+            biotop_list[row['sitecode']]['_relations'][name.lower()].append(row)
+
+    for biotop in biotop_list.itervalues():
+        biotop['_relations'] = dict(biotop['_relations'])
 
     return biotop_list
 
 
 def map_fields(biotop):
     flat = {}
+
+    [regcod_row] = biotop['_relations'].pop('regcod')
+    for key in regcod_row:
+        biotop['section2_regcod_%s' % key] = regcod_row[key]
+
     for element in SpaDoc().all_children:
+        flat_name = element.flattened_name()
         if element.name in biotop:
-            print '%s: %r' % (element.name, biotop[element.name])
-            flat[element.flattened_name()] = biotop.pop(element.name)
+            print 'NAME - %s: %r' % (element.name, biotop[element.name])
+            flat[flat_name] = biotop.pop(element.name)
+        elif flat_name in biotop:
+            print 'FLAT - %s: %r' % (element.name, biotop[flat_name])
+            flat[flat_name] = biotop.pop(flat_name)
+        else:
+            print ':(:( - %s' % flat_name
+
     return flat
 
 
@@ -50,8 +65,6 @@ def print_errors(root_element):
 
 def verify_data(biotop_list):
     for biotop in biotop_list.itervalues():
-        pprint(dict(biotop['_relations']))
-        del biotop['_relations']
         doc = SpaDoc.from_flat(map_fields(biotop))
         if not doc.validate():
             pprint(biotop)

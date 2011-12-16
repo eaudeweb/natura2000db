@@ -128,7 +128,7 @@ section_1 = Ordered_dict_of(
     String_using('sitecode', optional=False).using(validators=[valid_code]).with_properties(label='Codul sitului'),
 
     Date_using('date', optional=False).with_properties(label='Data completarii'),
-    Date_using('update', optional=False).with_properties(label='Data actualizarii'),
+    Date_using('update').with_properties(label='Data actualizarii'),
     # TODO validator to ensure update >= date
 
     fl.List.named('other_sites').of(
@@ -177,18 +177,18 @@ section_2 = Ordered_dict_of(
         ).named('altitude').with_properties(label='Altitudine (m)', widget='dict'),
 
     Ordered_dict_of(
-            String_using('nuts_code').with_properties(label='Codul NUTS'),
+            String_using('reg_code').with_properties(label='Codul NUTS'),
             String_using('reg_name').with_properties(label='Numele regiunii'),
-            String_using('percentage').with_properties(label='Pondere (%)'),
+            String_using('cover').with_properties(label='Pondere (%)'),
 
-        ).named('admin_region').using(validators=[valid_dict_value]).with_properties(label='Regiunea administrativa', widget='dict'),
+        ).named('regcod').using(validators=[valid_dict_value]).with_properties(label='Regiunea administrativa', widget='dict'),
 
     Ordered_dict_of(
             Boolean_using('alpine').with_properties(label='Alpina', widget='checkbox'),
             Boolean_using('continent').with_properties(label='Continentala', widget='checkbox'),
             Boolean_using('steppic').with_properties(label='Stepica', widget='checkbox'),
             Boolean_using('pontic').with_properties(label='Pontica', widget='checkbox'),
-            Boolean_using('pannonian').with_properties(label='Panonica', widget='checkbox'),
+            Boolean_using('pannonic').with_properties(label='Panonica', widget='checkbox'),
 
         ).named('bio_region').using(validators=[valid_dict_value]).with_properties(label='Regiunea biogeografica', widget='dict'),
 
