@@ -1,7 +1,321 @@
+/* edit form
+ * stylised by Sonia Andriu (tab = 2 spaces)
+ */
+
+
+/* GLOBAL */
 .error {
-    color: red;
+  color: red;
 }
 
 table .error {
-    display: block;
+  display: block;
 }
+
+h1, p {
+  text-align: center;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+form {
+  width: 80%; /* no less than 80% */
+  margin: 0px auto;
+  font-size: 12px;
+  font-family: inherited;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid #fff; 
+}
+
+table td {
+  /*font-size: 14px;*/
+}
+
+thead {
+  text-align: center;
+  font-weight: bold;
+  background: #ddd;
+}
+
+
+/* SECTIONS' COMMON PROPERTIES */
+h2 {
+  color: #039749;
+  margin-left: 15px;
+  margin-top: 33px;
+  font-size: 16px;
+}
+
+.dict_children {
+  background: #CDEADB;
+  margin: 0px 15px 10px 15px; /* white space between sections */
+  padding: 5px;
+  /*width: auto;*/
+}
+
+.dict_children label {
+  color: #039749;
+  margin-left: 7px;
+}
+
+.dict_children input, 
+.dict_children textarea {
+  border: 1px solid #C0C0C0;
+}
+
+table caption {
+  color: #039749;
+  text-align: left;
+  padding: 5px 0px;
+}
+
+.dict_children table {
+  margin-left: 7px;
+}
+
+.dict_children table td {
+  color: #7D7D7D;
+  padding: 3px 5px;
+}
+
+
+/* SECTIONS' PARTICULAR PROPERTIES */
+#f_section1_type {
+  max-width: 20px; /* holds one letter */
+}
+
+/* "Coduri ale siturilor Natura 2000" */
+.field-other_sites p {
+  color: #7D7D7D;
+  text-align: left;
+  margin-left: 15px;
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+
+.field-other_sites p:first-child {
+  color: #039749;
+  margin-left: 7px;
+}
+
+.field-other_sites input {
+  margin-left: 15px;
+}
+
+/* first textarea */
+.field-responsible {
+  padding-top: 10px;
+  min-width: 250px;
+}
+
+/* label "Responsabili" */
+label[for="f_section1_responsible"] {
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+#f_section1_responsible {
+  margin-top: 5px;
+}
+
+.field-sit_dates p {
+  text-align: left;
+  color: #039749;
+  margin-left: 7px;
+  margin-top: 5px;
+  margin-bottom: 3px;
+}
+
+.field-sit_dates label {
+  color: #7D7D7D;
+  margin-left: 15px;
+}
+
+.field-sit_dates .dict_children {
+  display: inline;
+  margin-right: 5px;
+  margin-left: 0px;
+}
+
+.field-sit_dates .dict_children input,
+#f_section1_release_date,
+#f_section1_last_modified {
+  max-width: 80px; /* those inputs have 6 digits, i.e. it's a date (yyyymm) */
+}
+
+#f_section2_long,
+#f_section2_lat {
+  max-width: 90px; /* those input have 6-7 digits */
+}
+
+.field-altitude p,
+.field-admin_region p,
+.field-bio_region p,
+.field-map p,
+.field-management p {
+  text-align: left;
+  color: #039749;
+  margin-left: 7px;
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
+
+.field-altitude .dict_children {
+  display: inline;
+}
+
+.field-altitude .dict_children label,
+.field-bio_region .dict_children label {
+  color: #7D7D7D;
+}
+
+#f_section2_altitude_alt_min,
+#f_section2_altitude_alt_med,
+#f_section2_altitude_alt_max {
+  max-width: 60px; /* those inputs have 4 digits */
+}
+
+.field-admin_region .dict_children {
+  display: inline;
+}
+
+.field-admin_region .dict_children label {
+  color: #7D7D7D;
+}
+
+.field-bio_region .dict_children {
+  display: inline;
+}
+
+/* tables */
+.field-species_types,
+.field-migratory_species_types,
+.field-mammals_types,
+.field-reptiles_types,
+.field-fishes_types,
+.field-invertebrates_types {
+  width: 90%;
+  margin: 0;
+  padding: 0;
+}
+
+.field-plants_types {
+  width: 60%;
+  margin: 0;
+  padding: 0;
+}
+
+table .field-percentage,
+table .field-code {
+  max-width: 50px; /* those inputs have 3-4 digits */
+}
+
+.field-name,
+.field-resident,
+.field-reproduction,
+.field-wintering,
+.field-passage {
+  max-width: 150px;
+}
+
+.field-site_characteristics p,
+.field-in_jur p {
+  color: #039749;
+  text-align: left;
+  margin-left: 7px;
+}
+
+label[for="f_section4_site_characteristics_other"] {
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  color: #7D7D7D;
+}
+
+#f_section1_responsible,
+#f_section1_sit_name,
+#f_section4_site_characteristics_other,
+#f_section4_quality,
+#f_section4_vulnerability,
+#f_section4_designation,
+#f_section4_property_type,
+#f_section4_documentation,
+#f_section6_responsible,
+#f_section6_plans,
+#f_section6_management_responsible,
+#f_section6_management_plans,
+#f_section7_site_limits {
+  min-width: 38%;
+  min-height: 30px;
+  max-width: 90%;
+}
+
+label[for="f_section4_quality"],
+label[for="f_section4_vulnerability"],
+label[for="f_section4_designation"],
+label[for="f_section4_property_type"],
+label[for="f_section4_documentation"],
+label[for="f_section6_responsible"],
+label[for="f_section6_plans"],
+label[for="f_section7_site_limits"],
+label[for="f_section1_sit_name"] {
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+.field-clasification caption,
+.field-outside_activities caption {
+  width: 300px;
+}
+
+.field-map .dict_children {
+  display: inline;
+}
+
+.field-map .dict_children label,
+.field-management .dict_children label {
+  color: #7D7D7D;
+}
+
+input[type="submit"] {
+  /*background: #039749;
+  border-radius: 4px;*/
+  margin-left: 15px;
+}
+
+.field-inside_activities caption,
+.field-outside_activities caption {
+  color: #7D7D7D;
+}
+
+.field-in_jur .dict_children:first-child {
+  /*display: inline;
+  float: left;*/
+}
+
+.field-inside_activities {
+  float: left;
+  margin-right: 30px;
+}
+
+.field-outside_activities {
+  margin-top: -20px;
+}
+
+.field-management .dict_children label {
+  display: block;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+.field-sit_dates .dict_children {
+  margin-left: 0px;
+}
+

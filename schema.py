@@ -111,7 +111,7 @@ section_1 = Ordered_dict_of(
 
     String_using('responsible').with_properties(widget='textarea', label='Responsabili'),
 
-    String_using('sit_name', optional=False).with_properties(label='Numele sitului'),
+    String_using('sit_name', optional=False).with_properties(label='Numele sitului', widget='textarea'),
 
     Ordered_dict_of(
             Date_using('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
@@ -367,7 +367,7 @@ section_7 = Ordered_dict_of(
 
     Ordered_dict_of(
             String_using('number').with_properties(label='Numar national harta'),
-            String_using('scale').with_properties(label='Scala'),
+            String_using('scale').with_properties(label='Scara'),
             String_using('projection').with_properties(label='Proiectie'),
         ).named('map').with_properties(widget='dict', label='Harta fizica'),
 
