@@ -107,7 +107,7 @@ section_1 = Ordered_dict_of(
     fl.List.named('other_sites').of(
             String_using('other_site').using(validators=[valid_code]).with_properties(label='Coduri ale siturilor Natura 2000')
         ).
-        with_properties(widget='list', label='Legaturi cu alte situri Natura 2000'),
+        with_properties(widget='list', label='Legaturi cu alte situri Natura 2000:'),
 
     String_using('responsible').with_properties(widget='textarea', label='Responsabili'),
 
@@ -171,7 +171,7 @@ section_3 = Ordered_dict_of(
             ).named('habitat_type'),
 
         ).using(optional=True).
-          with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste'),
+          with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste:'),
 
     InfoTable(list_name='species_types', dict_name='specie_type').
             using(optional=True).
@@ -230,32 +230,39 @@ section_4 = Ordered_dict_of(
 
     Ordered_dict_of(
 
-            Float_using('areas').with_properties(label='Arii marine, privaluri'),
-            Float_using('rivers').with_properties(label='Rauri (fluvii) afectate de maree, estuare, terase mlastinoase sau nisipoase, lagune(inclusiv bazinele de colectare a sarii)'),
-            Float_using('salt surfaces').with_properties(label='Suprafete saraturate (mlastini, pajisti, stepe)'),
-            Float_using('beach').with_properties(label='Dune de coasta, plaje cu nisip, machair'),
-            Float_using('litoral').with_properties(label='Litoral cu prundis, faleze, insulite'),
-            Float_using('freshwater').with_properties(label='Ape dulci continentale (statatoare, curgatoare)'),
-            Float_using('swamps').with_properties(label='Mlastini (vegetatie de centura), smarcuri, turbarii'),
-            Float_using('maquis').with_properties(label='Lande, tufarisuri, maquis si garigue, phrygana'),
-            Float_using('steppes').with_properties(label='Pajisti uscate, stepe'),
-            Float_using('prairies').with_properties(label='Pajisti seminaturale umede, preerii mezofile'),
-            Float_using('alpine').with_properties(label='Pajisti alpine si subalpine'),
-            Float_using('crops').with_properties(label='Culturi cerealiere extensive (inclusiv culturile de rotatie cu dezmiristire)'),
-            Float_using('rice').with_properties(label='Orezarii'),
-            Float_using('meadows').with_properties(label='Pajisti ameliorate'),
-            Float_using('other_arable').with_properties(label='Alte terenuri arabile'),
-            Float_using('deciduous_forests').with_properties(label='Paduri caducifoliate'),
-            Float_using('coniferous_forests').with_properties(label='Paduri de conifere'),
-            Float_using('unconiferous_forests').with_properties(label='Paduri semperviriscente de nerasinoase'),
-            Float_using('mixt_forests').with_properties(label='Paduri mixte'),
-            Float_using('monoculture_forests').with_properties(label='Paduri de monocultura (plopi sau arbori exotici)'),
-            Float_using('plantations').with_properties(label='Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)'),
-            Float_using('rocks').with_properties(label='Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice'),
-            Float_using('other_land').with_properties(label='Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)'),
-        ).named('habitat_classes').
+        Ordered_dict_of(
+
+                Float_using('areas').with_properties(label='Arii marine, privaluri'),
+                Float_using('rivers').with_properties(label='Rauri (fluvii) afectate de maree, estuare, terase mlastinoase sau nisipoase, lagune(inclusiv bazinele de colectare a sarii)'),
+                Float_using('salt surfaces').with_properties(label='Suprafete saraturate (mlastini, pajisti, stepe)'),
+                Float_using('beach').with_properties(label='Dune de coasta, plaje cu nisip, machair'),
+                Float_using('litoral').with_properties(label='Litoral cu prundis, faleze, insulite'),
+                Float_using('freshwater').with_properties(label='Ape dulci continentale (statatoare, curgatoare)'),
+                Float_using('swamps').with_properties(label='Mlastini (vegetatie de centura), smarcuri, turbarii'),
+                Float_using('maquis').with_properties(label='Lande, tufarisuri, maquis si garigue, phrygana'),
+                Float_using('steppes').with_properties(label='Pajisti uscate, stepe'),
+                Float_using('prairies').with_properties(label='Pajisti seminaturale umede, preerii mezofile'),
+                Float_using('alpine').with_properties(label='Pajisti alpine si subalpine'),
+                Float_using('crops').with_properties(label='Culturi cerealiere extensive (inclusiv culturile de rotatie cu dezmiristire)'),
+                Float_using('rice').with_properties(label='Orezarii'),
+                Float_using('meadows').with_properties(label='Pajisti ameliorate'),
+                Float_using('other_arable').with_properties(label='Alte terenuri arabile'),
+                Float_using('deciduous_forests').with_properties(label='Paduri caducifoliate'),
+                Float_using('coniferous_forests').with_properties(label='Paduri de conifere'),
+                Float_using('unconiferous_forests').with_properties(label='Paduri semperviriscente de nerasinoase'),
+                Float_using('mixt_forests').with_properties(label='Paduri mixte'),
+                Float_using('monoculture_forests').with_properties(label='Paduri de monocultura (plopi sau arbori exotici)'),
+                Float_using('plantations').with_properties(label='Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)'),
+                Float_using('rocks').with_properties(label='Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice'),
+                Float_using('other_land').with_properties(label='Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)'),
+            ).named('habitat_classes').
+              using(optional=True).
+              with_properties(label='Clase de habitat', widget='habitat_breakdown'),
+        String_using('other').with_properties(label='Alte caracteristici ale sitului', widget='textarea'),
+
+        ).named('site_characteristics').
           using(optional=True).
-          with_properties(label='Clase de habitat', widget='habitat_breakdown'),
+          with_properties(label='Caracteristici generale ale sitului', widget='dict'),
 
     String_using('quality').with_properties(widget='textarea', label='Calitate si importanta'),
     String_using('vulnerability').with_properties(widget='textarea', label='Vulnerabilitate'),
