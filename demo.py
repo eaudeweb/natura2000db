@@ -19,15 +19,6 @@ app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
 install_widgets(app.jinja_env)
 
 
-from flatland.signals import validator_validated
-from flatland.schema.base import NotEmpty
-@validator_validated.connect
-def validated(sender, element, result, **kwargs):
-    if sender is NotEmpty:
-        if not result:
-            element.add_error("required")
-
-
 def get_db():
     return MongoStorage('chm-forms-rio')
 

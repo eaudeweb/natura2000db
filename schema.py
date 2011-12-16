@@ -71,6 +71,15 @@ def valid_dict_value(element, state):
     return False
 
 
+from flatland.signals import validator_validated
+from flatland.schema.base import NotEmpty
+@validator_validated.connect
+def validated(sender, element, result, **kwargs):
+    if sender is NotEmpty:
+        if not result:
+            element.add_error("required")
+
+
 def Float_using(name, optional=True):
     return fl.Float.named(name).using(optional=optional, validators=[valid_float], format='%.2f')
 
