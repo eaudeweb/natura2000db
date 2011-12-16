@@ -131,9 +131,9 @@ section_1 = Ordered_dict_of(
     Date_using('update', optional=False).with_properties(label='Data actualizarii'),
 
     fl.List.named('other_sites').of(
-            String_using('other_site').using(validators=[valid_code])
+            String_using('other_site').using(validators=[valid_code]).with_properties(label='Coduri ale siturilor Natura 2000')
         ).
-        with_properties(widget='list', label='Coduri ale siturilor Natura 2000'),
+        with_properties(widget='list', label='Legaturi cu alte situri Natura 2000'),
 
     String_using('respondent').with_properties(widget='textarea', label='Responsabili'),
 

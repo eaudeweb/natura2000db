@@ -13,7 +13,7 @@
 {% macro input(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   {{ _label(field) }}
-  {{ form.input(field) }}
+  {{ form.input(field, class="field-%s" % field.name) }}
   {{- _errors(field) -}}
   {%- do form.end() %}
 {% endmacro %}
@@ -30,7 +30,7 @@
 {% endmacro %}
 
 {% macro select(field) %}
-  {{ form.select.open(field) }}
+  {{ form.select.open(field, class="field-%s" % field.name) }}
   {{ form.option(field, contents='') }}
   {% for value in field.valid_values %}
     {{ form.option(field, value=value, contents=value) }}
@@ -42,7 +42,7 @@
 {% macro textarea(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   {{ _label(field) }}
-  {{ form.textarea(field) }}
+  {{ form.textarea(field, class="field-%s" % field.name) }}
   {{- _errors(field) -}}
   {%- do form.end() %}
 {% endmacro %}
@@ -57,25 +57,32 @@
 
 {% macro _dict_children(field) %}
   {%- for child_name in field.properties.order %}
-  <div>
+  <div class="dict_children">
   {{ form.widget(field[child_name]) }}
   </div>
   {% endfor -%}
 {% endmacro %}
 
 {% macro dict(field) %}
+  <div class="field-{{ field.name }}">
   <p>{{ field.properties.label }}</p>
   {{ _dict_children(field) }}
   {{- _errors(field) -}}
+  </div>
 {% endmacro %}
 
 {% macro list(field) %}
-  {{ field.properties.label }} <br />
+  <div class="field-{{ field.name }}">
+  <p>{{ field.properties.label }}</p> <br />
   {% do field.append('') %}
   {% do field.append('') %}
+  <p>{{ field[0].properties.label }}</p>
+  {%- do form.begin(skip_labels=True) %}
   {% for child in field %}
   {{ form.widget(child) }}
   {% endfor %}
+  {%- do form.end() %}
+  </div>
 {% endmacro %}
 
 {% macro _table_th(field, prefix='') %}
@@ -102,7 +109,7 @@
 
 {% macro table(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  <table border=1>
+  <table border=1 class="field-{{ field.name }}">
     <caption>{{field.properties.label}}</caption>
     <thead>
       {% do field.append('') %}
@@ -125,7 +132,7 @@
 
 {% macro habitat_breakdown(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  <table border=1>
+  <table border=1 class="field-{{ field.name }}">
     <thead>
       <tr>
         <td>{{ field.properties.label }}</td>
@@ -154,7 +161,9 @@
 
 {% macro section(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
+  <div class="field-{{ field.name }}">
   <h2>{{ field.properties.label }}</h2>
   {{ _dict_children(field) }}
+  </div>
   {%- do form.end() %}
 {% endmacro %}
