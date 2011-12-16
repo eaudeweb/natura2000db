@@ -9,7 +9,7 @@ table_names = ['CheckForm', 'QueryCombine', 'RegCod', 'actvty', 'amprep',
 
 
 def lower_keys(dic):
-    return {k.lower(): unicode(dic[k]) for k in dic if dic[k] is not None}
+    return {k.lower(): dic[k] for k in dic if dic[k] is not None}
 
 
 def load_from_sql():
@@ -46,13 +46,7 @@ def map_fields(biotop):
     for element in SpaDoc().all_children:
         flat_name = element.flattened_name()
         if element.name in biotop:
-            print 'NAME - %s: %r' % (element.name, biotop[element.name])
             flat[flat_name] = biotop.pop(element.name)
-        elif flat_name in biotop:
-            print 'FLAT - %s: %r' % (element.name, biotop[flat_name])
-            flat[flat_name] = biotop.pop(flat_name)
-        else:
-            print ':(:( - %s' % flat_name
 
     return flat
 
@@ -65,8 +59,20 @@ def print_errors(root_element):
 
 def verify_data(biotop_list):
     for biotop in biotop_list.itervalues():
-        doc = SpaDoc.from_flat(map_fields(biotop))
-        if not doc.validate():
+        flat = map_fields(biotop)
+        doc = SpaDoc.from_flat(flat)
+        if doc.validate():
+            flat1 = {k: v for k, v in flat.iteritems() if v}
+            flat2 = {k: v for k, v in doc.flatten() if v}
+            if flat.keys() != flat2.keys():
+                print 'unused: %s, extra: %s' % (
+                    {k: flat[k] for k in set(flat1) - set(flat2)},
+                    {k: flat2[k] for k in set(flat2) - set(flat1)},
+                )
+            else:
+                print 'ok'
+
+        else:
             pprint(biotop)
             print
             print_errors(doc)
