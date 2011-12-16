@@ -73,7 +73,7 @@
 
 {% macro list(field) %}
   <div class="field-{{ field.name }}">
-  <p>{{ field.properties.label }}</p> <br />
+  <p>{{ field.properties.label }}</p>
   {% do field.append('') %}
   {% do field.append('') %}
   <p>{{ field[0].properties.label }}</p>
