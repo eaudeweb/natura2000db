@@ -56,6 +56,7 @@ def edit():
         doc = SpaDoc.from_flat(flask.request.form.to_dict())
 
         if doc.validate():
+            print doc.value
             doc_id = db.save_document(doc_id, doc.value)
             flask.flash("Document %r saved" % doc_id)
             return flask.redirect('/')

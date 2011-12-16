@@ -10,7 +10,7 @@ def valid_float(element, state):
         element.add_error("Value must be numeric")
         return False
 
-def valid_char(element, state):
+def valid_type(element, state):
     patt = re.compile(r'^[a-k]$', re.IGNORECASE)
     if patt.match(element.value):
         return True
@@ -98,26 +98,26 @@ def InfoTable(list_name, dict_name):
 
 section_1 = Ordered_dict_of(
 
-    String_using('type', optional=False).using(validators=[valid_char]).with_properties(label='Tip'),
-    String_using('code', optional=False).using(validators=[valid_code]).with_properties(label='Codul sitului'),
+    String_using('type', optional=False).using(validators=[valid_type]).with_properties(label='Tip'),
+    String_using('sitecode', optional=False).using(validators=[valid_code]).with_properties(label='Codul sitului'),
 
-    Date_using('release_date', optional=False).with_properties(label='Data completarii'),
-    Date_using('last_modified', optional=False).with_properties(label='Data actualizarii'),
+    Date_using('date', optional=False).with_properties(label='Data completarii'),
+    Date_using('update', optional=False).with_properties(label='Data actualizarii'),
 
     fl.List.named('other_sites').of(
             String_using('other_site').using(validators=[valid_code])
         ).
         with_properties(widget='list', label='Coduri ale siturilor Natura 2000'),
 
-    String_using('responsible').with_properties(widget='textarea', label='Responsabili'),
+    String_using('respondent').with_properties(widget='textarea', label='Responsabili'),
 
-    String_using('sit_name', optional=False).with_properties(label='Numele sitului'),
+    String_using('site_name', optional=False).with_properties(label='Numele sitului'),
 
     Ordered_dict_of(
-            Date_using('sci_prop_date').with_properties(label='Data propunerii ca sit SCI'),
-            Date_using('sci_conf_date').with_properties(label='Data confirmarii ca sit SCI'),
-            Date_using('spa_conf_date').with_properties(label='Data confirmarii ca sit SPA'),
-            Date_using('sac_conf_date').with_properties(label='Data desemnarii ca sit SAC'),
+            Date_using('date_prop').with_properties(label='Data propunerii ca sit SCI'),
+            Date_using('date_con').with_properties(label='Data confirmarii ca sit SCI'),
+            Date_using('spa_date').with_properties(label='Data confirmarii ca sit SPA'),
+            Date_using('sac_date').with_properties(label='Data desemnarii ca sit SAC'),
 
         ).named('sit_dates').with_properties(label='Datele indicarii si desemnarii/clasificarii sitului', widget='dict'),
 
@@ -125,6 +125,7 @@ section_1 = Ordered_dict_of(
 
 section_2 = Ordered_dict_of(
 
+    #lon_ew, lat_nz, lon_deg, lon_min, lon_sec, lat_deg, lat_min, lat_sec
     String_using('long', optional=False).with_properties(label='Longitudine'),
     String_using('lat', optional=False).with_properties(label='Latitudine'),
     
@@ -134,7 +135,7 @@ section_2 = Ordered_dict_of(
     Ordered_dict_of(
             Float_using('alt_min').with_properties(label='Minima'),
             Float_using('alt_max').with_properties(label='Maxima'),
-            Float_using('alt_med').with_properties(label='Medie'),
+            Float_using('alt_mean').with_properties(label='Medie'),
 
         ).named('altitude').with_properties(label='Altitudine (m)', widget='dict'),
 
@@ -147,8 +148,8 @@ section_2 = Ordered_dict_of(
 
     Ordered_dict_of(
             Boolean_using('alpine').with_properties(label='Alpina', widget='checkbox'),
-            Boolean_using('continental').with_properties(label='Continentala', widget='checkbox'),
-            Boolean_using('stepic').with_properties(label='Stepica', widget='checkbox'),
+            Boolean_using('continent').with_properties(label='Continentala', widget='checkbox'),
+            Boolean_using('steppic').with_properties(label='Stepica', widget='checkbox'),
             Boolean_using('pontic').with_properties(label='Pontica', widget='checkbox'),
             Boolean_using('pannonian').with_properties(label='Panonica', widget='checkbox'),
 
@@ -258,10 +259,10 @@ section_4 = Ordered_dict_of(
           with_properties(label='Clase de habitat', widget='habitat_breakdown'),
 
     String_using('quality').with_properties(widget='textarea', label='Calitate si importanta'),
-    String_using('vulnerability').with_properties(widget='textarea', label='Vulnerabilitate'),
-    String_using('designation').with_properties(widget='textarea', label='Desemnarea sitului (vezi observatiile privind datele cantitative de mai jos)'),
-    String_using('property_type').with_properties(widget='textarea', label='Tip de proprietate'),
-    String_using('documentation').with_properties(widget='textarea', label='Documentatie'),
+    String_using('vulnar').with_properties(widget='textarea', label='Vulnerabilitate'),
+    String_using('design').with_properties(widget='textarea', label='Desemnarea sitului (vezi observatiile privind datele cantitative de mai jos)'),
+    String_using('owner').with_properties(widget='textarea', label='Tip de proprietate'),
+    String_using('docum').with_properties(widget='textarea', label='Documentatie'),
 
     fl.List.named('history').of(
         Ordered_dict_of(
@@ -343,8 +344,8 @@ section_6 = Ordered_dict_of(
         ).using(optional=True).
           with_properties(widget='table', label='Activitati si consecinte in jurul sitului'),
 
-    String_using('responsible').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
-    String_using('plans').with_properties(widget='textarea', label='Planuri de management al sitului'),
+    String_using('manager').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
+    String_using('managpl').with_properties(widget='textarea', label='Planuri de management al sitului'),
 
     ).with_properties(label='6. ACTIVITATILE ANTROPICE SI EFECTELE LOR IN SIT SI IN JURUL ACESTUIA')
 
