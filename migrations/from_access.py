@@ -39,9 +39,9 @@ def load_from_sql():
 def map_fields(biotop):
     flat = {}
 
-    [regcod_row] = biotop['_relations'].pop('regcod')
-    for key in regcod_row:
-        biotop['section2_regcod_%s' % key] = regcod_row[key]
+    for i, regcod_row in enumerate(biotop['_relations'].pop('regcod')):
+        for key in regcod_row:
+            flat['section2_regcod_%d_%s' % (i, key)] = regcod_row[key]
 
     for element in SpaDoc().all_children:
         flat_name = element.flattened_name()
