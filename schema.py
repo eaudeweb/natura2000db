@@ -38,7 +38,7 @@ def valid_lat_nz(element, state):
 
 def valid_type(element, state):
     patt = re.compile(r'^[a-k]$', re.IGNORECASE)
-    if patt.match(element.value):
+    if element.value is not None and patt.match(element.value):
         return True
 
     else:
@@ -47,7 +47,7 @@ def valid_type(element, state):
 
 def valid_date(element, state):
     patt = re.compile(r'^\d{6}$')
-    if patt.match(element.value):
+    if element.value is not None and patt.match(element.value):
         return True
 
     else:
@@ -56,7 +56,7 @@ def valid_date(element, state):
 
 def valid_code(element, state):
     patt = re.compile(r'^\w{9}$')
-    if patt.match(element.value):
+    if element.value is not None and patt.match(element.value):
         return True
 
     else:
@@ -129,6 +129,7 @@ section_1 = Ordered_dict_of(
 
     Date_using('date', optional=False).with_properties(label='Data completarii'),
     Date_using('update', optional=False).with_properties(label='Data actualizarii'),
+    # TODO validator to ensure update >= date
 
     fl.List.named('other_sites').of(
             String_using('other_site').using(validators=[valid_code]).with_properties(label='Coduri ale siturilor Natura 2000')
