@@ -329,29 +329,37 @@ section_5 = Ordered_dict_of(
 
 section_6 = Ordered_dict_of(
 
-    fl.List.named('inside_activities').of(
-        Ordered_dict_of(
+    Ordered_dict_of(
 
-                String_using('code', optional=False).with_properties(label='Cod'),
-                Enum_using('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate', widget='select'),
-                Float_using('percentage').with_properties(label='% din sit'),
-                Enum_using('influence').valued('+', '0', '-').with_properties(label='Influenta', widget='select'),
-            ).named('record'),
-        ).using(optional=True).
-          with_properties(widget='table', label='Activitati si consecinte in interiorul sitului'),
+        fl.List.named('inside_activities').of(
+            Ordered_dict_of(
 
-    fl.List.named('outside_activities').of(
-        Ordered_dict_of(
+                    String_using('code', optional=False).with_properties(label='Cod'),
+                    Enum_using('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate', widget='select'),
+                    Float_using('percentage').with_properties(label='% din sit'),
+                    Enum_using('influence').valued('+', '0', '-').with_properties(label='Influenta', widget='select'),
+                ).named('record'),
+            ).using(optional=True).
+              with_properties(widget='table', label='Activitati si consecinte in interiorul sitului'),
 
-                String_using('code', optional=False).with_properties(label='Cod'),
-                Enum_using('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate', widget='select'),
-                Enum_using('influence').valued('+', '0', '-').with_properties(label='Influenta', widget='select'),
-            ).named('record'),
-        ).using(optional=True).
-          with_properties(widget='table', label='Activitati si consecinte in jurul sitului'),
+        fl.List.named('outside_activities').of(
+            Ordered_dict_of(
 
-    String_using('responsible').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
-    String_using('plans').with_properties(widget='textarea', label='Planuri de management al sitului'),
+                    String_using('code', optional=False).with_properties(label='Cod'),
+                    Enum_using('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate', widget='select'),
+                    Enum_using('influence').valued('+', '0', '-').with_properties(label='Influenta', widget='select'),
+                ).named('record'),
+            ).using(optional=True).
+              with_properties(widget='table', label='Activitati si consecinte in jurul sitului'),
+        ).named('in_jur').
+          with_properties(widget='dict', label="Activitati antropice, consecintele lor generale si suprafata din sit afectata"),
+
+    Ordered_dict_of(
+
+        String_using('responsible').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
+        String_using('plans').with_properties(widget='textarea', label='Planuri de management al sitului'),
+        ).named('management').
+          with_properties(widget='dict', label="Managementul sitului"),
 
     ).with_properties(label='6. ACTIVITATILE ANTROPICE SI EFECTELE LOR IN SIT SI IN JURUL ACESTUIA')
 
