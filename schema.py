@@ -191,7 +191,7 @@ section_2 = Ordered_dict_of(
                 String_using('reg_name').with_properties(label='Numele regiunii'),
                 String_using('cover').with_properties(label='Pondere (%)'),
             ),
-        ).with_properties(label='Regiunea administrativa', widget='dict'),
+        ).with_properties(label='Regiunea administrativa', widget='table'),
 
     Ordered_dict_of(
             Boolean_using('alpine').with_properties(label='Alpina', widget='checkbox'),
