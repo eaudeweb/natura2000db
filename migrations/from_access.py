@@ -30,7 +30,7 @@ def load_from_sql():
             continue
         for row in imap(lower_keys, sw.iter_table(name)):
             row = lower_keys(row)
-            biotop_list[row['sitecode']]['_relations'][name.lower()].append(row)
+            biotop_list[row.pop('sitecode')]['_relations'][name.lower()].append(row)
 
     for biotop in biotop_list.itervalues():
         biotop['_relations'] = dict(biotop['_relations'])
@@ -38,7 +38,7 @@ def load_from_sql():
     return biotop_list
 
 
-skip_relations = set(['actvty', 'amprep', 'bird', 'corine', 'desigc', 'desigr',
+skip_relations = set(['actvty', 'amprep', 'corine', 'desigc', 'desigr',
                       'fishes', 'habit1', 'habit2', 'invert', 'mammal', 'map',
                       'photo', 'plant', 'sitrel', 'spec'])
 
@@ -50,6 +50,28 @@ def map_fields(biotop):
     for i, regcod_row in enumerate(relations.pop('regcod')):
         for key in regcod_row:
             flat['section2_regcod_%d_%s' % (i, key)] = regcod_row[key]
+
+    for i, bird_row in enumerate(relations.pop('bird', [])):
+        def val(name):
+            return bird_row.pop(name, '').strip()
+        flat_row = {
+            'code': val('specnum'),
+            'name': val('specname'),
+            'population_resident': val('resident'),
+            'population_migratory_reproduction': val('breeding'),
+            'population_migratory_wintering': val('winter'),
+            'population_migratory_passage': val('staging'),
+            'sit_evaluation_population': val('population'),
+            'sit_evaluation_conservation': val('conserve'),
+            'sit_evaluation_isolation': val('isolation'),
+            'sit_evaluation_global_eval': val('global'),
+        }
+        for name in flat_row:
+            key = 'section3_species_types_%d_dict_name_%s' % (i, name)
+            flat[key] = flat_row[name]
+        val('annex_ii'); val('tax_code') # TODO make sure skipping these is ok
+        if bird_row:
+            print>>sys.stderr, 'unused fields from "bird" table: %r' % bird_row
 
     for name in skip_relations:
         relations.pop(name, [])
@@ -115,6 +137,7 @@ def verify_data(biotop_list):
         else:
             count['error'] += 1
             print>>sys.stderr, pformat(biotop)
+            print>>sys.stderr, pformat(doc.value)
             print>>sys.stderr, ''
             print_errors(doc)
             print>>sys.stderr, ''
