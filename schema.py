@@ -3,6 +3,9 @@ import flatland as fl
 
 
 def valid_float(element, state):
+    if element.value is None and element.optional:
+        return True
+
     if isinstance(element.value, float):
         return True
 
@@ -11,29 +14,14 @@ def valid_float(element, state):
         return False
 
 def valid_int(element, state):
+    if element.value is None and element.optional:
+        return True
+
     if isinstance(element.value, int):
         return True
 
     else:
-        element.add_error("Value must be numeric")
-        return False
-
-def valid_lon_ew(element, state):
-    patt = re.compile(r'^[ev]$', re.IGNORECASE)
-    if patt.match(element.value):
-        return True
-
-    else:
-        element.add_error("Only characters E or V are allowed.")
-        return False
-
-def valid_lat_nz(element, state):
-    patt = re.compile(r'^[ns]$', re.IGNORECASE)
-    if patt.match(element.value):
-        return True
-
-    else:
-        element.add_error("Only characters N or S are allowed.")
+        element.add_error("Value must be numeric (%r)" % element.optional)
         return False
 
 def valid_type(element, state):
@@ -161,19 +149,10 @@ section_1 = Ordered_dict_of(
 
 section_2 = Ordered_dict_of(
 
-    Ordered_dict_of(
-            fl.String.named('lon_ew').using(validators=[valid_lon_ew]).with_properties(label='V/E'),
-            fl.Integer.named('lon_deg').using(validators=[valid_int]).with_properties(label='Grade'),
-            fl.Integer.named('lon_min').using(validators=[valid_int]).with_properties(label='Minute'),
-            fl.Integer.named('lon_sec').using(validators=[valid_int]).with_properties(label='Secunde'),
-        ).named('longitude').with_properties(label='Longitudine', widget='dict'),
-
-    Ordered_dict_of(
-            fl.String.named('lat_nz').using(validators=[valid_lat_nz]).with_properties(label='N/S'),
-            fl.Integer.named('lat_deg').using(validators=[valid_int]).with_properties(label='Grade'),
-            fl.Integer.named('lat_min').using(validators=[valid_int]).with_properties(label='Minute'),
-            fl.Integer.named('lat_sec').using(validators=[valid_int]).with_properties(label='Secunde'),
-        ).named('latitude').with_properties(label='Latitudine', widget='dict'),
+    fl.Float.named('longitude').using(optional=True).
+                                with_properties(label='Longitudine'),
+    fl.Float.named('latitude').using(optional=True).
+                               with_properties(label='Latitudine'),
 
     Float_using('area').with_properties(label='Suprafata (ha)'),
     Float_using('length').with_properties(label='Lungimea sitului (km)'),
