@@ -40,8 +40,9 @@ def load_from_sql():
     return biotop_list
 
 
-skip_relations = set(['actvty', 'corine', 'desigc', 'desigr',
-                      'photo', 'spec']) # TODO don't skip any
+skip_relations = set(['actvty', 'desigc', 'desigr', 'spec']) # TODO don't skip any
+
+skip_relations.add('photo') # TODO we don't have any actual images
 
 
 info_table_map = {
@@ -155,6 +156,14 @@ def map_fields(biotop):
         flat['section7_map_%d_projection' % i] = val('projection')
         val('details') # TODO we ignore the datum, it's probably ok
         assert not map_row
+
+    for i, corine_row in enumerate(relations.pop('corine', [])):
+        val = lambda(name): corine_row.pop(name)
+        prefix = 'section5_corine_relations_%d_record' % i
+        flat[prefix + '_code'] = val('corine')
+        flat[prefix + '_type'] = val('overlap') # TODO is the mapping right?
+        flat[prefix + '_overlap'] = val('overlap_p')
+        assert not corine_row
 
     for name in skip_relations:
         relations.pop(name, [])
