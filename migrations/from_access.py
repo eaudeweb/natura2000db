@@ -38,12 +38,23 @@ def load_from_sql():
     return biotop_list
 
 
+skip_relations = set(['actvty', 'amprep', 'bird', 'corine', 'desigc', 'desigr',
+                      'fishes', 'habit1', 'habit2', 'invert', 'mammal', 'map',
+                      'photo', 'plant', 'sitrel', 'spec'])
+
+
 def map_fields(biotop):
     flat = {}
 
-    for i, regcod_row in enumerate(biotop['_relations'].pop('regcod')):
+    relations = biotop.pop('_relations')
+    for i, regcod_row in enumerate(relations.pop('regcod')):
         for key in regcod_row:
             flat['section2_regcod_%d_%s' % (i, key)] = regcod_row[key]
+
+    for name in skip_relations:
+        relations.pop(name, [])
+    if relations:
+        print>>sys.stderr, 'unhandled relations: %r' % (relations.keys(),)
 
     for element in SpaDoc().all_children:
         flat_name = element.flattened_name()
