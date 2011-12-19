@@ -38,13 +38,18 @@ def load_from_sql():
     return biotop_list
 
 
-skip_relations = set(['actvty', 'amprep', 'corine', 'desigc', 'desigr',
-                      'fishes', 'habit1', 'habit2', 'invert', 'mammal', 'map',
+skip_relations = set(['actvty', 'corine', 'desigc', 'desigr',
+                      'habit1', 'habit2', 'map',
                       'photo', 'plant', 'sitrel', 'spec']) # TODO don't skip any
 
 
 info_table_map = {
     'bird': 'species_types',
+    #'???': 'migratory_species_types',
+    'mammal': 'mammals_types',
+    'amprep': 'reptiles_types',
+    'fishes': 'fishes_types',
+    'invert': 'invertebrates_types',
 }
 
 
