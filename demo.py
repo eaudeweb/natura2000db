@@ -3,7 +3,7 @@
 
 import flask
 from schema import SpaDoc
-from storage import MongoStorage
+from storage import SolrStorage
 from widgets import install_widgets
 
 
@@ -20,7 +20,7 @@ install_widgets(app.jinja_env)
 
 
 def get_db():
-    return MongoStorage('chm-forms-rio')
+    return SolrStorage()
 
 
 @app.route('/')
@@ -47,7 +47,6 @@ def edit():
         doc = SpaDoc.from_flat(flask.request.form.to_dict())
 
         if doc.validate():
-            print doc.value
             doc_id = db.save_document(doc_id, doc.value)
             flask.flash("Document %r saved" % doc_id)
             return flask.redirect('/')
