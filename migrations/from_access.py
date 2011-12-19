@@ -41,7 +41,7 @@ def load_from_sql():
 
 
 skip_relations = set(['actvty', 'corine', 'desigc', 'desigr', 'map',
-                      'photo', 'sitrel', 'spec']) # TODO don't skip any
+                      'photo', 'spec']) # TODO don't skip any
 
 
 info_table_map = {
@@ -142,6 +142,11 @@ def map_fields(biotop):
         key = 'section4_site_characteristics_habitat_classes_' + name
         flat[key] = habit2_row.pop('cover')
         assert not habit2_row
+
+    for i, sitrel_row in enumerate(relations.pop('sitrel', [])):
+        flat['section1_other_sites_%d_other_site' % i] = sitrel_row.pop('othersite')
+        sitrel_row.pop('othertype') # TODO make sure skipping 'othertype' is ok
+        assert not sitrel_row
 
     for name in skip_relations:
         relations.pop(name, [])
