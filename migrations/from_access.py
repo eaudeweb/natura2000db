@@ -40,7 +40,33 @@ def load_from_sql():
 
 skip_relations = set(['actvty', 'amprep', 'corine', 'desigc', 'desigr',
                       'fishes', 'habit1', 'habit2', 'invert', 'mammal', 'map',
-                      'photo', 'plant', 'sitrel', 'spec'])
+                      'photo', 'plant', 'sitrel', 'spec']) # TODO don't skip any
+
+
+info_table_map = {
+    'bird': 'species_types',
+}
+
+
+def map_info_table(row):
+    def val(name):
+        return row.pop(name, '').strip()
+    flat_row = {
+        'code': val('specnum'),
+        'name': val('specname'),
+        'population_resident': val('resident'),
+        'population_migratory_reproduction': val('breeding'),
+        'population_migratory_wintering': val('winter'),
+        'population_migratory_passage': val('staging'),
+        'sit_evaluation_population': val('population'),
+        'sit_evaluation_conservation': val('conserve'),
+        'sit_evaluation_isolation': val('isolation'),
+        'sit_evaluation_global_eval': val('global'),
+    }
+    val('annex_ii'); val('tax_code') # TODO make sure skipping these is ok
+    if row:
+        print>>sys.stderr, 'unused fields from info_table: %r' % row
+    return flat_row
 
 
 def map_fields(biotop):
@@ -51,27 +77,12 @@ def map_fields(biotop):
         for key in regcod_row:
             flat['section2_regcod_%d_%s' % (i, key)] = regcod_row[key]
 
-    for i, bird_row in enumerate(relations.pop('bird', [])):
-        def val(name):
-            return bird_row.pop(name, '').strip()
-        flat_row = {
-            'code': val('specnum'),
-            'name': val('specname'),
-            'population_resident': val('resident'),
-            'population_migratory_reproduction': val('breeding'),
-            'population_migratory_wintering': val('winter'),
-            'population_migratory_passage': val('staging'),
-            'sit_evaluation_population': val('population'),
-            'sit_evaluation_conservation': val('conserve'),
-            'sit_evaluation_isolation': val('isolation'),
-            'sit_evaluation_global_eval': val('global'),
-        }
-        for name in flat_row:
-            key = 'section3_species_types_%d_dict_name_%s' % (i, name)
-            flat[key] = flat_row[name]
-        val('annex_ii'); val('tax_code') # TODO make sure skipping these is ok
-        if bird_row:
-            print>>sys.stderr, 'unused fields from "bird" table: %r' % bird_row
+    for rel_name, record_name in info_table_map.items():
+        for i, rel_row in enumerate(relations.pop(rel_name, [])):
+            flat_row = map_info_table(rel_row)
+            for name in flat_row:
+                key = 'section3_%s_%d_dict_name_%s' % (record_name, i, name)
+                flat[key] = flat_row[name]
 
     for name in skip_relations:
         relations.pop(name, [])
