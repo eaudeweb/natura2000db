@@ -40,7 +40,7 @@ def load_from_sql():
     return biotop_list
 
 
-skip_relations = set(['actvty', 'corine', 'desigc', 'desigr', 'map',
+skip_relations = set(['actvty', 'corine', 'desigc', 'desigr',
                       'photo', 'spec']) # TODO don't skip any
 
 
@@ -147,6 +147,14 @@ def map_fields(biotop):
         flat['section1_other_sites_%d_other_site' % i] = sitrel_row.pop('othersite')
         sitrel_row.pop('othertype') # TODO make sure skipping 'othertype' is ok
         assert not sitrel_row
+
+    for i, map_row in enumerate(relations.pop('map', [])):
+        val = lambda(name): map_row.pop(name)
+        flat['section7_map_%d_number' % i] = val('map_no')
+        flat['section7_map_%d_scale' % i] = val('scale')
+        flat['section7_map_%d_projection' % i] = val('projection')
+        val('details') # TODO we ignore the datum, it's probably ok
+        assert not map_row
 
     for name in skip_relations:
         relations.pop(name, [])

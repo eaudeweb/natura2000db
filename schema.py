@@ -392,11 +392,15 @@ section_6 = Ordered_dict_of(
 
 section_7 = Ordered_dict_of(
 
-    Ordered_dict_of(
-            String_using('number').with_properties(label='Numar national harta'),
-            String_using('scale').with_properties(label='Scara'),
-            String_using('projection').with_properties(label='Proiectie'),
-        ).named('map').with_properties(widget='dict', label='Harta fizica'),
+    fl.List.named('map').of(
+
+        Ordered_dict_of(
+                String_using('number').with_properties(label='Numar national harta'),
+                String_using('scale').with_properties(label='Scara'),
+                String_using('projection').with_properties(label='Proiectie'),
+            ).with_properties(widget='dict'),
+
+        ).with_properties(widget='list', label='Harta fizica'),
 
     String_using('site_limits').with_properties(widget='textarea', label='Specificati daca limitele sitului sunt disponibile in format digital'),
 
