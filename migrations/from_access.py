@@ -123,10 +123,19 @@ def map_fields(biotop):
     if relations:
         print>>sys.stderr, 'unhandled relations: %r' % (relations.keys(),)
 
+    assert biotop.pop('lon_ew') == 'E'
+    assert biotop.pop('lat_nz') == 'N'
+    val = lambda(name): biotop.pop(name)
+    dms_val = lambda(n): val(n+'_deg') + val(n+'_min')/60. + val(n+'_sec')/3600.
+    biotop['longitude'] = dms_val('lon')
+    biotop['latitude'] = dms_val('lat')
+
     for element in SpaDoc().all_children:
         flat_name = element.flattened_name()
         if element.name in biotop:
             flat[flat_name] = biotop.pop(element.name)
+
+    # TODO make sure 'biotop' is empty
 
     return flat
 
