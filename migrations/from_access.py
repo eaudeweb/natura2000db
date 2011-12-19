@@ -1,4 +1,7 @@
-from pprint import pprint
+import sys
+from pprint import pformat
+from collections import defaultdict
+import re
 from schema import SpaDoc
 
 
@@ -14,7 +17,6 @@ def lower_keys(dic):
 
 def load_from_sql():
     from itertools import imap
-    from collections import defaultdict
     from sqlwrapper import open_db
     sw = open_db('rio')
 
@@ -54,33 +56,64 @@ def map_fields(biotop):
 def print_errors(root_element):
     for element in root_element.all_children:
         if element.errors:
-            print element.flattened_name('/'), element.errors
+            print>>sys.stderr, element.flattened_name('/'), element.errors
+
+
+def known_unused_field(name):
+    return any(re.match(p, name) for p in [
+        r'^section2_regcod_\d+_sitecode$',
+    ])
+
+def known_extra_field(name):
+    return any(re.match(p, name) for p in [
+    ])
 
 
 def verify_data(biotop_list):
+    count = defaultdict(int)
     for biotop in biotop_list.itervalues():
         flat = map_fields(biotop)
         doc = SpaDoc.from_flat(flat)
+
+        def get_value(element):
+            if element.optional and not element.value:
+                return None
+            else:
+                return element.u
+
         if doc.validate():
             flat1 = {k: v for k, v in flat.iteritems() if v}
-            flat2 = {k: v for k, v in doc.flatten() if v}
-            if flat.keys() != flat2.keys():
-                print 'unused: %s, extra: %s' % (
-                    {k: flat[k] for k in set(flat1) - set(flat2)},
+            for name in flat1.keys():
+                if known_unused_field(name):
+                    del flat1[name]
+            flat2 = {k: v for k, v in doc.flatten(value=get_value) if v}
+            for name in flat2.keys():
+                if known_extra_field(name):
+                    del flat2[name]
+            if set(flat1.keys()) != set(flat2.keys()):
+                print>>sys.stderr, 'unused: %s, extra: %s' % (
+                    {k: flat1[k] for k in set(flat1) - set(flat2)},
                     {k: flat2[k] for k in set(flat2) - set(flat1)},
                 )
+                count['delta'] += 1
             else:
-                print 'ok'
+                count['ok'] += 1
+
+            yield doc.value
 
         else:
-            pprint(biotop)
-            print
+            count['error'] += 1
+            print>>sys.stderr, pformat(biotop)
+            print>>sys.stderr, ''
             print_errors(doc)
-            print
+            print>>sys.stderr, ''
             break
+
+    print>>sys.stderr, dict(count)
 
 
 if __name__ == '__main__':
     import json
     biotop_list = load_from_sql()
-    verify_data(biotop_list)
+    docs = list(verify_data(biotop_list))
+    print json.dumps(docs, indent=2)
