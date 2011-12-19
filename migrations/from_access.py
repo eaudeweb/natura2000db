@@ -11,8 +11,8 @@ table_names = ['CheckForm', 'QueryCombine', 'RegCod', 'actvty', 'amprep',
     'resp', 'sitrel', 'spec']
 
 
-def lower_keys(dic):
-    return {k.lower(): dic[k] for k in dic if dic[k] is not None}
+def lower_keys(dic, prune=False):
+    return {k.lower(): dic[k] for k in dic if (not prune or dic[k] is not None)}
 
 
 def load_from_sql():
@@ -21,7 +21,7 @@ def load_from_sql():
     sw = open_db('rio')
 
     biotop_list = {}
-    for row in imap(lower_keys, sw.iter_table('biotop')):
+    for row in (lower_keys(r, True) for r in sw.iter_table('biotop')):
         row['_relations'] = defaultdict(list)
         biotop_list[row['sitecode']] = row
 
@@ -29,7 +29,6 @@ def load_from_sql():
         if name == 'biotop':
             continue
         for row in imap(lower_keys, sw.iter_table(name)):
-            row = lower_keys(row)
             sitecode = row.pop('sitecode')
             if sitecode == 'ROSCI0406' and name == 'habit1':
                 continue # TODO problem in data, coverage values are NULL
@@ -58,7 +57,10 @@ info_table_map = {
 
 def map_info_table(row):
     def val(name):
-        return row.pop(name, '').strip()
+        v = row.pop(name)
+        if isinstance(v, basestring):
+            v = v.strip()
+        return v
     flat_row = {
         'code': val('specnum'),
         'name': val('specname'),
@@ -93,7 +95,7 @@ def map_fields(biotop):
                 flat[key] = flat_row[name]
 
     for i, habit1_row in enumerate(relations.pop('habit1', [])):
-        val = lambda(name): habit1_row.pop(name, '')
+        val = lambda(name): habit1_row.pop(name)
         prefix = 'section3_habitat_types_%d_habitat_type' % i
         flat[prefix + '_code'] = val('hbcdax')
         flat[prefix + '_percentage'] = val('cover')
