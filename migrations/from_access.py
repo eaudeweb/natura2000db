@@ -42,7 +42,7 @@ def load_from_sql():
 
 skip_relations = set(['actvty', 'corine', 'desigc', 'desigr',
                       'habit2', 'map',
-                      'photo', 'plant', 'sitrel', 'spec']) # TODO don't skip any
+                      'photo', 'sitrel', 'spec']) # TODO don't skip any
 
 
 info_table_map = {
@@ -93,6 +93,19 @@ def map_fields(biotop):
             for name in flat_row:
                 key = 'section3_%s_%d_dict_name_%s' % (record_name, i, name)
                 flat[key] = flat_row[name]
+
+    for i, plant_row in enumerate(relations.pop('plant', [])):
+        val = lambda(name): plant_row.pop(name)
+        prefix = 'section3_plants_types_%d_plant_types' % i
+        flat[prefix + '_code'] = val('specnum')
+        flat[prefix + '_name'] = val('specname')
+        flat[prefix + '_population'] = val('resident')
+        flat[prefix + '_sit_evaluation_population'] = val('population')
+        flat[prefix + '_sit_evaluation_conservation'] = val('isolation')
+        flat[prefix + '_sit_evaluation_isolation'] = val('conserve')
+        flat[prefix + '_sit_evaluation_global_eval'] = val('global')
+        val('annex_ii'); val('tax_code') # TODO make sure skipping these is ok
+        assert not plant_row
 
     for i, habit1_row in enumerate(relations.pop('habit1', [])):
         val = lambda(name): habit1_row.pop(name)
