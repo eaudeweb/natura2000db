@@ -30,7 +30,10 @@ def load_from_sql():
             continue
         for row in imap(lower_keys, sw.iter_table(name)):
             row = lower_keys(row)
-            biotop_list[row.pop('sitecode')]['_relations'][name.lower()].append(row)
+            sitecode = row.pop('sitecode')
+            if sitecode == 'ROSCI0406' and name == 'habit1':
+                continue # TODO problem in data, coverage values are NULL
+            biotop_list[sitecode]['_relations'][name.lower()].append(row)
 
     for biotop in biotop_list.itervalues():
         biotop['_relations'] = dict(biotop['_relations'])
@@ -39,7 +42,7 @@ def load_from_sql():
 
 
 skip_relations = set(['actvty', 'corine', 'desigc', 'desigr',
-                      'habit1', 'habit2', 'map',
+                      'habit2', 'map',
                       'photo', 'plant', 'sitrel', 'spec']) # TODO don't skip any
 
 
@@ -88,6 +91,17 @@ def map_fields(biotop):
             for name in flat_row:
                 key = 'section3_%s_%d_dict_name_%s' % (record_name, i, name)
                 flat[key] = flat_row[name]
+
+    for i, habit1_row in enumerate(relations.pop('habit1', [])):
+        val = lambda(name): habit1_row.pop(name, '')
+        prefix = 'section3_habitat_types_%d_habitat_type' % i
+        flat[prefix + '_code'] = val('hbcdax')
+        flat[prefix + '_percentage'] = val('cover')
+        flat[prefix + '_repres'] = val('represent')
+        flat[prefix + '_relativ_area'] = val('rel_surf')
+        flat[prefix + '_conservation_status'] = val('conserve')
+        flat[prefix + '_global_evaluation'] = val('global')
+        assert not habit1_row
 
     for name in skip_relations:
         relations.pop(name, [])
