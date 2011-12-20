@@ -86,12 +86,12 @@ class SolrStorage(object):
     orig_field_name = 'orig_s'
     solr_base_url = 'http://localhost:8983/solr/'
 
-    def _solr_doc(data):
+    def _solr_doc(self, data):
         full_text = (
-            data['section1']['site_name'] +
-            data['section4']['quality'] +
-            data['section4']['vulnar'] +
-            data['section4']['docum'])
+            data['section1']['site_name'] or '' +
+            data['section4']['quality'] or '' +
+            data['section4']['vulnar'] or '' +
+            data['section4']['docum'] or '')
 
         return {
             'id': data['section1']['sitecode'],
@@ -102,17 +102,19 @@ class SolrStorage(object):
         }
 
     def save_document(self, doc_id, data):
+        return save_document_batch([data])[0]
 
+    def save_document_batch(self, batch):
         url = self.solr_base_url + 'update/json?commit=true'
         request = urllib2.Request(url)
         request.add_header('Content-Type', 'application/json')
-        request.add_data(json.dumps([self._solr_doc(data)]))
+        request.add_data(json.dumps([self._solr_doc(doc) for doc in batch]))
 
         response = urllib2.urlopen(request)
         response.read()
         response.close()
 
-        return data['section1']['sitecode']
+        return [doc['section1']['sitecode'] for doc in batch]
 
     def load_document(self, doc_id):
         url = self.solr_base_url + 'select?q=id:%s&wt=json' % doc_id
@@ -129,8 +131,10 @@ class SolrStorage(object):
         return sorted([d['id'] for d in results['response']['docs']])
 
 
-def get_db():
-    config = flask.current_app.config
+def get_db(app=None):
+    if app is None:
+        app = flask.current_app
+    config = app.config
     engine_name = config['STORAGE_ENGINE']
 
     if engine_name == 'solr':

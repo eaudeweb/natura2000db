@@ -80,6 +80,32 @@ def accessdb_mjson(args):
         sys.stdout.write('\n')
 
 
+def import_mjson(args):
+
+    def batched(iterator, count=10):
+        batch = []
+        for value in iterator:
+            batch.append(value)
+            if len(batch) >= count:
+                yield batch
+                batch = []
+        if batch:
+            yield batch
+
+    def read_json_lines(stream):
+        for line in stream:
+            yield flask.json.loads(line)
+
+    db = get_db(create_app())
+
+    for batch in batched(read_json_lines(sys.stdin)):
+        db.save_document_batch(batch)
+        sys.stdout.write('.')
+        sys.stdout.flush()
+
+    print ' done'
+
+
 def runserver(args):
     from revproxy import ReverseProxied
     app = create_app()
@@ -98,6 +124,9 @@ def create_argument_parser():
     parser_accessdb_mjson = subparsers.add_parser('accessdb_mjson')
     parser_accessdb_mjson.set_defaults(func=accessdb_mjson)
     parser_accessdb_mjson.add_argument('-i', '--indent', action='store_true')
+
+    parser_import_mjson = subparsers.add_parser('import_mjson')
+    parser_import_mjson.set_defaults(func=import_mjson)
 
     return parser
 
