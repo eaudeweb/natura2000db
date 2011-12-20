@@ -71,8 +71,24 @@ def create_app():
     return app
 
 
-if __name__ == '__main__':
+def runserver(args):
     from revproxy import ReverseProxied
     app = create_app()
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     app.run(debug=True)
+
+
+def create_argument_parser():
+    import argparse
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
+
+    parser_runserver = subparsers.add_parser('runserver')
+    parser_runserver.set_defaults(func=runserver)
+
+    return parser
+
+
+if __name__ == '__main__':
+    args = create_argument_parser().parse_args()
+    args.func(args)
