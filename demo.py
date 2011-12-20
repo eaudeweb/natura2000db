@@ -7,21 +7,16 @@ from storage import get_db
 from widgets import install_widgets
 
 
-app = flask.Flask(__name__)
-app.config.from_pyfile('default_config.py')
-
-_my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
-app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
-install_widgets(app.jinja_env)
+webpages = flask.Blueprint('webpages', __name__)
 
 
-@app.route('/')
+@webpages.route('/')
 def index():
     db = get_db()
     return flask.render_template('index.html', doc_id_list=db.document_ids())
 
 
-@app.route('/view')
+@webpages.route('/view')
 def view():
     doc_id = flask.request.args.get('doc_id')
     db = get_db()
@@ -29,8 +24,8 @@ def view():
     return flask.render_template('view.html', doc=doc)
 
 
-@app.route('/new', methods=['GET', 'POST'])
-@app.route('/edit', methods=['GET', 'POST'])
+@webpages.route('/new', methods=['GET', 'POST'])
+@webpages.route('/edit', methods=['GET', 'POST'])
 def edit():
     doc_id = flask.request.args.get('doc_id', None)
     db = get_db()
@@ -55,13 +50,29 @@ def edit():
     return flask.render_template('edit.html', doc=doc)
 
 
-@app.route('/search')
+@webpages.route('/search')
 def search():
     search_form = schema.Search(flask.request.args.to_dict())
     return flask.render_template('search.html', search_form=search_form)
 
 
+def create_app():
+    app = flask.Flask(__name__)
+
+    app.register_blueprint(webpages)
+
+    _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
+    app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
+    install_widgets(app.jinja_env)
+
+    app.config.from_pyfile('default_config.py')
+    app.config.from_envvar('APP_SETTINGS')
+
+    return app
+
+
 if __name__ == '__main__':
     from revproxy import ReverseProxied
+    app = create_app()
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     app.run(debug=True)

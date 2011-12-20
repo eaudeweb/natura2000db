@@ -1,14 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-[<a href="{{ url_for('edit') }}">new</a>]
-[<a href="{{ url_for('search') }}">search</a>]
+[<a href="{{ url_for('webpages.edit') }}">new</a>]
+[<a href="{{ url_for('webpages.search') }}">search</a>]
 <ul>
 {% for doc_id in doc_id_list %}
   <li>
     {{ doc_id }}
-    [<a href="{{ url_for('view', doc_id=doc_id) }}">view</a>]
-    [<a href="{{ url_for('edit', doc_id=doc_id) }}">edit</a>]
+    [<a href="{{ url_for('webpages.view', doc_id=doc_id) }}">view</a>]
+    [<a href="{{ url_for('webpages.edit', doc_id=doc_id) }}">edit</a>]
   </li>
 {% endfor %}
 </ul>
