@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 import flask
-from schema import SpaDoc
+import schema
 from storage import get_db
 from widgets import install_widgets
 
@@ -30,7 +30,7 @@ def index():
 def view():
     doc_id = flask.request.args.get('doc_id')
     db = get_db()
-    doc = SpaDoc(db.load_document(doc_id))
+    doc = schema.SpaDoc(db.load_document(doc_id))
     return flask.render_template('view.html', doc=doc)
 
 
@@ -41,7 +41,7 @@ def edit():
     db = get_db()
 
     if flask.request.method == 'POST':
-        doc = SpaDoc.from_flat(flask.request.form.to_dict())
+        doc = schema.SpaDoc.from_flat(flask.request.form.to_dict())
 
         if doc.validate():
             doc_id = db.save_document(doc_id, doc.value)
@@ -53,9 +53,9 @@ def edit():
 
     else:
         if doc_id is None:
-            doc = SpaDoc()
+            doc = schema.SpaDoc()
         else:
-            doc = SpaDoc(db.load_document(doc_id))
+            doc = schema.SpaDoc(db.load_document(doc_id))
 
     return flask.render_template('edit.html', doc=doc)
 
