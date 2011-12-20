@@ -3,6 +3,9 @@ import flatland as fl
 
 
 def valid_float(element, state):
+    if element.value is None and element.optional:
+        return True
+
     if isinstance(element.value, float):
         return True
 
@@ -11,29 +14,14 @@ def valid_float(element, state):
         return False
 
 def valid_int(element, state):
+    if element.value is None and element.optional:
+        return True
+
     if isinstance(element.value, int):
         return True
 
     else:
-        element.add_error("Value must be numeric")
-        return False
-
-def valid_lon_ew(element, state):
-    patt = re.compile(r'^[ev]$', re.IGNORECASE)
-    if patt.match(element.value):
-        return True
-
-    else:
-        element.add_error("Only characters E or V are allowed.")
-        return False
-
-def valid_lat_nz(element, state):
-    patt = re.compile(r'^[ns]$', re.IGNORECASE)
-    if patt.match(element.value):
-        return True
-
-    else:
-        element.add_error("Only characters N or S are allowed.")
+        element.add_error("Value must be numeric (%r)" % element.optional)
         return False
 
 def valid_type(element, state):
@@ -161,19 +149,10 @@ section_1 = Ordered_dict_of(
 
 section_2 = Ordered_dict_of(
 
-    Ordered_dict_of(
-            fl.String.named('lon_ew').using(validators=[valid_lon_ew]).with_properties(label='V/E'),
-            fl.Integer.named('lon_deg').using(validators=[valid_int]).with_properties(label='Grade'),
-            fl.Integer.named('lon_min').using(validators=[valid_int]).with_properties(label='Minute'),
-            fl.Integer.named('lon_sec').using(validators=[valid_int]).with_properties(label='Secunde'),
-        ).named('longitude').with_properties(label='Longitudine', widget='dict'),
-
-    Ordered_dict_of(
-            fl.String.named('lat_nz').using(validators=[valid_lat_nz]).with_properties(label='N/S'),
-            fl.Integer.named('lat_deg').using(validators=[valid_int]).with_properties(label='Grade'),
-            fl.Integer.named('lat_min').using(validators=[valid_int]).with_properties(label='Minute'),
-            fl.Integer.named('lat_sec').using(validators=[valid_int]).with_properties(label='Secunde'),
-        ).named('latitude').with_properties(label='Latitudine', widget='dict'),
+    fl.Float.named('longitude').using(optional=True).
+                                with_properties(label='Longitudine'),
+    fl.Float.named('latitude').using(optional=True).
+                               with_properties(label='Latitudine'),
 
     Float_using('area').with_properties(label='Suprafata (ha)'),
     Float_using('length').with_properties(label='Lungimea sitului (km)'),
@@ -280,29 +259,30 @@ section_4 = Ordered_dict_of(
 
         Ordered_dict_of(
 
-                Float_using('areas').with_properties(label='Arii marine, privaluri'),
-                Float_using('rivers').with_properties(label='Rauri (fluvii) afectate de maree, estuare, terase mlastinoase sau nisipoase, lagune(inclusiv bazinele de colectare a sarii)'),
-                Float_using('salt surfaces').with_properties(label='Suprafete saraturate (mlastini, pajisti, stepe)'),
-                Float_using('beach').with_properties(label='Dune de coasta, plaje cu nisip, machair'),
-                Float_using('litoral').with_properties(label='Litoral cu prundis, faleze, insulite'),
-                Float_using('freshwater').with_properties(label='Ape dulci continentale (statatoare, curgatoare)'),
-                Float_using('swamps').with_properties(label='Mlastini (vegetatie de centura), smarcuri, turbarii'),
-                Float_using('maquis').with_properties(label='Lande, tufarisuri, maquis si garigue, phrygana'),
-                Float_using('steppes').with_properties(label='Pajisti uscate, stepe'),
-                Float_using('prairies').with_properties(label='Pajisti seminaturale umede, preerii mezofile'),
-                Float_using('alpine').with_properties(label='Pajisti alpine si subalpine'),
-                Float_using('crops').with_properties(label='Culturi cerealiere extensive (inclusiv culturile de rotatie cu dezmiristire)'),
-                Float_using('rice').with_properties(label='Orezarii'),
-                Float_using('meadows').with_properties(label='Pajisti ameliorate'),
-                Float_using('other_arable').with_properties(label='Alte terenuri arabile'),
-                Float_using('deciduous_forests').with_properties(label='Paduri caducifoliate'),
-                Float_using('coniferous_forests').with_properties(label='Paduri de conifere'),
-                Float_using('unconiferous_forests').with_properties(label='Paduri semperviriscente de nerasinoase'),
-                Float_using('mixt_forests').with_properties(label='Paduri mixte'),
-                Float_using('monoculture_forests').with_properties(label='Paduri de monocultura (plopi sau arbori exotici)'),
-                Float_using('plantations').with_properties(label='Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)'),
-                Float_using('rocks').with_properties(label='Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice'),
-                Float_using('other_land').with_properties(label='Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)'),
+                Float_using('N01').with_properties(label='Arii marine, privaluri'),
+                Float_using('N02').with_properties(label='Rauri (fluvii) afectate de maree, estuare, terase mlastinoase sau nisipoase, lagune(inclusiv bazinele de colectare a sarii)'),
+                Float_using('N03').with_properties(label='Suprafete saraturate (mlastini, pajisti, stepe)'),
+                Float_using('N04').with_properties(label='Dune de coasta, plaje cu nisip, machair'),
+                Float_using('N05').with_properties(label='Litoral cu prundis, faleze, insulite'),
+                Float_using('N06').with_properties(label='Ape dulci continentale (statatoare, curgatoare)'),
+                Float_using('N07').with_properties(label='Mlastini (vegetatie de centura), smarcuri, turbarii'),
+                Float_using('N08').with_properties(label='Lande, tufarisuri, maquis si garigue, phrygana'),
+                Float_using('N09').with_properties(label='Pajisti uscate, stepe'),
+                Float_using('N10').with_properties(label='Pajisti seminaturale umede, preerii mezofile'),
+                Float_using('N11').with_properties(label='Pajisti alpine si subalpine'),
+                Float_using('N12').with_properties(label='Culturi cerealiere extensive (inclusiv culturile de rotatie cu dezmiristire)'),
+                Float_using('N13').with_properties(label='Orezarii'),
+                Float_using('N14').with_properties(label='Pajisti ameliorate'),
+                Float_using('N15').with_properties(label='Alte terenuri arabile'),
+                Float_using('N16').with_properties(label='Paduri caducifoliate'),
+                Float_using('N17').with_properties(label='Paduri de conifere'),
+                Float_using('N18').with_properties(label='Paduri semperviriscente de nerasinoase'),
+                Float_using('N19').with_properties(label='Paduri mixte'),
+                Float_using('N20').with_properties(label='Paduri de monocultura (plopi sau arbori exotici)'),
+                Float_using('N21').with_properties(label='Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)'),
+                Float_using('N22').with_properties(label='Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice'),
+                Float_using('N23').with_properties(label='Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)'),
+                Float_using('N26').with_properties(label='Habitate de paduri (paduri in tranzitie)'),
             ).named('habitat_classes').
               using(optional=True).
               with_properties(label='Clase de habitat', widget='habitat_breakdown'),
@@ -413,11 +393,15 @@ section_6 = Ordered_dict_of(
 
 section_7 = Ordered_dict_of(
 
-    Ordered_dict_of(
-            String_using('number').with_properties(label='Numar national harta'),
-            String_using('scale').with_properties(label='Scara'),
-            String_using('projection').with_properties(label='Proiectie'),
-        ).named('map').with_properties(widget='dict', label='Harta fizica'),
+    fl.List.named('map').of(
+
+        Ordered_dict_of(
+                String_using('number').with_properties(label='Numar national harta'),
+                String_using('scale').with_properties(label='Scara'),
+                String_using('projection').with_properties(label='Proiectie'),
+            ).with_properties(widget='dict'),
+
+        ).with_properties(widget='list', label='Harta fizica'),
 
     String_using('site_limits').with_properties(widget='textarea', label='Specificati daca limitele sitului sunt disponibile in format digital'),
 
