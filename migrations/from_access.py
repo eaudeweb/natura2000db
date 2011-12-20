@@ -177,8 +177,8 @@ def map_fields(biotop):
         prefix = 'section5_national_relations_%d_record' % i
         flat[prefix + '_type'] = val('overlap') # TODO is the mapping right?
         flat[prefix + '_name'] = val('des_site')
+        flat[prefix + '_sit_type'] = val('desicode')
         flat[prefix + '_overlap'] = val('overlap_p')
-        val('desicode') # TODO ok to ignore?
         assert not desigr_row
 
     activity_in = activity_out = 0
