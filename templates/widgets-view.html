@@ -66,9 +66,13 @@
       {{ _table_td(field[child_name]) }}
     {% endfor %}
   {% else %}
-    {% do form.begin(skip_labels=True) -%}
-    <td>{{ form.widget(field) }}</td>
-    {%- do form.end() %}
+    {% if form.is_hidden(field) %}
+      {{ hidden(field) }}
+    {% else %}
+      {% do form.begin(skip_labels=True) -%}
+      <td>{{ form.widget(field) }}</td>
+      {%- do form.end() %}
+    {% endif %}
   {% endif %}
 {% endmacro %}
 
@@ -77,11 +81,9 @@
   <table border=1>
     <caption>{{field.properties.label}}</caption>
     <thead>
-      <tr>
-        {% do field.append('') %}
-        {{ _table_th(field[0]) }}
-        {% do field.pop() %}
-      </tr>
+      {% do field.append('') %}
+      {{ form.table_nested_th(field[0]) }}
+      {% do field.pop() %}
     </thead>
     <tbody>
       {% for child in field %}
