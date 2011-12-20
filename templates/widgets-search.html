@@ -1,0 +1,12 @@
+{% macro _label(field) %}
+  {% if not form['skip_labels'] %}
+    {{ form.label(field, contents=field.properties.label) }}
+  {% endif %}
+{% endmacro %}
+
+{% macro input(field) %}
+  {%- do form.begin(auto_domid=true, auto_for=true) %}
+  {{ _label(field) }}
+  {{ form.input(field, class="field-%s" % field.name) }}
+  {%- do form.end() %}
+{% endmacro %}

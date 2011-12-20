@@ -2,6 +2,7 @@
 
 {% block content %}
 [<a href="{{ url_for('edit') }}">new</a>]
+[<a href="{{ url_for('search') }}">search</a>]
 <ul>
 {% for doc_id in doc_id_list %}
   <li>

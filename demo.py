@@ -60,6 +60,12 @@ def edit():
     return flask.render_template('edit.html', doc=doc)
 
 
+@app.route('/search')
+def search():
+    search_form = schema.Search(flask.request.args.to_dict())
+    return flask.render_template('search.html', search_form=search_form)
+
+
 if __name__ == '__main__':
     from revproxy import ReverseProxied
     app.wsgi_app = ReverseProxied(app.wsgi_app)
