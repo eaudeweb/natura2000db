@@ -52,7 +52,7 @@ info_table_map = {
     'invert': 'invertebrates_types',
 }
 
-habcode_map = {
+habcode_map = { # TODO
     'N01': 'alpine',
     'N02': 'alpine',
     'N04': 'alpine',
@@ -228,15 +228,19 @@ def map_fields(biotop):
     assert biotop.pop('lat_nz') == 'N'
     val = lambda(name): biotop.pop(name)
     dms_val = lambda(n): val(n+'_deg') + val(n+'_min')/60. + val(n+'_sec')/3600.
-    biotop['longitude'] = dms_val('lon')
-    biotop['latitude'] = dms_val('lat')
+    flat['section2_longitude'] = dms_val('lon')
+    flat['section2_latitude'] = dms_val('lat')
+
+    flat['section4_site_characteristics_other'] = val('charact')
+
+    val('mapsincl'); val('photos') # TODO these seem to be counts of relations
 
     for element in SpaDoc().all_children:
         flat_name = element.flattened_name()
         if element.name in biotop:
             flat[flat_name] = biotop.pop(element.name)
 
-    # TODO make sure 'biotop' is empty
+    assert not biotop, repr(biotop)
 
     return flat
 
