@@ -2,7 +2,8 @@ import os.path
 import json
 import re
 import logging
-import pymongo
+import urllib2
+import flask
 from bson.objectid import ObjectId
 
 log = logging.getLogger(__name__)
@@ -72,3 +73,71 @@ class MongoStorage(object):
         doc_id_list = [doc['_id'] for doc in self.db['spadoc'].find()]
         doc_id_list.sort()
         return doc_id_list
+
+
+try:
+    import pymongo
+except ImportError:
+    MongoStorage = None
+
+
+class SolrStorage(object):
+
+    orig_field_name = 'orig_s'
+    solr_base_url = 'http://localhost:8983/solr/'
+
+    def _solr_doc(data):
+        full_text = (
+            data['section1']['site_name'] +
+            data['section4']['quality'] +
+            data['section4']['vulnar'] +
+            data['section4']['docum'])
+
+        return {
+            'id': data['section1']['sitecode'],
+            'title': data['section1']['site_name'],
+            'type_txt': data['section1']['type'],
+            'text': full_text,
+            self.orig_field_name: json.dumps(data),
+        }
+
+    def save_document(self, doc_id, data):
+
+        url = self.solr_base_url + 'update/json?commit=true'
+        request = urllib2.Request(url)
+        request.add_header('Content-Type', 'application/json')
+        request.add_data(json.dumps([self._solr_doc(data)]))
+
+        response = urllib2.urlopen(request)
+        response.read()
+        response.close()
+
+        return data['section1']['sitecode']
+
+    def load_document(self, doc_id):
+        url = self.solr_base_url + 'select?q=id:%s&wt=json' % doc_id
+        response = urllib2.urlopen(url)
+        results = json.load(response)
+        response.close()
+        return json.loads(results['response']['docs'][0][self.orig_field_name])
+
+    def document_ids(self):
+        url = self.solr_base_url + 'select?q=*&wt=json'
+        response = urllib2.urlopen(url)
+        results = json.load(response)
+        response.close()
+        return sorted([d['id'] for d in results['response']['docs']])
+
+
+def get_db():
+    config = flask.current_app.config
+    engine_name = config['STORAGE_ENGINE']
+
+    if engine_name == 'solr':
+        return SolrStorage()
+
+    elif engine_name == 'filesystem':
+        return FsStorage(config['STORAGE_FS_PATH'])
+
+    else:
+        raise ValueError('Unknown storage engine %r' % engine_name)

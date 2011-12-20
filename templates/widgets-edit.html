@@ -87,16 +87,6 @@
   </div>
 {% endmacro %}
 
-{% macro _table_th(field, prefix='') %}
-  {% if field.properties.order %}
-    {% for child_name in field.properties.order %}
-      {{ _table_th(field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
-    {% endfor %}
-  {% else %}
-    <td>{{ prefix[:-3] }}</td>
-  {% endif %}
-{% endmacro %}
-
 {% macro _table_td(field) %}
   {% if field.properties.order %}
     {% for child_name in field.properties.order %}
@@ -116,9 +106,7 @@
     <thead>
       {% do field.append('') %}
       {% do field.append('') %}
-      <tr>
-        {{ _table_th(field[0]) }}
-      </tr>
+      {{ form.table_nested_th(field[0]) }}
     </thead>
     <tbody>
       {% for child in field %}
