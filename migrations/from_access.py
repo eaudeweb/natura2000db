@@ -64,27 +64,25 @@ taxgroup_map = {
 }
 
 
+strip = lambda (v): v.strip() if isinstance(v, basestring) else v
+
+
 def map_info_table(row):
-    def val(name):
-        v = row.pop(name)
-        if isinstance(v, basestring):
-            v = v.strip()
-        return v
+    val = lambda(name): strip(row.pop(name))
     flat_row = {
-        'code': val('specnum'),
-        'name': val('specname'),
-        'population_resident': val('resident'),
-        'population_migratory_reproduction': val('breeding'),
-        'population_migratory_wintering': val('winter'),
-        'population_migratory_passage': val('staging'),
-        'sit_evaluation_population': val('population'),
-        'sit_evaluation_conservation': val('conserve'),
-        'sit_evaluation_isolation': val('isolation'),
-        'sit_evaluation_global_eval': val('global'),
+        '_code': val('specnum'),
+        '_name': val('specname'),
+        '_population_resident': val('resident'),
+        '_population_migratory_reproduction': val('breeding'),
+        '_population_migratory_wintering': val('winter'),
+        '_population_migratory_passage': val('staging'),
+        '_sit_evaluation_population': val('population'),
+        '_sit_evaluation_conservation': val('conserve'),
+        '_sit_evaluation_isolation': val('isolation'),
+        '_sit_evaluation_global_eval': val('global'),
     }
     val('annex_ii'); val('tax_code') # TODO make sure skipping these is ok
-    if row:
-        print>>sys.stderr, 'unused fields from info_table: %r' % row
+    assert not row
     return flat_row
 
 
@@ -98,10 +96,10 @@ def map_fields(biotop):
 
     for rel_name, record_name in info_table_map.items():
         for i, rel_row in enumerate(relations.pop(rel_name, [])):
+            prefix = 'section3_%s_%d_dict_name' % (record_name, i)
             flat_row = map_info_table(rel_row)
             for name in flat_row:
-                key = 'section3_%s_%d_dict_name_%s' % (record_name, i, name)
-                flat[key] = flat_row[name]
+                flat[prefix + name] = flat_row[name]
 
     for i, plant_row in enumerate(relations.pop('plant', [])):
         val = lambda(name): plant_row.pop(name)
@@ -118,7 +116,6 @@ def map_fields(biotop):
 
     for i, spec_row in enumerate(relations.pop('spec', [])):
         val = lambda(name): spec_row.pop(name)
-        strip = lambda (v): v.strip() if isinstance(v, basestring) else v
         prefix = 'section3_other_species_%d_other_specie' % i
         flat[prefix + '_category'] = taxgroup_map[val('taxgroup')]
         flat[prefix + '_scientific_name'] = val('specname')
@@ -147,7 +144,7 @@ def map_fields(biotop):
 
     for i, sitrel_row in enumerate(relations.pop('sitrel', [])):
         flat['section1_other_sites_%d_other_site' % i] = sitrel_row.pop('othersite')
-        sitrel_row.pop('othertype') # TODO make sure skipping 'othertype' is ok
+        sitrel_row.pop('othertype') # redundant info
         assert not sitrel_row
 
     for i, map_row in enumerate(relations.pop('map', [])):
@@ -155,7 +152,7 @@ def map_fields(biotop):
         flat['section7_map_%d_number' % i] = val('map_no')
         flat['section7_map_%d_scale' % i] = val('scale')
         flat['section7_map_%d_projection' % i] = val('projection')
-        val('details') # TODO we ignore the datum, it's probably ok
+        assert val('details') == 'Datum Dealul_Piscului_1970'
         assert not map_row
 
     for i, corine_row in enumerate(relations.pop('corine', [])):
@@ -214,7 +211,7 @@ def map_fields(biotop):
 
     flat['section4_site_characteristics_other'] = val('charact')
 
-    val('mapsincl'); val('photos') # TODO these seem to be counts of relations
+    assert val('mapsincl') == val('photos') == 0
 
     for element in SpaDoc().all_children:
         flat_name = element.flattened_name()
