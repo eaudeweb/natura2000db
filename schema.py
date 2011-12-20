@@ -102,7 +102,6 @@ def InfoTable(list_name, dict_name):
                         String_using('code', optional=False).with_properties(label='Cod'),
                         String_using('tax_code').with_properties(label='Cod taxonomic'),
                         String_using('name', optional=False).with_properties(label='Nume'),
-                        Enum_using('annex_ii', optional=False).valued('Y', 'N').with_properties(label='Enumerate in 2009/147/EC Anexa II'),
 
                         Ordered_dict_of(
 
@@ -202,9 +201,13 @@ section_3 = Ordered_dict_of(
         ).using(optional=True).
           with_properties(widget='table', label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste:'),
 
-    InfoTable(list_name='species_types', dict_name='specie_type').
+    InfoTable(list_name='bird_types', dict_name='bird_type').
             using(optional=True).
             with_properties(widget='table', label='Specii de pasari enumerate in anexa I la Directiva Consiliului 79/409/CEE'),
+
+    InfoTable(list_name='bird_types_extra', dict_name='bird_type_extra').
+            using(optional=True).
+            with_properties(widget='table', label='Specii de pasari cu migratie regulata nementionate in anexa I la Directiva Consiliului 79/409/CEE'),
 
     InfoTable(list_name='mammals_types', dict_name='mammal_types').
             using(optional=True).
@@ -227,7 +230,6 @@ section_3 = Ordered_dict_of(
                 String_using('code', optional=False).with_properties(label='Cod'),
                 String_using('tax_code').with_properties(label='Cod taxonomic'),
                 String_using('name', optional=False).with_properties(label='Nume'),
-                Enum_using('annex_ii', optional=False).valued('Y', 'N').with_properties(label='Enumerate in 2009/147/EC Anexa II'),
                 String_using('population').with_properties(label='Populatie'),
                 InfoColumn('sit_evaluation', label='Evaluarea sitului'),
 

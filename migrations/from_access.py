@@ -44,8 +44,6 @@ skip_relations = ['photo'] # TODO we don't have any actual images
 
 
 info_table_map = {
-    'bird': 'species_types',
-    #'???': 'migratory_species_types', # TODO
     'mammal': 'mammals_types',
     'amprep': 'reptiles_types',
     'fishes': 'fishes_types',
@@ -73,7 +71,6 @@ def map_info_table(row):
         '_code': val('specnum'),
         '_tax_code': val('tax_code'),
         '_name': val('specname'),
-        '_annex_ii': val('annex_ii'),
         '_population_resident': val('resident'),
         '_population_migratory_reproduction': val('breeding'),
         '_population_migratory_wintering': val('winter'),
@@ -95,9 +92,26 @@ def map_fields(biotop):
         for key in regcod_row:
             flat['section2_regcod_%d_%s' % (i, key)] = regcod_row[key]
 
+    bird_n = bird_extra_n = 0
+    for bird_row in relations.pop('bird', []):
+        annex_ii = bird_row.pop('annex_ii')
+        if annex_ii == 'Y':
+            record_name = 'bird_types'
+            i = bird_n
+            bird_n += 1
+        else:
+            record_name = 'bird_types_extra'
+            i = bird_extra_n
+            bird_extra_n += 1
+        prefix = 'section3_%s_%d_dict_name' % (record_name, i)
+        flat_row = map_info_table(bird_row)
+        for name in flat_row:
+            flat[prefix + name] = flat_row[name]
+
     for rel_name, record_name in info_table_map.items():
         for i, rel_row in enumerate(relations.pop(rel_name, [])):
             prefix = 'section3_%s_%d_dict_name' % (record_name, i)
+            assert rel_row.pop('annex_ii') == 'Y'
             flat_row = map_info_table(rel_row)
             for name in flat_row:
                 flat[prefix + name] = flat_row[name]
@@ -108,12 +122,12 @@ def map_fields(biotop):
         flat[prefix + '_code'] = val('specnum')
         flat[prefix + '_tax_code'] = val('tax_code')
         flat[prefix + '_name'] = val('specname')
-        flat[prefix + '_annex_ii'] = val('annex_ii')
         flat[prefix + '_population'] = val('resident')
         flat[prefix + '_sit_evaluation_population'] = val('population')
         flat[prefix + '_sit_evaluation_conservation'] = val('isolation')
         flat[prefix + '_sit_evaluation_isolation'] = val('conserve')
         flat[prefix + '_sit_evaluation_global_eval'] = val('global')
+        assert val('annex_ii') == 'Y'
         assert not plant_row
 
     for i, spec_row in enumerate(relations.pop('spec', [])):
