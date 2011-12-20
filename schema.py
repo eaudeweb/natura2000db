@@ -421,3 +421,36 @@ SpaDoc = Ordered_dict_of(
     section_5.named('section5').with_properties(widget='section'),
     section_6.named('section6').with_properties(widget='section'),
     section_7.named('section7').with_properties(widget='section'))
+
+
+
+def indexer(*paths):
+    def index(doc):
+        return ''
+
+
+def bio_region_index(doc):
+    bio_regions = doc['section2']['bio_region'].value
+    for name in bio_regions:
+        if bio_regions[name]:
+            out.append(name)
+    return ' '.join(name)
+
+
+Search = Ordered_dict_of(
+    fl.String.named('full_text').
+              with_properties(label='Text',
+                              index=indexer('section1/site_name',
+                                            'section4/quality',
+                                            'section4/vulnar',
+                                            'section4/docum')),
+    fl.String.named('admin_region').
+              with_properties(label='Regiune administrativa',
+                              index=indexer('section2/regcod/reg_code')),
+    fl.String.named('doc_type').
+              with_properties(label='Tip de document',
+                              index=lambda doc: 'spa'),
+    fl.String.named('bio_region').
+              with_properties(label='Regiune biogeografica',
+                              index=bio_region_index),
+)
