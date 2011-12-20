@@ -52,25 +52,6 @@ info_table_map = {
     'invert': 'invertebrates_types',
 }
 
-habcode_map = { # TODO
-    'N01': 'alpine',
-    'N02': 'alpine',
-    'N04': 'alpine',
-    'N06': 'alpine',
-    'N07': 'alpine',
-    'N08': 'alpine',
-    'N09': 'alpine',
-    'N12': 'alpine',
-    'N14': 'alpine',
-    'N15': 'alpine',
-    'N16': 'alpine',
-    'N17': 'alpine',
-    'N19': 'alpine',
-    'N21': 'alpine',
-    'N22': 'alpine',
-    'N23': 'alpine',
-    'N26': 'alpine',
-}
 
 taxgroup_map = {
     'P': 'plante',
@@ -159,7 +140,7 @@ def map_fields(biotop):
         assert not habit1_row
 
     for habit2_row in relations.pop('habit2', []):
-        name = habcode_map[habit2_row.pop('habcode')]
+        name = habit2_row.pop('habcode')
         key = 'section4_site_characteristics_habitat_classes_' + name
         flat[key] = habit2_row.pop('cover')
         assert not habit2_row
