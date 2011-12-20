@@ -40,14 +40,14 @@ def load_from_sql():
     return biotop_list
 
 
-skip_relations = set(['desigr', 'spec']) # TODO don't skip any
+skip_relations = set(['desigr']) # TODO don't skip any
 
 skip_relations.add('photo') # TODO we don't have any actual images
 
 
 info_table_map = {
     'bird': 'species_types',
-    #'???': 'migratory_species_types',
+    #'???': 'migratory_species_types', # TODO
     'mammal': 'mammals_types',
     'amprep': 'reptiles_types',
     'fishes': 'fishes_types',
@@ -72,6 +72,16 @@ habcode_map = {
     'N22': 'alpine',
     'N23': 'alpine',
     'N26': 'alpine',
+}
+
+taxgroup_map = {
+    'P': 'plante',
+    'I': 'nevertebrate',
+    'R': 'reptile',
+    'F': 'pesti',
+    'M': 'amfibieni',
+    'A': 'mamifere',
+    'B': 'pasari',
 }
 
 
@@ -126,6 +136,18 @@ def map_fields(biotop):
         flat[prefix + '_sit_evaluation_global_eval'] = val('global')
         val('annex_ii'); val('tax_code') # TODO make sure skipping these is ok
         assert not plant_row
+
+    for i, spec_row in enumerate(relations.pop('spec', [])):
+        val = lambda(name): spec_row.pop(name)
+        strip = lambda (v): v.strip() if isinstance(v, basestring) else v
+        prefix = 'section3_other_species_%d_other_specie' % i
+        flat[prefix + '_category'] = taxgroup_map[val('taxgroup')]
+        flat[prefix + '_scientific_name'] = val('specname')
+        flat[prefix + '_population_population_text'] = strip(val('population'))
+        flat[prefix + '_population_population_trend'] = val('motivation')
+        val('specnum') # TODO what does 'specnum' even mean?
+        val('tax_code') # TODO can we ignore it?
+        assert not spec_row, repr(spec_row)
 
     for i, habit1_row in enumerate(relations.pop('habit1', [])):
         val = lambda(name): habit1_row.pop(name)
