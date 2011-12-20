@@ -100,7 +100,7 @@ def InfoTable(list_name, dict_name):
                 Ordered_dict_of(
 
                         String_using('code', optional=False).with_properties(label='Cod'),
-                        String_using('tax_code').with_properties(label='Cod taxonomic'),
+                        String_using('tax_code').with_properties(widget='hidden', label='Cod taxonomic'),
                         String_using('name', optional=False).with_properties(label='Nume'),
 
                         Ordered_dict_of(
@@ -228,7 +228,7 @@ section_3 = Ordered_dict_of(
     fl.List.named('plants_types').of(
         Ordered_dict_of(
                 String_using('code', optional=False).with_properties(label='Cod'),
-                String_using('tax_code').with_properties(label='Cod taxonomic'),
+                String_using('tax_code').with_properties(widget='hidden', label='Cod taxonomic'),
                 String_using('name', optional=False).with_properties(label='Nume'),
                 String_using('population').with_properties(label='Populatie'),
                 InfoColumn('sit_evaluation', label='Evaluarea sitului'),
@@ -243,7 +243,7 @@ section_3 = Ordered_dict_of(
                 Enum_using('category', optional=False).valued('pasari', 'mamifere', 'amfibieni', 'reptile', 'pesti', 'nevertebrate', 'plante').
                                         with_properties(label='Categorie', widget='select'),
                 String_using('code').with_properties(label='Cod'),
-                String_using('tax_code').with_properties(label='Cod taxonomic'),
+                String_using('tax_code').with_properties(widget='hidden', label='Cod taxonomic'),
                 String_using('scientific_name', optional=False).with_properties(label='Denumire stiintifica'),
 
                 Ordered_dict_of(

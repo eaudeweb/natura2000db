@@ -29,6 +29,9 @@ class MarkupGenerator(Generator):
         self._frames[-1].update(_default_settings)
         self.widget = WidgetDispatcher(jinja_env, self)
 
+    def is_hidden(self, field):
+        return (field.properties.get('widget', 'input') == 'hidden')
+
     def table_nested_th(self, table_field):
         html = "\n"
 
@@ -39,7 +42,8 @@ class MarkupGenerator(Generator):
                                       for e in table_field.all_children])
 
         current_level = [table_field[name] for name in
-                         table_field.properties['order']]
+                         table_field.properties['order']
+                         if not self.is_hidden(table_field[name])]
         current_level_n = 0
 
         while current_level:
@@ -48,12 +52,14 @@ class MarkupGenerator(Generator):
 
             for field in current_level:
                 kids_order = field.properties.get('order', [])
-                kids = [field[name] for name in kids_order]
+                kids = [field[name] for name in kids_order
+                        if not self.is_hidden(field[name])]
                 if kids:
                     rowspan = 1
                 else:
                     rowspan = table_kids_depth - current_level_n
-                colspan = len(list(field.all_children))
+                colspan = len([f for f in field.all_children
+                               if not self.is_hidden(f)])
                 attr = ''
                 if colspan > 1: attr += ' colspan="%d"' % colspan
                 if rowspan > 1: attr += ' rowspan="%d"' % rowspan

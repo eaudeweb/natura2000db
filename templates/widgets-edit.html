@@ -47,6 +47,10 @@
   {%- do form.end() %}
 {% endmacro %}
 
+{% macro hidden(field) %}
+  {{ form.input(field, type="hidden") }}
+{% endmacro %}
+
 {% macro checkbox(field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   {{ _label(field) }}
@@ -93,9 +97,11 @@
       {{ _table_td(field[child_name]) }}
     {% endfor %}
   {% else %}
-    {% do form.begin(skip_labels=True) -%}
-    <td>{{ form.widget(field) }}</td>
-    {%- do form.end() %}
+    {% if not form.is_hidden(field) %}
+      {% do form.begin(skip_labels=True) -%}
+      <td>{{ form.widget(field) }}</td>
+      {%- do form.end() %}
+    {% endif %}
   {% endif %}
 {% endmacro %}
 
