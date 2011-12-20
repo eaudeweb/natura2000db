@@ -38,7 +38,8 @@ class MarkupGenerator(Generator):
         table_kids_depth = max([0] + [(level(e) - table_depth)
                                       for e in table_field.all_children])
 
-        current_level = list(table_field.children)
+        current_level = [table_field[name] for name in
+                         table_field.properties['order']]
         current_level_n = 0
 
         while current_level:
