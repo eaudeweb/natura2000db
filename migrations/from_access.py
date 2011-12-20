@@ -40,9 +40,7 @@ def load_from_sql():
     return biotop_list
 
 
-skip_relations = set(['desigr']) # TODO don't skip any
-
-skip_relations.add('photo') # TODO we don't have any actual images
+skip_relations = ['photo'] # TODO we don't have any actual images
 
 
 info_table_map = {
@@ -193,6 +191,15 @@ def map_fields(biotop):
         flat[prefix + '_code'] = val('desicode')
         flat[prefix + '_percentage'] = val('cover')
         assert not desigc_row
+
+    for i, desigr_row in enumerate(relations.pop('desigr', [])):
+        val = lambda(name): desigr_row.pop(name)
+        prefix = 'section5_national_relations_%d_record' % i
+        flat[prefix + '_type'] = val('overlap') # TODO is the mapping right?
+        flat[prefix + '_name'] = val('des_site')
+        flat[prefix + '_overlap'] = val('overlap_p')
+        val('desicode') # TODO ok to ignore?
+        assert not desigr_row
 
     activity_in = activity_out = 0
     for actvty_row in relations.pop('actvty', []):
