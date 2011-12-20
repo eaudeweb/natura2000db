@@ -188,14 +188,13 @@ def map_fields(biotop):
             i = activity_in
             activity_in += 1
             prefix = 'section6_in_jur_outside_activities_%d_record' % i
-            val('cover') # TODO for 'outside' activities, coverage is ignored
         else:
             i = activity_out
             activity_out += 1
             prefix = 'section6_in_jur_inside_activities_%d_record' % i
-            flat[prefix + '_percentage'] = val('cover')
         flat[prefix + '_code'] = val('act_code')
         flat[prefix + '_intensity'] = val('intensity')
+        flat[prefix + '_percentage'] = val('cover')
         flat[prefix + '_influence'] = val('influence')
         assert not actvty_row
 

@@ -377,6 +377,7 @@ section_6 = Ordered_dict_of(
 
                     String_using('code', optional=False).with_properties(label='Cod'),
                     Enum_using('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate', widget='select'),
+                    Float_using('percentage').with_properties(label='% din sit'),
                     Enum_using('influence').valued('+', '0', '-').with_properties(label='Influenta', widget='select'),
                 ).named('record'),
             ).using(optional=True).
