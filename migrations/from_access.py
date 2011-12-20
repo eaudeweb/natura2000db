@@ -40,7 +40,7 @@ def load_from_sql():
     return biotop_list
 
 
-skip_relations = set(['actvty', 'desigr', 'spec']) # TODO don't skip any
+skip_relations = set(['desigr', 'spec']) # TODO don't skip any
 
 skip_relations.add('photo') # TODO we don't have any actual images
 
@@ -171,6 +171,24 @@ def map_fields(biotop):
         flat[prefix + '_code'] = val('desicode')
         flat[prefix + '_percentage'] = val('cover')
         assert not desigc_row
+
+    activity_in = activity_out = 0
+    for actvty_row in relations.pop('actvty', []):
+        val = lambda(name): actvty_row.pop(name)
+        if val('in_out') == 'O':
+            i = activity_in
+            activity_in += 1
+            prefix = 'section6_in_jur_outside_activities_%d_record' % i
+            val('cover') # TODO for 'outside' activities, coverage is ignored
+        else:
+            i = activity_out
+            activity_out += 1
+            prefix = 'section6_in_jur_inside_activities_%d_record' % i
+            flat[prefix + '_percentage'] = val('cover')
+        flat[prefix + '_code'] = val('act_code')
+        flat[prefix + '_intensity'] = val('intensity')
+        flat[prefix + '_influence'] = val('influence')
+        assert not actvty_row
 
     for name in skip_relations:
         relations.pop(name, [])
