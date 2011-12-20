@@ -56,7 +56,7 @@ class MarkupGenerator(Generator):
                 attr = ''
                 if colspan > 1: attr += ' colspan="%d"' % colspan
                 if rowspan > 1: attr += ' rowspan="%d"' % rowspan
-                label = jinja2.escape(field.properties['label'])
+                label = jinja2.escape(field.properties.get('label', ''))
                 html += "<th%s>%s</th>" % (attr, label)
                 next_level += kids
 

@@ -245,8 +245,8 @@ section_3 = Ordered_dict_of(
                 String_using('scientific_name', optional=False).with_properties(label='Denumire stiintifica'),
 
                 Ordered_dict_of(
-                        String_using('population_text').with_properties(label='Populatie'),
-                        Enum_using('population_trend').valued('A', 'B', 'C', 'D').with_properties(label='Populatie', widget='select'),
+                        String_using('population_text'),
+                        Enum_using('population_trend').valued('A', 'B', 'C', 'D').with_properties(widget='select'),
 
                     ).named('population').with_properties(label='Populatie'),
             ).named('other_specie'),
