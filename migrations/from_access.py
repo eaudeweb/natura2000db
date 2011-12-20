@@ -71,7 +71,9 @@ def map_info_table(row):
     val = lambda(name): strip(row.pop(name))
     flat_row = {
         '_code': val('specnum'),
+        '_tax_code': val('tax_code'),
         '_name': val('specname'),
+        '_annex_ii': val('annex_ii'),
         '_population_resident': val('resident'),
         '_population_migratory_reproduction': val('breeding'),
         '_population_migratory_wintering': val('winter'),
@@ -81,7 +83,6 @@ def map_info_table(row):
         '_sit_evaluation_isolation': val('isolation'),
         '_sit_evaluation_global_eval': val('global'),
     }
-    val('annex_ii'); val('tax_code') # TODO make sure skipping these is ok
     assert not row
     return flat_row
 
@@ -105,24 +106,25 @@ def map_fields(biotop):
         val = lambda(name): plant_row.pop(name)
         prefix = 'section3_plants_types_%d_plant_types' % i
         flat[prefix + '_code'] = val('specnum')
+        flat[prefix + '_tax_code'] = val('tax_code')
         flat[prefix + '_name'] = val('specname')
+        flat[prefix + '_annex_ii'] = val('annex_ii')
         flat[prefix + '_population'] = val('resident')
         flat[prefix + '_sit_evaluation_population'] = val('population')
         flat[prefix + '_sit_evaluation_conservation'] = val('isolation')
         flat[prefix + '_sit_evaluation_isolation'] = val('conserve')
         flat[prefix + '_sit_evaluation_global_eval'] = val('global')
-        val('annex_ii'); val('tax_code') # TODO make sure skipping these is ok
         assert not plant_row
 
     for i, spec_row in enumerate(relations.pop('spec', [])):
         val = lambda(name): spec_row.pop(name)
         prefix = 'section3_other_species_%d_other_specie' % i
         flat[prefix + '_category'] = taxgroup_map[val('taxgroup')]
+        flat[prefix + '_code'] = strip(val('specnum'))
+        flat[prefix + '_tax_code'] = strip(val('tax_code'))
         flat[prefix + '_scientific_name'] = val('specname')
         flat[prefix + '_population_population_text'] = strip(val('population'))
         flat[prefix + '_population_population_trend'] = val('motivation')
-        val('specnum') # TODO what does 'specnum' even mean?
-        val('tax_code') # TODO can we ignore it?
         assert not spec_row, repr(spec_row)
 
     for i, habit1_row in enumerate(relations.pop('habit1', [])):

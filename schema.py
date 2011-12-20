@@ -100,7 +100,9 @@ def InfoTable(list_name, dict_name):
                 Ordered_dict_of(
 
                         String_using('code', optional=False).with_properties(label='Cod'),
+                        String_using('tax_code').with_properties(label='Cod taxonomic'),
                         String_using('name', optional=False).with_properties(label='Nume'),
+                        Enum_using('annex_ii', optional=False).valued('Y', 'N').with_properties(label='Enumerate in 2009/147/EC Anexa II'),
 
                         Ordered_dict_of(
 
@@ -204,10 +206,6 @@ section_3 = Ordered_dict_of(
             using(optional=True).
             with_properties(widget='table', label='Specii de pasari enumerate in anexa I la Directiva Consiliului 79/409/CEE'),
 
-    InfoTable(list_name='migratory_species_types', dict_name='migratory_specie_type').
-            using(optional=True).
-            with_properties(widget='table', label='Specii de pasari cu migratie regulata nementionate in anexa I la Directiva Consiliului 79/409/CEE'),
-
     InfoTable(list_name='mammals_types', dict_name='mammal_types').
             using(optional=True).
             with_properties(widget='table', label='Specii de mamifere enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
@@ -227,7 +225,9 @@ section_3 = Ordered_dict_of(
     fl.List.named('plants_types').of(
         Ordered_dict_of(
                 String_using('code', optional=False).with_properties(label='Cod'),
+                String_using('tax_code').with_properties(label='Cod taxonomic'),
                 String_using('name', optional=False).with_properties(label='Nume'),
+                Enum_using('annex_ii', optional=False).valued('Y', 'N').with_properties(label='Enumerate in 2009/147/EC Anexa II'),
                 String_using('population').with_properties(label='Populatie'),
                 InfoColumn('sit_evaluation', label='Evaluarea sitului'),
 
@@ -240,6 +240,8 @@ section_3 = Ordered_dict_of(
 
                 Enum_using('category', optional=False).valued('pasari', 'mamifere', 'amfibieni', 'reptile', 'pesti', 'nevertebrate', 'plante').
                                         with_properties(label='Categorie', widget='select'),
+                String_using('code').with_properties(label='Cod'),
+                String_using('tax_code').with_properties(label='Cod taxonomic'),
                 String_using('scientific_name', optional=False).with_properties(label='Denumire stiintifica'),
 
                 Ordered_dict_of(
