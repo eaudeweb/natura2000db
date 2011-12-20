@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import sys
 import flask
 import schema
 from storage import get_db
@@ -71,6 +72,14 @@ def create_app():
     return app
 
 
+def accessdb_mjson(args):
+    from migrations.from_access import load_from_sql, verify_data
+    kwargs = {'indent': 2} if args.indent else {}
+    for doc in verify_data(load_from_sql()):
+        flask.json.dump(doc, sys.stdout, **kwargs)
+        sys.stdout.write('\n')
+
+
 def runserver(args):
     from revproxy import ReverseProxied
     app = create_app()
@@ -85,6 +94,10 @@ def create_argument_parser():
 
     parser_runserver = subparsers.add_parser('runserver')
     parser_runserver.set_defaults(func=runserver)
+
+    parser_accessdb_mjson = subparsers.add_parser('accessdb_mjson')
+    parser_accessdb_mjson.set_defaults(func=accessdb_mjson)
+    parser_accessdb_mjson.add_argument('-i', '--indent', action='store_true')
 
     return parser
 
