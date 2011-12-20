@@ -97,7 +97,9 @@
       {{ _table_td(field[child_name]) }}
     {% endfor %}
   {% else %}
-    {% if not form.is_hidden(field) %}
+    {% if form.is_hidden(field) %}
+      {{ hidden(field) }}
+    {% else %}
       {% do form.begin(skip_labels=True) -%}
       <td>{{ form.widget(field) }}</td>
       {%- do form.end() %}
