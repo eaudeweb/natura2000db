@@ -3,7 +3,7 @@
 
 import flask
 from schema import SpaDoc
-from storage import SolrStorage
+from storage import get_db
 from widgets import install_widgets
 
 
@@ -11,16 +11,13 @@ app = flask.Flask(__name__)
 app.config['SECRET_KEY'] = 'demo'
 
 import os.path
+app.config['STORAGE_ENGINE'] = 'solr'
 app.config['STORAGE_PATH'] = os.path.join(os.path.dirname(__file__),
                                           'data', 'documents')
 
 _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
 app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
 install_widgets(app.jinja_env)
-
-
-def get_db():
-    return SolrStorage()
 
 
 @app.route('/')

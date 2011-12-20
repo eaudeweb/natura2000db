@@ -3,7 +3,7 @@ import json
 import re
 import logging
 import urllib2
-import pymongo
+import flask
 from bson.objectid import ObjectId
 
 log = logging.getLogger(__name__)
@@ -75,6 +75,12 @@ class MongoStorage(object):
         return doc_id_list
 
 
+try:
+    import pymongo
+except ImportError:
+    MongoStorage = None
+
+
 class SolrStorage(object):
 
     orig_field_name = 'orig_s'
@@ -121,3 +127,17 @@ class SolrStorage(object):
         results = json.load(response)
         response.close()
         return sorted([d['id'] for d in results['response']['docs']])
+
+
+def get_db():
+    config = flask.current_app.config
+    engine_name = config['STORAGE_ENGINE']
+
+    if engine_name == 'solr':
+        return SolrStorage()
+
+    elif engine_name == 'filesystem':
+        return FsStorage(config['STORAGE_FS_PATH'])
+
+    else:
+        raise ValueError('Unknown storage engine %r' % engine_name)
