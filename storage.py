@@ -97,24 +97,23 @@ except ImportError:
 
 class SolrStorage(object):
 
-    orig_field_name = 'orig_s'
+    orig_field_name = 'orig'
     solr_base_url = 'http://localhost:8983/solr/'
 
     def _solr_doc(self, doc):
         data = doc.value
-        full_text = (
-            data['section1']['site_name'] or '' +
-            data['section4']['quality'] or '' +
-            data['section4']['vulnar'] or '' +
-            data['section4']['docum'] or '')
 
-        return {
+        solr_doc = {
             'id': data['section1']['sitecode'],
-            'title': data['section1']['site_name'],
-            'type_txt': data['section1']['type'],
-            'text': full_text,
             self.orig_field_name: json.dumps(data),
         }
+
+        for element in schema.Search().all_children:
+            value = element.properties['index'](doc)
+            log.debug('index %s: %r', element.name, value)
+            solr_doc[element.name] = value
+
+        return solr_doc
 
     @contextmanager
     def solr_http(self, request):
