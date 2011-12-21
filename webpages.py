@@ -1,7 +1,7 @@
 import flask
 import blinker
 import schema
-from widgets import install_widgets
+import widgets
 from storage import get_db
 
 
@@ -21,7 +21,8 @@ def view():
     doc_id = flask.request.args.get('doc_id')
     db = get_db()
     doc = db.load_document(doc_id)
-    return flask.render_template('view.html', doc=doc)
+    form = widgets.MarkupGenerator(flask.current_app.jinja_env)
+    return flask.render_template('view.html', doc=doc, form=form)
 
 
 @webpages.route('/new', methods=['GET', 'POST'])
@@ -49,7 +50,8 @@ def edit():
         else:
             doc = db.load_document(doc_id)
 
-    return flask.render_template('edit.html', doc=doc)
+    form = widgets.MarkupGenerator(flask.current_app.jinja_env)
+    return flask.render_template('edit.html', doc=doc, form=form)
 
 
 @webpages.route('/search')
@@ -57,7 +59,8 @@ def search():
     db = get_db()
     search_form = schema.Search(flask.request.args.to_dict())
     search_answer = db.search(text=search_form['text'].value)
-    return flask.render_template('search.html',
+    form = widgets.MarkupGenerator(flask.current_app.jinja_env)
+    return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer)
 
@@ -68,4 +71,3 @@ def register(app):
 
     _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
     app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
-    install_widgets(app.jinja_env)

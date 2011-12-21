@@ -1,34 +1,34 @@
-{% macro _label(field) %}
+{% macro _label(form, field) %}
   {% if not form['skip_labels'] %}
     {{ field.properties.label }}
   {% endif %}
 {% endmacro %}
 
-{% macro input(field) %}
-  {{ _label(field) }}
+{% macro input(form, field) %}
+  {{ _label(form, field) }}
   {{ field.value }}
 {% endmacro %}
 
-{% macro radio(field) %}
-  {{ input(field) }}
+{% macro radio(form, field) %}
+  {{ input(form, field) }}
 {% endmacro %}
 
-{% macro select(field) %}
-  {{ input(field) }}
+{% macro select(form, field) %}
+  {{ input(form, field) }}
 {% endmacro %}
 
-{% macro textarea(field) %}
-  {{ input(field) }}
+{% macro textarea(form, field) %}
+  {{ input(form, field) }}
 {% endmacro %}
 
-{% macro hidden(field) %}
+{% macro hidden(form, field) %}
 {% endmacro %}
 
-{% macro checkbox(field) %}
-  {{ input(field) }}
+{% macro checkbox(form, field) %}
+  {{ input(form, field) }}
 {% endmacro %}
 
-{% macro _dict_children(field) %}
+{% macro _dict_children(form, field) %}
   {%- for child_name in field.properties.order %}
   <div>
   {{ form.widget(field[child_name]) }}
@@ -36,12 +36,12 @@
   {% endfor -%}
 {% endmacro %}
 
-{% macro dict(field) %}
+{% macro dict(form, field) %}
   <p>{{ field.properties.label }}</p>
-  {{ _dict_children(field) }}
+  {{ _dict_children(form, field) }}
 {% endmacro %}
 
-{% macro list(field) %}
+{% macro list(form, field) %}
   {{ field.properties.label }}
   <ul>
   {% for child in field %}
@@ -50,24 +50,24 @@
   </ul>
 {% endmacro %}
 
-{% macro _table_th(field, prefix='') %}
+{% macro _table_th(form, field, prefix='') %}
   {% if field.properties.order %}
     {% for child_name in field.properties.order %}
-      {{ _table_th(field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
+      {{ _table_th(form, field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
     {% endfor %}
   {% else %}
     <td>{{ prefix[:-3] }}</td>
   {% endif %}
 {% endmacro %}
 
-{% macro _table_td(field) %}
+{% macro _table_td(form, field) %}
   {% if field.properties.order %}
     {% for child_name in field.properties.order %}
-      {{ _table_td(field[child_name]) }}
+      {{ _table_td(form, field[child_name]) }}
     {% endfor %}
   {% else %}
     {% if form.is_hidden(field) %}
-      {{ hidden(field) }}
+      {{ hidden(form, field) }}
     {% else %}
       {% do form.begin(skip_labels=True) -%}
       <td>{{ form.widget(field) }}</td>
@@ -76,7 +76,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro table(field) %}
+{% macro table(form, field) %}
 {% if field.value %}
   <table border=1>
     <caption>{{field.properties.label}}</caption>
@@ -88,7 +88,7 @@
     <tbody>
       {% for child in field %}
       <tr>
-          {{ _table_td(child) }}
+          {{ _table_td(form, child) }}
       </tr>
       {% endfor %}
     </tbody>
@@ -96,7 +96,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro habitat_breakdown(field) %}
+{% macro habitat_breakdown(form, field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1>
     <thead>
@@ -126,7 +126,7 @@
   {%- do form.end() %}
 {% endmacro %}
 
-{% macro section(field) %}
+{% macro section(form, field) %}
   <h2>{{ field.properties.label }}</h2>
-  {{ _dict_children(field) }}
+  {{ _dict_children(form, field) }}
 {% endmacro %}

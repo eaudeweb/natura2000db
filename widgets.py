@@ -19,7 +19,7 @@ class WidgetDispatcher(object):
         tmpl = self.jinja_env.get_template(tmpl_name)
         widget_name = element.properties.get('widget', 'input')
         widget_macro = getattr(tmpl.module, widget_name)
-        return widget_macro(element)
+        return widget_macro(self.context, element)
 
 
 class MarkupGenerator(Generator):
@@ -72,7 +72,3 @@ class MarkupGenerator(Generator):
             html += "</tr>\n"
 
         return jinja2.Markup(html)
-
-
-def install_widgets(jinja_env):
-    jinja_env.globals['form'] = MarkupGenerator(jinja_env)
