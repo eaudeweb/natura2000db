@@ -1,4 +1,5 @@
 import unittest
+import json
 import py
 
 
@@ -39,3 +40,15 @@ class FormsTest(unittest.TestCase):
         response = client.post('/new', data=form_data, follow_redirects=True)
         self.assertIsNotNone(self.doc)
         self.assertIn("Document %r saved" % self.doc_id, response.data)
+
+        saved_doc = json.loads((self.tmp/'storage'/'doc_0.json').read())
+        section1 = saved_doc['section1']
+        self.assertEqual(section1['type'], 'K')
+        self.assertEqual(section1['sitecode'], 'asdfqwer3')
+        self.assertEqual(section1['date'], '200503')
+        self.assertEqual(section1['site_name'], 'Firul Ierbii')
+        section2 = saved_doc['section2']
+        self.assertIsNone(section2['regcod'][0]['reg_code'])
+        self.assertEqual(section2['regcod'][0]['reg_name'], 'Poiana')
+        self.assertIsNone(section2['regcod'][0]['cover'])
+        self.assertTrue(section2['bio_region']['alpine'])
