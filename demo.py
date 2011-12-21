@@ -24,7 +24,7 @@ def index():
 def view():
     doc_id = flask.request.args.get('doc_id')
     db = get_db()
-    doc = schema.SpaDoc(db.load_document(doc_id))
+    doc = db.load_document(doc_id)
     return flask.render_template('view.html', doc=doc)
 
 
@@ -38,7 +38,7 @@ def edit():
         doc = schema.SpaDoc.from_flat(flask.request.form.to_dict())
 
         if doc.validate():
-            doc_id = db.save_document(doc_id, doc.value)
+            doc_id = db.save_document(doc_id, doc)
             app = flask.current_app
             app.document_signal.send('save', doc_id=doc_id, doc=doc)
             flask.flash("Document %r saved" % doc_id)
@@ -51,7 +51,7 @@ def edit():
         if doc_id is None:
             doc = schema.SpaDoc()
         else:
-            doc = schema.SpaDoc(db.load_document(doc_id))
+            doc = db.load_document(doc_id)
 
     return flask.render_template('edit.html', doc=doc)
 
@@ -105,7 +105,7 @@ def import_mjson(args):
 
     db = get_db(create_app())
 
-    for batch in batched(read_json_lines(sys.stdin)):
+    for batch in batched(schema.SpaDoc(d) for d in read_json_lines(sys.stdin)):
         db.save_document_batch(batch)
         sys.stdout.write('.')
         sys.stdout.flush()

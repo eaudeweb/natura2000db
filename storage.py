@@ -8,6 +8,7 @@ import errno
 from contextlib import contextmanager
 import flask
 from bson.objectid import ObjectId
+import schema
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -29,7 +30,8 @@ class FsStorage(object):
         doc_id = int(doc_id)
         return os.path.join(self.storage_path, 'doc_%d.json' % doc_id)
 
-    def save_document(self, doc_id, data):
+    def save_document(self, doc_id, doc):
+        data = doc.value
         if doc_id is None:
             doc_id = max([-1] + self.document_ids()) + 1
         else:
@@ -42,7 +44,7 @@ class FsStorage(object):
     def load_document(self, doc_id):
         doc_id = int(doc_id)
         with open(self._doc_path(doc_id), 'rb') as f:
-            return json.load(f)
+            return schema.SpaDoc(json.load(f))
 
     def document_ids(self):
         doc_id_list = []
@@ -63,7 +65,8 @@ class MongoStorage(object):
         self.connection = pymongo.Connection('localhost', 27017)
         self.db = self.connection[db_name]
 
-    def save_document(self, doc_id, data):
+    def save_document(self, doc_id, doc):
+        data = doc.value
         if doc_id is not None:
             data = dict(data, _id=ObjectId(doc_id))
             log.info("saving new document %r")
@@ -76,9 +79,9 @@ class MongoStorage(object):
     def load_document(self, doc_id):
         doc = self.db['spadoc'].find_one({'_id': ObjectId(doc_id)})
         if doc is None:
-            return {}
+            return schema.SpaDoc()
         del doc['_id']
-        return doc
+        return schema.SpaDoc(doc)
 
     def document_ids(self):
         doc_id_list = [doc['_id'] for doc in self.db['spadoc'].find()]
@@ -97,7 +100,8 @@ class SolrStorage(object):
     orig_field_name = 'orig_s'
     solr_base_url = 'http://localhost:8983/solr/'
 
-    def _solr_doc(self, data):
+    def _solr_doc(self, doc):
+        data = doc.value
         full_text = (
             data['section1']['site_name'] or '' +
             data['section4']['quality'] or '' +
@@ -147,8 +151,8 @@ class SolrStorage(object):
 
         return answer['response']['docs']
 
-    def save_document(self, doc_id, data):
-        return save_document_batch([data])[0]
+    def save_document(self, doc_id, doc):
+        return self.save_document_batch([doc])[0]
 
     def save_document_batch(self, batch):
         url = self.solr_base_url + 'update/json?commit=true'
@@ -159,11 +163,11 @@ class SolrStorage(object):
         with self.solr_http(request) as response:
             response.read()
 
-        return [doc['section1']['sitecode'] for doc in batch]
+        return [doc['section1']['sitecode'].value for doc in batch]
 
     def load_document(self, doc_id):
         doc = self.solr_query('id:%s' % doc_id)[0]
-        return json.loads(doc[self.orig_field_name])
+        return schema.SpaDoc(json.loads(doc[self.orig_field_name]))
 
     def document_ids(self):
         return sorted([d['id'] for d in self.solr_query('*')])
