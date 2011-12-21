@@ -508,11 +508,14 @@ Search = Ordered_dict_of(
     fl.String.named('regcod').
               with_properties(label='Regiune administrativa',
                               index=indexer('section2/regcod[:]/reg_code',
-                                            concat=False)),
+                                            concat=False),
+                              facet=True),
     fl.String.named('type').
               with_properties(label='Tip de document',
-                              index=spa_sci_index),
+                              index=spa_sci_index,
+                              facet=True),
     fl.String.named('bio_region').
               with_properties(label='Regiune biogeografica',
-                              index=bio_region_index),
+                              index=bio_region_index,
+                              facet=True),
 )

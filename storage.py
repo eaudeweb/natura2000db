@@ -6,6 +6,7 @@ import urllib
 import urllib2
 import errno
 from contextlib import contextmanager
+from collections import namedtuple
 import flask
 import schema
 
@@ -18,6 +19,9 @@ class StorageError(Exception):
 
 
 QUERY_ROWS = 1000
+
+
+SolrAnswer = namedtuple('SolrAnswer', ['docs', 'facets'])
 
 
 class FsStorage(object):
@@ -100,9 +104,13 @@ class SolrStorage(object):
         finally:
             response.close()
 
-    def solr_query(self, query):
-        url = self.solr_base_url + 'select?q=%s&wt=json&rows=%d' % (
-                urllib.quote(query.encode('utf-8')), QUERY_ROWS)
+    def solr_query(self, query, args=[]):
+        full_args = [('q', query.encode('utf-8'))] + args + [
+            ('wt', 'json'),
+            ('rows', str(QUERY_ROWS)),
+        ]
+        url = self.solr_base_url + 'select?' + urllib.urlencode(full_args)
+
         with self.solr_http(url) as http_response:
             answer = json.load(http_response)
 
@@ -111,7 +119,13 @@ class SolrStorage(object):
             log.warn("Found more results than expected: %d > %d",
                      num_found, QUERY_ROWS)
 
-        return answer['response']['docs']
+        if 'facet_counts' in answer:
+            facets = answer['facet_counts']['facet_fields']
+        else:
+            facets = {}
+
+        return SolrAnswer(answer['response']['docs'],
+                          facets)
 
     def save_document(self, doc_id, doc):
         return self.save_document_batch([doc])[0]
@@ -128,19 +142,30 @@ class SolrStorage(object):
         return [doc['section1']['sitecode'].value for doc in batch]
 
     def load_document(self, doc_id):
-        doc = self.solr_query('id:%s' % doc_id)[0]
+        doc = self.solr_query('id:%s' % doc_id).docs[0]
         return schema.SpaDoc(json.loads(doc[self.orig_field_name]))
 
     def document_ids(self):
-        return sorted([d['id'] for d in self.solr_query('*')])
+        return sorted([d['id'] for d in self.solr_query('*').docs])
 
     def search(self, text):
         query = 'text:%s' % text # TODO quote for ':' and other solr markup
+        args = [ ('facet', 'true') ]
 
-        return [{
+        for element in schema.Search().all_children:
+            if element.properties.get('facet', False):
+                args.append( ('facet.field', element.name) )
+
+        answer = self.solr_query(query, args)
+        docs = [{
                 'id': r['id'],
                 'data': json.loads(r[self.orig_field_name])
-            } for r in self.solr_query(query)]
+            } for r in answer.docs]
+
+        return {
+            'docs': docs,
+            'facets': answer.facets,
+        }
 
 
 def get_db(app=None):
