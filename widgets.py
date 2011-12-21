@@ -3,11 +3,6 @@ import jinja2
 from flatland.out.markup import Tag, Generator
 
 
-_default_settings = {
-    'skip_labels': False,
-    'widgets_template': 'edit',
-}
-
 class WidgetDispatcher(object):
 
     def __init__(self, jinja_env, context):
@@ -24,9 +19,14 @@ class WidgetDispatcher(object):
 
 class MarkupGenerator(Generator):
 
+    _default_settings = {
+        'skip_labels': False,
+        'widgets_template': 'edit',
+    }
+
     def __init__(self, jinja_env):
         super(MarkupGenerator, self).__init__('html')
-        self._frames[-1].update(_default_settings)
+        self._frames[-1].update(self._default_settings)
         self.widget = WidgetDispatcher(jinja_env, self)
 
     def is_hidden(self, field):
