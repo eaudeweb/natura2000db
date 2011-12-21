@@ -315,3 +315,9 @@ input[type="submit"] {
 }
 
 
+
+/* search */
+
+.search-facet-selected {
+    font-weight: bold;
+}
