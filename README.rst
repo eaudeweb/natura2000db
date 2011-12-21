@@ -29,8 +29,17 @@ Setup
 
    Run the script as ``rio runserver``.
 
-7. TODO dump access db to json
 
-8. TODO set up solr config
+Loading data from Access database
+=================================
 
-9. TODO load json to solr
+1. Set up solr config (TODO)
+
+2. Dump documents to json. This assumes the Access database is loaded in
+   MySQL on `localhost`, in the database `rio`::
+
+    rio accessdb_mjson > $DATA/access.mjson
+
+3. Load json to solr::
+
+    rio import_mjson < $DATA/access.mjson
