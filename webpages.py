@@ -11,7 +11,8 @@ webpages = flask.Blueprint('webpages', __name__)
 @webpages.route('/')
 def index():
     db = get_db()
-    return flask.render_template('index.html',
+    form = widgets.MarkupGenerator(flask.current_app.jinja_env)
+    return flask.render_template('index.html', form=form,
                                  search_form=schema.Search(),
                                  doc_id_list=db.document_ids())
 
