@@ -406,7 +406,7 @@ section_7 = Ordered_dict_of(
                 String_using('projection').with_properties(label='Proiectie'),
             ).with_properties(widget='dict'),
 
-        ).with_properties(widget='list', label='Harta fizica'),
+        ).using(optional=True).with_properties(widget='list', label='Harta fizica'),
 
     String_using('site_limits').with_properties(widget='textarea', label='Specificati daca limitele sitului sunt disponibile in format digital'),
 
