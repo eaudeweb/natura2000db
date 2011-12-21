@@ -88,6 +88,7 @@ def accessdb_mjson(args):
 
 
 def import_mjson(args):
+    logging.getLogger('storage').setLevel(logging.INFO)
 
     def batched(iterator, count=10):
         batch = []
