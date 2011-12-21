@@ -19,7 +19,8 @@
 {% if results %}
 <ul>
 {% for r in results %}
-  <li>{{ r.data.section1.site_name }}</li>
+  <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}
+        ">{{ r.data.section1.site_name }}</a></li>
 {% endfor %}
 </ul>
 {% endif %}
