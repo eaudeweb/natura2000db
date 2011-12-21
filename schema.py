@@ -450,6 +450,16 @@ def bio_region_index(doc):
     return ' '.join(out)
 
 
+def spa_sci_index(doc):
+    doc_id = doc['section1']['sitecode'].value
+    if doc_id[2:5] == 'SPA':
+        return 'spa'
+    elif doc_id[2:5] == 'SCI':
+        return 'sci'
+    else:
+        raise ValueError('unkown document type (spa/sci) %r' % doc_id)
+
+
 full_text_fields = ['section1/site_name',
                     'section1/sitecode',
                     'section1/respondent',
@@ -501,7 +511,7 @@ Search = Ordered_dict_of(
                                             concat=False)),
     fl.String.named('type').
               with_properties(label='Tip de document',
-                              index=lambda doc: 'spa'),
+                              index=spa_sci_index),
     fl.String.named('bio_region').
               with_properties(label='Regiune biogeografica',
                               index=bio_region_index),
