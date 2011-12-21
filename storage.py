@@ -153,8 +153,10 @@ class SolrStorage(object):
     def document_ids(self):
         return sorted([d['id'] for d in self.solr_query('*').docs])
 
-    def search(self, text):
-        query = 'text:%s' % text # TODO quote for ':' and other solr markup
+    def search(self, criteria):
+        #query = 'text:%s' % text # TODO quote for ':' and other solr markup
+        query = u' '.join(u'%s:%s' % (k, v) for k, v in criteria.items() if v)
+
         args = [ ('facet', 'true') ]
 
         for element in schema.Search().all_children:
