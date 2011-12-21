@@ -34,6 +34,9 @@ Loading data from Access database
 =================================
 
 1. Set up solr config (TODO)
+   Note: the Solr configuration file needs to have this line::
+
+    <solrQueryParser defaultOperator="AND"/>
 
 2. Dump documents to json. This assumes the Access database is loaded in
    MySQL on `localhost`, in the database `rio`::
