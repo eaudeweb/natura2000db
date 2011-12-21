@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import sys
+import os
 import flask
 import schema
 from storage import get_db
@@ -67,7 +68,8 @@ def create_app():
     install_widgets(app.jinja_env)
 
     app.config.from_pyfile('default_config.py')
-    app.config.from_envvar('APP_SETTINGS')
+    if 'APP_SETTINGS' in os.environ:
+        app.config.from_envvar('APP_SETTINGS')
 
     return app
 
