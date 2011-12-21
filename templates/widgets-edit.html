@@ -92,10 +92,10 @@
   </div>
 {% endmacro %}
 
-{% macro _table_td(form, field) %}
+{% macro table_td(form, field) %}
   {% if field.properties.order %}
     {% for child_name in field.properties.order %}
-      {{ _table_td(form, field[child_name]) }}
+      {{ table_td(form, field[child_name]) }}
     {% endfor %}
   {% else %}
     {% if form.is_hidden(field) %}
@@ -120,9 +120,13 @@
     <tbody>
       {% for child in field %}
       <tr>
-          {{ _table_td(form, child) }}
+          {{ table_td(form, child) }}
       </tr>
       {% endfor %}
+      <tr class="table-append" style="display: none">
+          {{ form.table_append(field) }}
+      </tr>
+      </tr>
     </tbody>
   </table>
   {%- do form.end() %}

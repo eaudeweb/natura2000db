@@ -9,10 +9,10 @@ class WidgetDispatcher(object):
         self.jinja_env = jinja_env
         self.context = context
 
-    def __call__(self, element):
+    def __call__(self, element, default_widget='input'):
         tmpl_name = 'widgets-%s.html' % self.context['widgets_template']
         tmpl = self.jinja_env.get_template(tmpl_name)
-        widget_name = element.properties.get('widget', 'input')
+        widget_name = element.properties.get('widget', default_widget)
         widget_macro = getattr(tmpl.module, widget_name)
         return widget_macro(self.context, element)
 
@@ -72,6 +72,12 @@ class MarkupGenerator(Generator):
             html += "</tr>\n"
 
         return jinja2.Markup(html)
+
+    def table_append(self, field):
+        value_template = field.slot_type(name=u'NEW_LIST_ITEM',
+                                         parent=field,
+                                         element=field.member_schema())
+        return self.widget(value_template.element, 'table_td')
 
 
 class SearchMarkupGenerator(MarkupGenerator):

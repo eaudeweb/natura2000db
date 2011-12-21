@@ -7,6 +7,9 @@
 </head>
 <body>
 
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="{{ url_for('static', filename='form.js') }}"></script>
+
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
