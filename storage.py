@@ -119,7 +119,7 @@ class SolrStorage(object):
     @contextmanager
     def solr_http(self, request):
         if isinstance(request, urllib2.Request):
-            url = request.url
+            url = request.get_full_url()
         else:
             url = request
 
