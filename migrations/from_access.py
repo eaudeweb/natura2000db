@@ -12,7 +12,7 @@ table_names = ['CheckForm', 'QueryCombine', 'RegCod', 'actvty', 'amprep',
 
 
 def lower_keys(dic, prune=False):
-    return {k.lower(): dic[k] for k in dic if (not prune or dic[k] is not None)}
+    return dict((k.lower(), dic[k]) for k in dic if (not prune or dic[k] is not None))
 
 
 def load_from_sql():
@@ -267,18 +267,18 @@ def verify_data(biotop_list):
                 return element.u
 
         if doc.validate():
-            flat1 = {k: v for k, v in flat.iteritems() if v}
+            flat1 = dict((k, v) for k, v in flat.iteritems() if v)
             for name in flat1.keys():
                 if known_unused_field(name):
                     del flat1[name]
-            flat2 = {k: v for k, v in doc.flatten(value=get_value) if v}
+            flat2 = dict((k, v) for k, v in doc.flatten(value=get_value) if v)
             for name in flat2.keys():
                 if known_extra_field(name):
                     del flat2[name]
             if set(flat1.keys()) != set(flat2.keys()):
                 print>>sys.stderr, 'unused: %s, extra: %s' % (
-                    {k: flat1[k] for k in set(flat1) - set(flat2)},
-                    {k: flat2[k] for k in set(flat2) - set(flat1)},
+                    dict((k, flat1[k]) for k in set(flat1) - set(flat2)),
+                    dict((k, flat2[k]) for k in set(flat2) - set(flat1)),
                 )
                 count['delta'] += 1
             else:

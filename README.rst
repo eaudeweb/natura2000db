@@ -34,13 +34,19 @@ Loading data from Access database
 =================================
 
 1. Set up solr config (TODO)
-   Note: the Solr configuration file needs to have this line::
+   Note: the Solr configuration file needs to have these lines::
 
     <solrQueryParser defaultOperator="AND"/>
+
+    <field name="regcod" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="type" type="string" indexed="true" stored="true"/>
+    <field name="bio_region" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="orig" type="string" indexed="false" stored="true"/>
 
 2. Dump documents to json. This assumes the Access database is loaded in
    MySQL on `localhost`, in the database `rio`::
 
+    pip install -r migrations/requrements.txt
     rio accessdb_mjson > $DATA/access.mjson
 
 3. Load json to solr::

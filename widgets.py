@@ -83,4 +83,5 @@ class SearchMarkupGenerator(MarkupGenerator):
     def url_for_search(self, search_form, **delta):
         search_data = search_form.value
         search_data.update(delta)
+        search_data = dict((str(k), v) for k, v in search_data.items())
         return flask.url_for('webpages.search', **search_data)
