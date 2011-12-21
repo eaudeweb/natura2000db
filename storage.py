@@ -9,6 +9,7 @@ import flask
 from bson.objectid import ObjectId
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 
 class StorageError(Exception):
@@ -108,14 +109,22 @@ class SolrStorage(object):
         }
 
     @contextmanager
-    def solr_http(self, *args, **kwargs):
+    def solr_http(self, request):
+        if isinstance(request, urllib2.Request):
+            url = request.url
+        else:
+            url = request
+
+        log.debug("Solr request to url %r", url)
+
         try:
-            response = urllib2.urlopen(*args, **kwargs)
+            response = urllib2.urlopen(request)
         except urllib2.URLError, e:
             if e.reason.errno == errno.ECONNREFUSED:
                 raise StorageError("Could not connect to Solr", e)
             else:
                 raise
+
         try:
             yield response
         finally:

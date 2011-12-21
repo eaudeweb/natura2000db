@@ -3,6 +3,7 @@
 
 import sys
 import os
+import logging
 import flask
 import blinker
 import schema
@@ -138,5 +139,7 @@ def create_argument_parser():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(loglevel=logging.DEBUG)
+    logging.getLogger('werkzeug').setLevel(logging.INFO)
     args = create_argument_parser().parse_args()
     args.func(args)
