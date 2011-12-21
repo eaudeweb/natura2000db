@@ -60,7 +60,7 @@ def edit():
 def search():
     db = get_db()
     search_form = schema.Search(flask.request.args.to_dict())
-    results = db.search()
+    results = db.search(text=search_form['text'].value)
     return flask.render_template('search.html',
                                  search_form=search_form,
                                  results=results)

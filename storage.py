@@ -139,7 +139,7 @@ class SolrStorage(object):
 
     def solr_query(self, query):
         url = self.solr_base_url + 'select?q=%s&wt=json&rows=%d' % (
-                query, QUERY_ROWS)
+                urllib.quote(query.encode('utf-8')), QUERY_ROWS)
         with self.solr_http(url) as http_response:
             answer = json.load(http_response)
 
@@ -171,11 +171,13 @@ class SolrStorage(object):
     def document_ids(self):
         return sorted([d['id'] for d in self.solr_query('*')])
 
-    def search(self):
+    def search(self, text):
+        query = 'text:%s' % text # TODO quote for ':' and other solr markup
+
         return [{
                 'id': r['id'],
                 'data': json.loads(r[self.orig_field_name])
-            } for r in self.solr_query('*')]
+            } for r in self.solr_query(query)]
 
 
 def get_db(app=None):
