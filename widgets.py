@@ -79,3 +79,8 @@ class SearchMarkupGenerator(MarkupGenerator):
     _default_settings = dict(MarkupGenerator._default_settings, **{
         'facets': [],
     })
+
+    def url_for_search(self, search_form, **delta):
+        search_data = search_form.value
+        search_data.update(delta)
+        return flask.url_for('webpages.search', **search_data)
