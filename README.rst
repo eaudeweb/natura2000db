@@ -16,7 +16,7 @@ Setup
 
 5. Run the server::
 
-    APP_SETTINGS=$DATA/config.py python demo.py runserver
+    APP_SETTINGS=$DATA/config.py python rio.py runserver
 
 6. Optionally create a script in __venv__/bin/rio to simplify the above
    command (__venv__ stands for the path to the virtualenv folder).
@@ -25,7 +25,7 @@ Setup
     #!/bin/bash
     PRJ='__venv__'
     export APP_SETTINGS=$PRJ/data/config.py
-    exec $PRJ/sandbox/bin/python $PRJ/demo.py $@
+    exec $PRJ/sandbox/bin/python $PRJ/rio.py $@
 
    Run the script as ``rio runserver``.
 
