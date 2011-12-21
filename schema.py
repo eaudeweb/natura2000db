@@ -424,71 +424,82 @@ SpaDoc = Ordered_dict_of(
 
 
 
-def indexer(*paths):
+def indexer(*paths, **kwargs):
+    def values(doc):
+        for p in paths:
+            for element in doc.find(p):
+                value = element.value
+                if value:
+                    yield value
+
     def index(doc):
-        return ''
+        if kwargs.get('concat', False):
+            return ' '.join(unicode(v) for v in values(doc))
+        else:
+            return list(values(doc))
+
+    return index
 
 
 def bio_region_index(doc):
     bio_regions = doc['section2']['bio_region'].value
+    out = []
     for name in bio_regions:
         if bio_regions[name]:
             out.append(name)
-    return ' '.join(name)
+    return ' '.join(out)
 
 
 full_text_fields = ['section1/site_name',
                     'section1/sitecode',
                     'section1/respondent',
-                    'section2/regcod/reg_code',
-                    'section2/regcod/reg_name',
-                    'section3/habitat_types/code',
-                    'section3/bird_types/code',
-                    'section3/bird_types/tax_code',
-                    'section3/bird_types/name',
-                    'section3/bird_types_extra/code',
-                    'section3/bird_types_extra/tax_code',
-                    'section3/bird_types_extra/name',
-                    'section3/mammals_types/code',
-                    'section3/mammals_types/tax_code',
-                    'section3/mammals_types/name',
-                    'section3/reptiles_types/code',
-                    'section3/reptiles_types/tax_code',
-                    'section3/reptiles_types/name',
-                    'section3/fishes_types/code',
-                    'section3/fishes_types/tax_code',
-                    'section3/fishes_types/name',
-                    'section3/invertebrates_types/code',
-                    'section3/invertebrates_types/tax_code',
-                    'section3/invertebrates_types/name',
-                    'section3/plants_types/code',
-                    'section3/plants_types/tax_code',
-                    'section3/plants_types/name',
-                    'section3/other_species/code',
-                    'section3/other_species/tax_code',
-                    'section3/other_species/scientific_name',
-                    'section3/quality',
-                    'section3/vulnar',
-                    'section3/design',
-                    'section3/owner',
-                    'section3/docum',
-                    'section5/national_relations/name',
-                    'section5/international_relations/name',
-                    'section5/corine_relations/code',
-                    'section6/management/manager',
-                    'section6/management/managpl',
+                    'section2/regcod[:]/reg_code',
+                    'section2/regcod[:]/reg_name',
+                    'section3/habitat_types[:]/code',
+                    'section3/bird_types[:]/code',
+                    'section3/bird_types[:]/tax_code',
+                    'section3/bird_types[:]/name',
+                    'section3/bird_types_extra[:]/code',
+                    'section3/bird_types_extra[:]/tax_code',
+                    'section3/bird_types_extra[:]/name',
+                    'section3/mammals_types[:]/code',
+                    'section3/mammals_types[:]/tax_code',
+                    'section3/mammals_types[:]/name',
+                    'section3/reptiles_types[:]/code',
+                    'section3/reptiles_types[:]/tax_code',
+                    'section3/reptiles_types[:]/name',
+                    'section3/fishes_types[:]/code',
+                    'section3/fishes_types[:]/tax_code',
+                    'section3/fishes_types[:]/name',
+                    'section3/invertebrates_types[:]/code',
+                    'section3/invertebrates_types[:]/tax_code',
+                    'section3/invertebrates_types[:]/name',
+                    'section3/plants_types[:]/code',
+                    'section3/plants_types[:]/tax_code',
+                    'section3/plants_types[:]/name',
+                    'section3/other_species[:]/code',
+                    'section3/other_species[:]/tax_code',
+                    'section3/other_species[:]/scientific_name',
+                    'section4/design',
+                    'section4/owner',
                     'section4/quality',
                     'section4/vulnar',
-                    'section4/docum']
+                    'section4/docum',
+                    'section5/national_relations[:]/name',
+                    'section5/international_relations[:]/name',
+                    'section5/corine_relations[:]/code',
+                    'section6/management/manager',
+                    'section6/management/managpl']
 
 Search = Ordered_dict_of(
-    fl.String.named('full_text').
+    fl.String.named('text').
               with_properties(label='Text',
                               index=indexer(*full_text_fields)),
-    fl.String.named('admin_region').
+    fl.String.named('regcod').
               with_properties(label='Regiune administrativa',
-                              index=indexer('section2/regcod/reg_code')),
-    fl.String.named('doc_type').
+                              index=indexer('section2/regcod[:]/reg_code',
+                                            concat=False)),
+    fl.String.named('type').
               with_properties(label='Tip de document',
                               index=lambda doc: 'spa'),
     fl.String.named('bio_region').
