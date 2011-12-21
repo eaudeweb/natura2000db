@@ -16,6 +16,9 @@ class StorageError(Exception):
     pass
 
 
+QUERY_ROWS = 1000
+
+
 class FsStorage(object):
 
     def __init__(self, storage_path):
@@ -151,7 +154,7 @@ class SolrStorage(object):
         return json.loads(results['response']['docs'][0][self.orig_field_name])
 
     def document_ids(self):
-        url = self.solr_base_url + 'select?q=*&wt=json'
+        url = self.solr_base_url + 'select?q=*&wt=json&rows=%d' % (QUERY_ROWS,)
         with self.solr_http(url) as response:
             results = json.load(response)
         return sorted([d['id'] for d in results['response']['docs']])
