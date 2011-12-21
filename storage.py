@@ -171,6 +171,10 @@ class SolrStorage(object):
     def document_ids(self):
         return sorted([d['id'] for d in self.solr_query('*')])
 
+    def search(self):
+        return [{'id': r['id'], 'data': json.loads(r[self.orig_field_name])}
+                for r in self.solr_query('*')]
+
 
 def get_db(app=None):
     if app is None:

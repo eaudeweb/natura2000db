@@ -16,4 +16,12 @@
 
 </form>
 
+{% if results %}
+<ul>
+{% for r in results %}
+  <li>{{ r.id }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
 {% endblock %}

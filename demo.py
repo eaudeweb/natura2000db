@@ -58,8 +58,12 @@ def edit():
 
 @webpages.route('/search')
 def search():
+    db = get_db()
     search_form = schema.Search(flask.request.args.to_dict())
-    return flask.render_template('search.html', search_form=search_form)
+    results = db.search()
+    return flask.render_template('search.html',
+                                 search_form=search_form,
+                                 results=results)
 
 
 def create_app():
