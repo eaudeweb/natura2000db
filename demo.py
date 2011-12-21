@@ -17,7 +17,9 @@ webpages = flask.Blueprint('webpages', __name__)
 @webpages.route('/')
 def index():
     db = get_db()
-    return flask.render_template('index.html', doc_id_list=db.document_ids())
+    return flask.render_template('index.html',
+                                 search_form=schema.Search(),
+                                 doc_id_list=db.document_ids())
 
 
 @webpages.route('/view')
