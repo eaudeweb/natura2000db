@@ -3,10 +3,16 @@ import json
 import re
 import logging
 import urllib2
+import errno
+from contextlib import contextmanager
 import flask
 from bson.objectid import ObjectId
 
 log = logging.getLogger(__name__)
+
+
+class StorageError(Exception):
+    pass
 
 
 class FsStorage(object):
@@ -101,6 +107,20 @@ class SolrStorage(object):
             self.orig_field_name: json.dumps(data),
         }
 
+    @contextmanager
+    def solr_http(self, *args, **kwargs):
+        try:
+            response = urllib2.urlopen(*args, **kwargs)
+        except urllib2.URLError, e:
+            if e.reason.errno == errno.ECONNREFUSED:
+                raise StorageError("Could not connect to Solr", e)
+            else:
+                raise
+        try:
+            yield response
+        finally:
+            response.close()
+
     def save_document(self, doc_id, data):
         return save_document_batch([data])[0]
 
@@ -110,24 +130,21 @@ class SolrStorage(object):
         request.add_header('Content-Type', 'application/json')
         request.add_data(json.dumps([self._solr_doc(doc) for doc in batch]))
 
-        response = urllib2.urlopen(request)
-        response.read()
-        response.close()
+        with self.solr_http(request) as response:
+            response.read()
 
         return [doc['section1']['sitecode'] for doc in batch]
 
     def load_document(self, doc_id):
         url = self.solr_base_url + 'select?q=id:%s&wt=json' % doc_id
-        response = urllib2.urlopen(url)
-        results = json.load(response)
-        response.close()
+        with self.solr_http(url) as response:
+            results = json.load(response)
         return json.loads(results['response']['docs'][0][self.orig_field_name])
 
     def document_ids(self):
         url = self.solr_base_url + 'select?q=*&wt=json'
-        response = urllib2.urlopen(url)
-        results = json.load(response)
-        response.close()
+        with self.solr_http(url) as response:
+            results = json.load(response)
         return sorted([d['id'] for d in results['response']['docs']])
 
 
