@@ -4,6 +4,7 @@
 import sys
 import os
 import flask
+import blinker
 import schema
 from storage import get_db
 from widgets import install_widgets
@@ -37,6 +38,8 @@ def edit():
 
         if doc.validate():
             doc_id = db.save_document(doc_id, doc.value)
+            app = flask.current_app
+            app.document_signal.send('save', doc_id=doc_id, doc=doc)
             flask.flash("Document %r saved" % doc_id)
             return flask.redirect('/')
 
@@ -60,6 +63,7 @@ def search():
 
 def create_app():
     app = flask.Flask(__name__)
+    app.document_signal = blinker.Signal()
 
     app.register_blueprint(webpages)
 
