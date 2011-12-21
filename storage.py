@@ -22,6 +22,7 @@ QUERY_ROWS = 1000
 
 
 SolrAnswer = namedtuple('SolrAnswer', ['docs', 'facets'])
+FacetItem = namedtuple('FacetItem', ['name', 'count'])
 
 
 class FsStorage(object):
@@ -119,13 +120,17 @@ class SolrStorage(object):
             log.warn("Found more results than expected: %d > %d",
                      num_found, QUERY_ROWS)
 
-        if 'facet_counts' in answer:
-            facets = answer['facet_counts']['facet_fields']
-        else:
-            facets = {}
+        def pairs(values):
+            values = iter(values)
+            while True:
+                yield values.next(), values.next()
 
-        return SolrAnswer(answer['response']['docs'],
-                          facets)
+        facets = {}
+        if 'facet_counts' in answer:
+            for name, values in answer['facet_counts']['facet_fields'].iteritems():
+                facets[name] = [FacetItem(*p) for p in pairs(values) if p[1] > 0]
+
+        return SolrAnswer(answer['response']['docs'], facets)
 
     def save_document(self, doc_id, doc):
         return self.save_document_batch([doc])[0]

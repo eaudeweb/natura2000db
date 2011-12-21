@@ -72,3 +72,10 @@ class MarkupGenerator(Generator):
             html += "</tr>\n"
 
         return jinja2.Markup(html)
+
+
+class SearchMarkupGenerator(MarkupGenerator):
+
+    _default_settings = dict(MarkupGenerator._default_settings, **{
+        'facets': [],
+    })

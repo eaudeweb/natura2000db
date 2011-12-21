@@ -59,7 +59,8 @@ def search():
     db = get_db()
     search_form = schema.Search(flask.request.args.to_dict())
     search_answer = db.search(text=search_form['text'].value)
-    form = widgets.MarkupGenerator(flask.current_app.jinja_env)
+    form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
+    form['facets'] = search_answer['facets']
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer)

@@ -10,3 +10,12 @@
   {{ form.input(field, class="field-%s" % field.name) }}
   {%- do form.end() %}
 {% endmacro %}
+
+{% macro facets(form, field) %}
+  {{ _label(form, field) }}
+  <ul class="search-facet-items">
+  {% for item in form['facets'][field.name] %}
+    <li><a href="#">{{ item.name }} ({{ item.count }})</a></li>
+  {% endfor %}
+  </ul>
+{% endmacro %}
