@@ -2,6 +2,7 @@ import os.path
 import json
 import re
 import logging
+import urllib
 import urllib2
 import errno
 from contextlib import contextmanager
@@ -133,6 +134,19 @@ class SolrStorage(object):
         finally:
             response.close()
 
+    def solr_query(self, query):
+        url = self.solr_base_url + 'select?q=%s&wt=json&rows=%d' % (
+                query, QUERY_ROWS)
+        with self.solr_http(url) as http_response:
+            answer = json.load(http_response)
+
+        num_found = answer['response']['numFound']
+        if num_found > QUERY_ROWS:
+            log.warn("Found more results than expected: %d > %d",
+                     num_found, QUERY_ROWS)
+
+        return answer['response']['docs']
+
     def save_document(self, doc_id, data):
         return save_document_batch([data])[0]
 
@@ -148,16 +162,11 @@ class SolrStorage(object):
         return [doc['section1']['sitecode'] for doc in batch]
 
     def load_document(self, doc_id):
-        url = self.solr_base_url + 'select?q=id:%s&wt=json' % doc_id
-        with self.solr_http(url) as response:
-            results = json.load(response)
-        return json.loads(results['response']['docs'][0][self.orig_field_name])
+        doc = self.solr_query('id:%s' % doc_id)[0]
+        return json.loads(doc[self.orig_field_name])
 
     def document_ids(self):
-        url = self.solr_base_url + 'select?q=*&wt=json&rows=%d' % (QUERY_ROWS,)
-        with self.solr_http(url) as response:
-            results = json.load(response)
-        return sorted([d['id'] for d in results['response']['docs']])
+        return sorted([d['id'] for d in self.solr_query('*')])
 
 
 def get_db(app=None):
