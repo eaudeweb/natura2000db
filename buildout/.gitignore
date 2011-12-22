@@ -1,0 +1,6 @@
+*
+!.gitignore
+!bootstrap.py
+!versions.cfg
+!versions-zope-2.12.18.cfg
+!buildout-example.cfg
