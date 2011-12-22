@@ -23,7 +23,8 @@ h1 {
 
 form {
   width: 100%; /* no less than 80% */
-  margin: 0px auto;
+  margin: 0px; /*auto;*/
+  padding: 0;
   font-size: 12px;
   /*font-family: inherited;*/
   /*font-family: Corporate, Arial, Verdana, sans-serif;*/
@@ -44,6 +45,11 @@ thead {
   background: #ddd;
 }
 
+table th {
+  color: #7D7D7D;
+  padding: 4px;
+}
+
 textarea {
   min-width: 38%;
   min-height: 30px;
@@ -62,7 +68,7 @@ h2 {
 
 .dict_children {
   background: #B6E9F8;
-  margin: 0px 15px 10px 15px; /* white space between sections */
+  margin: 0px 2px 10px 2px; /* white space between sections */
   padding: 5px;
 }
 
@@ -88,7 +94,7 @@ table caption {
 
 .dict_children table td {
   color: #7D7D7D;
-  padding: 3px 5px;
+  padding: 3px 2px;
 }
 
 
@@ -186,8 +192,8 @@ label[for="f_section1_site_name"] {
   max-width: 60px; /* those inputs hold max 5 digits */
 }
 
-table .field-percentage,
-table .field-code {
+.field-percentage,
+.field-code {
   max-width: 50px; /* those inputs hold 3-4 digits */
 }
 
@@ -196,6 +202,18 @@ table .field-code {
 .field-overlap {
   max-width: 40px; /* those inputs hold max 3 digits; it's a percent */
 }  
+
+.field-reproduction,
+.field-resident,
+.field-wintering,
+.field-passage {
+  max-width: 130px; /* those inputs hold 13-14 digits */
+}
+
+/* text inputs from tables */
+.field-name {
+  max-width: 150px;
+}
 
 
 /* labels for main sections */
@@ -215,32 +233,10 @@ table .field-code {
   margin-bottom: 2px;
 }
 
-
-/* tables */
-.field-species_types,
-.field-migratory_species_types,
-.field-mammals_types,
-.field-reptiles_types,
-.field-fishes_types,
-.field-invertebrates_types {
-  width: 90%;
-  margin: 0;
-  padding: 0;
-}
-
 .field-plants_types {
   width: 60%;
   margin: 0;
   padding: 0;
-}
-
-/* text inputs from tables */
-.field-name,
-.field-resident,
-.field-reproduction,
-.field-wintering,
-.field-passage {
-  max-width: 150px;
 }
 
 
