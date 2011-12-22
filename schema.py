@@ -456,6 +456,11 @@ def bio_region_index(doc):
     return ' '.join(out)
 
 
+def habitat_class_index(doc):
+    hc_element = doc['section4']['site_characteristics']['habitat_classes']
+    return [element.name for element in hc_element.children if element.value]
+
+
 def spa_sci_index(doc):
     doc_id = doc['section1']['sitecode'].value
     if doc_id[2:5] == 'SPA':
@@ -511,6 +516,13 @@ Search = Ordered_dict_of(
     fl.String.named('text').
               with_properties(label='Text',
                               index=indexer(*full_text_fields)),
+    fl.Enum.named('habitat_class').
+            valued(*sorted(habitat_class_map)).
+            with_properties(label='Clase de habitat',
+                            index=habitat_class_index,
+                            widget='select',
+                            value_labels=habitat_class_map,
+                            advanced=True),
     fl.String.named('regcod').
               with_properties(label='Regiune administrativa',
                               index=indexer('section2/regcod[:]/reg_code',

@@ -7,7 +7,18 @@
 <form action="{{ url_for('webpages.search') }}">
 
   {% do form.begin(widgets_template='search') -%}
+
   <div>{{ form.widget(search_form["text"]) }}</div>
+
+  <div class="advanced-search">
+  {%- for name in search_form.properties.order %}
+    {% set field = search_form[name] %}
+    {% if field.properties.advanced %}
+      {{ form.widget(field) }}
+    {% endif %}
+  {% endfor %}
+  </div>
+
   {%- do form.end() %}
 
   <input type="submit">
