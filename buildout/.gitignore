@@ -3,4 +3,5 @@
 !bootstrap.py
 !versions.cfg
 !versions-zope-2.12.18.cfg
+!versions-rio-zope2.12.cfg
 !buildout-example.cfg
