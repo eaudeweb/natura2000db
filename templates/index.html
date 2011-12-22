@@ -8,9 +8,15 @@
 
   {% do form.begin(widgets_template='search') -%}
 
+  <div class="search-criteria">
+
   <div>{{ form.widget(search_form["text"]) }}</div>
 
-  <div class="advanced-search">
+  <input type="submit">
+
+  [<a href="#" class="search-advanced-button">advanced search</a>]
+
+  <div class="search-advanced">
   {%- for name in search_form.properties.order %}
     {% set field = search_form[name] %}
     {% if field.properties.advanced %}
@@ -19,9 +25,9 @@
   {% endfor %}
   </div>
 
-  {%- do form.end() %}
+  </div>
 
-  <input type="submit">
+  {%- do form.end() %}
 
 </form>
 

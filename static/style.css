@@ -317,3 +317,27 @@ input[type="submit"] {
 .search-facet-selected {
     font-weight: bold;
 }
+
+.search-criteria {
+    border: 1px solid red;
+}
+
+.search-advanced {
+    display: none;
+}
+
+.search-advanced-visible .search-advanced {
+    display: block;
+    border: 1px solid orange;
+}
+
+.search-facets {
+    border: 1px solid blue;
+    float: left;
+    width: 200px;
+}
+
+.search-results {
+    border: 1px solid green;
+    margin-left: 210px;
+}

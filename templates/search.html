@@ -7,16 +7,44 @@
 <form>
 
   {% do form.begin(widgets_template='search') -%}
-  {%- for name in search_form.properties.order %}
-    <div>{{ form.widget(search_form[name]) }}</div>
-  {%- endfor %}
-  {%- do form.end() %}
+
+  <div class="search-criteria">
+
+  <div>{{ form.widget(search_form["text"]) }}</div>
 
   <input type="submit">
 
+  [<a href="#" class="search-advanced-button">advanced search</a>]
+
+  <div class="search-advanced">
+  {%- for name in search_form.properties.order %}
+    {% set field = search_form[name] %}
+    {% if field.properties.advanced %}
+      {{ form.widget(field) }}
+    {% endif %}
+  {% endfor %}
+  </div>
+
+  </div>
+
+  {%- do form.end() %}
+
 </form>
 
-<ul>
+<div class="search-facets">
+
+  {% do form.begin(widgets_template='search') -%}
+  {%- for name in search_form.properties.order %}
+    {% if search_form[name].properties.facet %}
+    <div>{{ form.widget(search_form[name]) }}</div>
+    {% endif %}
+  {%- endfor %}
+  {%- do form.end() %}
+
+</div>
+
+
+<ul class="search-results">
 {% for r in search_answer.docs %}
   <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}
         ">{{ r.data.section1.site_name }}</a></li>
