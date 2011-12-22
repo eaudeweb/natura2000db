@@ -257,36 +257,42 @@ section_3 = Ordered_dict_of(
 
     ).with_properties(label='3. INFORMATII ECOLOGICE')
 
+
+habitat_class_map = {
+    'N01': u"Arii marine, privaluri",
+    'N02': u"Rauri (fluvii) afectate de maree, estuare, terase mlastinoase sau nisipoase, lagune(inclusiv bazinele de colectare a sarii)",
+    'N03': u"Suprafete saraturate (mlastini, pajisti, stepe)",
+    'N04': u"Dune de coasta, plaje cu nisip, machair",
+    'N05': u"Litoral cu prundis, faleze, insulite",
+    'N06': u"Ape dulci continentale (statatoare, curgatoare)",
+    'N07': u"Mlastini (vegetatie de centura), smarcuri, turbarii",
+    'N08': u"Lande, tufarisuri, maquis si garigue, phrygana",
+    'N09': u"Pajisti uscate, stepe",
+    'N10': u"Pajisti seminaturale umede, preerii mezofile",
+    'N11': u"Pajisti alpine si subalpine",
+    'N12': u"Culturi cerealiere extensive (inclusiv culturile de rotatie cu dezmiristire)",
+    'N13': u"Orezarii",
+    'N14': u"Pajisti ameliorate",
+    'N15': u"Alte terenuri arabile",
+    'N16': u"Paduri caducifoliate",
+    'N17': u"Paduri de conifere",
+    'N18': u"Paduri semperviriscente de nerasinoase",
+    'N19': u"Paduri mixte",
+    'N20': u"Paduri de monocultura (plopi sau arbori exotici)",
+    'N21': u"Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)",
+    'N22': u"Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice",
+    'N23': u"Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)",
+    'N26': u"Habitate de paduri (paduri in tranzitie)",
+}
+
+
 section_4 = Ordered_dict_of(
 
     Ordered_dict_of(
 
         Ordered_dict_of(
-
-                Float_using('N01').with_properties(label='Arii marine, privaluri'),
-                Float_using('N02').with_properties(label='Rauri (fluvii) afectate de maree, estuare, terase mlastinoase sau nisipoase, lagune(inclusiv bazinele de colectare a sarii)'),
-                Float_using('N03').with_properties(label='Suprafete saraturate (mlastini, pajisti, stepe)'),
-                Float_using('N04').with_properties(label='Dune de coasta, plaje cu nisip, machair'),
-                Float_using('N05').with_properties(label='Litoral cu prundis, faleze, insulite'),
-                Float_using('N06').with_properties(label='Ape dulci continentale (statatoare, curgatoare)'),
-                Float_using('N07').with_properties(label='Mlastini (vegetatie de centura), smarcuri, turbarii'),
-                Float_using('N08').with_properties(label='Lande, tufarisuri, maquis si garigue, phrygana'),
-                Float_using('N09').with_properties(label='Pajisti uscate, stepe'),
-                Float_using('N10').with_properties(label='Pajisti seminaturale umede, preerii mezofile'),
-                Float_using('N11').with_properties(label='Pajisti alpine si subalpine'),
-                Float_using('N12').with_properties(label='Culturi cerealiere extensive (inclusiv culturile de rotatie cu dezmiristire)'),
-                Float_using('N13').with_properties(label='Orezarii'),
-                Float_using('N14').with_properties(label='Pajisti ameliorate'),
-                Float_using('N15').with_properties(label='Alte terenuri arabile'),
-                Float_using('N16').with_properties(label='Paduri caducifoliate'),
-                Float_using('N17').with_properties(label='Paduri de conifere'),
-                Float_using('N18').with_properties(label='Paduri semperviriscente de nerasinoase'),
-                Float_using('N19').with_properties(label='Paduri mixte'),
-                Float_using('N20').with_properties(label='Paduri de monocultura (plopi sau arbori exotici)'),
-                Float_using('N21').with_properties(label='Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)'),
-                Float_using('N22').with_properties(label='Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice'),
-                Float_using('N23').with_properties(label='Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)'),
-                Float_using('N26').with_properties(label='Habitate de paduri (paduri in tranzitie)'),
+                *[Float_using(key).with_properties(label=habitat_class_map[key])
+                  for key in sorted(habitat_class_map)]
             ).named('habitat_classes').
               using(optional=True).
               with_properties(label='Clase de habitat', widget='habitat_breakdown'),
