@@ -3,3 +3,5 @@ Jinja2==2.6
 Werkzeug==0.8.1
 blinker==1.2
 flatland==dev
+argparse==1.2.1
+CherryPy==3.2.2

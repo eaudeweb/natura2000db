@@ -57,10 +57,22 @@ def import_mjson(args):
 
 
 def runserver(args):
-    from revproxy import ReverseProxied
     app = create_app()
-    app.wsgi_app = ReverseProxied(app.wsgi_app)
-    app.run(debug=True)
+
+    if args.proxied:
+        from revproxy import ReverseProxied
+        app.wsgi_app = ReverseProxied(app.wsgi_app)
+
+    if args.cherrypy:
+        from cherrypy import wsgiserver
+        server = wsgiserver.CherryPyWSGIServer(('localhost', 5000), app)
+        try:
+            server.start()
+        except KeyboardInterrupt:
+            server.stop()
+
+    else:
+        app.run(debug=True)
 
 
 def create_argument_parser():
@@ -70,6 +82,8 @@ def create_argument_parser():
 
     parser_runserver = subparsers.add_parser('runserver')
     parser_runserver.set_defaults(func=runserver)
+    parser_runserver.add_argument('--cherrypy', action='store_true')
+    parser_runserver.add_argument('--proxied', action='store_true')
 
     parser_accessdb_mjson = subparsers.add_parser('accessdb_mjson')
     parser_accessdb_mjson.set_defaults(func=accessdb_mjson)
