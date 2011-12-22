@@ -69,6 +69,7 @@ Loading data from Access database
     <field name="regcod" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="type" type="string" indexed="true" stored="true"/>
     <field name="bio_region" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="habitat_class" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="orig" type="string" indexed="false" stored="true"/>
 
 2. Dump documents to json. This assumes the Access database is loaded in
