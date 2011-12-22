@@ -2,10 +2,13 @@
 
   <metal:s fill-slot="head">
     <tal:c content="structure options/head"/>
+    <tal:d define="site here/getSite;
+                   site_url site/absolute_url">
     <link rel="stylesheet"
-          tal:define="site here/getSite;
-                      site_url site/absolute_url"
           tal:attributes="href string:${site_url}/++resource++chmrio_zope2/style.css"/>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script tal:attributes="src string:${site_url}/++resource++chmrio_zope2/search.js"></script>
+    </tal:d>
   </metal:s>
 
   <metal:s fill-slot="body">
