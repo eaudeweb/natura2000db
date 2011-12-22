@@ -1,13 +1,18 @@
 import urllib
 from Products.Five.browser import BrowserView
 from App.config import getConfiguration
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from webob import Request
 import paste.proxy
+import lxml.html.soupparser
+from lxml.cssselect import CSSSelector
 
 
 _env = getConfiguration().environment
 BACKEND_URL = _env.get('CHMRIO_BACKEND_URL').rstrip('/')
 proxy = paste.proxy.Proxy(BACKEND_URL + '/')
+
+frame_zpt = PageTemplateFile('frame.zpt', globals())
 
 
 def get_backend_page(ctx, relative_url, headers,
@@ -34,6 +39,16 @@ def get_backend_page(ctx, relative_url, headers,
 
     response = request.get_response(proxy)
     return response.status_int, dict(response.headerlist), response.body
+
+
+class HtmlExtract(object):
+
+    def __init__(self, html):
+        self.doc = lxml.html.soupparser.fromstring(html)
+
+    def css(self, selector):
+        xpath = CSSSelector(selector)
+        return u' '.join(lxml.html.tostring(e) for e in xpath(self.doc)).strip()
 
 
 class ChmRioFormsProxy(BrowserView):
@@ -78,4 +93,10 @@ class ChmRioFormsProxy(BrowserView):
         response.setStatus(status)
         for name, value in headers.iteritems():
             response.setHeader(name, value)
-        response.setBody(body)
+
+        page = HtmlExtract(body)
+        options = {
+            'head': '', #page.css('head'),
+            'body': page.css('body'),
+        }
+        return frame_zpt.__of__(self.aq_parent)(**options)
