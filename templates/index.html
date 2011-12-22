@@ -1,13 +1,27 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-[<a href="{{ url_for('edit') }}">new</a>]
+
+<h1>Căutare</h1>
+
+<form action="{{ url_for('webpages.search') }}">
+
+  {% do form.begin(widgets_template='search') -%}
+  <div>{{ form.widget(search_form["text"]) }}</div>
+  {%- do form.end() %}
+
+  <input type="submit">
+
+</form>
+
+
+[<a href="{{ url_for('webpages.edit') }}">new</a>]
 <ul>
 {% for doc_id in doc_id_list %}
   <li>
     {{ doc_id }}
-    [<a href="{{ url_for('view', doc_id=doc_id) }}">view</a>]
-    [<a href="{{ url_for('edit', doc_id=doc_id) }}">edit</a>]
+    [<a href="{{ url_for('webpages.view', doc_id=doc_id) }}">view</a>]
+    [<a href="{{ url_for('webpages.edit', doc_id=doc_id) }}">edit</a>]
   </li>
 {% endfor %}
 </ul>

@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Căutare</h1>
+
+<form>
+
+  {% do form.begin(widgets_template='search') -%}
+  {%- for name in search_form.properties.order %}
+    <div>{{ form.widget(search_form[name]) }}</div>
+  {%- endfor %}
+  {%- do form.end() %}
+
+  <input type="submit">
+
+</form>
+
+<ul>
+{% for r in search_answer.docs %}
+  <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}
+        ">{{ r.data.section1.site_name }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}

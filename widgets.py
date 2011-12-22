@@ -3,11 +3,6 @@ import jinja2
 from flatland.out.markup import Tag, Generator
 
 
-_default_settings = {
-    'skip_labels': False,
-    'widgets_template': 'edit',
-}
-
 class WidgetDispatcher(object):
 
     def __init__(self, jinja_env, context):
@@ -19,14 +14,19 @@ class WidgetDispatcher(object):
         tmpl = self.jinja_env.get_template(tmpl_name)
         widget_name = element.properties.get('widget', 'input')
         widget_macro = getattr(tmpl.module, widget_name)
-        return widget_macro(element)
+        return widget_macro(self.context, element)
 
 
 class MarkupGenerator(Generator):
 
+    _default_settings = {
+        'skip_labels': False,
+        'widgets_template': 'edit',
+    }
+
     def __init__(self, jinja_env):
         super(MarkupGenerator, self).__init__('html')
-        self._frames[-1].update(_default_settings)
+        self._frames[-1].update(self._default_settings)
         self.widget = WidgetDispatcher(jinja_env, self)
 
     def is_hidden(self, field):
@@ -74,5 +74,14 @@ class MarkupGenerator(Generator):
         return jinja2.Markup(html)
 
 
-def install_widgets(jinja_env):
-    jinja_env.globals['form'] = MarkupGenerator(jinja_env)
+class SearchMarkupGenerator(MarkupGenerator):
+
+    _default_settings = dict(MarkupGenerator._default_settings, **{
+        'facets': [],
+    })
+
+    def url_for_search(self, search_form, **delta):
+        search_data = search_form.value
+        search_data.update(delta)
+        search_data = dict((str(k), v) for k, v in search_data.items())
+        return flask.url_for('webpages.search', **search_data)

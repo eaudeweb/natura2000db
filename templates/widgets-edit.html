@@ -1,65 +1,65 @@
-{% macro _label(field) %}
+{% macro _label(form, field) %}
   {% if not form['skip_labels'] %}
     {{ form.label(field, contents=field.properties.label) }}
   {% endif %}
 {% endmacro %}
 
-{% macro _errors(field) %}
+{% macro _errors(form, field) %}
   {% for msg in field.errors %}
     <span class="error">{{ msg }}</span>
   {% endfor -%}
 {% endmacro %}
 
-{% macro input(field) %}
+{% macro input(form, field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {{ _label(field) }}
+  {{ _label(form, field) }}
   {{ form.input(field, class="field-%s" % field.name) }}
-  {{- _errors(field) -}}
+  {{- _errors(form, field) -}}
   {%- do form.end() %}
 {% endmacro %}
 
-{% macro radio(field) %}
+{% macro radio(form, field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   <td>
   {% for value in field.valid_values %}
     {{ form.input(field, type="radio", value=value) }}
   {% endfor %}
-  {{- _errors(field) -}}
+  {{- _errors(form, field) -}}
   </td>
   {%- do form.end() %}
 {% endmacro %}
 
-{% macro select(field) %}
+{% macro select(form, field) %}
   {{ form.select.open(field, class="field-%s" % field.name) }}
   {{ form.option(field, contents='') }}
   {% for value in field.valid_values %}
     {{ form.option(field, value=value, contents=value) }}
   {% endfor %}
   {{ form.select.close() }}
-  {{- _errors(field) -}}
+  {{- _errors(form, field) -}}
 {% endmacro %}
 
-{% macro textarea(field) %}
+{% macro textarea(form, field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {{ _label(field) }}
+  {{ _label(form, field) }}
   {{ form.textarea(field, class="field-%s" % field.name) }}
-  {{- _errors(field) -}}
+  {{- _errors(form, field) -}}
   {%- do form.end() %}
 {% endmacro %}
 
-{% macro hidden(field) %}
+{% macro hidden(form, field) %}
   {{ form.input(field, type="hidden") }}
 {% endmacro %}
 
-{% macro checkbox(field) %}
+{% macro checkbox(form, field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
-  {{ _label(field) }}
+  {{ _label(form, field) }}
   {{ form.input(field, type="checkbox") }}
-  {{- _errors(field) -}}
+  {{- _errors(form, field) -}}
   {%- do form.end() %}
 {% endmacro %}
 
-{% macro _dict_children(field) %}
+{% macro _dict_children(form, field) %}
   {%- for child_name in field.properties.order %}
   <div class="dict_children">
   {{ form.widget(field[child_name]) }}
@@ -67,17 +67,17 @@
   {% endfor -%}
 {% endmacro %}
 
-{% macro dict(field) %}
+{% macro dict(form, field) %}
   <div class="field-{{ field.name }}">
   <p>{{ field.properties.label }}</p>
   {%- do form.begin(skip_labels=False) %}
-  {{ _dict_children(field) }}
+  {{ _dict_children(form, field) }}
   {%- do form.end() %}
-  {{- _errors(field) -}}
+  {{- _errors(form, field) -}}
   </div>
 {% endmacro %}
 
-{% macro list(field) %}
+{% macro list(form, field) %}
   <div class="field-{{ field.name }}">
   <p>{{ field.properties.label }}</p>
   {% do field.append('') %}
@@ -88,16 +88,19 @@
   {{ form.widget(child) }}
   {% endfor %}
   {%- do form.end() %}
+  {{- _errors(form, field) -}}
   </div>
 {% endmacro %}
 
-{% macro _table_td(field) %}
+{% macro _table_td(form, field) %}
   {% if field.properties.order %}
     {% for child_name in field.properties.order %}
-      {{ _table_td(field[child_name]) }}
+      {{ _table_td(form, field[child_name]) }}
     {% endfor %}
   {% else %}
-    {% if not form.is_hidden(field) %}
+    {% if form.is_hidden(field) %}
+      {{ hidden(form, field) }}
+    {% else %}
       {% do form.begin(skip_labels=True) -%}
       <td>{{ form.widget(field) }}</td>
       {%- do form.end() %}
@@ -105,7 +108,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro table(field) %}
+{% macro table(form, field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1 class="field-{{ field.name }}">
     <caption>{{field.properties.label}}</caption>
@@ -117,16 +120,16 @@
     <tbody>
       {% for child in field %}
       <tr>
-          {{ _table_td(child) }}
+          {{ _table_td(form, child) }}
       </tr>
       {% endfor %}
     </tbody>
   </table>
   {%- do form.end() %}
-  {{- _errors(field) -}}
+  {{- _errors(form, field) -}}
 {% endmacro %}
 
-{% macro habitat_breakdown(field) %}
+{% macro habitat_breakdown(form, field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1 class="field-{{ field.name }}">
     <thead>
@@ -152,14 +155,14 @@
       </tr>
     </table>
   {%- do form.end() %}
-  {{- _errors(field) -}}
+  {{- _errors(form, field) -}}
 {% endmacro %}
 
-{% macro section(field) %}
+{% macro section(form, field) %}
   {%- do form.begin(auto_domid=true, auto_for=true) %}
   <div class="field-{{ field.name }}">
   <h2>{{ field.properties.label }}</h2>
-  {{ _dict_children(field) }}
+  {{ _dict_children(form, field) }}
   </div>
   {%- do form.end() %}
 {% endmacro %}
