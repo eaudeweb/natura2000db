@@ -525,16 +525,13 @@ Search = Ordered_dict_of(
              .with_properties(label='Regiune administrativa',
                               index=indexer('section2/administrative[:]/code',
                                             concat=False),
-                              widget='facets',
                               facet=True),
     fl.String.named('type') \
              .with_properties(label='Tip de document',
                               index=spa_sci_index,
-                              widget='facets',
                               facet=True),
     fl.String.named('bio_region') \
              .with_properties(label='Regiune biogeografica',
                               index=bio_region_index,
-                              widget='facets',
                               facet=True),
 )

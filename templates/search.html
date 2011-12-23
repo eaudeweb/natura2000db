@@ -33,7 +33,7 @@
 
 <div class="search-facets">
 {% if search_answer.docs %}
-  {% do form.begin(widgets_template='search') -%}
+  {% do form.begin(widgets_template='facet') -%}
   {%- for name in search_form.properties.order %}
     {% if search_form[name].properties.facet %}
     <div>{{ form.widget(search_form[name]) }}</div>

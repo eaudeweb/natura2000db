@@ -11,22 +11,6 @@
   {%- do form.end() %}
 {% endmacro %}
 
-{% macro facets(form, field) %}
-  {{ _label(form, field) }}
-  {% if field.value %}
-    <span class="search-facet-selected">{{ field.value }}</span>
-    {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): None}) %}
-    [<a href={{ url }}>X</a>]
-  {% else %}
-    <ul class="search-facet-items">
-    {% for item in form['facets'][field.name] %}
-      {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): item.name}) %}
-      <li><a href="{{ url }}">{{- item.name }}</a> ({{ item.count }})</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endmacro %}
-
 {% macro select(form, field) %}
   {{ _label(form, field) }}
   {{ form.select.open(field, class="field-%s" % field.name) }}
