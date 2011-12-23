@@ -10,11 +10,9 @@ webpages = flask.Blueprint('webpages', __name__)
 
 @webpages.route('/')
 def index():
-    db = get_db()
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
     return flask.render_template('index.html', form=form,
-                                 search_form=schema.Search(),
-                                 doc_id_list=db.document_ids())
+                                 search_form=schema.Search())
 
 
 @webpages.route('/view')
@@ -23,7 +21,7 @@ def view():
     db = get_db()
     doc = db.load_document(doc_id)
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
-    return flask.render_template('view.html', doc=doc, form=form)
+    return flask.render_template('view.html', doc=doc, form=form, doc_id=doc_id)
 
 
 @webpages.route('/new', methods=['GET', 'POST'])

@@ -47,7 +47,7 @@
 <ul class="search-results">
 {% for r in search_answer.docs %}
   <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}
-        ">{{ r.data.section1.site_name }}</a></li>
+        ">{{ r.data.section1.name }}</a></li>
 {% endfor %}
 </ul>
 
