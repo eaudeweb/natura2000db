@@ -108,7 +108,7 @@ InfoTable = CommonList.of(
 
             ).named('population').with_properties(label='Populatie'),
 
-        InfoColumn.named('sit_evaluation').with_properties(label='Evaluarea sitului'),
+        InfoColumn.named('site_evaluation').with_properties(label='Evaluarea sitului'),
 
         ),
     )
@@ -117,10 +117,10 @@ InfoTable = CommonList.of(
 section_1 = Ordered_dict_of(
 
     CommonString.named('type').using(optional=False, validators=[valid_type]).with_properties(label='Tip'),
-    CommonString.named('sitecode').using(optional=False, validators=[valid_site_code]).with_properties(label='Codul sitului'),
+    CommonString.named('code').using(optional=False, validators=[valid_site_code]).with_properties(label='Codul sitului'),
 
-    CommonDate.named('date').using(optional=False).with_properties(label='Data completarii'),
-    CommonDate.named('update').with_properties(label='Data actualizarii'),
+    CommonDate.named('date_document_add').using(optional=False).with_properties(label='Data completarii'),
+    CommonDate.named('date_document_update').with_properties(label='Data actualizarii'),
 
     CommonList.named('other_sites').of(
 
@@ -128,16 +128,16 @@ section_1 = Ordered_dict_of(
 
         ).with_properties(widget='list', label='Legaturi cu alte situri Natura 2000:'),
 
-    CommonString.named('respondent').with_properties(widget='textarea', label='Responsabili'),
+    CommonString.named('responsible').with_properties(widget='textarea', label='Responsabili'),
 
-    CommonString.named('site_name').using(optional=False).with_properties(label='Numele sitului', widget='textarea'),
+    CommonString.named('name').using(optional=False).with_properties(label='Numele sitului', widget='textarea'),
 
     Ordered_dict_of(
-        CommonDate.named('date_prop').with_properties(label='Data propunerii ca sit SCI'),
-        CommonDate.named('date_con').with_properties(label='Data confirmarii ca sit SCI'),
-        CommonDate.named('spa_date').with_properties(label='Data confirmarii ca sit SPA'),
-        CommonDate.named('sac_date').with_properties(label='Data desemnarii ca sit SAC'),
-        ).named('sit_dates') \
+        CommonDate.named('proposal').with_properties(label='Data propunerii ca sit SCI'),
+        CommonDate.named('confirmation_sci').with_properties(label='Data confirmarii ca sit SCI'),
+        CommonDate.named('confirmation_spa').with_properties(label='Data confirmarii ca sit SPA'),
+        CommonDate.named('confirmation_sac').with_properties(label='Data desemnarii ca sit SAC'),
+        ).named('date') \
          .with_properties(label='Datele indicarii si desemnarii/clasificarii sitului',
                           widget='dict'),
 
@@ -153,72 +153,72 @@ section_2 = Ordered_dict_of(
     CommonFloat.named('length').with_properties(label='Lungimea sitului (km)'),
 
     Ordered_dict_of(
-        CommonFloat.named('alt_min').with_properties(label='Minima'),
-        CommonFloat.named('alt_max').with_properties(label='Maxima'),
-        CommonFloat.named('alt_mean').with_properties(label='Medie'),
+        CommonFloat.named('min').with_properties(label='Minima'),
+        CommonFloat.named('max').with_properties(label='Maxima'),
+        CommonFloat.named('mean').with_properties(label='Medie'),
         ).named('altitude').with_properties(label='Altitudine (m)', widget='dict'),
 
-    CommonList.named('regcod').of(
+    CommonList.named('administrative').of(
 
         Ordered_dict_of(
-            CommonString.named('reg_code').with_properties(label='Codul NUTS'),
-            CommonString.named('reg_name').with_properties(label='Numele regiunii'),
-            CommonString.named('cover').with_properties(label='Pondere (%)'),
+            CommonString.named('code').with_properties(label='Codul NUTS'),
+            CommonString.named('name').with_properties(label='Numele regiunii'),
+            CommonString.named('coverage').with_properties(label='Pondere (%)'),
             ),
 
         ).using(optional=False).with_properties(label='Regiunea administrativa'),
 
     Ordered_dict_of(
         CommonBoolean.named('alpine').with_properties(label='Alpina'),
-        CommonBoolean.named('continent').with_properties(label='Continentala'),
+        CommonBoolean.named('continental').with_properties(label='Continentala'),
         CommonBoolean.named('steppic').with_properties(label='Stepica'),
         CommonBoolean.named('pontic').with_properties(label='Pontica'),
         CommonBoolean.named('pannonic').with_properties(label='Panonica'),
-        ).named('bio_region').using(validators=[valid_any]).with_properties(label='Regiunea biogeografica', widget='dict'),
+        ).named('biogeographic').using(validators=[valid_any]).with_properties(label='Regiunea biogeografica', widget='dict'),
 
     ).with_properties(label='2. LOCALIZAREA SITULUI')
 
 
 section_3 = Ordered_dict_of(
 
-    CommonList.named('habitat_types').of(
+    CommonList.named('habitat').of(
 
         Ordered_dict_of(
             CommonString.named('code').using(optional=False).with_properties(label='Cod'),
             CommonString.named('percentage').using(optional=False).with_properties(label='Pondere'),
-            CommonEnum.named('repres').valued('A', 'B', 'C', 'D').with_properties(label='Reprezentativitate'),
-            CommonEnum.named('relativ_area').valued('A', 'B', 'C').with_properties(label='Suprafata relativa'),
+            CommonEnum.named('representativeness').valued('A', 'B', 'C', 'D').with_properties(label='Reprezentativitate'),
+            CommonEnum.named('relative_area').valued('A', 'B', 'C').with_properties(label='Suprafata relativa'),
             CommonEnum.named('conservation_status').valued('A', 'B', 'C').with_properties(label='Stare de conservare'),
             CommonEnum.named('global_evaluation').valued('A', 'B', 'C').with_properties(label='Evaluare globala'),
             ),
 
         ).with_properties(label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste:'),
 
-    InfoTable.named('bird_types').with_properties(label='Specii de pasari enumerate in anexa I la Directiva Consiliului 79/409/CEE'),
-    InfoTable.named('bird_types_extra').with_properties(label='Specii de pasari cu migratie regulata nementionate in anexa I la Directiva Consiliului 79/409/CEE'),
-    InfoTable.named('mammals_types').with_properties(label='Specii de mamifere enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
-    InfoTable.named('reptiles_types').with_properties(label='Specii de amfibieni si reptile enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
-    InfoTable.named('fishes_types').with_properties(label='Specii de pesti enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
-    InfoTable.named('invertebrates_types').with_properties(label='Specii de nevertebrate enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+    InfoTable.named('species_bird').with_properties(label='Specii de pasari enumerate in anexa I la Directiva Consiliului 79/409/CEE'),
+    InfoTable.named('species_bird_extra').with_properties(label='Specii de pasari cu migratie regulata nementionate in anexa I la Directiva Consiliului 79/409/CEE'),
+    InfoTable.named('species_mammal').with_properties(label='Specii de mamifere enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+    InfoTable.named('species_reptile').with_properties(label='Specii de amfibieni si reptile enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+    InfoTable.named('species_fish').with_properties(label='Specii de pesti enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
+    InfoTable.named('species_invertebrate').with_properties(label='Specii de nevertebrate enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
-    CommonList.named('plants_types').of(
+    CommonList.named('species_plant').of(
 
         Ordered_dict_of(
             CommonString.named('code').using(optional=False).with_properties(label='Cod'),
             CommonString.named('tax_code').with_properties(widget='hidden', label='Cod taxonomic'),
             CommonString.named('name').using(optional=False).with_properties(label='Nume'),
             CommonString.named('population').with_properties(label='Populatie'),
-            InfoColumn.named('sit_evaluation').with_properties(label='Evaluarea sitului'),
+            InfoColumn.named('site_evaluation').with_properties(label='Evaluarea sitului'),
             ),
 
         ).with_properties(label='Specii de plante enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
-    CommonList.named('other_species').of(
+    CommonList.named('species_other').of(
         Ordered_dict_of(
 
             CommonEnum.named('category') \
                       .with_properties(optional=False) \
-                      .valued('pasari', 'mamifere', 'amfibieni', 'reptile', 'pesti', 'nevertebrate', 'plante') \
+                      .valued('bird', 'mammal', 'amphibian', 'reptile', 'fish', 'invertebrate', 'plant') \
                       .with_properties(label='Categorie'),
 
             CommonString.named('code').with_properties(label='Cod'),
@@ -226,8 +226,8 @@ section_3 = Ordered_dict_of(
             CommonString.named('scientific_name').using(optional=False).with_properties(label='Denumire stiintifica'),
 
             Ordered_dict_of(
-                CommonString.named('population_text'),
-                CommonEnum.named('population_trend').valued('A', 'B', 'C', 'D'),
+                CommonString.named('text'),
+                CommonEnum.named('trend').valued('A', 'B', 'C', 'D'),
                 ).named('population').with_properties(label='Populatie'),
 
             ),
@@ -272,33 +272,44 @@ section_4 = Ordered_dict_of(
         Ordered_dict_of(
             *[CommonFloat.named(key).with_properties(label=habitat_class_map[key])
               for key in sorted(habitat_class_map)]
-            ).named('habitat_classes') \
+            ).named('habitat') \
              .using(optional=True) \
              .with_properties(label='Clase de habitat', widget='habitat_breakdown'),
 
         CommonString.named('other').with_properties(label='Alte caracteristici ale sitului', widget='textarea'),
 
-        ).named('site_characteristics') \
+        ).named('characteristics') \
          .using(optional=True) \
          .with_properties(label='Caracteristici generale ale sitului', widget='dict'),
 
     CommonString.named('quality').with_properties(widget='textarea', label='Calitate si importanta'),
-    CommonString.named('vulnar').with_properties(widget='textarea', label='Vulnerabilitate'),
-    CommonString.named('design').with_properties(widget='textarea', label='Desemnarea sitului (vezi observatiile privind datele cantitative de mai jos)'),
-    CommonString.named('owner').with_properties(widget='textarea', label='Tip de proprietate'),
-    CommonString.named('docum').with_properties(widget='textarea', label='Documentatie'),
+    CommonString.named('vulnerability').with_properties(widget='textarea', label='Vulnerabilitate'),
+    CommonString.named('designation').with_properties(widget='textarea', label='Desemnarea sitului (vezi observatiile privind datele cantitative de mai jos)'),
+    CommonString.named('ownership').with_properties(widget='textarea', label='Tip de proprietate'),
+    CommonString.named('documentation').with_properties(widget='textarea', label='Documentatie'),
 
     CommonList.named('history').of(
 
         Ordered_dict_of(
             CommonString.named('date').with_properties(label='Data'),
-            CommonString.named('modified_field').with_properties(label='Campul modificat'),
+            CommonString.named('field').with_properties(label='Campul modificat'),
             CommonString.named('description').with_properties(label='Descriere'),
             ),
 
         ).with_properties(label='Istoric (se va completa de catre Comisie)'),
 
     ).with_properties(label='4. DESCRIEREA SITULUI')
+
+
+international_classification_map = [
+    ('ramsar', "Conventia Ramsar"),
+    ('biogenetic', "Rezervatia biogenetica"),
+    ('eurodiploma', "Sit Eurodiploma"),
+    ('biosphere', "Rezervatia biosferei"),
+    ('barcelona', "Conventia Barcelona"),
+    ('world_heritage', "Sit patrimoniu mondial"),
+    ('other', "Altele"),
+]
 
 
 section_5 = Ordered_dict_of(
@@ -312,32 +323,31 @@ section_5 = Ordered_dict_of(
 
         ).with_properties(label='Clasificare la nivel national si regional'),
 
-    CommonList.named('national_relations').of(
+    CommonList.named('national').of(
 
         Ordered_dict_of(
             CommonString.named('type').with_properties(label='Tip'),
-            CommonString.named('name').using(optional=False).with_properties(label='Numele sitului'),
-            CommonString.named('sit_type').with_properties(label='Tip'),
+            CommonString.named('site_name').using(optional=False).with_properties(label='Numele sitului'),
+            CommonString.named('site_type').with_properties(label='Tipul sitului'),
             CommonFloat.named('overlap').with_properties(label='Suprapunere %'),
             ),
 
         ).with_properties(label='Relatiile sitului descris cu alte situri - desemnate la nivel national sau regional'),
 
-    CommonList.named('international_relations').of(
+    CommonList.named('international').of(
 
         Ordered_dict_of(
             CommonEnum.named('type') \
-                      .valued('Conventia Ramsar', 'Rezervatia biogenetica', 'Sit Eurodiploma', 'Rezervatia biosferei',
-                              'Conventia Barcelona', 'Sit patrimoniu mondial', 'Altele') \
+                      .valued(*[k for k,v in international_classification_map]) \
                       .with_properties(label='Tip'),
-            CommonString.named('name').using(optional=False).with_properties(label='Numele sitului'),
-            CommonString.named('sit_type').with_properties(label='Tip'),
+            CommonString.named('site_name').using(optional=False).with_properties(label='Numele sitului'),
+            CommonString.named('site_type').with_properties(label='Tipul sitului'),
             CommonFloat.named('overlap').with_properties(label='Suprapunere %'),
             ),
 
         ).with_properties(label='Relatiile sitului descris cu alte situri - desemnate la nivel international'),
 
-    CommonList.named('corine_relations').of(
+    CommonList.named('corine').of(
 
         Ordered_dict_of(
             CommonString.named('code').using(optional=False).with_properties(label='Cod sit Corine'),
@@ -354,7 +364,7 @@ section_6 = Ordered_dict_of(
 
     Ordered_dict_of(
 
-        CommonList.named('inside_activities').of(
+        CommonList.named('internal').of(
 
             Ordered_dict_of(
                 CommonString.named('code').using(optional=False).with_properties(label='Cod'),
@@ -365,7 +375,7 @@ section_6 = Ordered_dict_of(
 
             ).with_properties(label='Activitati si consecinte in interiorul sitului'),
 
-        CommonList.named('outside_activities').of(
+        CommonList.named('external').of(
 
             Ordered_dict_of(
                 CommonString.named('code').using(optional=False).with_properties(label='Cod'),
@@ -376,12 +386,12 @@ section_6 = Ordered_dict_of(
 
             ).with_properties(label='Activitati si consecinte in jurul sitului'),
 
-        ).named('in_jur') \
+        ).named('activity') \
          .with_properties(widget='dict', label="Activitati antropice, consecintele lor generale si suprafata din sit afectata"),
 
     Ordered_dict_of(
-        CommonString.named('manager').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
-        CommonString.named('managpl').with_properties(widget='textarea', label='Planuri de management al sitului'),
+        CommonString.named('organisation').with_properties(widget='textarea', label='Organismul responsabil pentru managementul sitului'),
+        CommonString.named('plan').with_properties(widget='textarea', label='Planuri de management al sitului'),
         ).named('management') \
          .with_properties(widget='dict', label="Managementul sitului"),
 
@@ -400,7 +410,7 @@ section_7 = Ordered_dict_of(
 
         ).with_properties(widget='list', label='Harta fizica'),
 
-    CommonString.named('site_limits').with_properties(widget='textarea', label='Specificati daca limitele sitului sunt disponibile in format digital'),
+    CommonString.named('limits').with_properties(widget='textarea', label='Specificati daca limitele sitului sunt disponibile in format digital'),
 
     ).with_properties(label='7. HARTA SITULUI')
 
@@ -434,7 +444,7 @@ def indexer(*paths, **kwargs):
 
 
 def bio_region_index(doc):
-    bio_regions = doc['section2']['bio_region'].value
+    bio_regions = doc['section2']['biogeographic'].value
     out = []
     for name in bio_regions:
         if bio_regions[name]:
@@ -443,12 +453,12 @@ def bio_region_index(doc):
 
 
 def habitat_class_index(doc):
-    hc_element = doc['section4']['site_characteristics']['habitat_classes']
+    hc_element = doc['section4']['characteristics']['habitat']
     return [element.name for element in hc_element.children if element.value]
 
 
 def spa_sci_index(doc):
-    doc_id = doc['section1']['sitecode'].value
+    doc_id = doc['section1']['code'].value
     if doc_id[2:5] == 'SPA':
         return 'spa'
     elif doc_id[2:5] == 'SCI':
@@ -458,46 +468,46 @@ def spa_sci_index(doc):
 
 
 full_text_fields = [
-    'section1/site_name',
-    'section1/sitecode',
-    'section1/respondent',
-    'section2/regcod[:]/reg_code',
-    'section2/regcod[:]/reg_name',
-    'section3/habitat_types[:]/code',
-    'section3/bird_types[:]/code',
-    'section3/bird_types[:]/tax_code',
-    'section3/bird_types[:]/name',
-    'section3/bird_types_extra[:]/code',
-    'section3/bird_types_extra[:]/tax_code',
-    'section3/bird_types_extra[:]/name',
-    'section3/mammals_types[:]/code',
-    'section3/mammals_types[:]/tax_code',
-    'section3/mammals_types[:]/name',
-    'section3/reptiles_types[:]/code',
-    'section3/reptiles_types[:]/tax_code',
-    'section3/reptiles_types[:]/name',
-    'section3/fishes_types[:]/code',
-    'section3/fishes_types[:]/tax_code',
-    'section3/fishes_types[:]/name',
-    'section3/invertebrates_types[:]/code',
-    'section3/invertebrates_types[:]/tax_code',
-    'section3/invertebrates_types[:]/name',
-    'section3/plants_types[:]/code',
-    'section3/plants_types[:]/tax_code',
-    'section3/plants_types[:]/name',
-    'section3/other_species[:]/code',
-    'section3/other_species[:]/tax_code',
-    'section3/other_species[:]/scientific_name',
-    'section4/design',
-    'section4/owner',
+    'section1/name',
+    'section1/code',
+    'section1/responsible',
+    'section2/administrative[:]/code',
+    'section2/administrative[:]/name',
+    'section3/habitat[:]/code',
+    'section3/species_bird[:]/code',
+    'section3/species_bird[:]/tax_code',
+    'section3/species_bird[:]/name',
+    'section3/species_bird_extra[:]/code',
+    'section3/species_bird_extra[:]/tax_code',
+    'section3/species_bird_extra[:]/name',
+    'section3/species_mammal[:]/code',
+    'section3/species_mammal[:]/tax_code',
+    'section3/species_mammal[:]/name',
+    'section3/species_reptile[:]/code',
+    'section3/species_reptile[:]/tax_code',
+    'section3/species_reptile[:]/name',
+    'section3/species_fish[:]/code',
+    'section3/species_fish[:]/tax_code',
+    'section3/species_fish[:]/name',
+    'section3/species_invertebrate[:]/code',
+    'section3/species_invertebrate[:]/tax_code',
+    'section3/species_invertebrate[:]/name',
+    'section3/species_plant[:]/code',
+    'section3/species_plant[:]/tax_code',
+    'section3/species_plant[:]/name',
+    'section3/species_other[:]/code',
+    'section3/species_other[:]/tax_code',
+    'section3/species_other[:]/scientific_name',
+    'section4/designation',
+    'section4/ownership',
     'section4/quality',
-    'section4/vulnar',
-    'section4/docum',
-    'section5/national_relations[:]/name',
-    'section5/international_relations[:]/name',
-    'section5/corine_relations[:]/code',
-    'section6/management/manager',
-    'section6/management/managpl',
+    'section4/vulnerability',
+    'section4/documentation',
+    'section5/national[:]/site_name',
+    'section5/international[:]/name',
+    'section5/corine[:]/code',
+    'section6/management/organisation',
+    'section6/management/plan',
 ]
 
 Search = Ordered_dict_of(
@@ -513,7 +523,7 @@ Search = Ordered_dict_of(
                             advanced=True),
     fl.String.named('regcod') \
              .with_properties(label='Regiune administrativa',
-                              index=indexer('section2/regcod[:]/reg_code',
+                              index=indexer('section2/administrative[:]/code',
                                             concat=False),
                               widget='facets',
                               facet=True),

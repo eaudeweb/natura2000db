@@ -44,21 +44,21 @@ skip_relations = ['photo'] # TODO we don't have any actual images
 
 
 info_table_map = {
-    'mammal': 'mammals_types',
-    'amprep': 'reptiles_types',
-    'fishes': 'fishes_types',
-    'invert': 'invertebrates_types',
+    'mammal': 'species_mammal',
+    'amprep': 'species_reptile',
+    'fishes': 'species_fish',
+    'invert': 'species_invertebrate',
 }
 
 
 taxgroup_map = {
-    'P': 'plante',
-    'I': 'nevertebrate',
+    'P': 'plant',
+    'I': 'invertebrate',
     'R': 'reptile',
-    'F': 'pesti',
-    'M': 'amfibieni',
-    'A': 'mamifere',
-    'B': 'pasari',
+    'F': 'fish',
+    'M': 'amphibian',
+    'A': 'mammal',
+    'B': 'bird',
 }
 
 
@@ -75,10 +75,10 @@ def map_info_table(row):
         '_population_migratory_reproduction': val('breeding'),
         '_population_migratory_wintering': val('winter'),
         '_population_migratory_passage': val('staging'),
-        '_sit_evaluation_population': val('population'),
-        '_sit_evaluation_conservation': val('conserve'),
-        '_sit_evaluation_isolation': val('isolation'),
-        '_sit_evaluation_global_eval': val('global'),
+        '_site_evaluation_population': val('population'),
+        '_site_evaluation_conservation': val('conserve'),
+        '_site_evaluation_isolation': val('isolation'),
+        '_site_evaluation_global_eval': val('global'),
     }
     assert not row
     return flat_row
@@ -88,19 +88,25 @@ def map_fields(biotop):
     flat = {}
 
     relations = biotop.pop('_relations')
+    regcod_map = {
+        'reg_code': 'code',
+        'reg_name': 'name',
+        'cover': 'coverage',
+    }
     for i, regcod_row in enumerate(relations.pop('regcod')):
+        prefix = 'section2_administrative_%d' % i
         for key in regcod_row:
-            flat['section2_regcod_%d_%s' % (i, key)] = regcod_row[key]
+            flat[prefix + '_' + regcod_map[key]] = regcod_row[key]
 
     bird_n = bird_extra_n = 0
     for bird_row in relations.pop('bird', []):
         annex_ii = bird_row.pop('annex_ii')
         if annex_ii == 'Y':
-            record_name = 'bird_types'
+            record_name = 'species_bird'
             i = bird_n
             bird_n += 1
         else:
-            record_name = 'bird_types_extra'
+            record_name = 'species_bird_extra'
             i = bird_extra_n
             bird_extra_n += 1
         prefix = 'section3_%s_%d' % (record_name, i)
@@ -118,43 +124,43 @@ def map_fields(biotop):
 
     for i, plant_row in enumerate(relations.pop('plant', [])):
         val = lambda(name): plant_row.pop(name)
-        prefix = 'section3_plants_types_%d' % i
+        prefix = 'section3_species_plant_%d' % i
         flat[prefix + '_code'] = val('specnum')
         flat[prefix + '_tax_code'] = val('tax_code')
         flat[prefix + '_name'] = val('specname')
         flat[prefix + '_population'] = val('resident')
-        flat[prefix + '_sit_evaluation_population'] = val('population')
-        flat[prefix + '_sit_evaluation_conservation'] = val('isolation')
-        flat[prefix + '_sit_evaluation_isolation'] = val('conserve')
-        flat[prefix + '_sit_evaluation_global_eval'] = val('global')
+        flat[prefix + '_site_evaluation_population'] = val('population')
+        flat[prefix + '_site_evaluation_conservation'] = val('isolation')
+        flat[prefix + '_site_evaluation_isolation'] = val('conserve')
+        flat[prefix + '_site_evaluation_global_eval'] = val('global')
         assert val('annex_ii') == 'Y'
         assert not plant_row
 
     for i, spec_row in enumerate(relations.pop('spec', [])):
         val = lambda(name): spec_row.pop(name)
-        prefix = 'section3_other_species_%d' % i
+        prefix = 'section3_species_other_%d' % i
         flat[prefix + '_category'] = taxgroup_map[val('taxgroup')]
         flat[prefix + '_code'] = strip(val('specnum'))
         flat[prefix + '_tax_code'] = strip(val('tax_code'))
         flat[prefix + '_scientific_name'] = val('specname')
-        flat[prefix + '_population_population_text'] = strip(val('population'))
-        flat[prefix + '_population_population_trend'] = val('motivation')
+        flat[prefix + '_population_text'] = strip(val('population'))
+        flat[prefix + '_population_trend'] = val('motivation')
         assert not spec_row, repr(spec_row)
 
     for i, habit1_row in enumerate(relations.pop('habit1', [])):
         val = lambda(name): habit1_row.pop(name)
-        prefix = 'section3_habitat_types_%d' % i
+        prefix = 'section3_habitat_%d' % i
         flat[prefix + '_code'] = val('hbcdax')
         flat[prefix + '_percentage'] = val('cover')
-        flat[prefix + '_repres'] = val('represent')
-        flat[prefix + '_relativ_area'] = val('rel_surf')
+        flat[prefix + '_representativeness'] = val('represent')
+        flat[prefix + '_relative_area'] = val('rel_surf')
         flat[prefix + '_conservation_status'] = val('conserve')
         flat[prefix + '_global_evaluation'] = val('global')
         assert not habit1_row
 
     for habit2_row in relations.pop('habit2', []):
         name = habit2_row.pop('habcode')
-        key = 'section4_site_characteristics_habitat_classes_' + name
+        key = 'section4_characteristics_habitat_' + name
         flat[key] = habit2_row.pop('cover')
         assert not habit2_row
 
@@ -173,9 +179,9 @@ def map_fields(biotop):
 
     for i, corine_row in enumerate(relations.pop('corine', [])):
         val = lambda(name): corine_row.pop(name)
-        prefix = 'section5_corine_relations_%d' % i
+        prefix = 'section5_corine_%d' % i
         flat[prefix + '_code'] = val('corine')
-        flat[prefix + '_type'] = val('overlap') # TODO is the mapping right?
+        flat[prefix + '_type'] = val('overlap')
         flat[prefix + '_overlap'] = val('overlap_p')
         assert not corine_row
 
@@ -188,10 +194,10 @@ def map_fields(biotop):
 
     for i, desigr_row in enumerate(relations.pop('desigr', [])):
         val = lambda(name): desigr_row.pop(name)
-        prefix = 'section5_national_relations_%d' % i
-        flat[prefix + '_type'] = val('overlap') # TODO is the mapping right?
-        flat[prefix + '_name'] = val('des_site')
-        flat[prefix + '_sit_type'] = val('desicode')
+        prefix = 'section5_national_%d' % i
+        flat[prefix + '_type'] = val('overlap')
+        flat[prefix + '_site_name'] = val('des_site')
+        flat[prefix + '_site_type'] = val('desicode')
         flat[prefix + '_overlap'] = val('overlap_p')
         assert not desigr_row
 
@@ -201,11 +207,11 @@ def map_fields(biotop):
         if val('in_out') == 'O':
             i = activity_in
             activity_in += 1
-            prefix = 'section6_in_jur_outside_activities_%d' % i
+            prefix = 'section6_activity_external_%d' % i
         else:
             i = activity_out
             activity_out += 1
-            prefix = 'section6_in_jur_inside_activities_%d' % i
+            prefix = 'section6_activity_internal_%d' % i
         flat[prefix + '_code'] = val('act_code')
         flat[prefix + '_intensity'] = val('intensity')
         flat[prefix + '_percentage'] = val('cover')
@@ -217,14 +223,50 @@ def map_fields(biotop):
     if relations:
         print>>sys.stderr, 'unhandled relations: %r' % (relations.keys(),)
 
+    _nodefault = object()
+    def val(name, default=_nodefault):
+        if default is _nodefault:
+            try:
+                return biotop.pop(name)
+            except:
+                import pdb; pdb.set_trace()
+                raise
+        else:
+            return biotop.pop(name, default)
+
+    flat['section1_code'] = val('sitecode')
+    flat['section1_date_document_add'] = val('date')
+    flat['section1_date_document_update'] = val('update', '')
+    flat['section1_responsible'] = val('respondent')
+    flat['section1_name'] = val('site_name')
+    flat['section1_date_proposal'] = val('date_prop', '')
+    flat['section1_date_confirmation_sci'] = val('date_con', '')
+    flat['section1_date_confirmation_spa'] = val('spa_date', '')
+    flat['section1_date_confirmation_sac'] = val('sac_date', '')
+
     assert biotop.pop('lon_ew') == 'E'
     assert biotop.pop('lat_nz') == 'N'
-    val = lambda(name): biotop.pop(name)
     dms_val = lambda(n): val(n+'_deg') + val(n+'_min')/60. + val(n+'_sec')/3600.
     flat['section2_longitude'] = dms_val('lon')
     flat['section2_latitude'] = dms_val('lat')
 
-    flat['section4_site_characteristics_other'] = val('charact')
+    flat['section2_altitude_min'] = val('alt_min')
+    flat['section2_altitude_max'] = val('alt_max')
+    flat['section2_altitude_mean'] = val('alt_mean')
+    flat['section2_biogeographic_alpine'] = val('alpine')
+    flat['section2_biogeographic_continental'] = val('continent')
+    flat['section2_biogeographic_steppic'] = val('steppic')
+    flat['section2_biogeographic_pontic'] = val('pontic')
+    flat['section2_biogeographic_pannonic'] = val('pannonic')
+
+    flat['section4_characteristics_other'] = val('charact')
+    flat['section4_vulnerability'] = val('vulnar')
+    flat['section4_designation'] = val('design', '')
+    flat['section4_ownership'] = val('owner', '')
+    flat['section4_documentation'] = val('docum', '')
+
+    flat['section6_management_organisation'] = val('manager')
+    flat['section6_management_plan'] = val('managpl')
 
     assert val('mapsincl') == val('photos') == 0
 
@@ -246,7 +288,7 @@ def print_errors(root_element):
 
 def known_unused_field(name):
     return any(re.match(p, name) for p in [
-        r'^section2_regcod_\d+_sitecode$',
+        #r'^section2_regcod_\d+_sitecode$',
     ])
 
 def known_extra_field(name):

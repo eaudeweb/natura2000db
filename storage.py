@@ -72,7 +72,7 @@ class SolrStorage(object):
         data = doc.value
 
         solr_doc = {
-            'id': data['section1']['sitecode'],
+            'id': data['section1']['code'],
             self.orig_field_name: json.dumps(data),
         }
 
@@ -144,7 +144,7 @@ class SolrStorage(object):
         with self.solr_http(request) as response:
             response.read()
 
-        return [doc['section1']['sitecode'].value for doc in batch]
+        return [doc['section1']['code'].value for doc in batch]
 
     def load_document(self, doc_id):
         doc = self.solr_query('id:%s' % doc_id).docs[0]
