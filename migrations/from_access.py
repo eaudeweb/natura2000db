@@ -118,7 +118,7 @@ def map_fields(biotop):
 
     for i, plant_row in enumerate(relations.pop('plant', [])):
         val = lambda(name): plant_row.pop(name)
-        prefix = 'section3_plants_types_%d_plant_types' % i
+        prefix = 'section3_plants_types_%d' % i
         flat[prefix + '_code'] = val('specnum')
         flat[prefix + '_tax_code'] = val('tax_code')
         flat[prefix + '_name'] = val('specname')
@@ -132,7 +132,7 @@ def map_fields(biotop):
 
     for i, spec_row in enumerate(relations.pop('spec', [])):
         val = lambda(name): spec_row.pop(name)
-        prefix = 'section3_other_species_%d_other_specie' % i
+        prefix = 'section3_other_species_%d' % i
         flat[prefix + '_category'] = taxgroup_map[val('taxgroup')]
         flat[prefix + '_code'] = strip(val('specnum'))
         flat[prefix + '_tax_code'] = strip(val('tax_code'))
@@ -143,7 +143,7 @@ def map_fields(biotop):
 
     for i, habit1_row in enumerate(relations.pop('habit1', [])):
         val = lambda(name): habit1_row.pop(name)
-        prefix = 'section3_habitat_types_%d_habitat_type' % i
+        prefix = 'section3_habitat_types_%d' % i
         flat[prefix + '_code'] = val('hbcdax')
         flat[prefix + '_percentage'] = val('cover')
         flat[prefix + '_repres'] = val('represent')
@@ -159,7 +159,7 @@ def map_fields(biotop):
         assert not habit2_row
 
     for i, sitrel_row in enumerate(relations.pop('sitrel', [])):
-        flat['section1_other_sites_%d_other_site' % i] = sitrel_row.pop('othersite')
+        flat['section1_other_sites_%d' % i] = sitrel_row.pop('othersite')
         sitrel_row.pop('othertype') # redundant info
         assert not sitrel_row
 

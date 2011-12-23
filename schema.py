@@ -124,7 +124,7 @@ section_1 = Ordered_dict_of(
 
     CommonList.named('other_sites').of(
 
-        CommonString.named('other_site').using(validators=[valid_site_code]).with_properties(label='Coduri ale siturilor Natura 2000')
+        CommonString.using(validators=[valid_site_code]).with_properties(label='Coduri ale siturilor Natura 2000')
 
         ).with_properties(widget='list', label='Legaturi cu alte situri Natura 2000:'),
 
@@ -190,7 +190,7 @@ section_3 = Ordered_dict_of(
             CommonEnum.named('relativ_area').valued('A', 'B', 'C').with_properties(label='Suprafata relativa'),
             CommonEnum.named('conservation_status').valued('A', 'B', 'C').with_properties(label='Stare de conservare'),
             CommonEnum.named('global_evaluation').valued('A', 'B', 'C').with_properties(label='Evaluare globala'),
-            ).named('habitat_type'),
+            ),
 
         ).with_properties(label='Tipuri de habitat prezente in sit si evaluarea sitului in ceea ce le priveste:'),
 
@@ -209,7 +209,7 @@ section_3 = Ordered_dict_of(
             CommonString.named('name').using(optional=False).with_properties(label='Nume'),
             CommonString.named('population').with_properties(label='Populatie'),
             InfoColumn.named('sit_evaluation').with_properties(label='Evaluarea sitului'),
-            ).named('plant_types'),
+            ),
 
         ).with_properties(label='Specii de plante enumerate in anexa II la Directiva Consiliului 92/43/CEE'),
 
@@ -230,7 +230,7 @@ section_3 = Ordered_dict_of(
                 CommonEnum.named('population_trend').valued('A', 'B', 'C', 'D'),
                 ).named('population').with_properties(label='Populatie'),
 
-            ).named('other_specie'),
+            ),
 
         ).with_properties(label='Alte specii importante de flora si fauna'),
 
