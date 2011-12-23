@@ -32,7 +32,7 @@
 </form>
 
 <div class="search-facets">
-
+{% if search_answer.docs %}
   {% do form.begin(widgets_template='search') -%}
   {%- for name in search_form.properties.order %}
     {% if search_form[name].properties.facet %}
@@ -40,15 +40,19 @@
     {% endif %}
   {%- endfor %}
   {%- do form.end() %}
-
+{% endif %}
 </div>
 
 
-<ul class="search-results">
-{% for r in search_answer.docs %}
-  <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}
-        ">{{ r.data.section1.name }}</a></li>
-{% endfor %}
-</ul>
+{% if search_answer.docs %}
+  <ul class="search-results">
+  {% for r in search_answer.docs %}
+    <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}
+          ">{{ r.data.section1.name }}</a></li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>Nici un rezultat in baza de date pentru acest query.</p>
+{% endif %}
 
 {% endblock %}
