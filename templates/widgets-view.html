@@ -1,6 +1,6 @@
 {% macro _label(form, field) %}
   {% if not form['skip_labels'] %}
-    {{ field.properties.label }}
+    <span class="nameOfField">{{ field.properties.label }}</span>
   {% endif %}
 {% endmacro %}
 

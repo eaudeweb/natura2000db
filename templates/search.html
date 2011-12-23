@@ -11,6 +11,7 @@
 
   {{ search_facets_html(form, search_form) }}
 
+  <label>Rezultate</label>
   <ul class="search-results">
   {% for r in search_answer.docs %}
     <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}

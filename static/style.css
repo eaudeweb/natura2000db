@@ -1,9 +1,12 @@
 /* Standard Form for SPA and SCI
  * stylised by Sonia Andriu (tab = 2 spaces)
- * dark turquoise: #0098AA, light turquoise: #B6E9F8, gray: #7D7D7D.
+ * dark turquoise: #0098AA, light turquoise: #B6E9F8, gray: #7D7D7D, darker gray: #707070, blue: #335C9E, light blue: #D3E9F8.
  */
 
 
+/* #################################
+       EDIT A NATURA 2000 FORM 
+   ################################ */
 /* GLOBAL */
 .error {
   color: red;
@@ -22,7 +25,7 @@ h1 {
 }
 
 form {
-  width: 100%; /* no less than 80% */
+  width: 100%;
   margin: 0px; /*auto;*/
   padding: 0;
   font-size: 12px;
@@ -32,7 +35,11 @@ form {
 
 table {
   border-collapse: collapse;
-  border: 1px solid #fff; 
+  border: 1px solid #C0C0C0; 
+}
+
+table input, textarea, input {
+  font-size: 12px;
 }
 
 table td {
@@ -46,12 +53,12 @@ thead {
 }
 
 table th {
-  color: #7D7D7D;
+  color: #707070;
   padding: 4px;
 }
 
 textarea {
-  min-width: 38%;
+  min-width: 68%;
   min-height: 30px;
   max-width: 90%;
   margin-left: 7px;
@@ -61,20 +68,22 @@ textarea {
 /* SECTIONS' COMMON PROPERTIES */
 h2 {
   color: #0098AA;
-  margin-left: 15px;
+  /*margin-left: 5px; 15px;*/
   margin-top: 33px;
+  margin-bottom: 0px;
   font-size: 16px;
 }
 
 .dict_children {
-  background: #B6E9F8;
+  background: #D9F0FF; /*#D3E9F8; #B6E9F8;*/
   margin: 0px 2px 10px 2px; /* white space between sections */
-  padding: 5px;
+  padding: 5px 0px;
 }
 
 .dict_children label {
   color: #0098AA;
-  margin-left: 7px;
+  margin-left: 5px;
+  font-size: 14px;
 }
 
 .dict_children input, 
@@ -85,15 +94,16 @@ h2 {
 table caption {
   color: #0098AA;
   text-align: left;
-  padding: 5px 0px;
+  padding: 5px;
+  font-size: 14px;
 }
 
 .dict_children table {
-  margin-left: 7px;
+  margin-left: 3px;
 }
 
 .dict_children table td {
-  color: #7D7D7D;
+  color: #707070;/* #7D7D7D;*/
   padding: 3px 2px;
 }
 
@@ -106,7 +116,7 @@ table caption {
 .field-other_sites p,
 .field-longitude p,
 .field-latitude p {
-  color: #7D7D7D;
+  color: #707070;
   text-align: left;
   margin-left: 15px;
   margin-bottom: 0px;
@@ -119,6 +129,7 @@ table caption {
 .field-latitude p:first-child {
   color: #0098AA;
   margin-left: 7px;
+  font-size: 14px;
 }
 
 .field-other_sites input {
@@ -142,8 +153,9 @@ label[for="f_section1_site_name"] {
 .field-bio_region .dict_children label,
 .field-admin_region .dict_children label,
 .field-regcod label {
-  color: #7D7D7D;
+  color: #707070;
   margin-left: 15px;
+  font-size: 12px;
 }
 
 
@@ -204,15 +216,18 @@ label[for="f_section1_site_name"] {
 }  
 
 .field-reproduction,
-.field-resident,
 .field-wintering,
 .field-passage {
-  max-width: 130px; /* those inputs hold 13-14 digits */
+  max-width: 110px; /* those inputs hold 13-14 digits */
 }
 
-/* text inputs from tables */
+.field-resident {
+  max-width: 100px; /* those inputs hold less than 13 digits */
+}
+
 .field-name {
-  max-width: 150px;
+  max-width: 160px; /* those inputs can hold more than 28 letters */
+  font-size: 12px;
 }
 
 
@@ -231,6 +246,7 @@ label[for="f_section1_site_name"] {
   margin-left: 7px;
   margin-top: 5px;
   margin-bottom: 2px;
+  font-size: 14px;
 }
 
 .field-plants_types {
@@ -266,7 +282,7 @@ label[for="f_section1_sit_name"] {
 .field-map .dict_children label,
 .field-inside_activities caption,
 .field-outside_activities caption {
-  color: #7D7D7D;
+  color: #707070;
 }
 
 .field-inside_activities caption {
@@ -284,7 +300,7 @@ input[type="submit"] {
   display: block;
   margin-top: 5px;
   margin-right: 5px;
-  color: #7D7D7D;
+  color: #707070;
 }
 
 .field-management .dict_children {
@@ -295,49 +311,319 @@ input[type="submit"] {
   margin-left: 0px;
 }
 
+.field-map .dict_children label {
+  font-size: 12px;
+} 
 
-/* PRINT NOT FINISHED ............. */
+
+/* #################################
+     VIEW/RE-EDIT A NATURA 2000 FORM 
+   ################################ */
+.editedForm h1 {
+  font-size: 19px;
+}
+
+.editedForm h2 {
+  color: #fff;
+  font-size: 14px;
+  background: #335C9E;
+  padding-left: 5px;
+}
+
+/* space between h2 title and div with a certain input, in the view standard form */
+.editedForm h2~div {
+  margin-top: 0px;
+  padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
+  /*background: #D9F0FF;*/
+}
+
+.center-column h1 ~ p {
+  text-align: left;
+}
+
+.center-column form input[type="submit"] {
+  margin-left: 0;
+  margin-bottom: 10px;
+}
+
+.center-column {
+  margin-bottom: 20px;
+}
+
+.center-column div div {
+  margin-bottom: 5px;
+}
+
+.editedForm {
+  border: 1px solid #335C9E;
+  padding: 5px;
+  margin-top: 15px;
+}
+
+.nameOfField {
+  color: #335C9E;/*#0098AA;*/
+  margin-left: 5px;
+}
+
+.editedForm table td {
+  padding: 0px 5px;
+}
+
+.editedForm table {
+  margin-left: 15px;
+}
+
+.editedForm h2~div p {
+  color:#335C9E;/* #0098AA;*/
+  text-align: left;
+  margin-left: 5px;
+}
+
+.editedForm h2~div div p {
+  margin-top: 5px;
+}
+
+.editedForm h2~div  p~div .nameOfField {
+  color: #707070;
+  margin-left: 15px;
+}
+
+.editedForm table caption {
+  min-width: 300px;
+  color: #707070;
+  margin-top: 5px;
+}
+
+.editedForm thead {
+  background: #516E9E;
+}
+
+.editedForm th {
+  color: #fff;
+}
+
+.editedForm thead tr td {
+  color: #fff;
+}
+
+/* #################################
+       PRINT NATURA 2000 FORM 
+   ################################ */
 @media print {
+     
+    form {
+      margin: 0;
+      padding: 0;
+    }
+    
+    .editedForm h1 {
+      font-size: 19px;
+    }
 
-  form {
-    background: none !important;
-	font-size: 10pt; /* 14px ~= 10.5 pt */
-  }
-	
-  table {
-  border: 1px solid #000; 
-  }
+    .editedForm h2 {
+      color: #335C9E;
+      font-size: 14px;
+    }
+     /* space between h2 title and div with a certain input, in the view standard form */
+    .editedForm h2~div {
+      margin-top: 0px;
+      padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
+      /*background: #D9F0FF;*/
+      border: 1pt solid #ddd;
+    }
+
+    .center-column h1 ~ p {
+      text-align: left;
+    }
+
+    .center-column form input[type="submit"] {
+      margin-left: 0;
+      margin-bottom: 10px;
+    }
+
+    .center-column {
+      margin-bottom: 20px;
+    }
+
+    .center-column div div {
+      margin-bottom: 5px;
+    }
+
+    .editedForm {
+      border: 1px solid #335C9E;
+      padding: 5px;
+      margin-top: 15px;
+    }
+
+    .nameOfField {
+      color: #335C9E;
+      margin-left: 5px;
+    }
+
+    .editedForm table td {
+      padding: 0px 5px;
+    }
+
+    .editedForm table {
+      margin-left: 15px;
+    }
+
+    .editedForm h2~div p {
+      color: #335C9E;
+      text-align: left;
+      margin-left: 5px;
+    }
+
+    .editedForm h2~div div p {
+      margin-top: 5px;
+    }
+
+    .editedForm h2~div  p~div .nameOfField {
+      color: #707070;
+      margin-left: 15px;
+    }
+
+    .editedForm table caption {
+      min-width: 300px;
+      color: #707070;
+      margin-top: 5px;
+    }
+
 
 }
 
 
-
-/* search */
+/* #################################
+       SEARCH IN NATURA 2000 FORMS
+   ################################ */
 
 .search-facet-selected {
-    font-weight: bold;
+  font-weight: bold;
+}
+
+/* label above search area */
+.center-column h1 {
+  margin: 0;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 16px; /* just like any left-column-title on this site */
+  font-weight: bold;
+}  
+
+/* label near search text input */
+label[for="f_text"] {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 150px;
+  padding-right: 5px;
+  color: #335C9E;
 }
 
 .search-criteria {
-    border: 1px solid red;
+  border: 1px solid #C5D9E8;/*#ABDBE8;*/
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: #D3E9F8;/*#B6E9F8;*/
+  margin-bottom: 10px;
+  padding: 15px;
+}
+
+.search-criteria div:first-child {
+  display: inline;
+}
+
+/* text field for search */
+.field-text {
+  border: 1px solid #335C9E;
+  width: 350px;
+}
+
+.search-criteria input[type="submit"] {
+  margin: 0px 10px;
+  background: #335C9E;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+
+}
+
+.search-advanced-button {
+  font-size: 14px;
+  padding: 0px 3px;
 }
 
 .search-advanced {
-    display: none;
+  display: none;
+  margin-top: 10px;
 }
 
 .search-advanced-visible .search-advanced {
-    display: block;
-    border: 1px solid orange;
+  display: block;
+  border: 0px solid orange;
+}
+
+.search-advanced-visible .search-advanced label,
+.search-advanced-visible .search-advanced select {
+  color: #444;
+  font-size: 14px;
 }
 
 .search-facets {
-    border: 1px solid blue;
-    float: left;
-    width: 200px;
+  float: left;
+  width: 180px;
+  background: #D3E9F8;
+  border: 1px solid #C5D9E8;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.search-facets label {
+  display: block;
+  color: #335C9E;
+  margin-top: 10px;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+/* margin-bottom for the last ul in the div .search-facets */
+.search-facets div:last-of-type {
+  margin-bottom: 10px;
 }
 
 .search-results {
-    border: 1px solid green;
-    margin-left: 210px;
+  border: 1px solid #0098AA;
+  margin-left: 190px;
+  margin-bottom: 10px;
+  padding-left: 15px;
+  padding-bottom: 5px;
 }
+
+/* list with filtered results */
+.search-facet-items {
+  margin-left: 15px;
+}
+
+.search-facet-items li {
+  color: #444;
+}
+
+.search-facets span {
+  margin-left: 15px;
+}
+
+/* list with sites' names */
+.resultsUl {
+  background: #eee;
+  float: left;
+}
+
+.search-results label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+

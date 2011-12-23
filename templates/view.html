@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
+<div class="editedForm">
 <h1>FORMULAR STANDARD</h1>
 <p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile 
   ca situri de importanta comunitara (SCI)</p>
@@ -12,5 +12,5 @@
   <div>{{ form.widget(doc[name]) }}</div>
 {%- endfor %}
 {%- do form.end() %}
-
+</div>
 {% endblock %}
