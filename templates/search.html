@@ -1,64 +1,27 @@
 {% extends 'layout.html' %}
-
-{% macro search_fields(advanced) %}
-  {%- for name in search_form.properties.order %}
-    {% set field = search_form[name] %}
-    {% if field.properties.get('advanced', True) == advanced %}
-      {{ form.widget(field) }}
-    {% endif %}
-  {% endfor %}
-{% endmacro %}
+{% from 'search_macros.html' import search_form_html, search_facets_html %}
 
 {% block content %}
 
 <h1>Căutare</h1>
 
-<form>
-
-  {% do form.begin(widgets_template='search') -%}
-
-  <div class="search-criteria">
-
-  <div class="search-simple">
-    {{ search_fields(advanced=False) }}
-  </div>
-
-  <input type="submit">
-
-  [<a href="#" class="search-advanced-button">advanced search</a>]
-
-  <div class="search-advanced">
-    {{ search_fields(advanced=True) }}
-  </div>
-
-  </div>
-
-  {%- do form.end() %}
-
-</form>
-
-<div class="search-facets">
-{% if search_answer.docs %}
-  {% do form.begin(widgets_template='facet') -%}
-  {%- for name in search_form.properties.order %}
-    {% if search_form[name].properties.facet %}
-    <div>{{ form.widget(search_form[name]) }}</div>
-    {% endif %}
-  {%- endfor %}
-  {%- do form.end() %}
-{% endif %}
-</div>
-
+{{ search_form_html(form, search_form) }}
 
 {% if search_answer.docs %}
+
+  {{ search_facets_html(form, search_form) }}
+
   <ul class="search-results">
   {% for r in search_answer.docs %}
     <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}
           ">{{ r.data.section1.name }}</a></li>
   {% endfor %}
   </ul>
+
 {% else %}
+
   <p>Nici un rezultat in baza de date pentru acest query.</p>
+
 {% endif %}
 
 {% endblock %}

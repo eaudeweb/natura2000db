@@ -1,35 +1,11 @@
 {% extends 'layout.html' %}
+{% from 'search_macros.html' import search_form_html %}
 
 {% block content %}
 
 <h1>Căutare</h1>
 
-<form action="{{ url_for('webpages.search') }}">
-
-  {% do form.begin(widgets_template='search') -%}
-
-  <div class="search-criteria">
-
-  <div>{{ form.widget(search_form["text"]) }}</div>
-
-  <input type="submit">
-
-  [<a href="#" class="search-advanced-button">advanced search</a>]
-
-  <div class="search-advanced">
-  {%- for name in search_form.properties.order %}
-    {% set field = search_form[name] %}
-    {% if field.properties.advanced %}
-      {{ form.widget(field) }}
-    {% endif %}
-  {% endfor %}
-  </div>
-
-  </div>
-
-  {%- do form.end() %}
-
-</form>
+{{ search_form_html(form, search_form, url_for('webpages.search')) }}
 
 
 <p>help pentru search</p>

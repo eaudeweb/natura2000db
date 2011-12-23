@@ -3,12 +3,8 @@
 {% endmacro %}
 
 {% macro input(form, field) %}
-  {{ _label(form, field) }}
-  {% if field.value %}
-    <span class="search-facet-selected">{{ field.value }}</span>
-    {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): None}) %}
-    [<a href={{ url }}>X</a>]
-  {% else %}
+  {% if not field.value %}
+    {{ _label(form, field) }}
     <ul class="search-facet-items">
     {% for item in form['facets'][field.name] %}
       {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): item.name}) %}

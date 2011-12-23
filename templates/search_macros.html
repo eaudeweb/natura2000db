@@ -1,0 +1,46 @@
+{% macro search_fields_html(form, search_form, advanced) %}
+  {%- for name in search_form.properties.order %}
+    {% set field = search_form[name] %}
+    {% if field.properties.get('advanced', True) == advanced %}
+      {{ form.widget(field) }}
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
+
+{% macro search_form_html(form, search_form, action="") %}
+{% do form.begin(widgets_template='search') -%}
+<form action="{{ action }}">
+
+  <div class="search-criteria">
+
+    <div class="search-simple">
+      {{ search_fields_html(form, search_form, advanced=False) }}
+    </div>
+
+    <input type="submit">
+
+    [<a href="#" class="search-advanced-button">advanced search</a>]
+
+    <div class="search-advanced">
+      {{ search_fields_html(form, search_form, advanced=True) }}
+    </div>
+
+  </div>
+
+</form>
+{%- do form.end() %}
+{% endmacro %}
+
+
+{% macro search_facets_html(form, search_form) %}
+<div class="search-facets">
+  {% do form.begin(widgets_template='facet') -%}
+  {%- for name in search_form.properties.order %}
+    {% if search_form[name].properties.facet %}
+    <div>{{ form.widget(search_form[name]) }}</div>
+    {% endif %}
+  {%- endfor %}
+  {%- do form.end() %}
+</div>
+{% endmacro %}
