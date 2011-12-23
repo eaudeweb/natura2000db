@@ -110,7 +110,7 @@ InfoTable = CommonList.of(
 
         InfoColumn.named('sit_evaluation').with_properties(label='Evaluarea sitului'),
 
-        ).named('dict_name'),
+        ),
     )
 
 
@@ -294,7 +294,7 @@ section_4 = Ordered_dict_of(
             CommonString.named('date').with_properties(label='Data'),
             CommonString.named('modified_field').with_properties(label='Campul modificat'),
             CommonString.named('description').with_properties(label='Descriere'),
-            ).named('record'),
+            ),
 
         ).with_properties(label='Istoric (se va completa de catre Comisie)'),
 
@@ -308,7 +308,7 @@ section_5 = Ordered_dict_of(
         Ordered_dict_of(
             CommonString.named('code').using(optional=False).with_properties(label='Cod'),
             CommonFloat.named('percentage').with_properties(label='Pondere %'),
-            ).named('record'),
+            ),
 
         ).with_properties(label='Clasificare la nivel national si regional'),
 
@@ -319,7 +319,7 @@ section_5 = Ordered_dict_of(
             CommonString.named('name').using(optional=False).with_properties(label='Numele sitului'),
             CommonString.named('sit_type').with_properties(label='Tip'),
             CommonFloat.named('overlap').with_properties(label='Suprapunere %'),
-            ).named('record'),
+            ),
 
         ).with_properties(label='Relatiile sitului descris cu alte situri - desemnate la nivel national sau regional'),
 
@@ -333,7 +333,7 @@ section_5 = Ordered_dict_of(
             CommonString.named('name').using(optional=False).with_properties(label='Numele sitului'),
             CommonString.named('sit_type').with_properties(label='Tip'),
             CommonFloat.named('overlap').with_properties(label='Suprapunere %'),
-            ).named('record'),
+            ),
 
         ).with_properties(label='Relatiile sitului descris cu alte situri - desemnate la nivel international'),
 
@@ -343,7 +343,7 @@ section_5 = Ordered_dict_of(
             CommonString.named('code').using(optional=False).with_properties(label='Cod sit Corine'),
             CommonString.named('type').with_properties(label='Tip'),
             CommonFloat.named('overlap').with_properties(label='Suprapunere %'),
-            ).named('record'),
+            ),
 
         ).with_properties(label='Relatiile sitului descris cu biotopuri Corine'),
 
@@ -361,7 +361,7 @@ section_6 = Ordered_dict_of(
                 CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate'),
                 CommonFloat.named('percentage').with_properties(label='% din sit'),
                 CommonEnum.named('influence').valued('+', '0', '-').with_properties(label='Influenta'),
-                ).named('record'),
+                ),
 
             ).with_properties(label='Activitati si consecinte in interiorul sitului'),
 
@@ -372,7 +372,7 @@ section_6 = Ordered_dict_of(
                 CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate'),
                 CommonFloat.named('percentage').with_properties(label='% din sit'),
                 CommonEnum.named('influence').valued('+', '0', '-').with_properties(label='Influenta'),
-                ).named('record'),
+                ),
 
             ).with_properties(label='Activitati si consecinte in jurul sitului'),
 

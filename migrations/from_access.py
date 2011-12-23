@@ -103,14 +103,14 @@ def map_fields(biotop):
             record_name = 'bird_types_extra'
             i = bird_extra_n
             bird_extra_n += 1
-        prefix = 'section3_%s_%d_dict_name' % (record_name, i)
+        prefix = 'section3_%s_%d' % (record_name, i)
         flat_row = map_info_table(bird_row)
         for name in flat_row:
             flat[prefix + name] = flat_row[name]
 
     for rel_name, record_name in info_table_map.items():
         for i, rel_row in enumerate(relations.pop(rel_name, [])):
-            prefix = 'section3_%s_%d_dict_name' % (record_name, i)
+            prefix = 'section3_%s_%d' % (record_name, i)
             assert rel_row.pop('annex_ii') == 'Y'
             flat_row = map_info_table(rel_row)
             for name in flat_row:
@@ -173,7 +173,7 @@ def map_fields(biotop):
 
     for i, corine_row in enumerate(relations.pop('corine', [])):
         val = lambda(name): corine_row.pop(name)
-        prefix = 'section5_corine_relations_%d_record' % i
+        prefix = 'section5_corine_relations_%d' % i
         flat[prefix + '_code'] = val('corine')
         flat[prefix + '_type'] = val('overlap') # TODO is the mapping right?
         flat[prefix + '_overlap'] = val('overlap_p')
@@ -181,14 +181,14 @@ def map_fields(biotop):
 
     for i, desigc_row in enumerate(relations.pop('desigc', [])):
         val = lambda(name): desigc_row.pop(name)
-        prefix = 'section5_clasification_%d_record' % i
+        prefix = 'section5_clasification_%d' % i
         flat[prefix + '_code'] = val('desicode')
         flat[prefix + '_percentage'] = val('cover')
         assert not desigc_row
 
     for i, desigr_row in enumerate(relations.pop('desigr', [])):
         val = lambda(name): desigr_row.pop(name)
-        prefix = 'section5_national_relations_%d_record' % i
+        prefix = 'section5_national_relations_%d' % i
         flat[prefix + '_type'] = val('overlap') # TODO is the mapping right?
         flat[prefix + '_name'] = val('des_site')
         flat[prefix + '_sit_type'] = val('desicode')
@@ -201,11 +201,11 @@ def map_fields(biotop):
         if val('in_out') == 'O':
             i = activity_in
             activity_in += 1
-            prefix = 'section6_in_jur_outside_activities_%d_record' % i
+            prefix = 'section6_in_jur_outside_activities_%d' % i
         else:
             i = activity_out
             activity_out += 1
-            prefix = 'section6_in_jur_inside_activities_%d_record' % i
+            prefix = 'section6_in_jur_inside_activities_%d' % i
         flat[prefix + '_code'] = val('act_code')
         flat[prefix + '_intensity'] = val('intensity')
         flat[prefix + '_percentage'] = val('cover')
