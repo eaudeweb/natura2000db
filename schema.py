@@ -513,14 +513,14 @@ full_text_fields = [
 Search = Ordered_dict_of(
     fl.String.named('text') \
              .with_properties(label='Text',
-                              index=indexer(*full_text_fields)),
+                              index=indexer(*full_text_fields),
+                              advanced=False),
     fl.Enum.named('habitat_class') \
            .valued(*sorted(habitat_class_map)) \
            .with_properties(label='Clase de habitat',
                             index=habitat_class_index,
                             widget='select',
-                            value_labels=habitat_class_map,
-                            advanced=True),
+                            value_labels=habitat_class_map),
     fl.String.named('regcod') \
              .with_properties(label='Regiune administrativa',
                               index=indexer('section2/administrative[:]/code',

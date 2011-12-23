@@ -1,5 +1,14 @@
 {% extends 'layout.html' %}
 
+{% macro search_fields(advanced) %}
+  {%- for name in search_form.properties.order %}
+    {% set field = search_form[name] %}
+    {% if field.properties.get('advanced', True) == advanced %}
+      {{ form.widget(field) }}
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
 {% block content %}
 
 <h1>Căutare</h1>
@@ -10,19 +19,16 @@
 
   <div class="search-criteria">
 
-  <div>{{ form.widget(search_form["text"]) }}</div>
+  <div class="search-simple">
+    {{ search_fields(advanced=False) }}
+  </div>
 
   <input type="submit">
 
   [<a href="#" class="search-advanced-button">advanced search</a>]
 
   <div class="search-advanced">
-  {%- for name in search_form.properties.order %}
-    {% set field = search_form[name] %}
-    {% if field.properties.advanced %}
-      {{ form.widget(field) }}
-    {% endif %}
-  {% endfor %}
+    {{ search_fields(advanced=True) }}
   </div>
 
   </div>
