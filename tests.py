@@ -1,10 +1,10 @@
-import unittest
+import unittest2 as unittest
 import json
 import py
 
 
 def _create_test_app(tmp):
-    from demo import create_app
+    from rio import create_app
     app = create_app()
     app.config['STORAGE_ENGINE'] = 'filesystem'
     app.config['STORAGE_FS_PATH'] = str((tmp/'storage').ensure(dir=True))
