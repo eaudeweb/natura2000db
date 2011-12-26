@@ -5,8 +5,10 @@
 {% endmacro %}
 
 {% macro input(form, field) %}
+  {%- if field.value is not none %}
   {{ _label(form, field) }}
   {{ field.value }}
+  {% endif -%}
 {% endmacro %}
 
 {% macro radio(form, field) %}
@@ -45,7 +47,7 @@
   {{ field.properties.label }}
   <ul>
   {% for child in field %}
-    <li>{{ child.value }}</li>
+    <li>{{ form.widget(child) }}</li>
   {% endfor %}
   </ul>
 {% endmacro %}
