@@ -63,6 +63,10 @@ class FsStorage(object):
         return doc_id_list
 
 
+def quote_solr_query(text):
+    return re.sub(r'([\\+\-&|!(){}[\]^~*?:"; ])', r'\\\1', text);
+
+
 class SolrStorage(object):
 
     orig_field_name = 'orig'
@@ -155,7 +159,11 @@ class SolrStorage(object):
 
     def search(self, criteria):
         #query = 'text:%s' % text # TODO quote for ':' and other solr markup
-        query = u' '.join(u'%s:%s' % (k, v) for k, v in criteria.items() if v)
+        query = u' '.join(u'%s:%s' % (k, quote_solr_query(v))
+                          for k, v in criteria.items()
+                          if v)
+        if not query:
+            query = '*'
 
         args = [ ('facet', 'true') ]
 
