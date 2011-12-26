@@ -158,12 +158,11 @@ class SolrStorage(object):
         return sorted([d['id'] for d in self.solr_query('*').docs])
 
     def search(self, criteria):
-        #query = 'text:%s' % text # TODO quote for ':' and other solr markup
         query = u' '.join(u'%s:%s' % (k, quote_solr_query(v))
                           for k, v in criteria.items()
                           if v)
         if not query:
-            query = '*'
+            query = '*:*'
 
         args = [ ('facet', 'true') ]
 
