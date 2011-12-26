@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema name="chm-rio" version="1.4">
+
+  <uniqueKey>id</uniqueKey>
+  <defaultSearchField>text</defaultSearchField>
+  <solrQueryParser defaultOperator="AND"/>
+
+  <types>
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+
+    <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+  </types>
+
+
+  <fields>
+
+    <field name="id" type="string" indexed="true" stored="true" required="true" />
+    <field name="orig" type="string" indexed="false" stored="true"/>
+    <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
+    <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="true"/>
+
+  </fields>
+
+</schema>
