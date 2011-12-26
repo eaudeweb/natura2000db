@@ -30,6 +30,25 @@ Setup
    Run the script as ``rio runserver``.
 
 
+Solr database
+=============
+
+Documents are stored and indexed in a Solr database. Solr is installed
+separately but the configuration is provided in the ``solr`` directory.
+
+1. Download Solr somewhere outside the project repository::
+
+    curl -O http://www.eu.apache.org/dist/lucene/solr/3.5.0/apache-solr-3.5.0.tgz
+    tar xzf apache-solr-3.5.0.tgz
+
+2. Start Solr with our configuration. Assuming __solrkit__ is the
+``apache-solr-3.5.0`` folder unpacked above, and __repo__ is the project
+repository, run::
+
+    cd __solrkit__/example
+    java -Dsolr.solr.home=__repo__/solr -jar start.jar
+
+
 Setup of a CHM3 portal
 ======================
 
@@ -61,23 +80,12 @@ the ``buildout`` directory). The application should be accessible at
 Loading data from Access database
 =================================
 
-1. Set up solr config (TODO)
-   Note: the Solr configuration file needs to have these lines::
-
-    <solrQueryParser defaultOperator="AND"/>
-
-    <field name="regcod" type="string" indexed="true" stored="true" multiValued="true"/>
-    <field name="type" type="string" indexed="true" stored="true"/>
-    <field name="bio_region" type="string" indexed="true" stored="true" multiValued="true"/>
-    <field name="habitat_class" type="string" indexed="true" stored="true" multiValued="true"/>
-    <field name="orig" type="string" indexed="false" stored="true"/>
-
-2. Dump documents to json. This assumes the Access database is loaded in
+1. Dump documents to json. This assumes the Access database is loaded in
    MySQL on `localhost`, in the database `rio`::
 
     pip install -r migrations/requrements.txt
     rio accessdb_mjson > $DATA/access.mjson
 
-3. Load json to solr::
+2. Load json to Solr::
 
     rio import_mjson < $DATA/access.mjson
