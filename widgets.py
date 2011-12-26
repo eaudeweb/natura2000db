@@ -32,19 +32,28 @@ class MarkupGenerator(Generator):
     def is_hidden(self, field):
         return (field.properties.get('widget', 'input') == 'hidden')
 
-    def table_nested_th(self, table_field):
-        html = "\n"
+    def table_virtual_child(self, list_element):
+        slot_cls = list_element.slot_type
+        member_template = slot_cls(name=u'NEW_LIST_ITEM',
+                                   parent=list_element,
+                                   element=list_element.member_schema())
+        return member_template.element
+
+    def table_nested_th(self, list_element):
+        row = self.table_virtual_child(list_element)
 
         level = lambda e: len(list(e.parents))
 
-        table_depth = level(table_field)
+        table_depth = level(row)
         table_kids_depth = max([0] + [(level(e) - table_depth)
-                                      for e in table_field.all_children])
+                                      for e in row.all_children])
 
-        current_level = [table_field[name] for name in
-                         table_field.properties['order']
-                         if not self.is_hidden(table_field[name])]
+        current_level = [row[name] for name in
+                         row.properties['order']
+                         if not self.is_hidden(row[name])]
         current_level_n = 0
+
+        html = "\n"
 
         while current_level:
             next_level = []
@@ -73,11 +82,9 @@ class MarkupGenerator(Generator):
 
         return jinja2.Markup(html)
 
-    def table_append(self, field):
-        value_template = field.slot_type(name=u'NEW_LIST_ITEM',
-                                         parent=field,
-                                         element=field.member_schema())
-        return self.widget(value_template.element, 'table_td')
+    def table_append(self, list_element):
+        virtual_element = self.table_virtual_child(list_element)
+        return self.widget(virtual_element, 'table_td')
 
 
 class SearchMarkupGenerator(MarkupGenerator):

@@ -81,9 +81,7 @@
   <table border=1>
     <caption>{{field.properties.label}}</caption>
     <thead>
-      {% do field.append('') %}
-      {{ form.table_nested_th(field[0]) }}
-      {% do field.pop() %}
+      {{ form.table_nested_th(field) }}
     </thead>
     <tbody>
       {% for child in field %}
