@@ -569,6 +569,16 @@ label[for="f_text"] {
   font-size: 14px;
 }
 
+.search-toggle.simple,
+.search-advanced-visible .search-toggle.advanced {
+  display: none;
+}
+
+.search-advanced-visible .search-toggle.simple,
+.search-toggle.advanced {
+  display: inline;
+}
+
 .search-facets {
   float: left;
   width: 180px;

@@ -20,7 +20,10 @@
 
     <input type="submit">
 
-    [<a href="#" class="search-advanced-button">advanced search</a>]
+    [
+    <a href="#" class="search-toggle advanced">advanced search</a>
+    <a href="#" class="search-toggle simple">simple search</a>
+    ]
 
     <div class="search-advanced">
       {{ search_fields_html(form, search_form, advanced=True) }}
