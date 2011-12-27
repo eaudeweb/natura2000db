@@ -286,12 +286,19 @@ section_4 = Ordered_dict_of(
 international_classification_map = _load_json('reference/international_ro.json')
 
 
+classification_map = _load_json('reference/classification_ro.json')
+
+
 section_5 = Ordered_dict_of(
 
     CommonList.named('clasification').of(
 
         Ordered_dict_of(
-            CommonString.named('code').using(optional=False).with_properties(label='Cod'),
+
+            CommonEnum.named('code') \
+                      .with_properties(optional=False) \
+                      .valued(*sorted(classification_map.keys())) \
+                      .with_properties(label='Cod'),
             CommonFloat.named('percentage').with_properties(label='Pondere %'),
             ),
 
