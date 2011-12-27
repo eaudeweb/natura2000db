@@ -1,5 +1,12 @@
+import os.path
 import re
+import json
 import flatland as fl
+
+
+def _load_json(name):
+    with open(os.path.join(os.path.dirname(__file__), name), 'rb') as f:
+        return json.load(f)
 
 
 def valid_float(element, state):
@@ -237,32 +244,7 @@ section_3 = Ordered_dict_of(
     ).with_properties(label='3. INFORMATII ECOLOGICE')
 
 
-habitat_class_map = {
-    'N01': u"Arii marine, privaluri",
-    'N02': u"Rauri (fluvii) afectate de maree, estuare, terase mlastinoase sau nisipoase, lagune(inclusiv bazinele de colectare a sarii)",
-    'N03': u"Suprafete saraturate (mlastini, pajisti, stepe)",
-    'N04': u"Dune de coasta, plaje cu nisip, machair",
-    'N05': u"Litoral cu prundis, faleze, insulite",
-    'N06': u"Ape dulci continentale (statatoare, curgatoare)",
-    'N07': u"Mlastini (vegetatie de centura), smarcuri, turbarii",
-    'N08': u"Lande, tufarisuri, maquis si garigue, phrygana",
-    'N09': u"Pajisti uscate, stepe",
-    'N10': u"Pajisti seminaturale umede, preerii mezofile",
-    'N11': u"Pajisti alpine si subalpine",
-    'N12': u"Culturi cerealiere extensive (inclusiv culturile de rotatie cu dezmiristire)",
-    'N13': u"Orezarii",
-    'N14': u"Pajisti ameliorate",
-    'N15': u"Alte terenuri arabile",
-    'N16': u"Paduri caducifoliate",
-    'N17': u"Paduri de conifere",
-    'N18': u"Paduri semperviriscente de nerasinoase",
-    'N19': u"Paduri mixte",
-    'N20': u"Paduri de monocultura (plopi sau arbori exotici)",
-    'N21': u"Plantatii de arbori sau plante lemnoase (inclusiv livezi, cranguri, vii, dehesas)",
-    'N22': u"Stancarii interioare, grohotisuri, dune interioare, zone cu zapezi si gheturi vesnice",
-    'N23': u"Alte terenuri (inclusiv zone urbane, rurale, cai de comunicatie, rampe de depozitare, mine, zone industriale)",
-    'N26': u"Habitate de paduri (paduri in tranzitie)",
-}
+habitat_class_map = _load_json('reference/habitat_ro.json')
 
 
 section_4 = Ordered_dict_of(
@@ -301,15 +283,7 @@ section_4 = Ordered_dict_of(
     ).with_properties(label='4. DESCRIEREA SITULUI')
 
 
-international_classification_map = [
-    ('ramsar', "Conventia Ramsar"),
-    ('biogenetic', "Rezervatia biogenetica"),
-    ('eurodiploma', "Sit Eurodiploma"),
-    ('biosphere', "Rezervatia biosferei"),
-    ('barcelona', "Conventia Barcelona"),
-    ('world_heritage', "Sit patrimoniu mondial"),
-    ('other', "Altele"),
-]
+international_classification_map = _load_json('reference/international_ro.json')
 
 
 section_5 = Ordered_dict_of(
