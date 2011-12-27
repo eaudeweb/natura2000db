@@ -298,7 +298,9 @@ section_5 = Ordered_dict_of(
             CommonEnum.named('code') \
                       .with_properties(optional=False) \
                       .valued(*sorted(classification_map.keys())) \
-                      .with_properties(label='Cod'),
+                      .with_properties(label='Cod',
+                                       value_labels=dict((k, '%s (%s)' % (k, v))
+                                                         for k, v in classification_map.iteritems())),
             CommonFloat.named('percentage').with_properties(label='Pondere %'),
             ),
 

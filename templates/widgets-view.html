@@ -16,7 +16,14 @@
 {% endmacro %}
 
 {% macro select(form, field) %}
-  {{ input(form, field) }}
+  {% if field.properties.value_labels %}
+    {%- if field.value is not none %}
+      {{ _label(form, field) }}
+      {{ field.properties.value_labels[field.value] }}
+    {% endif -%}
+  {% else %}
+    {{ input(form, field) }}
+  {% endif %}
 {% endmacro %}
 
 {% macro textarea(form, field) %}
