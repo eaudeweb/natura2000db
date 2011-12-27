@@ -10,27 +10,27 @@
     name="index_html"
     for=".interfaces.IChmRioForms"
     class=".proxy.ChmRioFormsProxy"
-    permission="zope2.ViewManagementScreens"
+    permission="zope2.View"
     />
 
   <browser:view
     name="view"
     for=".interfaces.IChmRioForms"
     class=".proxy.ChmRioFormsProxy"
-    permission="zope2.ViewManagementScreens"
+    permission="zope2.View"
     />
 
   <browser:view
     name="new"
     for=".interfaces.IChmRioForms"
-    class=".proxy.ChmRioFormsProxy"
+    class=".proxy.ChmRioFormsProxyEdit"
     permission="zope2.ViewManagementScreens"
     />
 
   <browser:view
     name="edit"
     for=".interfaces.IChmRioForms"
-    class=".proxy.ChmRioFormsProxy"
+    class=".proxy.ChmRioFormsProxyEdit"
     permission="zope2.ViewManagementScreens"
     />
 
@@ -38,7 +38,7 @@
     name="search"
     for=".interfaces.IChmRioForms"
     class=".proxy.ChmRioFormsProxy"
-    permission="zope2.ViewManagementScreens"
+    permission="zope2.View"
     />
 
 </configure>

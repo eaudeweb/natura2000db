@@ -1,6 +1,8 @@
 import urllib
 from Products.Five.browser import BrowserView
 from App.config import getConfiguration
+from AccessControl import Unauthorized
+from AccessControl.Permissions import view_management_screens
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from webob import Request
 import paste.proxy
@@ -100,3 +102,17 @@ class ChmRioFormsProxy(BrowserView):
             'body': page.css('body'),
         }
         return frame_zpt.__of__(self.aq_parent)(**options)
+
+
+class ChmRioFormsProxyEdit(ChmRioFormsProxy):
+    """
+    Subclass of ChmRioFormsProxy that only allows Manager access
+    (hack because zope 2.10 ignores the `permission` option
+    of `browser:view`)
+    """
+
+    def __call__(self):
+        user = self.request.AUTHENTICATED_USER
+        if not user.has_permission(view_management_screens, self):
+            raise Unauthorized
+        return ChmRioFormsProxy.__call__(self)
