@@ -343,31 +343,31 @@ section_5 = Ordered_dict_of(
     ).with_properties(label='5. STATUTUL DE PROTECTIE AL SITULUI SI LEGATURA CU BIOTOPURILE CORINE')
 
 
+antropic_activities_map = _load_json('reference/activities_ro.json')
+
+
+antropic_activity = Ordered_dict_of(
+    CommonEnum.named('code') \
+              .using(optional=False) \
+              .valued(*sorted(antropic_activities_map.keys())) \
+              .with_properties(label='Cod',
+                               value_labels=dict((k, '%s (%s)' % (k, v))
+                                                 for k, v in antropic_activities_map.iteritems())),
+    CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate'),
+    CommonFloat.named('percentage').with_properties(label='% din sit'),
+    CommonEnum.named('influence').valued('+', '0', '-').with_properties(label='Influenta'),
+    )
+
+
 section_6 = Ordered_dict_of(
 
     Ordered_dict_of(
 
-        CommonList.named('internal').of(
+        CommonList.named('internal').of(antropic_activity) \
+            .with_properties(label='Activitati si consecinte in interiorul sitului'),
 
-            Ordered_dict_of(
-                CommonString.named('code').using(optional=False).with_properties(label='Cod'),
-                CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate'),
-                CommonFloat.named('percentage').with_properties(label='% din sit'),
-                CommonEnum.named('influence').valued('+', '0', '-').with_properties(label='Influenta'),
-                ),
-
-            ).with_properties(label='Activitati si consecinte in interiorul sitului'),
-
-        CommonList.named('external').of(
-
-            Ordered_dict_of(
-                CommonString.named('code').using(optional=False).with_properties(label='Cod'),
-                CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate'),
-                CommonFloat.named('percentage').with_properties(label='% din sit'),
-                CommonEnum.named('influence').valued('+', '0', '-').with_properties(label='Influenta'),
-                ),
-
-            ).with_properties(label='Activitati si consecinte in jurul sitului'),
+        CommonList.named('external').of(antropic_activity) \
+            .with_properties(label='Activitati si consecinte in jurul sitului'),
 
         ).named('activity') \
          .with_properties(widget='dict', label="Activitati antropice, consecintele lor generale si suprafata din sit afectata"),
