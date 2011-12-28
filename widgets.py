@@ -90,6 +90,7 @@ class MarkupGenerator(Generator):
 class SearchMarkupGenerator(MarkupGenerator):
 
     _default_settings = dict(MarkupGenerator._default_settings, **{
+        'search_view': 'webpages.search',
         'facets': [],
     })
 
@@ -97,4 +98,18 @@ class SearchMarkupGenerator(MarkupGenerator):
         search_data = search_form.value
         search_data.update(delta)
         search_data = dict((str(k), v) for k, v in search_data.items())
-        return flask.url_for('webpages.search', **search_data)
+        return flask.url_for(self['search_view'], **search_data)
+
+
+class StatsMarkupGenerator(SearchMarkupGenerator):
+
+    _default_settings = dict(SearchMarkupGenerator._default_settings, **{
+        'search_view': 'webpages.stats',
+        'compute': None,
+    })
+
+    def url_for_search(self, search_form, **delta):
+        if self['compute'] is not None:
+            delta['compute'] = self['compute']
+        sup = super(StatsMarkupGenerator, self).url_for_search
+        return sup(search_form, **delta)

@@ -77,8 +77,9 @@ def stats():
 
     stat_html = statistics.compute[stat_name](search_form, search_answer)
 
-    form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
+    form = widgets.StatsMarkupGenerator(flask.current_app.jinja_env)
     form['facets'] = search_answer['facets']
+    form['compute'] = stat_name
     return flask.render_template('stats.html', form=form,
                                  search_form=search_form,
                                  stat_html=stat_html)
