@@ -2,7 +2,9 @@
   {%- for name in search_form.properties.order %}
     {% set field = search_form[name] %}
     {% if field.properties.get('advanced', True) == advanced %}
+      <div class="search-field">
       {{ form.widget(field) }}
+      </div>
     {% endif %}
   {% endfor %}
 {% endmacro %}
@@ -16,14 +18,14 @@
 
     <div class="search-simple">
       {{ search_fields_html(form, search_form, advanced=False) }}
+
+      <input type="submit">
+
+      [
+      <a href="#" class="search-toggle advanced">advanced search</a>
+      <a href="#" class="search-toggle simple">simple search</a>
+      ]
     </div>
-
-    <input type="submit">
-
-    [
-    <a href="#" class="search-toggle advanced">advanced search</a>
-    <a href="#" class="search-toggle simple">simple search</a>
-    ]
 
     <div class="search-advanced">
       {{ search_fields_html(form, search_form, advanced=True) }}

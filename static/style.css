@@ -527,7 +527,13 @@ label[for="f_text"] {
   padding: 15px;
 }
 
+/*
 .search-criteria div:first-child {
+  display: inline;
+}
+*/
+
+.search-simple .search-field {
   display: inline;
 }
 
