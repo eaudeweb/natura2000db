@@ -580,7 +580,7 @@ label[for="f_text"] {
 
 .search-facets {
   float: left;
-  width: 180px;
+  width: 220px;
   background: #D3E9F8;
   border: 1px solid #C5D9E8;
   border-bottom-left-radius: 5px;
@@ -603,7 +603,7 @@ label[for="f_text"] {
 
 .search-results {
   border: 1px solid #0098AA;
-  margin-left: 190px;
+  margin-left: 230px;
   margin-bottom: 10px;
   padding-left: 15px;
   padding-bottom: 5px;
@@ -611,7 +611,7 @@ label[for="f_text"] {
 
 /* list with filtered results */
 .search-facet-items {
-  margin-left: 15px;
+  padding-left: 25px;
 }
 
 .search-facet-items li {

@@ -8,7 +8,10 @@
     <ul class="search-facet-items">
     {% for item in form['facets'][field.name] %}
       {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): item.name}) %}
-      <li><a href="{{ url }}">{{- item.name }}</a> ({{ item.count }})</li>
+      {% set value_label = (field.properties.value_labels[item.name]
+                            if field.properties.value_labels else
+                            item.name) %}
+      <li><a href="{{ url }}">{{- value_label }}</a> ({{ item.count }})</li>
     {% endfor %}
     </ul>
   {% endif %}

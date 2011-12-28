@@ -514,11 +514,14 @@ Search = Ordered_dict_of(
                             index=habitat_class_index,
                             widget='select',
                             value_labels=habitat_class_map),
-    fl.String.named('regcod') \
-             .with_properties(label='Regiune administrativa',
-                              index=indexer('section2/administrative[:]/code',
-                                            concat=False),
-                              facet=True),
+    fl.Enum.named('regcod') \
+           .valued(*sorted(nuts3.keys())) \
+           .with_properties(label='Regiune administrativa',
+                            index=indexer('section2/administrative[:]/code',
+                                          concat=False),
+                            widget='select',
+                            value_labels=id_and_label(nuts3),
+                            facet=True),
     fl.Enum.named('type') \
              .valued('sci', 'spa') \
              .with_properties(label='Tip de document',
