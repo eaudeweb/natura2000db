@@ -11,15 +11,6 @@
 
   {{ search_facets_html(form, search_form) }}
 
-  <ul class="search-stats">
-  {% for name, value in search_stats %}
-    <li>
-      <span class="name">{{ name }}</span>
-      <span class="value">{{ value }}</span>
-    </li>
-  {% endfor %}
-  </ul>
-
   <label>Rezultate</label>
   <ul class="search-results">
   {% for r in search_answer.docs %}

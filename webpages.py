@@ -3,7 +3,6 @@ import blinker
 import schema
 import widgets
 from storage import get_db
-from collections import defaultdict
 
 
 webpages = flask.Blueprint('webpages', __name__)
@@ -54,16 +53,6 @@ def edit():
     return flask.render_template('edit.html', doc=doc, form=form)
 
 
-def search_stats(search_answer):
-    stats = defaultdict(int)
-
-    for data in (doc['data'] for doc in search_answer['docs']):
-        stats['count'] += 1
-        stats['area'] += data['section2']['area']
-
-    return sorted(stats.items())
-
-
 @webpages.route('/search')
 def search():
     db = get_db()
@@ -73,7 +62,6 @@ def search():
     form['facets'] = search_answer['facets']
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
-                                 search_stats=search_stats(search_answer),
                                  search_answer=search_answer)
 
 
