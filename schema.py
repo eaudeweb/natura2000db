@@ -75,6 +75,10 @@ def validated(sender, element, result, **kwargs):
             element.add_error("required")
 
 
+def id_and_label(mapping):
+    return dict((k, '%s (%s)' % (k, v)) for k, v in mapping.iteritems())
+
+
 CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f')
 CommonDate = fl.String.using(optional=True, validators=[valid_year_month])
 CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget='checkbox')
@@ -299,8 +303,7 @@ section_5 = Ordered_dict_of(
                       .with_properties(optional=False) \
                       .valued(*sorted(classification_map.keys())) \
                       .with_properties(label='Cod',
-                                       value_labels=dict((k, '%s (%s)' % (k, v))
-                                                         for k, v in classification_map.iteritems())),
+                                       value_labels=id_and_label(classification_map)),
             CommonFloat.named('percentage').with_properties(label='Pondere %'),
             ),
 
@@ -351,8 +354,7 @@ antropic_activity = Ordered_dict_of(
               .using(optional=False) \
               .valued(*sorted(antropic_activities_map.keys())) \
               .with_properties(label='Cod',
-                               value_labels=dict((k, '%s (%s)' % (k, v))
-                                                 for k, v in antropic_activities_map.iteritems())),
+                               value_labels=id_and_label(antropic_activities_map)),
     CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label='Intensitate'),
     CommonFloat.named('percentage').with_properties(label='% din sit'),
     CommonEnum.named('influence').valued('+', '0', '-').with_properties(label='Influenta'),
