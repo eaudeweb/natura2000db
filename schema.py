@@ -182,7 +182,7 @@ section_2 = Ordered_dict_of(
                                        widget='select',
                                        value_labels=id_and_label(nuts3)),
             CommonString.named('name').with_properties(label='Numele regiunii'),
-            CommonString.named('coverage').with_properties(label='Pondere (%)'),
+            CommonFloat.named('coverage').with_properties(label='Pondere (%)'),
             ),
 
         ).using(optional=False).with_properties(label='Regiunea administrativa'),
