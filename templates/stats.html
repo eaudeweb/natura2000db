@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% from 'search_macros.html' import search_form_html, search_facets_html %}
+
+{% block content %}
+
+<h1>Statistici</h1>
+
+{{ search_form_html(form, search_form) }}
+
+{{ search_facets_html(form, search_form) }}
+
+{% set url = form.url_for_search(search_form) %}
+<p>Înapoi la <a href="{{ url }}">căutare</a></p>
+
+<div class="stats">
+  {{ stat_html }}
+</div>
+
+{% endblock %}

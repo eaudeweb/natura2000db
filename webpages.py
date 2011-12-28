@@ -3,6 +3,7 @@ import blinker
 import schema
 import widgets
 from storage import get_db
+import statistics
 
 
 webpages = flask.Blueprint('webpages', __name__)
@@ -63,6 +64,24 @@ def search():
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer)
+
+
+@webpages.route('/stats')
+def stats():
+    args = flask.request.args.to_dict()
+    stat_name = args.pop('compute')
+
+    db = get_db()
+    search_form = schema.Search(args)
+    search_answer = db.search(search_form.value, get_data=True)
+
+    stat_html = statistics.compute[stat_name](search_form, search_answer)
+
+    form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
+    form['facets'] = search_answer['facets']
+    return flask.render_template('stats.html', form=form,
+                                 search_form=search_form,
+                                 stat_html=stat_html)
 
 
 def register(app):

@@ -1,0 +1,29 @@
+Total: {{ stat['total'] }} ha
+
+<table>
+
+  <thead>
+    <tr>
+      <th>Nume</th>
+      <th>Arie</th>
+      <th>Proporție în județ</th>
+      <th>Arie în județ</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  {% for row in stat['table'] %}
+
+    {% set url = url_for('webpages.view', doc_id=row['id']) %}
+
+    <tr>
+      <td><a href="{{ url }}">{{ row['name'] }}</a></td>
+      <td>{{ row['total_area'] }}</td>
+      <td>{{ row['admin_percent'] }}</td>
+      <td>{{ row['admin_area'] }}</td>
+    </tr>
+
+  {% endfor %}
+  </tbody>
+
+</table>
