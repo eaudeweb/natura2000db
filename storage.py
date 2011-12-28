@@ -69,7 +69,6 @@ def quote_solr_query(text):
 
 class SolrStorage(object):
 
-    orig_field_name = 'orig'
     solr_base_url = 'http://localhost:8983/solr/'
 
     def _solr_doc(self, doc):
@@ -77,7 +76,8 @@ class SolrStorage(object):
 
         solr_doc = {
             'id': data['section1']['code'],
-            self.orig_field_name: json.dumps(data),
+            'name': data['section1']['name'],
+            'orig': json.dumps(data),
         }
 
         for element in schema.Search().all_children:
@@ -152,12 +152,12 @@ class SolrStorage(object):
 
     def load_document(self, doc_id):
         doc = self.solr_query('id:%s' % doc_id).docs[0]
-        return schema.SpaDoc(json.loads(doc[self.orig_field_name]))
+        return schema.SpaDoc(json.loads(doc['orig']))
 
     def document_ids(self):
         return sorted([d['id'] for d in self.solr_query('*').docs])
 
-    def search(self, criteria):
+    def search(self, criteria, get_data=False):
         query = u' '.join(u'%s:%s' % (k, quote_solr_query(v))
                           for k, v in criteria.items()
                           if v)
@@ -170,10 +170,16 @@ class SolrStorage(object):
             if element.properties.get('facet', False):
                 args.append( ('facet.field', element.name) )
 
+        want_fields = ['id', 'name']
+        if get_data:
+            want_fields.append('orig')
+        args.append( ('fl', ','.join(want_fields)) )
+
         answer = self.solr_query(query, args)
         docs = [{
                 'id': r['id'],
-                'data': json.loads(r[self.orig_field_name])
+                'name': r['name'],
+                'data': json.loads(r.get('orig', '{}')),
             } for r in answer.docs]
 
         return {
