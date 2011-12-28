@@ -155,6 +155,10 @@ section_1 = Ordered_dict_of(
     ).with_properties(label='1. IDENTIFICAREA SITULUI')
 
 
+nuts2 = _load_json('reference/nuts2003_level2_ro.json')
+nuts3 = _load_json('reference/nuts2003_level3_ro.json')
+
+
 section_2 = Ordered_dict_of(
 
     CommonGeoFloat.named('longitude').with_properties(label='Longitudine'),
@@ -172,7 +176,11 @@ section_2 = Ordered_dict_of(
     CommonList.named('administrative').of(
 
         Ordered_dict_of(
-            CommonString.named('code').with_properties(label='Codul NUTS'),
+            CommonEnum.named('code') \
+                      .valued(*sorted(nuts3.keys())) \
+                      .with_properties(label='Codul NUTS',
+                                       widget='select',
+                                       value_labels=id_and_label(nuts3)),
             CommonString.named('name').with_properties(label='Numele regiunii'),
             CommonString.named('coverage').with_properties(label='Pondere (%)'),
             ),
