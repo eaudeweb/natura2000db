@@ -16,7 +16,9 @@
   {{ form.select.open(field, class="field-%s" % field.name) }}
   {{ form.option(field, contents='') }}
   {% for value in field.valid_values %}
-    {% set value_label = field.properties.value_labels[value] %}
+    {% set value_label = (field.properties.value_labels[value]
+                          if field.properties.value_labels else
+                          value) %}
     {{ form.option(field, value=value, contents=value_label) }}
   {% endfor %}
   {{ form.select.close() }}

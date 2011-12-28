@@ -509,9 +509,11 @@ Search = Ordered_dict_of(
                               index=indexer('section2/administrative[:]/code',
                                             concat=False),
                               facet=True),
-    fl.String.named('type') \
+    fl.Enum.named('type') \
+             .valued('sci', 'spa') \
              .with_properties(label='Tip de document',
                               index=spa_sci_index,
+                              widget='select',
                               facet=True),
     fl.String.named('bio_region') \
              .with_properties(label='Regiune biogeografica',
