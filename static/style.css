@@ -138,7 +138,7 @@ table caption {
 
 /* label "Responsabili" ,
    label "Numele sitului" */
-label[for="f_section1_respondent"],
+label[for="f_section1_responsible"],
 label[for="f_section1_site_name"] {
   display: block;
   margin-top: 5px;
@@ -146,13 +146,13 @@ label[for="f_section1_site_name"] {
 }
 
 /* labels displayed in gray */
-.field-sit_dates label,
+.field-date label,
 .field-longitude label,
 .field-latitude label,
 .field-altitude .dict_children label,
-.field-bio_region .dict_children label,
+.field-biogeographic .dict_children label,
 .field-admin_region .dict_children label,
-.field-regcod label {
+.field-administrative label {
   color: #707070;
   margin-left: 15px;
   font-size: 12px;
@@ -160,14 +160,13 @@ label[for="f_section1_site_name"] {
 
 
 /* divs displayed inline in order to save vertical space */
-.field-sit_dates .dict_children,
+.field-history .field-date .dict_children,
 .field-longitude .dict_children,
 .field-latitude .dict_children,
 .field-altitude .dict_children,
 .field-admin_region .dict_children,
-.field-bio_region .dict_children,
-.field-map .dict_children,
-.field-None .dict_children {
+.field-biogeographic .dict_children,
+.field-map .dict_children {
   display: inline;
   margin-right: 5px;
   margin-left: 0px;
@@ -179,14 +178,14 @@ label[for="f_section1_site_name"] {
   max-width: 30px; /* that input holds one letter */
 }
 
-#f_section1_sitecode,
+#f_section1_code,
 .field-other_sites input {
   max-width: 100px; /* that input holds 9 digits */
 }
 
-#f_section1_date,
-#f_section1_update,
-.field-sit_dates input {
+#f_section1_date_document_add,
+#f_section1_date_document_update,
+.field-history .field-date input {
   max-width: 70px; /* those inputs hold 6 digits, i.e. it's a date (yyyymm) */
 }
 
@@ -209,8 +208,8 @@ label[for="f_section1_site_name"] {
   max-width: 50px; /* those inputs hold 3-4 digits */
 }
 
-.field-cover,
-.field-site_characteristics input,
+.field-coverage,
+.field-characteristics input,
 .field-overlap {
   max-width: 40px; /* those inputs hold max 3 digits; it's a percent */
 }  
@@ -234,13 +233,13 @@ label[for="f_section1_site_name"] {
 /* labels for main sections */
 .field-altitude p,
 .field-admin_region p,
-.field-bio_region p,
+.field-biogeographic p,
 .field-map p,
 .field-management p,
-.field-regcod p,
-.field-sit_dates p,
-.field-site_characteristics p,
-.field-in_jur p {
+.field-administrative p,
+.field-date p,
+.field-characteristics p,
+.field-activity p {
   text-align: left;
   color: #0098AA;
   margin-left: 7px;
@@ -249,7 +248,7 @@ label[for="f_section1_site_name"] {
   font-size: 14px;
 }
 
-.field-plants_types {
+.field-species_plant {
   width: 60%;
   margin: 0;
   padding: 0;
@@ -258,14 +257,14 @@ label[for="f_section1_site_name"] {
 
 /* labels displayed as blocks */
 label[for="f_section4_quality"],
-label[for="f_section4_vulnar"],
-label[for="f_section4_design"],
-label[for="f_section4_owner"],
-label[for="f_section4_docum"],
+label[for="f_section4_vulnerability"],
+label[for="f_section4_designation"],
+label[for="f_section4_ownership"],
+label[for="f_section4_documentation"],
 label[for="f_section6_responsible"],
 label[for="f_section6_plans"],
-label[for="f_section7_site_limits"],
-label[for="f_section1_sit_name"] {
+label[for="f_section7_limits"],
+label[for="f_section1_name"] {
   /*float: left;*/
   display: block;
   margin-top: 5px;
@@ -273,19 +272,19 @@ label[for="f_section1_sit_name"] {
 }
 
 .field-clasification caption,
-.field-outside_activities caption {
+.field-external caption {
   width: 300px;
 }
 
 
 /* labels for subsections, displayed with gray */
 .field-map .dict_children label,
-.field-inside_activities caption,
-.field-outside_activities caption {
+.field-internal caption,
+.field-external caption {
   color: #707070;
 }
 
-.field-inside_activities caption {
+.field-internal caption {
   min-width: 300px;
 }
 
@@ -295,7 +294,7 @@ input[type="submit"] {
 
 
 /* table rows, displayed with gray, and some labels */
-.field-site_characteristics label,
+.field-characteristics label,
 .field-management .dict_children label {
   display: block;
   margin-top: 5px;
@@ -307,7 +306,7 @@ input[type="submit"] {
   margin-bottom: 0px;
 }
 
-.field-sit_dates .dict_children {
+.field-date .dict_children {
   margin-left: 0px;
 }
 
