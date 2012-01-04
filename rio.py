@@ -22,6 +22,8 @@ def create_app():
 
 
 def accessdb_mjson(args):
+    logging.getLogger('migrations.from_access').setLevel(logging.INFO)
+
     from migrations.from_access import load_from_sql, verify_data
     kwargs = {'indent': 2} if args.indent else {}
     for doc in verify_data(load_from_sql()):
@@ -46,9 +48,15 @@ def import_mjson(args):
         for line in stream:
             yield flask.json.loads(line)
 
+    def load_document(data):
+        doc = schema.SpaDoc(data)
+        assert doc.validate(), '%s does not validate' % data['section1']['code']
+        assert doc.value == data, 'failed round-tripping the json data'
+        return doc
+
     db = get_db(create_app())
 
-    for batch in batched(schema.SpaDoc(d) for d in read_json_lines(sys.stdin)):
+    for batch in batched(load_document(d) for d in read_json_lines(sys.stdin)):
         db.save_document_batch(batch)
         sys.stdout.write('.')
         sys.stdout.flush()

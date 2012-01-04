@@ -39,7 +39,7 @@ def edit():
             app = flask.current_app
             app.document_signal.send('save', doc_id=doc_id, doc=doc)
             flask.flash("Document %r saved" % doc_id)
-            return flask.redirect('/')
+            return flask.redirect(flask.url_for('webpages.view', doc_id=doc_id))
 
         else:
             flask.flash("Errors in document")
@@ -57,7 +57,7 @@ def edit():
 @webpages.route('/search')
 def search():
     db = get_db()
-    search_form = schema.Search(flask.request.args.to_dict())
+    search_form = schema.Search.from_flat(flask.request.args.to_dict())
     search_answer = db.search(search_form.value)
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
     form['facets'] = search_answer['facets']
@@ -69,19 +69,20 @@ def search():
 @webpages.route('/stats')
 def stats():
     args = flask.request.args.to_dict()
-    stat_name = args.pop('compute')
 
     db = get_db()
-    search_form = schema.Search(args)
+    search_form = schema.Search.from_flat(args)
     search_answer = db.search(search_form.value, get_data=True)
 
-    stat_html = statistics.compute[stat_name](search_form, search_answer)
+    stat_form = schema.Statistics.from_flat(args)
+    stat_name = stat_form['compute'].value
+    stat_html = statistics.compute[stat_name](stat_form, search_answer)
 
-    form = widgets.StatsMarkupGenerator(flask.current_app.jinja_env)
+    form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
+    form['view_name'] = 'webpages.stats'
     form['facets'] = search_answer['facets']
-    form['compute'] = stat_name
     return flask.render_template('stats.html', form=form,
-                                 search_form=search_form,
+                                 stat_form=stat_form,
                                  stat_html=stat_html)
 
 

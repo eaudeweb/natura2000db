@@ -2,7 +2,11 @@ import sys
 from pprint import pformat
 from collections import defaultdict
 import re
-from schema import SpaDoc
+import logging
+import schema
+
+
+log = logging.getLogger(__name__)
 
 
 table_names = ['CheckForm', 'QueryCombine', 'RegCod', 'actvty', 'amprep',
@@ -86,17 +90,18 @@ def map_info_table(row):
 
 def map_fields(biotop):
     flat = {}
+    sitecode = biotop.pop('sitecode')
 
     relations = biotop.pop('_relations')
     regcod_map = {
         'reg_code': 'code',
-        'reg_name': 'name',
         'cover': 'coverage',
     }
     for i, regcod_row in enumerate(relations.pop('regcod')):
         prefix = 'section2_administrative_%d' % i
-        for key in regcod_row:
-            flat[prefix + '_' + regcod_map[key]] = regcod_row[key]
+        flat[prefix + '_code'] = regcod_row.pop('reg_code')
+        flat[prefix + '_coverage'] = regcod_row.pop('cover')
+        assert not regcod_row
 
     bird_n = bird_extra_n = 0
     for bird_row in relations.pop('bird', []):
@@ -147,16 +152,22 @@ def map_fields(biotop):
         flat[prefix + '_population_trend'] = val('motivation')
         assert not spec_row, repr(spec_row)
 
-    for i, habit1_row in enumerate(relations.pop('habit1', [])):
+    i = 0
+    for habit1_row in relations.pop('habit1', []):
         val = lambda(name): habit1_row.pop(name)
         prefix = 'section3_habitat_%d' % i
-        flat[prefix + '_code'] = val('hbcdax')
+        code = val('hbcdax')
+        if code not in schema.habitat_type_map:
+            log.warn('%s - unknown habitat type code %r', sitecode, code)
+            continue
+        flat[prefix + '_code'] = code
         flat[prefix + '_percentage'] = val('cover')
         flat[prefix + '_representativeness'] = val('represent')
         flat[prefix + '_relative_area'] = val('rel_surf')
         flat[prefix + '_conservation_status'] = val('conserve')
         flat[prefix + '_global_evaluation'] = val('global')
         assert not habit1_row
+        i += 1
 
     for habit2_row in relations.pop('habit2', []):
         name = habit2_row.pop('habcode')
@@ -185,12 +196,18 @@ def map_fields(biotop):
         flat[prefix + '_overlap'] = val('overlap_p')
         assert not corine_row
 
-    for i, desigc_row in enumerate(relations.pop('desigc', [])):
+    i = 0
+    for desigc_row in relations.pop('desigc', []):
         val = lambda(name): desigc_row.pop(name)
-        prefix = 'section5_clasification_%d' % i
-        flat[prefix + '_code'] = val('desicode')
+        prefix = 'section5_classification_%d' % i
+        code = val('desicode')
+        if code not in schema.classification_map:
+            log.warn('%s - unknown classification code %r', sitecode, code)
+            continue
+        flat[prefix + '_code'] = code
         flat[prefix + '_percentage'] = val('cover')
         assert not desigc_row
+        i += 1
 
     for i, desigr_row in enumerate(relations.pop('desigr', [])):
         val = lambda(name): desigr_row.pop(name)
@@ -204,6 +221,10 @@ def map_fields(biotop):
     activity_in = activity_out = 0
     for actvty_row in relations.pop('actvty', []):
         val = lambda(name): actvty_row.pop(name)
+        code = val('act_code')
+        if code not in schema.antropic_activities_map:
+            log.warn('%s - unknown antropic activity code %r', sitecode, code)
+            continue
         if val('in_out') == 'O':
             i = activity_in
             activity_in += 1
@@ -212,7 +233,7 @@ def map_fields(biotop):
             i = activity_out
             activity_out += 1
             prefix = 'section6_activity_internal_%d' % i
-        flat[prefix + '_code'] = val('act_code')
+        flat[prefix + '_code'] = code
         flat[prefix + '_intensity'] = val('intensity')
         flat[prefix + '_percentage'] = val('cover')
         flat[prefix + '_influence'] = val('influence')
@@ -221,7 +242,7 @@ def map_fields(biotop):
     for name in skip_relations:
         relations.pop(name, [])
     if relations:
-        print>>sys.stderr, 'unhandled relations: %r' % (relations.keys(),)
+        log.warn('unhandled relations: %r', relations.keys())
 
     _nodefault = object()
     def val(name, default=_nodefault):
@@ -234,7 +255,7 @@ def map_fields(biotop):
         else:
             return biotop.pop(name, default)
 
-    flat['section1_code'] = val('sitecode')
+    flat['section1_code'] = sitecode
     flat['section1_date_document_add'] = val('date')
     flat['section1_date_document_update'] = val('update', '')
     flat['section1_responsible'] = val('respondent')
@@ -270,7 +291,7 @@ def map_fields(biotop):
 
     assert val('mapsincl') == val('photos') == 0
 
-    for element in SpaDoc().all_children:
+    for element in schema.SpaDoc().all_children:
         flat_name = element.flattened_name()
         if element.name in biotop:
             flat[flat_name] = biotop.pop(element.name)
@@ -283,24 +304,14 @@ def map_fields(biotop):
 def print_errors(root_element):
     for element in root_element.all_children:
         if element.errors:
-            print>>sys.stderr, element.flattened_name('/'), element.errors
-
-
-def known_unused_field(name):
-    return any(re.match(p, name) for p in [
-        #r'^section2_regcod_\d+_sitecode$',
-    ])
-
-def known_extra_field(name):
-    return any(re.match(p, name) for p in [
-    ])
+            log.error('%s %s', element.flattened_name('/'), element.errors)
 
 
 def verify_data(biotop_list):
     count = defaultdict(int)
     for biotop in biotop_list.itervalues():
         flat = map_fields(biotop)
-        doc = SpaDoc.from_flat(flat)
+        doc = schema.SpaDoc.from_flat(flat)
 
         def get_value(element):
             if element.optional and not element.value:
@@ -310,18 +321,11 @@ def verify_data(biotop_list):
 
         if doc.validate():
             flat1 = dict((k, v) for k, v in flat.iteritems() if v)
-            for name in flat1.keys():
-                if known_unused_field(name):
-                    del flat1[name]
             flat2 = dict((k, v) for k, v in doc.flatten(value=get_value) if v)
-            for name in flat2.keys():
-                if known_extra_field(name):
-                    del flat2[name]
             if set(flat1.keys()) != set(flat2.keys()):
-                print>>sys.stderr, 'unused: %s, extra: %s' % (
-                    dict((k, flat1[k]) for k in set(flat1) - set(flat2)),
-                    dict((k, flat2[k]) for k in set(flat2) - set(flat1)),
-                )
+                log.warn('unused: %s, extra: %s',
+                         dict((k, flat1[k]) for k in set(flat1) - set(flat2)),
+                         dict((k, flat2[k]) for k in set(flat2) - set(flat1)))
                 count['delta'] += 1
             else:
                 count['ok'] += 1
@@ -330,14 +334,14 @@ def verify_data(biotop_list):
 
         else:
             count['error'] += 1
-            print>>sys.stderr, pformat(biotop)
-            print>>sys.stderr, pformat(doc.value)
-            print>>sys.stderr, ''
+            log.error(pformat(flat))
+            log.error(pformat(biotop))
+            log.error(pformat(doc.value))
+            log.error('')
             print_errors(doc)
-            print>>sys.stderr, ''
             break
 
-    print>>sys.stderr, dict(count)
+    log.info('done: %r', dict(count))
 
 
 if __name__ == '__main__':

@@ -65,6 +65,14 @@ def valid_any(element, state):
     element.add_error("Please choose at least one value")
     return False
 
+def valid_enum(element, state):
+    if element.value not in element.valid_values:
+        element.add_error("%r is not a valid value for %s" %
+                          (element.value, element.name))
+        return False
+
+    return True
+
 
 from flatland.signals import validator_validated
 from flatland.schema.base import NotEmpty
@@ -83,7 +91,7 @@ CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.
 CommonDate = fl.String.using(optional=True, validators=[valid_year_month])
 CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget='checkbox')
 CommonString = fl.String.using(optional=True)
-CommonEnum = fl.Enum.using(optional=True).with_properties(widget='select')
+CommonEnum = fl.Enum.using(optional=True, validators=[valid_enum]).with_properties(widget='select')
 CommonList = fl.List.using(optional=True).with_properties(widget='table')
 CommonGeoFloat = fl.Float.using(optional=True)
 
@@ -178,11 +186,13 @@ section_2 = Ordered_dict_of(
         Ordered_dict_of(
             CommonEnum.named('code') \
                       .valued(*sorted(nuts3.keys())) \
-                      .with_properties(label='Codul NUTS',
+                      .using(optional=False) \
+                      .with_properties(label='Judet',
                                        widget='select',
                                        value_labels=id_and_label(nuts3)),
-            CommonString.named('name').with_properties(label='Numele regiunii'),
-            CommonFloat.named('coverage').with_properties(label='Pondere (%)'),
+            CommonFloat.named('coverage') \
+                       .using(optional=False) \
+                       .with_properties(label='Pondere (%)'),
             ),
 
         ).using(optional=False).with_properties(label='Regiunea administrativa'),
@@ -198,12 +208,21 @@ section_2 = Ordered_dict_of(
     ).with_properties(label='2. LOCALIZAREA SITULUI')
 
 
+_habitat_type_data = _load_json('reference/habitat_type_ro.json')
+habitat_type_map = dict((k, ('%s %s' % (name, pri)).strip())
+                        for k, [pri, name] in _habitat_type_data.iteritems())
+
+
 section_3 = Ordered_dict_of(
 
     CommonList.named('habitat').of(
 
         Ordered_dict_of(
-            CommonString.named('code').using(optional=False).with_properties(label='Cod'),
+            CommonEnum.named('code') \
+                      .valued(*sorted(habitat_type_map.keys())) \
+                      .using(optional=False) \
+                      .with_properties(label='Cod',
+                                       value_labels=id_and_label(habitat_type_map)),
             CommonString.named('percentage').using(optional=False).with_properties(label='Pondere'),
             CommonEnum.named('representativeness').valued('A', 'B', 'C', 'D').with_properties(label='Reprezentativitate'),
             CommonEnum.named('relative_area').valued('A', 'B', 'C').with_properties(label='Suprafata relativa'),
@@ -256,7 +275,7 @@ section_3 = Ordered_dict_of(
     ).with_properties(label='3. INFORMATII ECOLOGICE')
 
 
-habitat_class_map = _load_json('reference/habitat_ro.json')
+habitat_class_map = _load_json('reference/habitat_class_ro.json')
 
 
 section_4 = Ordered_dict_of(
@@ -303,7 +322,7 @@ classification_map = _load_json('reference/classification_ro.json')
 
 section_5 = Ordered_dict_of(
 
-    CommonList.named('clasification').of(
+    CommonList.named('classification').of(
 
         Ordered_dict_of(
 
@@ -420,15 +439,20 @@ SpaDoc = Ordered_dict_of(
 
 
 def indexer(*paths, **kwargs):
+    concat = kwargs.pop('concat', False)
+    labels = kwargs.pop('labels', True)
+
     def values(doc):
         for p in paths:
             for element in doc.find(p):
                 value = element.value
                 if value:
                     yield value
+                    if labels and 'value_labels' in element.properties:
+                        yield element.properties['value_labels'][value]
 
     def index(doc):
-        if kwargs.get('concat', False):
+        if concat:
             return ' '.join(unicode(v) for v in values(doc))
         else:
             return list(values(doc))
@@ -460,12 +484,20 @@ def spa_sci_index(doc):
         raise ValueError('unkown document type (spa/sci) %r' % doc_id)
 
 
+def nuts2_index(doc):
+    values = set()
+    for element in doc.find('section2/administrative[:]/code'):
+        n2code = element.value[:-1]
+        if n2code in nuts2:
+            values.add(n2code)
+    return sorted(values)
+
+
 full_text_fields = [
     'section1/name',
     'section1/code',
     'section1/responsible',
     'section2/administrative[:]/code',
-    'section2/administrative[:]/name',
     'section3/habitat[:]/code',
     'section3/species_bird[:]/code',
     'section3/species_bird[:]/tax_code',
@@ -506,7 +538,7 @@ full_text_fields = [
 Search = Ordered_dict_of(
     fl.String.named('text') \
              .with_properties(label='Text',
-                              index=indexer(*full_text_fields),
+                              index=indexer(*full_text_fields, concat=True),
                               advanced=False),
     fl.Enum.named('habitat_class') \
            .valued(*sorted(habitat_class_map)) \
@@ -514,13 +546,20 @@ Search = Ordered_dict_of(
                             index=habitat_class_index,
                             widget='select',
                             value_labels=habitat_class_map),
-    fl.Enum.named('regcod') \
-           .valued(*sorted(nuts3.keys())) \
+    fl.Enum.named('nuts2') \
+           .valued(*sorted(nuts2.keys())) \
            .with_properties(label='Regiune administrativa',
-                            index=indexer('section2/administrative[:]/code',
-                                          concat=False),
+                            index=nuts2_index,
                             widget='select',
-                            value_labels=id_and_label(nuts3),
+                            value_labels=nuts2,
+                            facet=True),
+    fl.Enum.named('nuts3') \
+           .valued(*sorted(nuts3.keys())) \
+           .with_properties(label='Judet',
+                            index=indexer('section2/administrative[:]/code',
+                                          concat=False, labels=False),
+                            widget='select',
+                            value_labels=nuts3,
                             facet=True),
     fl.Enum.named('type') \
              .valued('sci', 'spa') \
@@ -533,3 +572,10 @@ Search = Ordered_dict_of(
                               index=bio_region_index,
                               facet=True),
 )
+
+
+Statistics = Ordered_dict_of(*(Search.field_schema + (
+    fl.Enum.named('compute') \
+           .valued('area') \
+           .with_properties(widget='hidden'),
+)))
