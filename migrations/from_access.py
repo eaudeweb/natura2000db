@@ -290,16 +290,6 @@ def print_errors(root_element):
             log.error('%s %s', element.flattened_name('/'), element.errors)
 
 
-def known_unused_field(name):
-    return any(re.match(p, name) for p in [
-        #r'^section2_regcod_\d+_sitecode$',
-    ])
-
-def known_extra_field(name):
-    return any(re.match(p, name) for p in [
-    ])
-
-
 def verify_data(biotop_list):
     count = defaultdict(int)
     for biotop in biotop_list.itervalues():
@@ -314,13 +304,7 @@ def verify_data(biotop_list):
 
         if doc.validate():
             flat1 = dict((k, v) for k, v in flat.iteritems() if v)
-            for name in flat1.keys():
-                if known_unused_field(name):
-                    del flat1[name]
             flat2 = dict((k, v) for k, v in doc.flatten(value=get_value) if v)
-            for name in flat2.keys():
-                if known_extra_field(name):
-                    del flat2[name]
             if set(flat1.keys()) != set(flat2.keys()):
                 log.warn('unused: %s, extra: %s',
                          dict((k, flat1[k]) for k in set(flat1) - set(flat2)),
