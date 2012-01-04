@@ -337,6 +337,9 @@ input[type="submit"] {
    ################################ */
 .editedForm {
   color: #335C9E;
+  border: 1px solid #335C9E;
+  padding: 5px;
+  margin-top: 15px;
 }
 
 .editedForm h1 {
@@ -384,12 +387,6 @@ input[type="submit"] {
   margin-bottom: 5px;
 }
 
-.editedForm {
-  border: 1px solid #335C9E;
-  padding: 5px;
-  margin-top: 15px;
-}
-
 .nameOfField {
   color: #000;
   /*color: #335C9E;#0098AA;*/
@@ -415,7 +412,7 @@ input[type="submit"] {
 }
 
 .editedForm h2~div  p~div .nameOfField {
-  color: #707070;
+  color: #444; /*#707070;*/
   margin-left: 15px;
 }
 
@@ -445,38 +442,54 @@ h2~div ul li div {
    ################################ */
 @media print {
      
-     #header, .wrap ul {
+     #header, 
+     .wrap > ul {
        display: none; /* hide the rest of the page, except for the form itself */
+     }
+     
+     h2~div ul {
+       display: visible; /* the list for section 7, aka maps */
+       list-style-type: numeric;
      }
      
     .editedForm {
       display: visible;
       margin: 0;
       padding: 0;
+      color: #444;
+      border: none;
     }
-    
+  
     .editButton {
       display: none; /* do not display the edit button */
     }
-    
+
     .editedForm h1 {
-      font-size: 19px;
+      font-size: 19px !important;
+      text-align: center !important;
+    }
+
+    .editedForm > p {
+      text-align: center !important;
     }
 
     .editedForm h2 {
-      color: #335C9E;
-      font-size: 14px;
-    }
-     /* space between h2 title and div with a certain input, in the view standard form */
-    .editedForm h2~div {
-      margin-top: 0px;
-      padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
-      /*background: #D9F0FF;*/
-      border: 1pt solid #ddd;
+      color: #000;
+      font-size: 13px;
+      /*background: #eee;*/
+      border: 1px solid #000;
+      padding-left: 5px;
     }
 
-    .center-column h1 ~ p {
-      text-align: left;
+    .editedForm div div ul li {
+      color: #C0C0C0; /*#335C9E;*/
+    }
+
+    /* space between h2 title and div with a certain input, in the view standard form */
+    .editedForm h2~div {
+      margin-top: 10px;
+      margin-bottom: 20px;
+      padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
     }
 
     .center-column form input[type="submit"] {
@@ -492,14 +505,8 @@ h2~div ul li div {
       margin-bottom: 5px;
     }
 
-    .editedForm {
-      border: 1px solid #335C9E;
-      padding: 5px;
-      margin-top: 15px;
-    }
-
     .nameOfField {
-      color: #335C9E;
+      color: red;
       margin-left: 5px;
     }
 
@@ -508,12 +515,12 @@ h2~div ul li div {
     }
 
     .editedForm table {
-      margin-left: 15px;
+      margin-left: -2px;
     }
 
     .editedForm h2~div p {
-      color: #335C9E;
-      text-align: left;
+      color: #ddd;/*#335C9E; #0098AA;*/
+      text-align: left !important;
       margin-left: 5px;
     }
 
@@ -522,16 +529,28 @@ h2~div ul li div {
     }
 
     .editedForm h2~div  p~div .nameOfField {
-      color: #707070;
+      color: #444; /*#707070;*/
       margin-left: 15px;
     }
 
     .editedForm table caption {
-      min-width: 300px;
-      color: #707070;
+      min-width: 500px;
+      color: #000;/*#707070;*/
       margin-top: 5px;
     }
 
+    .editedForm thead {
+      background: #eee;
+    }
+
+    .editedForm th,
+    .editedForm thead tr td  {
+      color: #333;
+    }
+
+    h2~div ul li div {
+      display: inline; /* section 'Harta fizica' */
+    }  
 
 }
 
