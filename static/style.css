@@ -314,6 +314,13 @@ input[type="submit"] {
   font-size: 12px;
 } 
 
+.table-append a.add {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url("./add.png");
+}
+
 
 /* #################################
      VIEW/RE-EDIT A NATURA 2000 FORM 
