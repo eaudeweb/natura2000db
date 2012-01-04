@@ -3,7 +3,7 @@ from pprint import pformat
 from collections import defaultdict
 import re
 import logging
-from schema import SpaDoc, antropic_activities_map
+import schema
 
 
 log = logging.getLogger(__name__)
@@ -210,7 +210,7 @@ def map_fields(biotop):
     for actvty_row in relations.pop('actvty', []):
         val = lambda(name): actvty_row.pop(name)
         code = val('act_code')
-        if code not in antropic_activities_map:
+        if code not in schema.antropic_activities_map:
             log.warn('%s - unknown antropic activity code %r', sitecode, code)
             continue
         if val('in_out') == 'O':
@@ -279,7 +279,7 @@ def map_fields(biotop):
 
     assert val('mapsincl') == val('photos') == 0
 
-    for element in SpaDoc().all_children:
+    for element in schema.SpaDoc().all_children:
         flat_name = element.flattened_name()
         if element.name in biotop:
             flat[flat_name] = biotop.pop(element.name)
@@ -299,7 +299,7 @@ def verify_data(biotop_list):
     count = defaultdict(int)
     for biotop in biotop_list.itervalues():
         flat = map_fields(biotop)
-        doc = SpaDoc.from_flat(flat)
+        doc = schema.SpaDoc.from_flat(flat)
 
         def get_value(element):
             if element.optional and not element.value:
