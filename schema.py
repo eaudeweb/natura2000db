@@ -475,6 +475,15 @@ def spa_sci_index(doc):
         raise ValueError('unkown document type (spa/sci) %r' % doc_id)
 
 
+def nuts2_index(doc):
+    values = set()
+    for element in doc.find('section2/administrative[:]/code'):
+        n2code = element.value[:-1]
+        if n2code in nuts2:
+            values.add(n2code)
+    return sorted(values)
+
+
 full_text_fields = [
     'section1/name',
     'section1/code',
@@ -528,9 +537,16 @@ Search = Ordered_dict_of(
                             index=habitat_class_index,
                             widget='select',
                             value_labels=habitat_class_map),
-    fl.Enum.named('regcod') \
-           .valued(*sorted(nuts3.keys())) \
+    fl.Enum.named('nuts2') \
+           .valued(*sorted(nuts2.keys())) \
            .with_properties(label='Regiune administrativa',
+                            index=nuts2_index,
+                            widget='select',
+                            value_labels=nuts2,
+                            facet=True),
+    fl.Enum.named('nuts3') \
+           .valued(*sorted(nuts3.keys())) \
+           .with_properties(label='Judet',
                             index=indexer('section2/administrative[:]/code',
                                           concat=False, labels=False),
                             widget='select',

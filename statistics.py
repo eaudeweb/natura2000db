@@ -8,12 +8,12 @@ def area(search_form, search_answer):
         data = doc['data']
         total_area = data['section2']['area']
 
-        admin_code = search_form['regcod'].value
+        admin_code = search_form['nuts3'].value
         for admin in data['section2']['administrative']:
             if admin['code'] == admin_code:
                 break
         else:
-            raise ValueError('no matching regcod %r' % admin_code)
+            raise ValueError('no matching nuts3 %r' % admin_code)
 
         admin_area = total_area * (admin['coverage'] / 100)
         stat['total'] += admin_area
