@@ -104,7 +104,6 @@
 {% endmacro %}
 
 {% macro habitat_breakdown(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1>
     <thead>
       <tr>
@@ -130,7 +129,6 @@
         <td></td>
       </tr>
     </table>
-  {%- do form.end() %}
 {% endmacro %}
 
 {% macro section(form, field) %}

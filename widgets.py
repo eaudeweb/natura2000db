@@ -22,6 +22,8 @@ class MarkupGenerator(Generator):
     _default_settings = {
         'skip_labels': False,
         'widgets_template': 'edit',
+        'auto_domid': True,
+        'auto_for': True,
     }
 
     def __init__(self, jinja_env):

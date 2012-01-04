@@ -11,22 +11,18 @@
 {% endmacro %}
 
 {% macro input(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   {{ _label(form, field) }}
   {{ form.input(field, class="field-%s" % field.name) }}
   {{- _errors(form, field) -}}
-  {%- do form.end() %}
 {% endmacro %}
 
 {% macro radio(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <td>
   {% for value in field.valid_values %}
     {{ form.input(field, type="radio", value=value) }}
   {% endfor %}
   {{- _errors(form, field) -}}
   </td>
-  {%- do form.end() %}
 {% endmacro %}
 
 {% macro select(form, field) %}
@@ -43,11 +39,9 @@
 {% endmacro %}
 
 {% macro textarea(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   {{ _label(form, field) }}
   {{ form.textarea(field, class="field-%s" % field.name) }}
   {{- _errors(form, field) -}}
-  {%- do form.end() %}
 {% endmacro %}
 
 {% macro hidden(form, field) %}
@@ -55,11 +49,9 @@
 {% endmacro %}
 
 {% macro checkbox(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   {{ _label(form, field) }}
   {{ form.input(field, type="checkbox") }}
   {{- _errors(form, field) -}}
-  {%- do form.end() %}
 {% endmacro %}
 
 {% macro _dict_children(form, field) %}
@@ -112,7 +104,6 @@
 {% endmacro %}
 
 {% macro table(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1 class="field-{{ field.name }}">
     <caption>{{field.properties.label}}</caption>
     <thead>
@@ -130,12 +121,10 @@
       </tr>
     </tbody>
   </table>
-  {%- do form.end() %}
   {{- _errors(form, field) -}}
 {% endmacro %}
 
 {% macro habitat_breakdown(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <table border=1 class="field-{{ field.name }}">
     <thead>
       <tr>
@@ -159,15 +148,12 @@
         <td></td>
       </tr>
     </table>
-  {%- do form.end() %}
   {{- _errors(form, field) -}}
 {% endmacro %}
 
 {% macro section(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   <div class="field-{{ field.name }}">
   <h2>{{ field.properties.label }}</h2>
   {{ _dict_children(form, field) }}
   </div>
-  {%- do form.end() %}
 {% endmacro %}

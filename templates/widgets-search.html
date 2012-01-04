@@ -5,10 +5,8 @@
 {% endmacro %}
 
 {% macro input(form, field) %}
-  {%- do form.begin(auto_domid=true, auto_for=true) %}
   {{ _label(form, field) }}
   {{ form.input(field, class="field-%s" % field.name) }}
-  {%- do form.end() %}
 {% endmacro %}
 
 {% macro select(form, field) %}
