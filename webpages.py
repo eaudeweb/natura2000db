@@ -39,7 +39,7 @@ def edit():
             app = flask.current_app
             app.document_signal.send('save', doc_id=doc_id, doc=doc)
             flask.flash("Document %r saved" % doc_id)
-            return flask.redirect('/')
+            return flask.redirect(flask.url_for('webpages.view', doc_id=doc_id))
 
         else:
             flask.flash("Errors in document")
