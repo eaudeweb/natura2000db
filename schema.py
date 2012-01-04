@@ -533,3 +533,10 @@ Search = Ordered_dict_of(
                               index=bio_region_index,
                               facet=True),
 )
+
+
+Statistics = Ordered_dict_of(*(Search.field_schema + (
+    fl.Enum.named('compute') \
+           .valued('area') \
+           .with_properties(widget='hidden'),
+)))

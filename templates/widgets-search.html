@@ -9,6 +9,10 @@
   {{ form.input(field, class="field-%s" % field.name) }}
 {% endmacro %}
 
+{% macro hidden(form, field) %}
+  {{ form.input(field, type="hidden") }}
+{% endmacro %}
+
 {% macro select(form, field) %}
   {{ _label(form, field) }}
   {{ form.select.open(field, class="field-%s" % field.name) }}
