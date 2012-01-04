@@ -186,11 +186,13 @@ section_2 = Ordered_dict_of(
         Ordered_dict_of(
             CommonEnum.named('code') \
                       .valued(*sorted(nuts3.keys())) \
-                      .with_properties(label='Codul NUTS',
+                      .using(optional=False) \
+                      .with_properties(label='Judet',
                                        widget='select',
                                        value_labels=id_and_label(nuts3)),
-            CommonString.named('name').with_properties(label='Numele regiunii'),
-            CommonFloat.named('coverage').with_properties(label='Pondere (%)'),
+            CommonFloat.named('coverage') \
+                       .using(optional=False) \
+                       .with_properties(label='Pondere (%)'),
             ),
 
         ).using(optional=False).with_properties(label='Regiunea administrativa'),
@@ -428,15 +430,20 @@ SpaDoc = Ordered_dict_of(
 
 
 def indexer(*paths, **kwargs):
+    concat = kwargs.pop('concat', False)
+    labels = kwargs.pop('labels', True)
+
     def values(doc):
         for p in paths:
             for element in doc.find(p):
                 value = element.value
                 if value:
                     yield value
+                    if labels and 'value_labels' in element.properties:
+                        yield element.properties['value_labels'][value]
 
     def index(doc):
-        if kwargs.get('concat', False):
+        if concat:
             return ' '.join(unicode(v) for v in values(doc))
         else:
             return list(values(doc))
@@ -473,7 +480,6 @@ full_text_fields = [
     'section1/code',
     'section1/responsible',
     'section2/administrative[:]/code',
-    'section2/administrative[:]/name',
     'section3/habitat[:]/code',
     'section3/species_bird[:]/code',
     'section3/species_bird[:]/tax_code',
@@ -514,7 +520,7 @@ full_text_fields = [
 Search = Ordered_dict_of(
     fl.String.named('text') \
              .with_properties(label='Text',
-                              index=indexer(*full_text_fields),
+                              index=indexer(*full_text_fields, concat=True),
                               advanced=False),
     fl.Enum.named('habitat_class') \
            .valued(*sorted(habitat_class_map)) \
@@ -526,9 +532,9 @@ Search = Ordered_dict_of(
            .valued(*sorted(nuts3.keys())) \
            .with_properties(label='Regiune administrativa',
                             index=indexer('section2/administrative[:]/code',
-                                          concat=False),
+                                          concat=False, labels=False),
                             widget='select',
-                            value_labels=id_and_label(nuts3),
+                            value_labels=nuts3,
                             facet=True),
     fl.Enum.named('type') \
              .valued('sci', 'spa') \
