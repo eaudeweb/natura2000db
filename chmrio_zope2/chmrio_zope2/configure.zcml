@@ -40,5 +40,12 @@
     class=".proxy.ChmRioFormsProxy"
     permission="zope2.View"
     />
+    
+  <browser:view
+    name="stats"
+    for=".interfaces.IChmRioForms"
+    class=".proxy.ChmRioFormsProxy"
+    permission="zope2.View"
+    />
 
 </configure>
