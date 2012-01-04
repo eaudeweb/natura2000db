@@ -152,16 +152,22 @@ def map_fields(biotop):
         flat[prefix + '_population_trend'] = val('motivation')
         assert not spec_row, repr(spec_row)
 
-    for i, habit1_row in enumerate(relations.pop('habit1', [])):
+    i = 0
+    for habit1_row in relations.pop('habit1', []):
         val = lambda(name): habit1_row.pop(name)
         prefix = 'section3_habitat_%d' % i
-        flat[prefix + '_code'] = val('hbcdax')
+        code = val('hbcdax')
+        if code not in schema.habitat_type_map:
+            log.warn('%s - unknown habitat type code %r', sitecode, code)
+            continue
+        flat[prefix + '_code'] = code
         flat[prefix + '_percentage'] = val('cover')
         flat[prefix + '_representativeness'] = val('represent')
         flat[prefix + '_relative_area'] = val('rel_surf')
         flat[prefix + '_conservation_status'] = val('conserve')
         flat[prefix + '_global_evaluation'] = val('global')
         assert not habit1_row
+        i += 1
 
     for habit2_row in relations.pop('habit2', []):
         name = habit2_row.pop('habcode')
