@@ -65,6 +65,14 @@ def valid_any(element, state):
     element.add_error("Please choose at least one value")
     return False
 
+def valid_enum(element, state):
+    if element.value not in element.valid_values:
+        element.add_error("%r is not a valid value for %s" %
+                          (element.value, element.name))
+        return False
+
+    return True
+
 
 from flatland.signals import validator_validated
 from flatland.schema.base import NotEmpty
@@ -83,7 +91,7 @@ CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.
 CommonDate = fl.String.using(optional=True, validators=[valid_year_month])
 CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget='checkbox')
 CommonString = fl.String.using(optional=True)
-CommonEnum = fl.Enum.using(optional=True).with_properties(widget='select')
+CommonEnum = fl.Enum.using(optional=True, validators=[valid_enum]).with_properties(widget='select')
 CommonList = fl.List.using(optional=True).with_properties(widget='table')
 CommonGeoFloat = fl.Float.using(optional=True)
 
