@@ -2,7 +2,11 @@ import sys
 from pprint import pformat
 from collections import defaultdict
 import re
+import logging
 from schema import SpaDoc
+
+
+log = logging.getLogger(__name__)
 
 
 table_names = ['CheckForm', 'QueryCombine', 'RegCod', 'actvty', 'amprep',
@@ -221,7 +225,7 @@ def map_fields(biotop):
     for name in skip_relations:
         relations.pop(name, [])
     if relations:
-        print>>sys.stderr, 'unhandled relations: %r' % (relations.keys(),)
+        log.warn('unhandled relations: %r', relations.keys())
 
     _nodefault = object()
     def val(name, default=_nodefault):
@@ -283,7 +287,7 @@ def map_fields(biotop):
 def print_errors(root_element):
     for element in root_element.all_children:
         if element.errors:
-            print>>sys.stderr, element.flattened_name('/'), element.errors
+            log.error('%s %s', element.flattened_name('/'), element.errors)
 
 
 def known_unused_field(name):
@@ -318,10 +322,9 @@ def verify_data(biotop_list):
                 if known_extra_field(name):
                     del flat2[name]
             if set(flat1.keys()) != set(flat2.keys()):
-                print>>sys.stderr, 'unused: %s, extra: %s' % (
-                    dict((k, flat1[k]) for k in set(flat1) - set(flat2)),
-                    dict((k, flat2[k]) for k in set(flat2) - set(flat1)),
-                )
+                log.warn('unused: %s, extra: %s',
+                         dict((k, flat1[k]) for k in set(flat1) - set(flat2)),
+                         dict((k, flat2[k]) for k in set(flat2) - set(flat1)))
                 count['delta'] += 1
             else:
                 count['ok'] += 1
@@ -330,14 +333,14 @@ def verify_data(biotop_list):
 
         else:
             count['error'] += 1
-            print>>sys.stderr, pformat(biotop)
-            print>>sys.stderr, pformat(doc.value)
-            print>>sys.stderr, ''
+            log.error(pformat(flat))
+            log.error(pformat(biotop))
+            log.error(pformat(doc.value))
+            log.error('')
             print_errors(doc)
-            print>>sys.stderr, ''
             break
 
-    print>>sys.stderr, dict(count)
+    log.info('done: %r', dict(count))
 
 
 if __name__ == '__main__':

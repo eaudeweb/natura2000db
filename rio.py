@@ -22,6 +22,8 @@ def create_app():
 
 
 def accessdb_mjson(args):
+    logging.getLogger('migrations.from_access').setLevel(logging.INFO)
+
     from migrations.from_access import load_from_sql, verify_data
     kwargs = {'indent': 2} if args.indent else {}
     for doc in verify_data(load_from_sql()):
