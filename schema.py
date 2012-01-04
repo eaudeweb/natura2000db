@@ -311,7 +311,7 @@ classification_map = _load_json('reference/classification_ro.json')
 
 section_5 = Ordered_dict_of(
 
-    CommonList.named('clasification').of(
+    CommonList.named('classification').of(
 
         Ordered_dict_of(
 

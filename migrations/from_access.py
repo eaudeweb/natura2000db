@@ -187,7 +187,7 @@ def map_fields(biotop):
 
     for i, desigc_row in enumerate(relations.pop('desigc', [])):
         val = lambda(name): desigc_row.pop(name)
-        prefix = 'section5_clasification_%d' % i
+        prefix = 'section5_classification_%d' % i
         flat[prefix + '_code'] = val('desicode')
         flat[prefix + '_percentage'] = val('cover')
         assert not desigc_row
