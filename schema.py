@@ -266,7 +266,7 @@ section_3 = Ordered_dict_of(
     ).with_properties(label='3. INFORMATII ECOLOGICE')
 
 
-habitat_class_map = _load_json('reference/habitat_ro.json')
+habitat_class_map = _load_json('reference/habitat_class_ro.json')
 
 
 section_4 = Ordered_dict_of(
