@@ -208,12 +208,21 @@ section_2 = Ordered_dict_of(
     ).with_properties(label='2. LOCALIZAREA SITULUI')
 
 
+_habitat_type_data = _load_json('reference/habitat_type_ro.json')
+habitat_type_map = dict((k, ('%s %s' % (name, pri)).strip())
+                        for k, [pri, name] in _habitat_type_data.iteritems())
+
+
 section_3 = Ordered_dict_of(
 
     CommonList.named('habitat').of(
 
         Ordered_dict_of(
-            CommonString.named('code').using(optional=False).with_properties(label='Cod'),
+            CommonEnum.named('code') \
+                      .valued(*sorted(habitat_type_map.keys())) \
+                      .using(optional=False) \
+                      .with_properties(label='Cod',
+                                       value_labels=id_and_label(habitat_type_map)),
             CommonString.named('percentage').using(optional=False).with_properties(label='Pondere'),
             CommonEnum.named('representativeness').valued('A', 'B', 'C', 'D').with_properties(label='Reprezentativitate'),
             CommonEnum.named('relative_area').valued('A', 'B', 'C').with_properties(label='Suprafata relativa'),
