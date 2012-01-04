@@ -3,7 +3,7 @@ from pprint import pformat
 from collections import defaultdict
 import re
 import logging
-from schema import SpaDoc
+from schema import SpaDoc, antropic_activities_map
 
 
 log = logging.getLogger(__name__)
@@ -90,17 +90,18 @@ def map_info_table(row):
 
 def map_fields(biotop):
     flat = {}
+    sitecode = biotop.pop('sitecode')
 
     relations = biotop.pop('_relations')
     regcod_map = {
         'reg_code': 'code',
-        'reg_name': 'name',
         'cover': 'coverage',
     }
     for i, regcod_row in enumerate(relations.pop('regcod')):
         prefix = 'section2_administrative_%d' % i
-        for key in regcod_row:
-            flat[prefix + '_' + regcod_map[key]] = regcod_row[key]
+        flat[prefix + '_code'] = regcod_row.pop('reg_code')
+        flat[prefix + '_coverage'] = regcod_row.pop('cover')
+        assert not regcod_row
 
     bird_n = bird_extra_n = 0
     for bird_row in relations.pop('bird', []):
@@ -208,6 +209,10 @@ def map_fields(biotop):
     activity_in = activity_out = 0
     for actvty_row in relations.pop('actvty', []):
         val = lambda(name): actvty_row.pop(name)
+        code = val('act_code')
+        if code not in antropic_activities_map:
+            log.warn('%s - unknown antropic activity code %r', sitecode, code)
+            continue
         if val('in_out') == 'O':
             i = activity_in
             activity_in += 1
@@ -216,7 +221,7 @@ def map_fields(biotop):
             i = activity_out
             activity_out += 1
             prefix = 'section6_activity_internal_%d' % i
-        flat[prefix + '_code'] = val('act_code')
+        flat[prefix + '_code'] = code
         flat[prefix + '_intensity'] = val('intensity')
         flat[prefix + '_percentage'] = val('cover')
         flat[prefix + '_influence'] = val('influence')
@@ -238,7 +243,7 @@ def map_fields(biotop):
         else:
             return biotop.pop(name, default)
 
-    flat['section1_code'] = val('sitecode')
+    flat['section1_code'] = sitecode
     flat['section1_date_document_add'] = val('date')
     flat['section1_date_document_update'] = val('update', '')
     flat['section1_responsible'] = val('respondent')
