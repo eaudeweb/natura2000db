@@ -190,12 +190,18 @@ def map_fields(biotop):
         flat[prefix + '_overlap'] = val('overlap_p')
         assert not corine_row
 
-    for i, desigc_row in enumerate(relations.pop('desigc', [])):
+    i = 0
+    for desigc_row in relations.pop('desigc', []):
         val = lambda(name): desigc_row.pop(name)
         prefix = 'section5_classification_%d' % i
-        flat[prefix + '_code'] = val('desicode')
+        code = val('desicode')
+        if code not in schema.classification_map:
+            log.warn('%s - unknown classification code %r', sitecode, code)
+            continue
+        flat[prefix + '_code'] = code
         flat[prefix + '_percentage'] = val('cover')
         assert not desigc_row
+        i += 1
 
     for i, desigr_row in enumerate(relations.pop('desigr', [])):
         val = lambda(name): desigr_row.pop(name)
