@@ -344,10 +344,10 @@ section_5 = Ordered_dict_of(
     CommonList.named('national').of(
 
         Ordered_dict_of(
+            CommonString.named('site_type').with_properties(label=u'Cod'),
             CommonString.named('type').with_properties(label=u'Tip'),
-            CommonString.named('site_name').using(optional=False).with_properties(label=u'Numele sitului'),
-            CommonString.named('site_type').with_properties(label=u'Tipul sitului'),
             CommonFloat.named('overlap').with_properties(label=u'Suprapunere %'),
+            CommonString.named('site_name').using(optional=False).with_properties(label=u'Numele sitului'),
             ),
 
         ).with_properties(label=u'Relațiile sitului descris cu alte situri - desemnate la nivel national sau regional'),
@@ -355,12 +355,12 @@ section_5 = Ordered_dict_of(
     CommonList.named('international').of(
 
         Ordered_dict_of(
+            CommonString.named('site_type').with_properties(label=u'Tipul sitului'),
             CommonEnum.named('type') \
                       .valued(*[k for k,v in international_classification_map]) \
                       .with_properties(label=u'Tip'),
-            CommonString.named('site_name').using(optional=False).with_properties(label=u'Numele sitului'),
-            CommonString.named('site_type').with_properties(label=u'Tipul sitului'),
             CommonFloat.named('overlap').with_properties(label=u'Suprapunere %'),
+            CommonString.named('site_name').using(optional=False).with_properties(label=u'Numele sitului'),
             ),
 
         ).with_properties(label=u'Relațiile sitului descris cu alte situri - desemnate la nivel international'),
@@ -398,13 +398,13 @@ section_6 = Ordered_dict_of(
     Ordered_dict_of(
 
         CommonList.named('internal').of(antropic_activity) \
-            .with_properties(label=u'Activitâți și consecințe în interiorul sitului'),
+            .with_properties(label=u'Activități și consecințe în interiorul sitului'),
 
         CommonList.named('external').of(antropic_activity) \
-            .with_properties(label=u'Activitâți și consecințe în jurul sitului'),
+            .with_properties(label=u'Activități și consecințe în jurul sitului'),
 
         ).named('activity') \
-         .with_properties(widget='dict', label=u"Activitâți antropice, consecințele lor generale și suprafața din sit afectată"),
+         .with_properties(widget='dict', label=u"Activități antropice, consecințele lor generale și suprafața din sit afectată"),
 
     Ordered_dict_of(
         CommonString.named('organisation').with_properties(widget='textarea', label=u'Organismul responsabil pentru managementul sitului'),
