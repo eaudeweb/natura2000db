@@ -220,6 +220,11 @@ label[for="f_section1_site_name"] {
   max-width: 50px; /* those inputs hold 3-4 digits */
 }
 
+#f_section3_habitat_NEW_LIST_ITEM_code,
+#f_section5_classification_NEW_LIST_ITEM_code {
+  min-width: 65px; /* drop down list with 4 digits codes */
+}
+
 .field-coverage,
 .field-characteristics input,
 .field-overlap {
@@ -247,6 +252,13 @@ label[for="f_section1_site_name"] {
 
 .field-history .field-description {
   min-width: 500px; /* number of digits not specified, but should be 2.5 times greater than .field-history field-field */
+}
+
+.field-habitat td:first-child,
+.field-habitat th:first-child,
+.field-classification td:first-child,
+.field-classification th:first-child {
+  min-width: 80px;
 }
 
 /* labels for main sections */
@@ -347,6 +359,14 @@ input[type="submit"] {
 /* #################################
        VIEW A NATURA 2000 FORM 
    ################################ */
+#header,
+#breadcrumb, 
+#footer,
+.wrap > ul,
+.editButton {
+  display: visible; 
+}   
+   
 .editedForm {
   color: #335C9E;
   border: 1px solid #335C9E;
@@ -407,6 +427,7 @@ input[type="submit"] {
 
 .editedForm table td {
   padding: 0px 5px;
+  text-align: right;
 }
 
 .editedForm table {
