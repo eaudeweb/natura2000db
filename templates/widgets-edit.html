@@ -54,6 +54,10 @@
   {{- _errors(form, field) -}}
 {% endmacro %}
 
+{% macro site_link(form, field) %}
+  {{ input(form, field) }}
+{% endmacro %}
+
 {% macro _dict_children(form, field) %}
   {%- for child_name in field.properties.order %}
   <div class="dict_children">
@@ -75,14 +79,23 @@
 {% macro list(form, field) %}
   <div class="field-{{ field.name }}">
   <p>{{ field.properties.label }}</p>
-  {% do field.append('') %}
-  {% do field.append('') %}
-  <p>{{ field[0].properties.label }}</p>
+  <p>{{ field.member_schema.properties.label }}</p>
+
+  <ul>
   {%- do form.begin(skip_labels=True) %}
-  {% for child in field %}
-  {{ form.widget(child) }}
-  {% endfor %}
+
+    {% for child in field %}
+    <li>{{ form.widget(child) }}</li>
+    {% endfor %}
+
+    <li class="virtual-child">
+      {{ form.widget(form.virtual_child(field)) }}
+    </li>
+    {% set next_id = field|length %}
+    <li><a href="#" class="add">{{ next_id }}</a></li>
+
   {%- do form.end() %}
+  </ul>
   {{- _errors(form, field) -}}
   </div>
 {% endmacro %}
@@ -110,15 +123,23 @@
       {{ form.table_nested_th(field) }}
     </thead>
     <tbody>
+
       {% for child in field %}
       <tr>
-          {{ table_td(form, child) }}
+        {{ table_td(form, child) }}
       </tr>
       {% endfor %}
-      <tr class="table-append" style="display: none">
-          {{ form.table_append(field) }}
+
+      <tr class="virtual-child">
+        {{ form.widget(form.virtual_child(field), 'table_td') }}
       </tr>
+      <tr>
+        <td colspan="{{ form.colspan(field.member_schema()) }}">
+          {% set next_id = field|length %}
+          <a href="#" class="add">{{ next_id }}</a>
+        </td>
       </tr>
+
     </tbody>
   </table>
   {{- _errors(form, field) -}}

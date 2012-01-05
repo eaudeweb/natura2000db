@@ -5,9 +5,9 @@
 {% endmacro %}
 
 {% macro input(form, field) %}
-  {%- if field.value is not none %}
+  {%- if not field.is_empty %}
   {{ _label(form, field) }}
-  {{ field.value }}
+  {{ field.u }}
   {% endif -%}
 {% endmacro %}
 
@@ -17,7 +17,7 @@
 
 {% macro select(form, field) %}
   {% if field.properties.value_labels %}
-    {%- if field.value is not none %}
+    {%- if not field.is_empty %}
       {{ _label(form, field) }}
       {{ field.properties.value_labels[field.value] }}
     {% endif -%}
@@ -34,7 +34,14 @@
 {% endmacro %}
 
 {% macro checkbox(form, field) %}
-  {{ input(form, field) }}
+  {% if field.value %}
+    {{ _label(form, field) }}
+  {% endif %}
+{% endmacro %}
+
+{% macro site_link(form, field) %}
+  {{ field.u }}
+  ({{ form.other_site_labels[field.value] }})
 {% endmacro %}
 
 {% macro _dict_children(form, field) %}
@@ -79,14 +86,14 @@
       {{ hidden(form, field) }}
     {% else %}
       {% do form.begin(skip_labels=True) -%}
-      <td>{{ form.widget(field) }}</td>
+      <td class="{{ form.container_class(field) }}">{{ form.widget(field) }}</td>
       {%- do form.end() %}
     {% endif %}
   {% endif %}
 {% endmacro %}
 
 {% macro table(form, field) %}
-{% if field.value %}
+{% if not field.is_empty %}
   <table border=1>
     <caption>{{field.properties.label}}</caption>
     <thead>
@@ -113,11 +120,12 @@
     </thead>
     <tbody>
       {% for child_name in field.properties.order %}
-      {% if field[child_name].value %}
+      {% set child_field = field[child_name] %}
+      {% if not child_field.is_empty %}
       <tr>
-          <td>{{ field[child_name].properties.label }}</td>
+          <td>{{ child_field.properties.label }}</td>
           {% do form.begin(skip_labels=True) -%}
-          <td>{{ form.widget(field[child_name]) }}</td>
+          <td class="{{ form.container_class(child_field) }}">{{ form.widget(child_field) }}</td>
           {%- do form.end() %}
       </tr>
       {% endif %}
@@ -132,6 +140,8 @@
 {% endmacro %}
 
 {% macro section(form, field) %}
+  {% if form.any_value(field) %}
   <h2>{{ field.properties.label }}</h2>
   {{ _dict_children(form, field) }}
+  {% endif %}
 {% endmacro %}

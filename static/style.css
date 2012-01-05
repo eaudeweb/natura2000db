@@ -348,7 +348,11 @@ input[type="submit"] {
   font-size: 12px;
 } 
 
-.table-append a.add {
+.virtual-child {
+  display: none;
+}
+
+a.add {
   display: block;
   width: 16px;
   height: 16px;
@@ -467,6 +471,11 @@ input[type="submit"] {
 h2~div ul li div {
   display: inline; /* section 'Harta fizica' */
 }  
+
+.editedForm .number {
+  text-align: right;
+  font-family: monospace;
+}
 
 
 /* #################################

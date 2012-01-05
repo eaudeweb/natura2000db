@@ -17,10 +17,7 @@
   {{ _label(form, field) }}
   {{ form.select.open(field, class="field-%s" % field.name) }}
   {{ form.option(field, contents='') }}
-  {% for value in field.valid_values %}
-    {% set value_label = (field.properties.value_labels[value]
-                          if field.properties.value_labels else
-                          value) %}
+  {% for value, value_label in form.sorted_with_labels(field) %}
     {{ form.option(field, value=value, contents=value_label) }}
   {% endfor %}
   {{ form.select.close() }}
