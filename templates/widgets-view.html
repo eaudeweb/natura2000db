@@ -5,9 +5,9 @@
 {% endmacro %}
 
 {% macro input(form, field) %}
-  {%- if field.value is not none %}
+  {%- if not field.is_empty %}
   {{ _label(form, field) }}
-  {{ field.value }}
+  {{ field.u }}
   {% endif -%}
 {% endmacro %}
 
@@ -17,7 +17,7 @@
 
 {% macro select(form, field) %}
   {% if field.properties.value_labels %}
-    {%- if field.value is not none %}
+    {%- if not field.is_empty %}
       {{ _label(form, field) }}
       {{ field.properties.value_labels[field.value] }}
     {% endif -%}
@@ -40,7 +40,7 @@
 {% endmacro %}
 
 {% macro site_link(form, field) %}
-  {{ field.value }}
+  {{ field.u }}
   ({{ form.other_site_labels[field.value] }})
 {% endmacro %}
 
@@ -93,7 +93,7 @@
 {% endmacro %}
 
 {% macro table(form, field) %}
-{% if field.value %}
+{% if not field.is_empty %}
   <table border=1>
     <caption>{{field.properties.label}}</caption>
     <thead>
@@ -120,7 +120,7 @@
     </thead>
     <tbody>
       {% for child_name in field.properties.order %}
-      {% if field[child_name].value %}
+      {% if not field[child_name].is_empty %}
       <tr>
           <td>{{ field[child_name].properties.label }}</td>
           {% do form.begin(skip_labels=True) -%}

@@ -3,7 +3,7 @@
 {% endmacro %}
 
 {% macro input(form, field) %}
-  {% if not field.value %}
+  {% if field.is_empty %}
     {{ _label(form, field) }}
     <ul class="search-facet-items">
     {% for item in form['facets'][field.name] %}
