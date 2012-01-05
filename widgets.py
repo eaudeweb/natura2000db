@@ -34,15 +34,18 @@ class MarkupGenerator(Generator):
     def is_hidden(self, field):
         return (field.properties.get('widget', 'input') == 'hidden')
 
-    def table_virtual_child(self, list_element):
+    def virtual_child(self, list_element):
         slot_cls = list_element.slot_type
         member_template = slot_cls(name=u'NEW_LIST_ITEM',
                                    parent=list_element,
                                    element=list_element.member_schema())
         return member_template.element
 
+    def colspan(self, field):
+        return len([f for f in field.all_children if not self.is_hidden(f)])
+
     def table_nested_th(self, list_element):
-        row = self.table_virtual_child(list_element)
+        row = self.virtual_child(list_element)
 
         level = lambda e: len(list(e.parents))
 
@@ -69,8 +72,7 @@ class MarkupGenerator(Generator):
                     rowspan = 1
                 else:
                     rowspan = table_kids_depth - current_level_n
-                colspan = len([f for f in field.all_children
-                               if not self.is_hidden(f)])
+                colspan = self.colspan(field)
                 attr = ''
                 if colspan > 1: attr += ' colspan="%d"' % colspan
                 if rowspan > 1: attr += ' rowspan="%d"' % rowspan
@@ -83,10 +85,6 @@ class MarkupGenerator(Generator):
             html += "</tr>\n"
 
         return jinja2.Markup(html)
-
-    def table_append(self, list_element):
-        virtual_element = self.table_virtual_child(list_element)
-        return self.widget(virtual_element, 'table_td')
 
 
 class SearchMarkupGenerator(MarkupGenerator):

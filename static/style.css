@@ -314,7 +314,11 @@ input[type="submit"] {
   font-size: 12px;
 } 
 
-.table-append a.add {
+.virtual-child {
+  display: none;
+}
+
+a.add {
   display: block;
   width: 16px;
   height: 16px;

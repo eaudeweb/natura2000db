@@ -1,15 +1,16 @@
 $(document).ready(function() {
 
-$('tr.table-append').each(function() {
-    var tr = $(this);
-    var tds = tr.children().remove();
-    var button = $('<a href="#" class="add">').click(function(evt) {
+$('.virtual-child').each(function() {
+    var list = $(this).parent();
+    var button = $('a.add', list);
+    var item_with_button = $('> :has(a.add)', list);
+    var virtual = $(this).remove();
+
+    button.click(function(evt) {
         evt.preventDefault();
-        var new_tr = $('<tr>').append(tds.clone());
-        tr.before(new_tr);
+        var new_item = virtual.clone().removeClass('virtual-child');
+        item_with_button.before(new_item);
     });
-    var td_button = $('<td>').attr('colspan', tds.length).append(button);
-    tr.append(td_button).show();
 });
 
 });
