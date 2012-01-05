@@ -573,10 +573,13 @@ Search = Ordered_dict_of(
                               widget='select',
                               value_labels={'sci': u"SCI", 'spa': u"SPA"},
                               facet=True),
-    fl.String.named('bio_region') \
-             .with_properties(label=u'Regiune biogeografică',
-                              index=bio_region_index,
-                              facet=True),
+    fl.Enum.named('bio_region') \
+           .valued(*sorted(biogeographic_map.keys())) \
+           .with_properties(label=u'Regiune biogeografică',
+                            index=bio_region_index,
+                            widget='select',
+                            value_labels=biogeographic_map,
+                            facet=True),
 )
 
 
