@@ -11,7 +11,7 @@
 {% macro input(form, field) %}
   {%- if not field.is_empty %}
     {{ _label(form, field) }}
-    {{ field.u }}
+    <span class="{{ "field-%s" % field.name }}">{{ field.u }}</span>
   {%- else -%}
     {{ empty_value(field) }}
   {%- endif -%}
@@ -25,12 +25,16 @@
   {% if field.properties.value_labels %}
     {%- if not field.is_empty %}
       {{ _label(form, field) }}
+      <div class="{{ "field-%s" % field.name }}">
       {{ field.properties.value_labels[field.value] }}
+      </div>
     {%- else -%}
       {{ empty_value(field) }}
     {%- endif -%}
   {% else %}
+    <div class="{{ "field-%s" % field.name }}">
     {{ input(form, field) }}
+    </div>
   {% endif %}
 {% endmacro %}
 
@@ -48,8 +52,10 @@
 {% endmacro %}
 
 {% macro site_link(form, field) %}
+  <div class="{{ "field-%s" % field.name }}">
   {{ field.u }}
   ({{ form.other_site_labels[field.value] }})
+  </div>
 {% endmacro %}
 
 {% macro _dict_children(form, field) %}
@@ -62,12 +68,14 @@
 
 {% macro dict(form, field) %}
   <p>{{ field.properties.label }}</p>
+  <div class="{{ "field-%s" % field.name }}">
   {{ _dict_children(form, field) }}
+  </div>
 {% endmacro %}
 
 {% macro list(form, field) %}
   {{ field.properties.label }}
-  <ul>
+  <ul class="{{ "field-%s" % field.name }}">
   {% for child in field %}
     <li>{{ form.widget(child) }}</li>
   {% endfor %}
@@ -102,7 +110,7 @@
 
 {% macro table(form, field) %}
 {% if not field.is_empty %}
-  <table border=1>
+  <table border=1 class="{{ "field-%s" % field.name }}">
     <caption>{{field.properties.label}}</caption>
     <thead>
       {{ form.table_nested_th(field) }}
@@ -121,7 +129,7 @@
 {% endmacro %}
 
 {% macro habitat_breakdown(form, field) %}
-  <table border=1>
+  <table border=1 class="{{ "field-%s" % field.name }}">
     <thead>
       <tr>
         <td>{{ field.properties.label }}</td>
@@ -151,7 +159,9 @@
 
 {% macro section(form, field) %}
   {% if form.any_value(field) %}
+  <div class="{{ "field-%s" % field.name }}">
   <h2>{{ field.properties.label }}</h2>
   {{ _dict_children(form, field) }}
+  </div>
   {% endif %}
 {% endmacro %}
