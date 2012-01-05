@@ -34,7 +34,9 @@
 {% endmacro %}
 
 {% macro checkbox(form, field) %}
-  {{ input(form, field) }}
+  {% if field.value %}
+    {{ _label(form, field) }}
+  {% endif %}
 {% endmacro %}
 
 {% macro _dict_children(form, field) %}
