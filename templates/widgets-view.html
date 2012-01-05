@@ -1,3 +1,7 @@
+{% macro empty_value(field) -%}
+<!-- {{ field.flattened_name() }} is empty -->
+{%- endmacro %}
+
 {% macro _label(form, field) %}
   {% if not form['skip_labels'] %}
     <span class="nameOfField">{{ field.properties.label }}</span>
@@ -6,11 +10,11 @@
 
 {% macro input(form, field) %}
   {%- if not field.is_empty %}
-  {{ _label(form, field) }}
-  {{ field.u }}
-  {% else %}
-  <!-- empty -->
-  {% endif -%}
+    {{ _label(form, field) }}
+    {{ field.u }}
+  {%- else -%}
+    {{ empty_value(field) }}
+  {%- endif -%}
 {% endmacro %}
 
 {% macro radio(form, field) %}
@@ -22,7 +26,9 @@
     {%- if not field.is_empty %}
       {{ _label(form, field) }}
       {{ field.properties.value_labels[field.value] }}
-    {% endif -%}
+    {%- else -%}
+      {{ empty_value(field) }}
+    {%- endif -%}
   {% else %}
     {{ input(form, field) }}
   {% endif %}
@@ -109,6 +115,8 @@
       {% endfor %}
     </tbody>
   </table>
+{%- else -%}
+  {{ empty_value(field) }}
 {% endif %}
 {% endmacro %}
 
