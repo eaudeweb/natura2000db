@@ -11,11 +11,13 @@
 
   {{ search_facets_html(form, search_form) }}
 
+  {% if (not search_form['nuts2'].is_empty) or (not search_form['nuts3'].is_empty) %}
   statistici:
   {% for compute in available_stats %}
     {% set url = form.url_for_search(search_form, 'webpages.stats', compute=compute) %}
     <a href="{{ url }}">{{ compute }}</a>
   {% endfor %}
+  {% endif %}
 
   <h2>Rezultate</h2>
   <ul class="search-results">

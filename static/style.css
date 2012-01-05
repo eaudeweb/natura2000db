@@ -471,7 +471,7 @@ h2~div ul li div {
   display: inline; /* section 'Harta fizica' */
 }  
 
-.editedForm .number {
+.number {
   text-align: right;
   font-family: monospace;
 }
@@ -546,39 +546,31 @@ label[for="f_text"] {
 
 }
 
-.search-advanced-button {
-  font-size: 14px;
-  padding: 0px 3px;
-}
-
 .search-advanced {
   display: none;
   margin-top: 10px;
 }
 
-.search-field select {
-  margin-left: 100px !important;
-}   
-
-.search-advanced-visible .search-advanced {
-  display: block;
-  border: 0px solid orange;
-}
-
-.search-advanced-visible .search-advanced label,
-.search-advanced-visible .search-advanced select {
-  color: #444;
-  font-size: 14px;
-}
-
-.search-toggle.simple,
-.search-advanced-visible .search-toggle.advanced {
+.search-toggle.simple {
   display: none;
 }
 
-.search-advanced-visible .search-toggle.simple,
-.search-toggle.advanced {
-  display: inline;
+/* stuff to show if 'advanced search' is active */
+.search-advanced-visible .search-advanced,
+.search-advanced-visible .search-toggle.simple {
+  display: initial;
+}
+
+/* stuff to hide if 'advanced search' is active */
+.search-advanced-visible .search-toggle.advanced,
+.search-advanced-visible .search-simple input[type=submit] {
+  display: none;
+}
+
+.search-advanced label,
+.search-advanced select {
+  color: #444;
+  font-size: 14px;
 }
 
 .search-facets {

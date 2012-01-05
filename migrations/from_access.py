@@ -235,7 +235,7 @@ def map_fields(biotop):
             prefix = 'section6_activity_internal_%d' % i
         flat[prefix + '_code'] = code
         flat[prefix + '_intensity'] = val('intensity')
-        flat[prefix + '_percentage'] = val('cover')
+        flat[prefix + '_percentage'] = val('cover') or '0.00'
         flat[prefix + '_influence'] = val('influence')
         assert not actvty_row
 

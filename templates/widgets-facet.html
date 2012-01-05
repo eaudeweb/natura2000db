@@ -4,17 +4,18 @@
 
 {% macro select(form, field) %}
   {{ _label(form, field) }}
+  {% set field_name = field.name.encode('ascii') %}
   {% if field.is_empty %}
     <ul class="search-facet-items">
     {% for item in form['facets'][field.name] %}
-      {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): item.name}) %}
+      {% set url = form.url_for_search(field.root, **{field_name: item.name}) %}
       {% set value_label = field.properties.value_labels[item.name] %}
       <li><a href="{{ url }}">{{- value_label }}</a> ({{ item.count }})</li>
     {% endfor %}
     </ul>
   {% else %}
-    {{ field.u }}
-    {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): None}) %}
+    {{ field.properties.value_labels[field.value] }}
+    {% set url = form.url_for_search(field.root, **{field_name: None}) %}
     [<a href="{{ url }}" class="facet-remove">X</a>]
   {% endif %}
 {% endmacro %}
