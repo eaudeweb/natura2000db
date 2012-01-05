@@ -86,6 +86,11 @@ class MarkupGenerator(Generator):
 
         return jinja2.Markup(html)
 
+    def sorted_with_labels(self, field):
+        label = field.properties['value_labels'].get
+        for value in sorted(field.valid_values, key=label):
+            yield value, label(value)
+
 
 class SearchMarkupGenerator(MarkupGenerator):
 

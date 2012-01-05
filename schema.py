@@ -569,6 +569,7 @@ Search = Ordered_dict_of(
              .with_properties(label='Tip de document',
                               index=spa_sci_index,
                               widget='select',
+                              value_labels={'sci': "SCI", 'spa': "SPA"},
                               facet=True),
     fl.String.named('bio_region') \
              .with_properties(label='Regiune biogeografica',
