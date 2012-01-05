@@ -448,125 +448,6 @@ h2~div ul li div {
 }  
 
 
-
-/* #################################
-       PRINT A NATURA 2000 FORM 
-   ################################ */
-@media print {
-     
-     #header, 
-     .wrap > ul {
-       display: none; /* hide the rest of the page, except for the form itself */
-     }
-     
-     h2~div ul {
-       display: visible; /* the list for section 7, aka maps */
-       list-style-type: numeric;
-     }
-     
-    .editedForm {
-      display: visible;
-      margin: 0;
-      padding: 0;
-      color: #444;
-      border: none;
-    }
-  
-    .editButton {
-      display: none; /* do not display the edit button */
-    }
-
-    .editedForm h1 {
-      font-size: 19px !important;
-      text-align: center !important;
-    }
-
-    .editedForm > p {
-      text-align: center !important;
-    }
-
-    .editedForm h2 {
-      color: #000;
-      font-size: 13px;
-      /*background: #eee;*/
-      border: 1px solid #000;
-      padding-left: 5px;
-    }
-
-    .editedForm div div ul li {
-      color: #C0C0C0; /*#335C9E;*/
-    }
-
-    /* space between h2 title and div with a certain input, in the view standard form */
-    .editedForm h2~div {
-      margin-top: 10px;
-      margin-bottom: 20px;
-      padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
-    }
-
-    .center-column form input[type="submit"] {
-      margin-left: 0;
-      margin-bottom: 10px;
-    }
-
-    .center-column {
-      margin-bottom: 20px;
-    }
-
-    .center-column div div {
-      margin-bottom: 5px;
-    }
-
-    .nameOfField {
-      color: red;
-      margin-left: 5px;
-    }
-
-    .editedForm table td {
-      padding: 0px 5px;
-    }
-
-    .editedForm table {
-      margin-left: -2px;
-    }
-
-    .editedForm h2~div p {
-      color: #ddd;/*#335C9E; #0098AA;*/
-      text-align: left !important;
-      margin-left: 5px;
-    }
-
-    .editedForm h2~div div p {
-      margin-top: 5px;
-    }
-
-    .editedForm h2~div  p~div .nameOfField {
-      color: #444; /*#707070;*/
-      margin-left: 15px;
-    }
-
-    .editedForm table caption {
-      min-width: 500px;
-      color: #000;/*#707070;*/
-      margin-top: 5px;
-    }
-
-    .editedForm thead {
-      background: #eee;
-    }
-
-    .editedForm th,
-    .editedForm thead tr td  {
-      color: #333;
-    }
-
-    h2~div ul li div {
-      display: inline; /* section 'Harta fizica' */
-    }  
-
-}
-
-
 /* #################################
       SEARCH IN NATURA 2000 FORMS
    ################################ */
@@ -760,4 +641,133 @@ label[for="f_text"] {
 .stats table td:nth-child(4n) {
   background: #ddd;
 }
+
+
+/* #################################################
+       PRINT A NATURA 2000 FORM (black & white)
+   ################################################ */
+@media print { 
+     
+    #header,
+    #breadcrumb, 
+    #footer,
+    .wrap > ul,
+    .editButton {
+      display: none; /* hide the rest of the page and the edit button */
+    }
+     
+    .editedForm {
+      display: visible;
+      margin: 0;
+      padding: 0;
+      color: #636363; /* the color for all text, including field values; must be different from nameOfField's color */
+      border: none;
+      font-size: 9.03pt !important;
+    }
+    
+    .editedForm > p { /* the legend of the form */
+      text-align: center !important;
+      color: #000;
+    }
+    
+    .editedForm h1 {
+      font-size: 14.3pt !important;
+      text-align: center !important;
+      color: #000;
+    }
+    
+    .editedForm h2 {
+      color: #000;
+      font-size: 9.78pt;
+      background: #fff !important;
+      border: 1px solid #000;
+      padding-left: 5px;
+    }
+    
+    .editedForm h2~div p {
+      color: #000;
+      text-align: left !important;
+      margin-left: 5px;
+    }
+
+    .editedForm h2~div  p~div .nameOfField {
+      color: #000;
+      margin-left: 15px;
+      font-style: italic;
+    }
+     
+    /* space between h2 title and div with a certain input, in the view standard form */
+    .editedForm h2~div {
+      margin-top: 10px;
+      margin-bottom: 20px;
+      padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
+    }
+    
+    .editedForm div div ul li {
+      color: #636363; /* same as the rest of field values */
+    }
+    
+    .editedForm table thead {
+      font-weight: normal !important;
+    }
+    
+    .editedForm table td {
+      padding: 0px 5px;
+    }
+
+    .editedForm table {
+      margin-left: 2px;
+    }
+
+    .editedForm table tr {
+      page-break-inside: avoid !important; /*?*/
+    }  
+
+    .editedForm h2~div div p {
+      margin-top: 5px;
+    }
+
+    .editedForm table caption {
+      min-width: 500px;
+      color: #000;/*#707070;*/
+      margin-top: 5px;
+    }
+
+    .editedForm thead {
+      background: #eee;
+    }
+
+    .editedForm th,
+    .editedForm thead tr td  {
+      color: #333;
+    }  
+    
+    .editedForm ul {
+      list-style-type: square !important;
+    }
+    
+    .nameOfField {
+      color: #000;
+      margin-left: 5px;
+    }
+
+    h2~div ul li div {
+      display: inline; /* section 'Harta fizica' */
+    } 
+     
+    h2~div ul {
+       display: visible; /* the list for section 7, aka maps */
+       list-style-type: numeric;
+     } 
+
+    .center-column {
+      margin-bottom: 20px !important;
+    }
+
+    .center-column div div {
+      margin-bottom: 5px !important;
+    }
+
+}
+
 
