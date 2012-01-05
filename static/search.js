@@ -12,9 +12,21 @@ $(document).ready(function() {
         toggle_advanced_search();
     }
 
-    function toggle_advanced_search() {
-        var on = $('.search-criteria').toggleClass(advanced).hasClass(advanced);
-        $.cookie(cookie_name, on ? 'on' : null, {expires: 1});
+    function advanced_on() {
+        return $('.search-criteria').hasClass(advanced);
     }
+
+    function toggle_advanced_search() {
+        $('.search-criteria').toggleClass(advanced);
+        var cookie_value = advanced_on() ? 'on' : null;
+        $.cookie(cookie_name, cookie_value, {expires: 1});
+    }
+
+    $('form[name=search]').submit(function(evt) {
+        if(! advanced_on()) {
+            // clear advanced search inputs
+            $('.search-advanced :input').val(null);
+        }
+    });
 
 });

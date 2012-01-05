@@ -12,7 +12,7 @@
 
 {% macro search_form_html(form, search_form, action="") %}
 {% do form.begin(widgets_template='search') -%}
-<form action="{{ action }}">
+<form action="{{ action }}" name="search">
 
   <div class="search-criteria">
 
