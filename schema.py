@@ -567,12 +567,12 @@ Search = Ordered_dict_of(
                             value_labels=nuts3,
                             facet=True),
     fl.Enum.named('type') \
-             .valued('sci', 'spa') \
-             .with_properties(label=u'Tip de document',
-                              index=spa_sci_index,
-                              widget='select',
-                              value_labels={'sci': u"SCI", 'spa': u"SPA"},
-                              facet=True),
+           .valued('sci', 'spa') \
+           .with_properties(label=u'Tip de document',
+                            index=spa_sci_index,
+                            widget='select',
+                            value_labels={'sci': u"SCI", 'spa': u"SPA"},
+                            facet=True),
     fl.Enum.named('bio_region') \
            .valued(*sorted(biogeographic_map.keys())) \
            .with_properties(label=u'Regiune biogeografică',
