@@ -556,7 +556,9 @@ label[for="f_text"] {
   margin-top: 10px;
 }
 
-
+.search-field select {
+  margin-left: 100px !important;
+}   
 
 .search-advanced-visible .search-advanced {
   display: block;
@@ -673,8 +675,8 @@ label[for="f_text"] {
 }
    
 .stats table tr:nth-child(2n) {
-  border-bottom: 1px solid #C0C0C0; 
- /*background: #eee;*/
+  /*border-bottom: 1px solid #C0C0C0; */
+  background: #eee;
 }   
 
 .stats table td:nth-child(4n) {
