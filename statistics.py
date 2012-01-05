@@ -1,3 +1,4 @@
+import operator
 import flask
 import jinja2
 
@@ -39,6 +40,8 @@ def area(search_form, search_answer):
             'admin_percent': admin['coverage'],
             'admin_area': admin_area,
         })
+
+    stat['table'].sort(key=operator.itemgetter('admin_area'), reverse=True)
 
     return jinja2.Markup(flask.render_template('stat_area.html', stat=stat))
 
