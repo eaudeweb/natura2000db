@@ -212,6 +212,8 @@ _habitat_type_data = _load_json('reference/habitat_type_ro.json')
 habitat_type_map = dict((k, ('%s %s' % (name, pri)).strip())
                         for k, [pri, name] in _habitat_type_data.iteritems())
 
+species_category_map = _load_json('reference/species_category_ro.json')
+
 
 section_3 = Ordered_dict_of(
 
@@ -256,8 +258,9 @@ section_3 = Ordered_dict_of(
 
             CommonEnum.named('category') \
                       .with_properties(optional=False) \
-                      .valued('bird', 'mammal', 'amphibian', 'reptile', 'fish', 'invertebrate', 'plant') \
-                      .with_properties(label='Categorie'),
+                      .valued(*sorted(species_category_map.keys())) \
+                      .with_properties(label='Categorie',
+                                       value_labels=species_category_map),
 
             CommonString.named('code').with_properties(label='Cod'),
             CommonString.named('tax_code').with_properties(widget='hidden', label='Cod taxonomic'),
