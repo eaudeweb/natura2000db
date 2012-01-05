@@ -481,7 +481,7 @@ h2~div ul li div {
       SEARCH IN NATURA 2000 FORMS
    ################################ */
 .center-column form {
-  min-height: 200px;
+  /*min-height: 200px;*/
 }
 
 .center-column form ~ p {
@@ -664,16 +664,18 @@ label[for="f_text"] {
 .stats table td:first-child {
   text-align: left;
   padding-left: 5px;
-}
-   
+} 
+
 .stats table tr:nth-child(2n) {
   /*border-bottom: 1px solid #C0C0C0; */
-  background: #eee;
-}   
+  background: #ddd;/*#DEEBFF;*/
+}  
 
 .stats table td:nth-child(4n) {
-  background: #ddd;
+  background: #eee;
+  opacity: 0.8;
 }
+
 
 
 /* #################################################
