@@ -2,21 +2,15 @@
   {{ form.label(field, contents=field.properties.label) }}
 {% endmacro %}
 
-{% macro input(form, field) %}
+{% macro select(form, field) %}
   {% if field.is_empty %}
     {{ _label(form, field) }}
     <ul class="search-facet-items">
     {% for item in form['facets'][field.name] %}
       {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): item.name}) %}
-      {% set value_label = (field.properties.value_labels[item.name]
-                            if field.properties.value_labels else
-                            item.name) %}
+      {% set value_label = field.properties.value_labels[item.name] %}
       <li><a href="{{ url }}">{{- value_label }}</a> ({{ item.count }})</li>
     {% endfor %}
     </ul>
   {% endif %}
-{% endmacro %}
-
-{% macro select(form, field) %}
-{{ input(form, field) }}
 {% endmacro %}
