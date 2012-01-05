@@ -15,8 +15,8 @@ table_names = ['CheckForm', 'QueryCombine', 'RegCod', 'actvty', 'amprep',
     'resp', 'sitrel', 'spec']
 
 
-def lower_keys(dic, prune=False):
-    return dict((k.lower(), dic[k]) for k in dic if (not prune or dic[k] is not None))
+def lower_keys(dic):
+    return dict((k.lower(), dic[k]) for k in dic)
 
 
 def load_from_sql():
@@ -25,7 +25,7 @@ def load_from_sql():
     sw = open_db('rio')
 
     biotop_list = {}
-    for row in (lower_keys(r, True) for r in sw.iter_table('biotop')):
+    for row in (lower_keys(r) for r in sw.iter_table('biotop')):
         row['_relations'] = defaultdict(list)
         biotop_list[row['sitecode']] = row
 
@@ -235,7 +235,7 @@ def map_fields(biotop):
             prefix = 'section6_activity_internal_%d' % i
         flat[prefix + '_code'] = code
         flat[prefix + '_intensity'] = val('intensity')
-        flat[prefix + '_percentage'] = val('cover') or '0.00'
+        flat[prefix + '_percentage'] = val('cover')
         flat[prefix + '_influence'] = val('influence')
         assert not actvty_row
 
@@ -245,25 +245,17 @@ def map_fields(biotop):
         log.warn('unhandled relations: %r', relations.keys())
 
     _nodefault = object()
-    def val(name, default=_nodefault):
-        if default is _nodefault:
-            try:
-                return biotop.pop(name)
-            except:
-                import pdb; pdb.set_trace()
-                raise
-        else:
-            return biotop.pop(name, default)
+    val = biotop.pop
 
     flat['section1_code'] = sitecode
     flat['section1_date_document_add'] = val('date')
-    flat['section1_date_document_update'] = val('update', '')
+    flat['section1_date_document_update'] = val('update')
     flat['section1_responsible'] = val('respondent')
     flat['section1_name'] = val('site_name')
-    flat['section1_date_proposal'] = val('date_prop', '')
-    flat['section1_date_confirmation_sci'] = val('date_con', '')
-    flat['section1_date_confirmation_spa'] = val('spa_date', '')
-    flat['section1_date_confirmation_sac'] = val('sac_date', '')
+    flat['section1_date_proposal'] = val('date_prop')
+    flat['section1_date_confirmation_sci'] = val('date_con')
+    flat['section1_date_confirmation_spa'] = val('spa_date')
+    flat['section1_date_confirmation_sac'] = val('sac_date')
 
     assert biotop.pop('lon_ew') == 'E'
     assert biotop.pop('lat_nz') == 'N'
@@ -282,9 +274,9 @@ def map_fields(biotop):
 
     flat['section4_characteristics_other'] = val('charact')
     flat['section4_vulnerability'] = val('vulnar')
-    flat['section4_designation'] = val('design', '')
-    flat['section4_ownership'] = val('owner', '')
-    flat['section4_documentation'] = val('docum', '')
+    flat['section4_designation'] = val('design')
+    flat['section4_ownership'] = val('owner')
+    flat['section4_documentation'] = val('docum')
 
     flat['section6_management_organisation'] = val('manager')
     flat['section6_management_plan'] = val('managpl')

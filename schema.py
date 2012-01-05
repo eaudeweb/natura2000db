@@ -387,9 +387,9 @@ antropic_activity = Ordered_dict_of(
               .valued(*sorted(antropic_activities_map.keys())) \
               .with_properties(label=u'Cod',
                                value_labels=id_and_label(antropic_activities_map)),
-    CommonEnum.named('intensity').using(optional=False).valued('A', 'B', 'C').with_properties(label=u'Intensitate'),
-    CommonFloat.named('percentage').using(optional=False).with_properties(label=u'% din sit'),
-    CommonEnum.named('influence').using(optional=False).valued('+', '0', '-').with_properties(label=u'Influență'),
+    CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label=u'Intensitate'),
+    CommonFloat.named('percentage').with_properties(label=u'% din sit'),
+    CommonEnum.named('influence').valued('+', '0', '-').with_properties(label=u'Influență'),
     )
 
 

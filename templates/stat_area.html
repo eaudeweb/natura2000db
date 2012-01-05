@@ -1,3 +1,7 @@
+{% macro number(value) %}
+{{ '%.2f' | format(value) }}
+{% endmacro %}
+
 Total: <span class="number">{{ stat['total'] }}</span> ha
 
 <table>
@@ -18,9 +22,9 @@ Total: <span class="number">{{ stat['total'] }}</span> ha
 
     <tr>
       <td><a href="{{ url }}">{{ row['name'] }}</a></td>
-      <td class="number">{{ row['total_area'] }}</td>
-      <td class="number">{{ row['admin_percent'] }}</td>
-      <td class="number">{{ row['admin_area'] }}</td>
+      <td class="number">{{ number(row['total_area']) }}</td>
+      <td class="number">{{ number(row['admin_percent']) }}</td>
+      <td class="number">{{ number(row['admin_area']) }}</td>
     </tr>
 
   {% endfor %}
