@@ -134,6 +134,8 @@
 {% endmacro %}
 
 {% macro section(form, field) %}
+  {% if form.any_value(field) %}
   <h2>{{ field.properties.label }}</h2>
   {{ _dict_children(form, field) }}
+  {% endif %}
 {% endmacro %}

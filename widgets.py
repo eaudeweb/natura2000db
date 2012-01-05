@@ -91,6 +91,12 @@ class MarkupGenerator(Generator):
         for value in sorted(field.valid_values, key=label):
             yield value, label(value)
 
+    def any_value(self, field):
+        if isinstance(field, dict):
+            return any(self.any_value(child) for child in field.values())
+        else:
+            return not field.is_empty
+
 
 class SearchMarkupGenerator(MarkupGenerator):
 
