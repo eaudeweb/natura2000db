@@ -8,6 +8,8 @@
   {%- if not field.is_empty %}
   {{ _label(form, field) }}
   {{ field.u }}
+  {% else %}
+  <!-- empty -->
   {% endif -%}
 {% endmacro %}
 
