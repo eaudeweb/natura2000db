@@ -86,7 +86,7 @@
       {{ hidden(form, field) }}
     {% else %}
       {% do form.begin(skip_labels=True) -%}
-      <td>{{ form.widget(field) }}</td>
+      <td class="{{ form.container_class(field) }}">{{ form.widget(field) }}</td>
       {%- do form.end() %}
     {% endif %}
   {% endif %}
@@ -120,11 +120,12 @@
     </thead>
     <tbody>
       {% for child_name in field.properties.order %}
-      {% if not field[child_name].is_empty %}
+      {% set child_field = field[child_name] %}
+      {% if not child_field.is_empty %}
       <tr>
-          <td>{{ field[child_name].properties.label }}</td>
+          <td>{{ child_field.properties.label }}</td>
           {% do form.begin(skip_labels=True) -%}
-          <td>{{ form.widget(field[child_name]) }}</td>
+          <td class="{{ form.container_class(child_field) }}">{{ form.widget(child_field) }}</td>
           {%- do form.end() %}
       </tr>
       {% endif %}

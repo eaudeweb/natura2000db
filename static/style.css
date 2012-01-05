@@ -416,6 +416,11 @@ a.add {
   color: #fff;
 }
 
+.editedForm .number {
+  text-align: right;
+  font-family: monospace;
+}
+
 /* #################################
        PRINT NATURA 2000 FORM 
    ################################ */

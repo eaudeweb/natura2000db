@@ -89,7 +89,7 @@ def id_and_label(mapping):
     return dict((k, '%s (%s)' % (k, v)) for k, v in mapping.iteritems())
 
 
-CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f')
+CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f').with_properties(container_class='number')
 CommonDate = fl.String.using(optional=True, validators=[valid_year_month])
 CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget='checkbox')
 CommonString = fl.String.using(optional=True)

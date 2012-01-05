@@ -86,6 +86,9 @@ class MarkupGenerator(Generator):
 
         return jinja2.Markup(html)
 
+    def container_class(self, field):
+        return field.properties.get('container_class', '')
+
     def sorted_with_labels(self, field):
         label = field.properties['value_labels'].get
         for value in sorted(field.valid_values, key=label):
