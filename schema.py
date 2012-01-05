@@ -169,6 +169,7 @@ section_1 = Ordered_dict_of(
 
 nuts2 = _load_json('reference/nuts2003_level2_ro.json')
 nuts3 = _load_json('reference/nuts2003_level3_ro.json')
+biogeographic_map = _load_json('reference/biogeographic_ro.json')
 
 
 section_2 = Ordered_dict_of(
@@ -202,11 +203,8 @@ section_2 = Ordered_dict_of(
         ).using(optional=False).with_properties(label=u'Regiunea administrativă'),
 
     Ordered_dict_of(
-        CommonBoolean.named('alpine').with_properties(label=u'Alpină'),
-        CommonBoolean.named('continental').with_properties(label=u'Continentală'),
-        CommonBoolean.named('steppic').with_properties(label=u'Stepică'),
-        CommonBoolean.named('pontic').with_properties(label=u'Pontică'),
-        CommonBoolean.named('pannonic').with_properties(label=u'Panonică'),
+        *[CommonBoolean.named(key).with_properties(label=label)
+          for key, label in sorted(biogeographic_map.items())]
         ).named('biogeographic').using(validators=[valid_any]).with_properties(label=u'Regiunea biogeografică', widget='dict'),
 
     ).with_properties(label=u'2. LOCALIZAREA SITULUI')
