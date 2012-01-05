@@ -472,7 +472,7 @@ h2~div ul li div {
   display: inline; /* section 'Harta fizica' */
 }  
 
-.editedForm .number {
+.number {
   text-align: right;
   font-family: monospace;
 }
