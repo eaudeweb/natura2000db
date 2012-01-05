@@ -473,7 +473,7 @@ def bio_region_index(doc):
     for name in bio_regions:
         if bio_regions[name]:
             out.append(name)
-    return ' '.join(out)
+    return out
 
 
 def habitat_class_index(doc):
