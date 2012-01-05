@@ -71,7 +71,8 @@ def search():
     form['facets'] = search_answer['facets']
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
-                                 search_answer=search_answer)
+                                 search_answer=search_answer,
+                                 available_stats=statistics.compute.keys())
 
 
 @webpages.route('/stats')

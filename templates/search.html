@@ -11,6 +11,12 @@
 
   {{ search_facets_html(form, search_form) }}
 
+  statistici:
+  {% for compute in available_stats %}
+    {% set url = form.url_for_search(search_form, 'webpages.stats', compute=compute) %}
+    <a href="{{ url }}">{{ compute }}</a>
+  {% endfor %}
+
   <h2>Rezultate</h2>
   <ul class="search-results">
   {% for r in search_answer.docs %}
