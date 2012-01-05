@@ -87,7 +87,8 @@
     <li class="virtual-child">
       {{ form.widget(form.virtual_child(field)) }}
     </li>
-    <li><a href="#" class="add"></a></li>
+    {% set next_id = field|length %}
+    <li><a href="#" class="add">{{ next_id }}</a></li>
 
   {%- do form.end() %}
   </ul>
@@ -130,7 +131,8 @@
       </tr>
       <tr>
         <td colspan="{{ form.colspan(field.member_schema()) }}">
-          <a href="#" class="add"></a>
+          {% set next_id = field|length %}
+          <a href="#" class="add">{{ next_id }}</a>
         </td>
       </tr>
 
