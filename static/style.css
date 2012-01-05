@@ -104,7 +104,8 @@ table caption {
   min-width: 570px;  /* otherwise these captions appear on 2 rows, when the tables have no data yet */
 }
 
-.field-corine caption {
+.field-corine caption,
+.field-administrative caption {
   min-width: 370px;  /* otherwise these captions appear on 2 rows, when the tables have no data yet */
 }
 
@@ -317,6 +318,10 @@ input[type="submit"] {
   margin-top: 5px;
   margin-right: 5px;
   color: #707070;
+}
+
+.field-administrative select {
+  min-width: 150px;
 }
 
 .field-management .dict_children {
@@ -573,7 +578,7 @@ h2~div ul li div {
 /* label above search area */
 .center-column h1 {
   margin: 0;
-  text-align: left;
+  text-align: center;
   text-transform: uppercase;
   font-size: 16px; /* just like any left-column-title on this site */
   font-weight: bold;
