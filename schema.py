@@ -143,7 +143,9 @@ section_1 = Ordered_dict_of(
 
     CommonList.named('other_sites').of(
 
-        CommonString.using(validators=[valid_site_code]).with_properties(label='Coduri ale siturilor Natura 2000')
+        CommonString.using(validators=[valid_site_code]) \
+                    .with_properties(label='Coduri ale siturilor Natura 2000',
+                                     widget='site_link')
 
         ).with_properties(widget='list', label='Legaturi cu alte situri Natura 2000:'),
 

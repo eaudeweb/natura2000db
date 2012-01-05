@@ -54,6 +54,10 @@
   {{- _errors(form, field) -}}
 {% endmacro %}
 
+{% macro site_link(form, field) %}
+  {{ input(form, field) }}
+{% endmacro %}
+
 {% macro _dict_children(form, field) %}
   {%- for child_name in field.properties.order %}
   <div class="dict_children">

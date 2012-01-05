@@ -39,6 +39,11 @@
   {% endif %}
 {% endmacro %}
 
+{% macro site_link(form, field) %}
+  {{ field.value }}
+  ({{ form.other_site_labels[field.value] }})
+{% endmacro %}
+
 {% macro _dict_children(form, field) %}
   {%- for child_name in field.properties.order %}
   <div>

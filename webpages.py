@@ -2,7 +2,7 @@ import flask
 import blinker
 import schema
 import widgets
-from storage import get_db
+from storage import get_db, OrList
 import statistics
 
 
@@ -16,13 +16,21 @@ def index():
                                  search_form=schema.Search())
 
 
+def _other_site_labels(doc):
+    db = get_db()
+    other_site_ids = OrList(o.value for o in doc['section1']['other_sites'])
+    results = db.search({'id': other_site_ids})
+    return dict((data['id'], data['name']) for data in results['docs'])
+
+
 @webpages.route('/view')
 def view():
     doc_id = flask.request.args.get('doc_id')
     db = get_db()
     doc = db.load_document(doc_id)
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
-    return flask.render_template('view.html', doc=doc, form=form, doc_id=doc_id)
+    form.other_site_labels = _other_site_labels(doc)
+    return flask.render_template('view.html', form=form, doc=doc, doc_id=doc_id)
 
 
 @webpages.route('/new', methods=['GET', 'POST'])
