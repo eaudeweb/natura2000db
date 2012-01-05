@@ -25,6 +25,10 @@ SolrAnswer = namedtuple('SolrAnswer', ['docs', 'facets'])
 FacetItem = namedtuple('FacetItem', ['name', 'count'])
 
 
+class OrList(list):
+    """ Marker class used to ask for the 'or' query operation """
+
+
 class FsStorage(object):
 
     def __init__(self, storage_path):
@@ -63,8 +67,23 @@ class FsStorage(object):
         return doc_id_list
 
 
-def quote_solr_query(text):
-    return re.sub(r'([\\+\-&|!(){}[\]^~*?:"; ])', r'\\\1', text);
+_solr_text_pattern = re.compile(r'([\\+\-&|!(){}[\]^~*?:"; ])')
+def quote_solr_text(text):
+    return _solr_text_pattern.sub(r'\\\1', text);
+
+
+def quote_solr_query(key, value):
+    if isinstance(value, str):
+        value = unicode(value)
+
+    if isinstance(value, unicode):
+        esc_value = quote_solr_text(value)
+    elif isinstance(value, OrList):
+        esc_value = ' OR '.join(quote_solr_text(v) for v in value)
+    else:
+        raise ValueError("Can't quote value of type %r" % type(value))
+
+    return u'%s:%s' % (key, esc_value)
 
 
 class SolrStorage(object):
@@ -158,7 +177,7 @@ class SolrStorage(object):
         return sorted([d['id'] for d in self.solr_query('*').docs])
 
     def search(self, criteria, get_data=False):
-        query = u' '.join(u'%s:%s' % (k, quote_solr_query(v))
+        query = u' '.join(quote_solr_query(k, v)
                           for k, v in criteria.items()
                           if v)
         if not query:
