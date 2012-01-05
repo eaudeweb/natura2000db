@@ -13,7 +13,7 @@
     {% endfor %}
     </ul>
   {% else %}
-    {{ field.u }}
+    {{ field.properties.value_labels[field.value] }}
     {% set url = form.url_for_search(field.root, **{field.name.encode('ascii'): None}) %}
     [<a href="{{ url }}" class="facet-remove">X</a>]
   {% endif %}
