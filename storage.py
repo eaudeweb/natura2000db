@@ -176,18 +176,21 @@ class SolrStorage(object):
     def document_ids(self):
         return sorted([d['id'] for d in self.solr_query('*').docs])
 
-    def search(self, criteria, get_data=False):
+    def search(self, criteria, get_data=False, facets=False):
         query = u' '.join(quote_solr_query(k, v)
                           for k, v in criteria.items()
                           if v)
         if not query:
             query = '*:*'
 
-        args = [ ('facet', 'true') ]
+        args = []
 
-        for element in schema.Search().all_children:
-            if element.properties.get('facet', False):
-                args.append( ('facet.field', element.name) )
+        if facets:
+            args.append( ('facet', 'true') )
+
+            for element in schema.Search().all_children:
+                if element.properties.get('facet', False):
+                    args.append( ('facet.field', element.name) )
 
         want_fields = ['id', 'name']
         if get_data:

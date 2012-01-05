@@ -66,7 +66,7 @@ def edit():
 def search():
     db = get_db()
     search_form = schema.Search.from_flat(flask.request.args.to_dict())
-    search_answer = db.search(search_form.value)
+    search_answer = db.search(search_form.value, facets=True)
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
     form['facets'] = search_answer['facets']
     return flask.render_template('search.html', form=form,
@@ -80,7 +80,7 @@ def stats():
 
     db = get_db()
     search_form = schema.Search.from_flat(args)
-    search_answer = db.search(search_form.value, get_data=True)
+    search_answer = db.search(search_form.value, get_data=True, facets=True)
 
     stat_form = schema.Statistics.from_flat(args)
     stat_name = stat_form['compute'].value
