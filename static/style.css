@@ -217,12 +217,7 @@ label[for="f_section1_site_name"] {
 
 .field-percentage,
 .field-code {
-  max-width: 50px; /* those inputs hold 3-4 digits */
-}
-
-#f_section3_habitat_NEW_LIST_ITEM_code,
-#f_section5_classification_NEW_LIST_ITEM_code {
-  min-width: 65px; /* drop down list with 4 digits codes */
+  max-width: 55px; /* those inputs hold 3-4 digits */
 }
 
 .field-coverage,
@@ -253,6 +248,10 @@ label[for="f_section1_site_name"] {
 .field-history .field-description {
   min-width: 500px; /* number of digits not specified, but should be 2.5 times greater than .field-history field-field */
 }
+
+.field-classification select {
+  min-width: 60px; /*  */
+}  
 
 .field-habitat td:first-child,
 .field-habitat th:first-child,
@@ -357,6 +356,7 @@ a.add {
   width: 16px;
   height: 16px;
   background: url("./add.png");
+  margin-left: 15px;
 }
 
 
@@ -431,7 +431,6 @@ a.add {
 
 .editedForm table td {
   padding: 0px 5px;
-  text-align: right;
 }
 
 .editedForm table {
@@ -481,6 +480,14 @@ h2~div ul li div {
 /* #################################
       SEARCH IN NATURA 2000 FORMS
    ################################ */
+.center-column form {
+  min-height: 200px;
+}
+
+.center-column form ~ p {
+  color: red;
+  margin-top: 30px;
+}  
 
 .search-facet-selected {
   font-weight: bold;
@@ -548,6 +555,8 @@ label[for="f_text"] {
   display: none;
   margin-top: 10px;
 }
+
+
 
 .search-advanced-visible .search-advanced {
   display: block;
