@@ -526,6 +526,7 @@ full_text_fields = [
     'section3/species_other[:]/code',
     'section3/species_other[:]/tax_code',
     'section3/species_other[:]/scientific_name',
+    'section4/characteristics/other',
     'section4/designation',
     'section4/ownership',
     'section4/quality',
