@@ -534,6 +534,8 @@ label[for="f_text"] {
 .field-text {
   border: 1px solid #335C9E;
   width: 350px;
+  height: 22px; /* otherwise IE makes it too small */
+  padding: 0;
 }
 
 .search-criteria input[type="submit"] {
@@ -556,9 +558,12 @@ label[for="f_text"] {
 }
 
 /* stuff to show if 'advanced search' is active */
-.search-advanced-visible .search-advanced,
+.search-advanced-visible .search-advanced {
+  display: block;
+}
+
 .search-advanced-visible .search-toggle.simple {
-  display: initial;
+  display: inline;
 }
 
 /* stuff to hide if 'advanced search' is active */
@@ -629,6 +634,17 @@ label[for="f_text"] {
   margin-bottom: 10px;
   text-transform: uppercase;
 }
+
+.filterValue {
+  color: #444;
+  padding-left: 10px;
+}
+
+.searchButton {
+  padding: 0px 6px;
+  height: 22px !important;
+}  
+
 
 
 /* #####################################

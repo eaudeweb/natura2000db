@@ -14,7 +14,7 @@
     {% endfor %}
     </ul>
   {% else %}
-    {{ field.properties.value_labels[field.value] }}
+    <span class="filterValue">{{ field.properties.value_labels[field.value] }}</span>
     {% set url = form.url_for_search(field.root, **{field_name: None}) %}
     [<a href="{{ url }}" class="facet-remove">X</a>]
   {% endif %}
