@@ -43,13 +43,31 @@ $(document).ready(function() {
         var shapes = new L.GeoJSON();
         map.addLayer(shapes);
 
+        var sitecode_hash = {};
+        $('.search-results .sitecode').each(function() {
+            var code = $(this).text();
+            sitecode_hash[code] = true;
+        });
+        var keep = function(code) { return sitecode_hash[code]; };
+
         $.getJSON(R.assets + 'sci-wgs84.geojson', function(data) {
+            data['features'] = filter_features(data['features'], keep);
             shapes.addGeoJSON(data);
         });
 
         $.getJSON(R.assets + 'spa-wgs84.geojson', function(data) {
+            data['features'] = filter_features(data['features'], keep);
             shapes.addGeoJSON(data);
         });
+
+        function filter_features(features, keep) {
+            return $.map(features, function(feature) {
+                var sitecode = feature['properties']['SITECODE'];
+                if(keep(sitecode)) {
+                    return feature;
+                }
+            });
+        }
 
     });
 

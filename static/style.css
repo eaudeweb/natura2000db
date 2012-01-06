@@ -630,6 +630,10 @@ label[for="f_text"] {
   text-transform: uppercase;
 }
 
+.search-results .sitecode {
+  display: none;
+}
+
 .map {
   width: 500px;
   height: 350px;

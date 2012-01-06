@@ -24,8 +24,11 @@
   <h2>Rezultate</h2>
   <ul class="search-results">
   {% for r in search_answer.docs %}
-    <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}">
-            {{- r.name }}</a></li>
+    <li>
+      {% set url = url_for('webpages.view', doc_id=r['id']) %}
+      <a href="{{ url }}">{{ r.name }}</a>
+      <span class="sitecode">{{ r['id'] }}</span>
+    </li>
   {% endfor %}
   </ul>
 
