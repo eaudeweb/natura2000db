@@ -29,4 +29,17 @@ $(document).ready(function() {
         }
     });
 
+    $('#search-results-map').each(function() {
+
+        var map = new L.Map(this, {
+            center: new L.LatLng(46, 25.0),
+            zoom: 6
+        });
+
+        var osm_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        var osm = new L.TileLayer(osm_url, {maxZoom: 18});
+        map.addLayer(osm);
+
+    });
+
 });

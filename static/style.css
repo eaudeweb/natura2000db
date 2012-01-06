@@ -630,6 +630,11 @@ label[for="f_text"] {
   text-transform: uppercase;
 }
 
+.map {
+  width: 500px;
+  height: 350px;
+}
+
 
 /* #####################################
       STATISTICS FOR NATURA 2000 FORMS
