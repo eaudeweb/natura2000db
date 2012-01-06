@@ -12,6 +12,7 @@
     <script tal:attributes="src string:${site_url}/++resource++chmrio_zope2/leaflet/leaflet.js"></script>
     <script tal:attributes="src string:${site_url}/++resource++chmrio_zope2/search.js"></script>
     <script tal:attributes="src string:${site_url}/++resource++chmrio_zope2/form.js"></script>
+    <script tal:attributes="src string:${site_url}/++resource++chmrio_zope2/map.js"></script>
     </tal:d>
   </metal:s>
 

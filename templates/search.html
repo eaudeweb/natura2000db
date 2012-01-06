@@ -20,9 +20,10 @@
   {% endif %}
 
   <div class="search-results">
-  
+
     <h2>Rezultate</h2>
-    <div class="map" id="search-results-map"></div>
+
+    <div class="map"></div>
 
     <ul>
     {% for r in search_answer.docs %}
@@ -33,7 +34,7 @@
       </li>
     {% endfor %}
     </ul>
-    
+
   </div>
 {% else %}
 
