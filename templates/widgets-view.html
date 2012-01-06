@@ -53,7 +53,7 @@
 {% endmacro %}
 
 {% macro _dict_children(form, field) %}
-  {%- for child_name in field.properties.order %}
+  {%- for child_name in form.order(field) %}
   <div>
   {{ form.widget(field[child_name]) }}
   </div>
@@ -75,8 +75,8 @@
 {% endmacro %}
 
 {% macro _table_th(form, field, prefix='') %}
-  {% if field.properties.order %}
-    {% for child_name in field.properties.order %}
+  {% if form.order(field) %}
+    {% for child_name in form.order(field) %}
       {{ _table_th(form, field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
     {% endfor %}
   {% else %}
@@ -85,8 +85,8 @@
 {% endmacro %}
 
 {% macro _table_td(form, field) %}
-  {% if field.properties.order %}
-    {% for child_name in field.properties.order %}
+  {% if form.order(field) %}
+    {% for child_name in form.order(field) %}
       {{ _table_td(form, field[child_name]) }}
     {% endfor %}
   {% else %}
@@ -129,7 +129,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for child_name in field.properties.order %}
+      {% for child_name in form.order(field) %}
       {% set child_field = field[child_name] %}
       {% if not child_field.is_empty %}
       <tr>

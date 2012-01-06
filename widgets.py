@@ -1,6 +1,7 @@
 import flask
 import jinja2
 from flatland.out.markup import Tag, Generator
+from flatland.schema import containers
 
 
 class WidgetDispatcher(object):
@@ -44,6 +45,14 @@ class MarkupGenerator(Generator):
     def colspan(self, field):
         return len([f for f in field.all_children if not self.is_hidden(f)])
 
+    def order(self, field):
+        if isinstance(field, containers.Mapping):
+            o = [kid.name for kid in field.field_schema]
+            assert o == field.properties['order']
+            return o
+        else:
+            return []
+
     def table_nested_th(self, list_element):
         row = self.virtual_child(list_element)
 
@@ -53,8 +62,7 @@ class MarkupGenerator(Generator):
         table_kids_depth = max([0] + [(level(e) - table_depth)
                                       for e in row.all_children])
 
-        current_level = [row[name] for name in
-                         row.properties['order']
+        current_level = [row[name] for name in self.order(row)
                          if not self.is_hidden(row[name])]
         current_level_n = 0
 
@@ -65,7 +73,7 @@ class MarkupGenerator(Generator):
             html += "<tr>"
 
             for field in current_level:
-                kids_order = field.properties.get('order', [])
+                kids_order = self.order(field)
                 kids = [field[name] for name in kids_order
                         if not self.is_hidden(field[name])]
                 if kids:
