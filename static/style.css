@@ -690,7 +690,7 @@ label[for="f_text"] {
 .stats th {
   color: #335C9E;
   font-weight: bold;
-  padding-left: 15px;
+  text-align: left;
 }
 
 .stats table td {
@@ -703,16 +703,17 @@ label[for="f_text"] {
   padding-left: 5px;
 } 
 
-.stats table tr:nth-child(2n) {
-  /*border-bottom: 1px solid #C0C0C0; */
-  background: #ddd;/*#DEEBFF;*/
+.stats table tr:nth-child(4n) {
+  border-bottom: 1px solid #C0C0C0; 
 }  
 
 .stats table td:nth-child(4n) {
   background: #eee;
-  opacity: 0.8;
 }
 
+.stats table th:nth-child(2n) {
+  text-align: center; /* might not work on every table ! */
+}
 
 
 /* #################################################
