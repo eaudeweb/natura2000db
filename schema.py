@@ -584,6 +584,6 @@ Search = fl.Dict.of(
 
 Statistics = fl.Dict.of(*(Search.field_schema + (
     fl.Enum.named('compute') \
-           .valued('area') \
+           .valued('area', 'corine_area') \
            .with_properties(widget='hidden'),
 )))
