@@ -3,7 +3,7 @@ $(document).ready(function() {
     var advanced = 'search-advanced-visible';
     var cookie_name = 'chm-rio-advanced-search';
 
-    $('.search-toggle').click(function(evt) {
+    $('.search-toggle a').click(function(evt) {
         evt.preventDefault();
         toggle_advanced_search();
     });

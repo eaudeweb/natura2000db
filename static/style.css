@@ -541,26 +541,16 @@ label[for="f_text"] {
   margin-top: 10px;
 }
 
-.search-toggle.simple {
-  display: none;
-}
-
-/* stuff to show if 'advanced search' is active */
 .search-advanced-visible .search-advanced {
   display: block;
 }
 
-.search-advanced-visible .search-toggle.simple {
-  display: inline;
-}
-
-/* stuff to hide if 'advanced search' is active */
-.search-advanced-visible .search-toggle.advanced,
+.search-advanced-visible .search-simple .search-toggle,
 .search-advanced-visible .search-simple input[type=submit] {
   display: none;
 }
 
-.search-advanced {
+.search-criteria {
   color: #444;
   font-size: 14px;
 }

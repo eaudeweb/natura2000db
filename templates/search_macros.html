@@ -17,20 +17,27 @@
   <div class="search-criteria">
 
     <div class="search-simple">
+
       {{ search_fields_html(form, search_form, advanced=False) }}
 
       <input type="submit" value="Caută" class="searchButton" />
-     
 
-      [
-      <a href="#" class="search-toggle advanced">advanced search</a>
-      <a href="#" class="search-toggle simple">simple search</a>
-      ]
+      <span class="search-toggle">
+        [<a href="#" class="advanced">căutare avansată</a>]
+      </span>
+
     </div>
 
     <div class="search-advanced">
+
       {{ search_fields_html(form, search_form, advanced=True) }}
+
       <input type="submit" value="Caută" class="searchButton" />
+
+      <span class="search-toggle">
+        [<a href="#" class="simple">căutare simplă</a>]
+      </span>
+
     </div>
 
   </div>
