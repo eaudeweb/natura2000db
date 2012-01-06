@@ -566,10 +566,14 @@ label[for="f_text"] {
   display: none;
 }
 
-.search-advanced label,
-.search-advanced select {
+.search-advanced {
   color: #444;
   font-size: 14px;
+}
+
+.search-advanced label {
+  width: 150px;
+  display: inline-block;
 }
 
 .search-facets {
@@ -653,6 +657,17 @@ label[for="f_text"] {
   display: block;
   margin-bottom: 100px;
 }
+
+.search-results .sitecode {
+  display: none;
+}
+
+.map {
+  width: 500px;
+  height: 350px;
+}
+
+
 
 /* #####################################
       STATISTICS FOR NATURA 2000 FORMS

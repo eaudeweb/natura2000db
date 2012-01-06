@@ -1,6 +1,7 @@
 import flask
 import jinja2
 from flatland.out.markup import Tag, Generator
+from flatland.schema import containers
 
 
 class WidgetDispatcher(object):
@@ -9,10 +10,18 @@ class WidgetDispatcher(object):
         self.jinja_env = jinja_env
         self.context = context
 
-    def __call__(self, element, default_widget='input'):
+    def widget_name(self, element):
+        if not element.properties.get('editable', True):
+            if self.context['widgets_template'] == 'edit':
+                return 'hidden'
+
+        return element.properties.get('widget', 'input')
+
+    def __call__(self, element, widget_name=None):
         tmpl_name = 'widgets-%s.html' % self.context['widgets_template']
         tmpl = self.jinja_env.get_template(tmpl_name)
-        widget_name = element.properties.get('widget', default_widget)
+        if widget_name is None:
+            widget_name = self.widget_name(element)
         widget_macro = getattr(tmpl.module, widget_name)
         return widget_macro(self.context, element)
 
@@ -32,7 +41,8 @@ class MarkupGenerator(Generator):
         self.widget = WidgetDispatcher(jinja_env, self)
 
     def is_hidden(self, field):
-        return (field.properties.get('widget', 'input') == 'hidden')
+        widget_name = self.widget.widget_name(field)
+        return (widget_name == 'hidden')
 
     def virtual_child(self, list_element):
         slot_cls = list_element.slot_type
@@ -44,6 +54,12 @@ class MarkupGenerator(Generator):
     def colspan(self, field):
         return len([f for f in field.all_children if not self.is_hidden(f)])
 
+    def order(self, field):
+        if isinstance(field, containers.Mapping):
+            return [kid.name for kid in field.field_schema]
+        else:
+            return []
+
     def table_nested_th(self, list_element):
         row = self.virtual_child(list_element)
 
@@ -53,8 +69,7 @@ class MarkupGenerator(Generator):
         table_kids_depth = max([0] + [(level(e) - table_depth)
                                       for e in row.all_children])
 
-        current_level = [row[name] for name in
-                         row.properties['order']
+        current_level = [row[name] for name in self.order(row)
                          if not self.is_hidden(row[name])]
         current_level_n = 0
 
@@ -65,7 +80,7 @@ class MarkupGenerator(Generator):
             html += "<tr>"
 
             for field in current_level:
-                kids_order = field.properties.get('order', [])
+                kids_order = self.order(field)
                 kids = [field[name] for name in kids_order
                         if not self.is_hidden(field[name])]
                 if kids:

@@ -1,5 +1,5 @@
 {% macro search_fields_html(form, search_form, advanced) %}
-  {%- for name in search_form.properties.order %}
+  {%- for name in form.order(search_form) %}
     {% set field = search_form[name] %}
     {% if field.properties.get('advanced', True) == advanced %}
       <div class="search-field">
@@ -43,7 +43,7 @@
 {% macro search_facets_html(form, search_form) %}
 <div class="search-facets">
   {% do form.begin(widgets_template='facet') -%}
-  {%- for name in search_form.properties.order %}
+  {%- for name in form.order(search_form) %}
     {% if search_form[name].properties.facet %}
     <div>{{ form.widget(search_form[name]) }}</div>
     {% endif %}

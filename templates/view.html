@@ -10,7 +10,7 @@
  [<a href="{{ url_for('webpages.edit', doc_id=doc_id) }}">edit</a>]
 </span>
 {% do form.begin(widgets_template='view') -%}
-{%- for name in doc.properties.order %}
+{%- for name in form.order(doc) %}
   <div>{{ form.widget(doc[name]) }}</div>
 {%- endfor %}
 {%- do form.end() %}
