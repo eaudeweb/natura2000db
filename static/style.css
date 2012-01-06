@@ -656,6 +656,20 @@ label[for="f_text"] {
   margin-bottom: 5px;
 }
 
+.map, .map .leaflet-clickable {
+  cursor: crosshair;
+}
+
+.map .legend {
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: white;
+  border: 1px solid #bbb;
+}
+
 
 
 /* #####################################
@@ -831,5 +845,3 @@ label[for="f_text"] {
     }
 
 }
-
-
