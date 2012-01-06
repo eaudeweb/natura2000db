@@ -97,12 +97,8 @@ CommonEnum = fl.Enum.using(optional=True, validators=[valid_enum]).with_properti
 CommonList = fl.List.using(optional=True).with_properties(widget='table')
 CommonGeoFloat = fl.Float.using(optional=True)
 
-def Ordered_dict_of(*fields):
-    order = [field.name for field in fields]
-    return fl.Dict.of(*fields).with_properties(order=order)
 
-
-InfoColumn = Ordered_dict_of(
+InfoColumn = fl.Dict.of(
     CommonEnum.named('population').valued('A', 'B', 'C', 'D').with_properties(label=u'Populație'),
     CommonEnum.named('conservation').valued('A', 'B', 'C').with_properties(label=u'Conservare'),
     CommonEnum.named('isolation').valued('A', 'B', 'C').with_properties(label=u'Izolare'),
@@ -111,17 +107,17 @@ InfoColumn = Ordered_dict_of(
 
 
 InfoTable = CommonList.of(
-    Ordered_dict_of(
+    fl.Dict.of(
 
         CommonString.named('code').using(optional=False).with_properties(label=u'Cod'),
         CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
         CommonString.named('name').using(optional=False).with_properties(label=u'Nume'),
 
-        Ordered_dict_of(
+        fl.Dict.of(
 
             CommonString.named('resident').with_properties(label=u'Residentă'),
 
-            Ordered_dict_of(
+            fl.Dict.of(
                 CommonString.named('reproduction').with_properties(label=u'Reproducere'),
                 CommonString.named('wintering').with_properties(label=u'Iernat'),
                 CommonString.named('passage').with_properties(label=u'Pasaj'),
@@ -135,7 +131,7 @@ InfoTable = CommonList.of(
     )
 
 
-section_1 = Ordered_dict_of(
+section_1 = fl.Dict.of(
 
     CommonString.named('type').using(optional=False, validators=[valid_type]).with_properties(label=u'Tip'),
     CommonString.named('code').using(optional=False, validators=[valid_site_code]).with_properties(label=u'Codul sitului'),
@@ -155,7 +151,7 @@ section_1 = Ordered_dict_of(
 
     CommonString.named('name').using(optional=False).with_properties(label=u'Numele sitului', widget='textarea'),
 
-    Ordered_dict_of(
+    fl.Dict.of(
         CommonDate.named('proposal').with_properties(label=u'Data propunerii ca sit SCI'),
         CommonDate.named('confirmation_sci').with_properties(label=u'Data confirmării ca sit SCI'),
         CommonDate.named('confirmation_spa').with_properties(label=u'Data confirmării ca sit SPA'),
@@ -172,7 +168,7 @@ nuts3 = _load_json('reference/nuts2003_level3_ro.json')
 biogeographic_map = _load_json('reference/biogeographic_ro.json')
 
 
-section_2 = Ordered_dict_of(
+section_2 = fl.Dict.of(
 
     CommonGeoFloat.named('longitude').with_properties(label=u'Longitudine'),
     CommonGeoFloat.named('latitude').with_properties(label=u'Latitudine'),
@@ -180,7 +176,7 @@ section_2 = Ordered_dict_of(
     CommonFloat.named('area').with_properties(label=u'Suprafață (ha)'),
     CommonFloat.named('length').with_properties(label=u'Lungimea sitului (km)'),
 
-    Ordered_dict_of(
+    fl.Dict.of(
         CommonFloat.named('min').with_properties(label=u'Minimă'),
         CommonFloat.named('max').with_properties(label=u'Maximă'),
         CommonFloat.named('mean').with_properties(label=u'Medie'),
@@ -188,7 +184,7 @@ section_2 = Ordered_dict_of(
 
     CommonList.named('administrative').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             CommonEnum.named('code') \
                       .valued(*sorted(nuts3.keys())) \
                       .using(optional=False) \
@@ -202,7 +198,7 @@ section_2 = Ordered_dict_of(
 
         ).using(optional=False).with_properties(label=u'Regiunea administrativă'),
 
-    Ordered_dict_of(
+    fl.Dict.of(
         *[CommonBoolean.named(key).with_properties(label=label)
           for key, label in sorted(biogeographic_map.items())]
         ).named('biogeographic').using(validators=[valid_any]).with_properties(label=u'Regiunea biogeografică', widget='dict'),
@@ -217,11 +213,11 @@ habitat_type_map = dict((k, ('%s %s' % (name, pri)).strip())
 species_category_map = _load_json('reference/species_category_ro.json')
 
 
-section_3 = Ordered_dict_of(
+section_3 = fl.Dict.of(
 
     CommonList.named('habitat').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             CommonEnum.named('code') \
                       .valued(*sorted(habitat_type_map.keys())) \
                       .using(optional=False) \
@@ -245,7 +241,7 @@ section_3 = Ordered_dict_of(
 
     CommonList.named('species_plant').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             CommonString.named('code').using(optional=False).with_properties(label=u'Cod'),
             CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
             CommonString.named('name').using(optional=False).with_properties(label=u'Nume'),
@@ -256,7 +252,7 @@ section_3 = Ordered_dict_of(
         ).with_properties(label=u'Specii de plante enumerate în anexa II la Directiva Consiliului 92/43/CEE'),
 
     CommonList.named('species_other').of(
-        Ordered_dict_of(
+        fl.Dict.of(
 
             CommonEnum.named('category') \
                       .with_properties(optional=False) \
@@ -268,7 +264,7 @@ section_3 = Ordered_dict_of(
             CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
             CommonString.named('scientific_name').using(optional=False).with_properties(label=u'Denumire științifică'),
 
-            Ordered_dict_of(
+            fl.Dict.of(
                 CommonString.named('text'),
                 CommonEnum.named('trend').valued('A', 'B', 'C', 'D'),
                 ).named('population').with_properties(label=u'Populație'),
@@ -283,11 +279,11 @@ section_3 = Ordered_dict_of(
 habitat_class_map = _load_json('reference/habitat_class_ro.json')
 
 
-section_4 = Ordered_dict_of(
+section_4 = fl.Dict.of(
 
-    Ordered_dict_of(
+    fl.Dict.of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             *[CommonFloat.named(key).with_properties(label=habitat_class_map[key])
               for key in sorted(habitat_class_map)]
             ).named('habitat') \
@@ -308,7 +304,7 @@ section_4 = Ordered_dict_of(
 
     CommonList.named('history').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             CommonString.named('date').with_properties(label=u'Dată'),
             CommonString.named('field').with_properties(label=u'Câmpul modificat'),
             CommonString.named('description').with_properties(label=u'Descriere'),
@@ -325,11 +321,11 @@ international_classification_map = _load_json('reference/international_ro.json')
 classification_map = _load_json('reference/classification_ro.json')
 
 
-section_5 = Ordered_dict_of(
+section_5 = fl.Dict.of(
 
     CommonList.named('classification').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
 
             CommonEnum.named('code') \
                       .with_properties(optional=False) \
@@ -343,7 +339,7 @@ section_5 = Ordered_dict_of(
 
     CommonList.named('national').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             CommonString.named('site_type').with_properties(label=u'Cod'),
             CommonString.named('type').with_properties(label=u'Tip'),
             CommonFloat.named('overlap').with_properties(label=u'Suprapunere %'),
@@ -354,7 +350,7 @@ section_5 = Ordered_dict_of(
 
     CommonList.named('international').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             CommonString.named('site_type').with_properties(label=u'Tipul sitului'),
             CommonEnum.named('type') \
                       .valued(*[k for k,v in international_classification_map]) \
@@ -367,7 +363,7 @@ section_5 = Ordered_dict_of(
 
     CommonList.named('corine').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             CommonString.named('code').using(optional=False).with_properties(label=u'Cod sit Corine'),
             CommonString.named('type').with_properties(label=u'Tip'),
             CommonFloat.named('overlap').with_properties(label=u'Suprapunere %'),
@@ -381,7 +377,7 @@ section_5 = Ordered_dict_of(
 antropic_activities_map = _load_json('reference/activities_ro.json')
 
 
-antropic_activity = Ordered_dict_of(
+antropic_activity = fl.Dict.of(
     CommonEnum.named('code') \
               .using(optional=False) \
               .valued(*sorted(antropic_activities_map.keys())) \
@@ -393,9 +389,9 @@ antropic_activity = Ordered_dict_of(
     )
 
 
-section_6 = Ordered_dict_of(
+section_6 = fl.Dict.of(
 
-    Ordered_dict_of(
+    fl.Dict.of(
 
         CommonList.named('internal').of(antropic_activity) \
             .with_properties(label=u'Activități și consecințe în interiorul sitului'),
@@ -406,7 +402,7 @@ section_6 = Ordered_dict_of(
         ).named('activity') \
          .with_properties(widget='dict', label=u"Activități antropice, consecințele lor generale și suprafața din sit afectată"),
 
-    Ordered_dict_of(
+    fl.Dict.of(
         CommonString.named('organisation').with_properties(widget='textarea', label=u'Organismul responsabil pentru managementul sitului'),
         CommonString.named('plan').with_properties(widget='textarea', label=u'Planuri de management al sitului'),
         ).named('management') \
@@ -415,11 +411,11 @@ section_6 = Ordered_dict_of(
     ).with_properties(label=u'6. ACTIVITĂȚILE ANTROPICE ȘI EFECTELE LOR ÎN SIT ȘI ÎN JURUL ACESTUIA')
 
 
-section_7 = Ordered_dict_of(
+section_7 = fl.Dict.of(
 
     CommonList.named('map').of(
 
-        Ordered_dict_of(
+        fl.Dict.of(
             CommonString.named('number').with_properties(label=u'Numar național hartă'),
             CommonString.named('scale').with_properties(label=u'Scara'),
             CommonString.named('projection').with_properties(label=u'Proiecție'),
@@ -432,7 +428,7 @@ section_7 = Ordered_dict_of(
     ).with_properties(label=u'7. HARTA SITULUI')
 
 
-SpaDoc = Ordered_dict_of(
+SpaDoc = fl.Dict.of(
     section_1.named('section1').with_properties(widget='section'),
     section_2.named('section2').with_properties(widget='section'),
     section_3.named('section3').with_properties(widget='section'),
@@ -540,7 +536,7 @@ full_text_fields = [
     'section6/management/plan',
 ]
 
-Search = Ordered_dict_of(
+Search = fl.Dict.of(
     fl.String.named('text') \
              .with_properties(label=u'Text',
                               index=indexer(*full_text_fields, concat=True),
@@ -583,7 +579,7 @@ Search = Ordered_dict_of(
 )
 
 
-Statistics = Ordered_dict_of(*(Search.field_schema + (
+Statistics = fl.Dict.of(*(Search.field_schema + (
     fl.Enum.named('compute') \
            .valued('area') \
            .with_properties(widget='hidden'),

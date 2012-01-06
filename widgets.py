@@ -47,9 +47,7 @@ class MarkupGenerator(Generator):
 
     def order(self, field):
         if isinstance(field, containers.Mapping):
-            o = [kid.name for kid in field.field_schema]
-            assert o == field.properties['order']
-            return o
+            return [kid.name for kid in field.field_schema]
         else:
             return []
 
