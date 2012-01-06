@@ -86,7 +86,7 @@ def corine_area(search_form, search_answer):
 
     return jinja2.Markup(flask.render_template('stat_corine_area.html', 
                                                 stat=stat, 
-                                                corine_codes=habitat_class_map.items()))
+                                                corine_areas=habitat_class_map.items()))
 
 def protected_area(search_form, search_answer):
     stat = {}

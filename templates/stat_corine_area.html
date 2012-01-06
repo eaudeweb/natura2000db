@@ -2,7 +2,7 @@
 {{ '%.2f' | format(value) }}
 {% endmacro %}
 
-{% for code, name in corine_codes %}
+{% for code, name in corine_areas %}
   {% if stat['total_%s' % code] != 0 %}
 
   {{ name }}: <span class="number">{{ stat['total_%s' % code] }}</span> ha
