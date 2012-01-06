@@ -40,6 +40,17 @@ $(document).ready(function() {
         var osm = new L.TileLayer(osm_url, {maxZoom: 18});
         map.addLayer(osm);
 
+        var shapes = new L.GeoJSON();
+        map.addLayer(shapes);
+
+        $.getJSON(R.assets + 'sci-wgs84.geojson', function(data) {
+            shapes.addGeoJSON(data);
+        });
+
+        $.getJSON(R.assets + 'spa-wgs84.geojson', function(data) {
+            shapes.addGeoJSON(data);
+        });
+
     });
 
 });
