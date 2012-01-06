@@ -23,16 +23,12 @@ def area(search_form, search_answer):
         data = doc['data']
         total_area = data['section2']['area']
 
+        admin_area = 0
         for admin in data['section2']['administrative']:
             if match_nuts3(admin['code']):
-                break
-        else:
-            raise ValueError('no matching nuts3, doc_id=%r'
-                             % data['section1']['code'])
+                admin_area += total_area * (admin['coverage'] / 100)
 
-        admin_area = total_area * (admin['coverage'] / 100)
         stat['total'] += admin_area
-
         stat['table'].append({
             'id': doc['id'],
             'name': doc['name'],
