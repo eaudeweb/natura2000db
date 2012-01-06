@@ -1,0 +1,36 @@
+{% macro number(value) %}
+{{ '%.2f' | format(value) }}
+{% endmacro %}
+
+{% for code, name in protected_areas %}
+  {% if stat['total_%s' % code] != 0 %}
+
+  {{ name }}: <span class="number">{{ stat['total_%s' % code] }}</span> ha
+  <table>
+    <thead>
+      <tr>
+        <th>Nume</th>
+        <th>Arie</th>
+        <th>Proporție categorie</th>
+        <th>Arie categorie</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    {% for row in stat['table_%s' % code] %}
+
+      {% set url = url_for('webpages.view', doc_id=row['id']) %}
+
+      <tr>
+        <td><a href="{{ url }}">{{ row['name'] }}</a></td>
+        <td class="number">{{ number(row['total_area']) }}</td>
+        <td class="number">{{ number(row['protected_percent']) | int }}%</td>
+        <td class="number">{{ number(row['protected_area']) }}</td>
+      </tr>
+
+    {% endfor %}
+    </tbody>
+
+  </table>
+  {% endif %}
+{% endfor %}
