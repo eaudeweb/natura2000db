@@ -363,13 +363,13 @@ a.add {
 /* #################################
        VIEW A NATURA 2000 FORM 
    ################################ */
-#header,
+/*#header,
 #breadcrumb, 
 #footer,
 .wrap > ul,
 .editButton {
-  display: visible; 
-}   
+  display: block; 
+}    only for Opera */
    
 .editedForm {
   color: #335C9E;
@@ -425,7 +425,6 @@ a.add {
 
 .nameOfField {
   color: #000;
-  /*color: #335C9E;#0098AA;*/
   margin-left: 5px;
 }
 
@@ -482,11 +481,6 @@ h2~div ul li div {
    ################################ */
 .center-column form {
   /*min-height: 200px;*/
-}
-
-.center-column form ~ p {
-  color: red;
-  margin-top: 30px;
 }  
 
 .search-facet-selected {
@@ -609,6 +603,15 @@ label[for="f_text"] {
   padding-bottom: 5px;
 }
 
+.search-results div {
+  color: #fff;
+  background: #0098AA;
+  margin-bottom: 10px;
+  margin-left: -15px; /* cancels the ul's padding-left: 15px */
+  text-align: center;
+  font-size: 16px;
+}
+
 /* list with filtered results */
 .search-facet-items {
   padding-left: 25px;
@@ -645,7 +648,11 @@ label[for="f_text"] {
   height: 22px !important;
 }  
 
-
+.noResults {
+  color: #D94F15;
+  display: block;
+  margin-bottom: 100px;
+}
 
 /* #####################################
       STATISTICS FOR NATURA 2000 FORMS
@@ -708,7 +715,7 @@ label[for="f_text"] {
     }
      
     .editedForm {
-      display: visible;
+      display: block; /* do we need it? */
       margin: 0;
       padding: 0;
       color: #636363; /* the color for all text, including field values; must be different from nameOfField's color */
@@ -807,8 +814,7 @@ label[for="f_text"] {
     } 
      
     h2~div ul {
-       display: visible; /* the list for section 7, aka maps */
-       list-style-type: numeric;
+       display: block; /* the list for section 7, aka maps */
      } 
 
     .center-column {

@@ -19,8 +19,9 @@
   {% endfor %}
   {% endif %}
 
-  <h2>Rezultate</h2>
+  
   <ul class="search-results">
+    <li><div>Rezultate</div></li>
   {% for r in search_answer.docs %}
     <li><a href="{{ url_for('webpages.view', doc_id=r['id']) -}}">
             {{- r.name }}</a></li>
@@ -29,7 +30,7 @@
 
 {% else %}
 
-  <p>Nici un rezultat in baza de date pentru acest query.</p>
+  <span class="noResults">Nici un rezultat in baza de date pentru acest query.</span>
 
 {% endif %}
 
