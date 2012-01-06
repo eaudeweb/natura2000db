@@ -19,19 +19,22 @@
   {% endfor %}
   {% endif %}
 
-  <div class="map" id="search-results-map"></div>
+  <div class="search-results">
+  
+    <h2>Rezultate</h2>
+    <div class="map" id="search-results-map"></div>
 
-  <ul class="search-results">
-    <li><div>Rezultate</div></li>
-  {% for r in search_answer.docs %}
-    <li>
-      {% set url = url_for('webpages.view', doc_id=r['id']) %}
-      <a href="{{ url }}">{{ r.name }}</a>
-      <span class="sitecode">{{ r['id'] }}</span>
-    </li>
-  {% endfor %}
-  </ul>
-
+    <ul>
+    {% for r in search_answer.docs %}
+      <li>
+        {% set url = url_for('webpages.view', doc_id=r['id']) %}
+        <a href="{{ url }}">{{ r.name }}</a>
+        <span class="sitecode">{{ r['id'] }}</span>
+      </li>
+    {% endfor %}
+    </ul>
+    
+  </div>
 {% else %}
 
   <span class="noResults">Nici un rezultat in baza de date pentru acest query.</span>
