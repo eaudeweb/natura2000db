@@ -134,7 +134,9 @@ InfoTable = CommonList.of(
 section_1 = fl.Dict.of(
 
     CommonString.named('type').using(optional=False, validators=[valid_type]).with_properties(label=u'Tip'),
-    CommonString.named('code').using(optional=False, validators=[valid_site_code]).with_properties(label=u'Codul sitului'),
+    CommonString.named('code') \
+                .using(optional=False, validators=[valid_site_code]) \
+                .with_properties(label=u'Codul sitului', editable=False),
 
     CommonDate.named('date_document_add').using(optional=False).with_properties(label=u'Data completării'),
     CommonDate.named('date_document_update').with_properties(label=u'Data actualizării'),

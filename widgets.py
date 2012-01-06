@@ -10,10 +10,18 @@ class WidgetDispatcher(object):
         self.jinja_env = jinja_env
         self.context = context
 
-    def __call__(self, element, default_widget='input'):
+    def widget_name(self, element):
+        if not element.properties.get('editable', True):
+            if self.context['widgets_template'] == 'edit':
+                return 'hidden'
+
+        return element.properties.get('widget', 'input')
+
+    def __call__(self, element, widget_name=None):
         tmpl_name = 'widgets-%s.html' % self.context['widgets_template']
         tmpl = self.jinja_env.get_template(tmpl_name)
-        widget_name = element.properties.get('widget', default_widget)
+        if widget_name is None:
+            widget_name = self.widget_name(element)
         widget_macro = getattr(tmpl.module, widget_name)
         return widget_macro(self.context, element)
 
@@ -33,7 +41,8 @@ class MarkupGenerator(Generator):
         self.widget = WidgetDispatcher(jinja_env, self)
 
     def is_hidden(self, field):
-        return (field.properties.get('widget', 'input') == 'hidden')
+        widget_name = self.widget.widget_name(field)
+        return (widget_name == 'hidden')
 
     def virtual_child(self, list_element):
         slot_cls = list_element.slot_type

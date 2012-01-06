@@ -60,9 +60,12 @@
 
 {% macro _dict_children(form, field) %}
   {%- for child_name in form.order(field) %}
-  <div class="dict_children">
-  {{ form.widget(field[child_name]) }}
-  </div>
+    {% set child = field[child_name] %}
+    {% if not form.is_hidden(child) %}
+      <div class="dict_children">
+      {{ form.widget(child) }}
+      </div>
+    {% endif %}
   {% endfor -%}
 {% endmacro %}
 
