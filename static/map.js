@@ -40,7 +40,6 @@ $(document).ready(function() {
         R.layers = layers;
 
         map.on('mousemove', function(e) {
-            legend.empty().append('+');
             if(R.debug) { console.time(1); }
             var hit = [];
             $.each(layers, function(layer_name, layer) {
@@ -52,7 +51,12 @@ $(document).ready(function() {
                 });
             });
             if(R.debug) { console.timeEnd(1); }
-            legend.empty();
+
+            legend.empty().append($('<span class="number">').text(
+                float_repr(e.latlng.lat, 4) + ', ' +
+                float_repr(e.latlng.lng, 4)
+            ));
+
             if(hit.length > 0) {
                 $('<ul>').appendTo(legend).append($.map(hit, function(code) {
                     return $('<li>').text(code)[0];
@@ -140,6 +144,29 @@ $(document).ready(function() {
             return hit_test_polygon(geometry['coordinates'], latlng);
         }
         return false;
+    }
+
+    function float_repr(value, digits) {
+        var str = '';
+        if(value < 0) {
+            str += '-';
+            value = -value;
+        }
+
+        consume();
+        str += '.';
+        while(digits) {
+            consume();
+            digits -= 1;
+        }
+        return str;
+
+        function consume() {
+            var f = Math.floor(value)
+            str += f;
+            value -= f;
+            value *= 10;
+        }
     }
 
 
