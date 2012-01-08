@@ -113,16 +113,38 @@ $(document).ready(function() {
 
     function bounding_box(geometry) {
         if(geometry['type'] == 'Polygon') {
-            var ring = geometry['coordinates'][0];
-            var lng_list = $.map(ring, function(lnglat) { return lnglat[0]; });
-            var lat_list = $.map(ring, function(lnglat) { return lnglat[1]; });
-            return [
-                Math.min.apply(null, lng_list),
-                Math.min.apply(null, lat_list),
-                Math.max.apply(null, lng_list),
-                Math.max.apply(null, lat_list)
-            ];
+            return bounding_box_polygon(geometry['coordinates'][0]);
         }
+
+        if(geometry['type'] == 'MultiPolygon') {
+            return bounding_box_multipolygon(geometry['coordinates']);
+        }
+    }
+
+    function bounding_box_polygon(ring) {
+        var lng_list = $.map(ring, function(lnglat) { return lnglat[0]; });
+        var lat_list = $.map(ring, function(lnglat) { return lnglat[1]; });
+        return [
+            Math.min.apply(null, lng_list),
+            Math.min.apply(null, lat_list),
+            Math.max.apply(null, lng_list),
+            Math.max.apply(null, lat_list)
+        ];
+    }
+
+    function bounding_box_multipolygon(coordinates) {
+        var boxes = $.map(coordinates, function(poly_coords) {
+            return [bounding_box_polygon(poly_coords[0])];
+        });
+        function extract(list, name) {
+            return $.map(list, function(dic) { return dic[name]; });
+        }
+        return [
+            Math.min.apply(null, extract(boxes, 0)),
+            Math.min.apply(null, extract(boxes, 1)),
+            Math.max.apply(null, extract(boxes, 2)),
+            Math.max.apply(null, extract(boxes, 3))
+        ];
     }
 
     function point_in_box(latlng, bbox) {
@@ -136,12 +158,14 @@ $(document).ready(function() {
     }
 
     function hit_test(geometry, latlng) {
-        // TODO multipolygon
         if(! point_in_box(latlng, geometry['bbox'])) {
             return false;
         }
         if(geometry['type'] == 'Polygon') {
             return hit_test_polygon(geometry['coordinates'], latlng);
+        }
+        if(geometry['type'] == 'MultiPolygon') {
+            return hit_test_multipolygon(geometry['coordinates'], latlng);
         }
         return false;
     }
@@ -167,6 +191,15 @@ $(document).ready(function() {
             value -= f;
             value *= 10;
         }
+    }
+
+    function hit_test_multipolygon(coordinates, latlng) {
+        for(var c = 0; c < coordinates.length; c ++) {
+            if(hit_test_polygon(coordinates[c], latlng)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
