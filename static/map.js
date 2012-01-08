@@ -57,7 +57,7 @@ $(document).ready(function() {
                 $.each(layer.features, function(i, feature) {
                     if(hit_test(feature['geometry'], latlng)) {
                         hit_list.push({
-                            name: feature['properties']['name'],
+                            feature: feature,
                             layer: layer
                         });
                     }
@@ -67,13 +67,18 @@ $(document).ready(function() {
             return hit_list;
         }
 
-        function hit_list_html(hit_list) {
+        function hit_list_html(hit_list, item_content) {
+            if(! item_content) {
+                item_content = function(feature) {
+                    return feature['properties']['name'];
+                }
+            }
             var ul = $('<ul class="hit-list">');
             $.each(hit_list, function(i, hit) {
                 var item = $('<li>').appendTo(ul);
                 var sample = $('<div class="legend-sample">');
                 sample.css({background: hit['layer']['color']});
-                item.append(sample, hit['name'])[0];
+                item.append(sample, item_content(hit['feature']))[0];
             });
             return ul;
         }
@@ -97,10 +102,21 @@ $(document).ready(function() {
             if(hit_list.length > 0) {
                 var popup = new L.Popup();
                 popup.setLatLng(e.latlng);
-                popup.setContent(hit_list_html(hit_list)[0]);
+                popup.setContent(hit_list_html(hit_list, linkify)[0]);
                 map.openPopup(popup);
             }
         });
+
+        function linkify(feature) {
+            var url = feature['properties']['url'];
+            var label = feature['properties']['name'];
+            if(url) {
+                return $('<a>').attr('href', url).text(label);
+            }
+            else {
+                return label;
+            }
+        }
 
         function process_geometry(feature) {
             feature['properties']['_feature'] = feature;
@@ -109,10 +125,13 @@ $(document).ready(function() {
 
         var sitecode_hash = {};
         var sitename = {};
+        var site_url = {};
         $('.search-results .sitecode').each(function() {
             var code = $(this).text();
             sitecode_hash[code] = true;
-            sitename[code] = $(this).parent('li').children('a.sitename').text();
+            var a = $(this).parent('li').children('a.sitename')
+            sitename[code] = a.text();
+            site_url[code] = a.attr('href');
         });
         var keep = function(code) { return sitecode_hash[code]; };
 
@@ -120,6 +139,7 @@ $(document).ready(function() {
             $.each(features, function(i, feature) {
                 var sitecode = feature['properties']['SITECODE'];
                 feature['properties']['name'] = sitename[sitecode];
+                feature['properties']['url'] = site_url[sitecode];
                 if(! keep(sitecode)) { return; }
                 process_geometry(feature);
                 layer.addGeoJSON(feature);
