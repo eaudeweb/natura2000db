@@ -19,9 +19,10 @@ $(document).ready(function() {
         var osm = new L.TileLayer(osm_url, {maxZoom: 18});
         map.addLayer(osm);
 
-        function new_layer() {
+        function new_layer(options) {
             var layer = new L.GeoJSON();
             layer.geometries = {};
+            $.extend(layer, options);
 
             layer.on('featureparse', function(e) {
                 var sitecode = e.properties['SITECODE'];
@@ -34,33 +35,39 @@ $(document).ready(function() {
         }
 
         var layers = {
-            sci: new_layer(),
-            spa: new_layer()
+            sci: new_layer({color: '#b92'}),
+            spa: new_layer({color: '#9b2'})
         };
         R.layers = layers;
 
         map.on('mousemove', function(e) {
             if(R.debug) { console.time(1); }
-            var hit = [];
+            var hit_list = [];
             $.each(layers, function(layer_name, layer) {
                 $.each(layer.geometries, function(sitecode, geometry) {
-                    //if(sitecode != 'ROSPA0076') return;
                     if(hit_test(geometry, e.latlng)) {
-                        hit.push(sitecode);
+                        hit_list.push({
+                            sitecode: sitecode,
+                            layer: layer
+                        });
                     }
                 });
             });
             if(R.debug) { console.timeEnd(1); }
 
-            legend.empty().append($('<span class="number">').text(
+            legend.empty().append($('<span class="number coordinates">').text(
                 float_repr(e.latlng.lat, 4) + ', ' +
                 float_repr(e.latlng.lng, 4)
             ));
 
-            if(hit.length > 0) {
-                $('<ul>').appendTo(legend).append($.map(hit, function(code) {
-                    return $('<li>').text(sitename[code])[0];
-                }));
+            if(hit_list.length > 0) {
+                var hit_html = $('<ul class="hit-list">').appendTo(legend);
+                $.each(hit_list, function(i, hit) {
+                    var item = $('<li>').appendTo(hit_html);
+                    var sample = $('<div class="legend-sample">');
+                    sample.css({background: hit['layer']['color']});
+                    item.append(sample, sitename[hit['sitecode']])[0];
+                });
             }
             if(R.debug) { circle.setLatLng(e.latlng); }
         });
@@ -78,7 +85,7 @@ $(document).ready(function() {
             data['features'] = filter_features(data['features'], keep);
             layers['sci'].addGeoJSON(data);
             layers['sci'].setStyle({
-                color: '#b92',
+                color: layers['sci']['color'],
                 weight: 2
             });
         });
@@ -87,7 +94,7 @@ $(document).ready(function() {
             data['features'] = filter_features(data['features'], keep);
             layers['spa'].addGeoJSON(data);
             layers['spa'].setStyle({
-                color: '#9b2',
+                color: layers['spa']['color'],
                 weight: 2
             });
         });
