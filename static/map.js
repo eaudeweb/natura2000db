@@ -7,6 +7,11 @@ $(document).ready(function() {
             fadeAnimation: false
         });
 
+        if(R.debug) {
+            var circle = new L.CircleMarker(new L.LatLng(46, 25));
+            map.addLayer(circle);
+        }
+
         var legend = $('<div class="legend">');
         legend.appendTo($('.leaflet-control-container', this));
 
@@ -36,6 +41,7 @@ $(document).ready(function() {
 
         map.on('mousemove', function(e) {
             legend.empty().append('+');
+            if(R.debug) { console.time(1); }
             var hit = [];
             $.each(layers, function(layer_name, layer) {
                 $.each(layer.geometries, function(sitecode, geometry) {
@@ -45,12 +51,14 @@ $(document).ready(function() {
                     }
                 });
             });
+            if(R.debug) { console.timeEnd(1); }
             legend.empty();
             if(hit.length > 0) {
                 $('<ul>').appendTo(legend).append($.map(hit, function(code) {
                     return $('<li>').text(code)[0];
                 }));
             }
+            if(R.debug) { circle.setLatLng(e.latlng); }
         });
 
         var sitecode_hash = {};

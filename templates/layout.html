@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>var R = {assets: "{{ url_for('static', filename='') }}"};</script>
+    {% if config['JS_DEBUG'] %}<script>R['debug'] = true;</script>{% endif %}
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="{{ url_for('static', filename='jquery.cookie.js') }}"></script>
     <script src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
