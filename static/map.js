@@ -7,6 +7,9 @@ $(document).ready(function() {
             fadeAnimation: false
         });
 
+        var zoom_box = $('.leaflet-control-zoom').parent();
+        zoom_box.removeClass('leaflet-left').addClass('leaflet-right');
+
         if(R.debug) {
             var circle = new L.CircleMarker(new L.LatLng(46, 25));
             map.addLayer(circle);

@@ -662,15 +662,11 @@ label[for="f_text"] {
 
 .map .legend {
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
   padding: 0 5px;
   background: white;
   border: 1px solid #bbb;
-}
-
-.map .legend .coordinates {
-  text-align: right;
 }
 
 .map .legend ul.hit-list {
