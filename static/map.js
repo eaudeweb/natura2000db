@@ -25,9 +25,9 @@ $(document).ready(function() {
             $.extend(layer, options);
 
             layer.on('featureparse', function(e) {
-                var sitecode = e.properties['SITECODE'];
-                e.layer.sitecode = sitecode;
-                layer.geometries[sitecode] = e.properties['_geometry'];
+                var name = e.properties[layer.name_property];
+                e.layer.name = name;
+                layer.geometries[name] = e.properties['_geometry'];
             });
 
             map.addLayer(layer);
@@ -35,8 +35,9 @@ $(document).ready(function() {
         }
 
         var layers = {
-            sci: new_layer({color: '#b92'}),
-            spa: new_layer({color: '#9b2'})
+            judete: new_layer({color: '#888', name_property: 'denjud'}),
+            sci: new_layer({color: '#b92', name_property: 'SITECODE'}),
+            spa: new_layer({color: '#9b2', name_property: 'SITECODE'})
         };
         R.layers = layers;
 
@@ -44,10 +45,10 @@ $(document).ready(function() {
             if(R.debug) { console.time(1); }
             var hit_list = [];
             $.each(layers, function(layer_name, layer) {
-                $.each(layer.geometries, function(sitecode, geometry) {
+                $.each(layer.geometries, function(name, geometry) {
                     if(hit_test(geometry, e.latlng)) {
                         hit_list.push({
-                            sitecode: sitecode,
+                            name: name,
                             layer: layer
                         });
                     }
@@ -66,7 +67,7 @@ $(document).ready(function() {
                     var item = $('<li>').appendTo(hit_html);
                     var sample = $('<div class="legend-sample">');
                     sample.css({background: hit['layer']['color']});
-                    item.append(sample, sitename[hit['sitecode']])[0];
+                    item.append(sample, hit['name'])[0];
                 });
             }
             if(R.debug) { circle.setLatLng(e.latlng); }
@@ -95,6 +96,17 @@ $(document).ready(function() {
             layers['spa'].addGeoJSON(data);
             layers['spa'].setStyle({
                 color: layers['spa']['color'],
+                weight: 2
+            });
+        });
+
+        $.getJSON(R.assets + 'judete-wgs84.geojson', function(data) {
+            $.each(data['features'], function(i, feature) {
+                process_geometry(feature);
+            });
+            layers['judete'].addGeoJSON(data);
+            layers['judete'].setStyle({
+                color: layers['judete']['color'],
                 weight: 2
             });
         });
