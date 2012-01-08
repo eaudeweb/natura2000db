@@ -21,13 +21,18 @@ $(document).ready(function() {
 
         function new_layer(options) {
             var layer = new L.GeoJSON();
-            layer.geometries = {};
+            layer.features = [];
             $.extend(layer, options);
 
             layer.on('featureparse', function(e) {
-                var name = e.properties[layer.name_property];
-                e.layer.name = name;
-                layer.geometries[name] = e.properties['_geometry'];
+                var name = e.properties['name'];
+                var feature_layer = e.layer;
+                feature_layer.name = name;
+                layer.features.push(e.properties['_feature']);
+                feature_layer.setStyle({
+                    color: layer['color'],
+                    weight: 2
+                });
             });
 
             map.addLayer(layer);
@@ -35,9 +40,9 @@ $(document).ready(function() {
         }
 
         var layers = {
-            judete: new_layer({color: '#888', name_property: 'denjud'}),
-            sci: new_layer({color: '#b92', name_property: 'SITECODE'}),
-            spa: new_layer({color: '#9b2', name_property: 'SITECODE'})
+            judete: new_layer({color: '#888'}),
+            sci: new_layer({color: '#b92'}),
+            spa: new_layer({color: '#9b2'})
         };
         R.layers = layers;
 
@@ -45,10 +50,10 @@ $(document).ready(function() {
             if(R.debug) { console.time(1); }
             var hit_list = [];
             $.each(layers, function(layer_name, layer) {
-                $.each(layer.geometries, function(name, geometry) {
-                    if(hit_test(geometry, e.latlng)) {
+                $.each(layer.features, function(i, feature) {
+                    if(hit_test(feature['geometry'], e.latlng)) {
                         hit_list.push({
-                            name: name,
+                            name: feature['properties']['name'],
                             layer: layer
                         });
                     }
@@ -73,6 +78,11 @@ $(document).ready(function() {
             if(R.debug) { circle.setLatLng(e.latlng); }
         });
 
+        function process_geometry(feature) {
+            feature['properties']['_feature'] = feature;
+            feature['geometry']['bbox'] = bounding_box(feature['geometry']);
+        }
+
         var sitecode_hash = {};
         var sitename = {};
         $('.search-results .sitecode').each(function() {
@@ -82,49 +92,38 @@ $(document).ready(function() {
         });
         var keep = function(code) { return sitecode_hash[code]; };
 
-        $.getJSON(R.assets + 'sci-wgs84.geojson', function(data) {
-            data['features'] = filter_features(data['features'], keep);
-            layers['sci'].addGeoJSON(data);
-            layers['sci'].setStyle({
-                color: layers['sci']['color'],
-                weight: 2
+        function add_site_features(features, layer) {
+            $.each(features, function(i, feature) {
+                var sitecode = feature['properties']['SITECODE'];
+                feature['properties']['name'] = sitename[sitecode];
+                if(! keep(sitecode)) { return; }
+                process_geometry(feature);
+                layer.addGeoJSON(feature);
             });
+        }
+
+        $.getJSON(R.assets + 'sci-wgs84.geojson', function(data) {
+            add_site_features(data['features'], layers['sci']);
         });
 
         $.getJSON(R.assets + 'spa-wgs84.geojson', function(data) {
-            data['features'] = filter_features(data['features'], keep);
-            layers['spa'].addGeoJSON(data);
-            layers['spa'].setStyle({
-                color: layers['spa']['color'],
-                weight: 2
-            });
+            add_site_features(data['features'], layers['spa']);
         });
 
         $.getJSON(R.assets + 'judete-wgs84.geojson', function(data) {
+            var layer = layers['judete'];
             $.each(data['features'], function(i, feature) {
+                var name = feature['properties']['denjud'];
+                name = name[0] + name.slice(1).toLowerCase();
                 process_geometry(feature);
+                feature['properties']['name'] = name;
+                layer.addGeoJSON(feature);
             });
-            layers['judete'].addGeoJSON(data);
-            layers['judete'].setStyle({
-                color: layers['judete']['color'],
+            layer.setStyle({
+                color: layer['color'],
                 weight: 2
             });
         });
-
-        function process_geometry(feature) {
-            feature['properties']['_geometry'] = feature['geometry'];
-            feature['geometry']['bbox'] = bounding_box(feature['geometry']);
-        }
-
-        function filter_features(features, keep) {
-            return $.map(features, function(feature) {
-                var sitecode = feature['properties']['SITECODE'];
-                if(keep(sitecode)) {
-                    process_geometry(feature);
-                    return feature;
-                }
-            });
-        }
 
     });
 
