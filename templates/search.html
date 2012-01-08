@@ -29,7 +29,7 @@
     {% for r in search_answer.docs %}
       <li>
         {% set url = url_for('webpages.view', doc_id=r['id']) %}
-        <a href="{{ url }}">{{ r.name }}</a>
+        <a class="sitename" href="{{ url }}">{{ r.name }}</a>
         <span class="sitecode">{{ r['id'] }}</span>
       </li>
     {% endfor %}

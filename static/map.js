@@ -59,16 +59,18 @@ $(document).ready(function() {
 
             if(hit.length > 0) {
                 $('<ul>').appendTo(legend).append($.map(hit, function(code) {
-                    return $('<li>').text(code)[0];
+                    return $('<li>').text(sitename[code])[0];
                 }));
             }
             if(R.debug) { circle.setLatLng(e.latlng); }
         });
 
         var sitecode_hash = {};
+        var sitename = {};
         $('.search-results .sitecode').each(function() {
             var code = $(this).text();
             sitecode_hash[code] = true;
+            sitename[code] = $(this).parent('li').children('a.sitename').text();
         });
         var keep = function(code) { return sitecode_hash[code]; };
 
