@@ -49,12 +49,12 @@ $(document).ready(function() {
         };
         R.layers = layers;
 
-        map.on('mousemove', function(e) {
+        function features_at(latlng) {
             if(R.debug) { console.time(1); }
             var hit_list = [];
             $.each(layers, function(layer_name, layer) {
                 $.each(layer.features, function(i, feature) {
-                    if(hit_test(feature['geometry'], e.latlng)) {
+                    if(hit_test(feature['geometry'], latlng)) {
                         hit_list.push({
                             name: feature['properties']['name'],
                             layer: layer
@@ -63,21 +63,31 @@ $(document).ready(function() {
                 });
             });
             if(R.debug) { console.timeEnd(1); }
+            return hit_list;
+        }
 
+        function hit_list_html(hit_list) {
+            var ul = $('<ul class="hit-list">');
+            $.each(hit_list, function(i, hit) {
+                var item = $('<li>').appendTo(ul);
+                var sample = $('<div class="legend-sample">');
+                sample.css({background: hit['layer']['color']});
+                item.append(sample, hit['name'])[0];
+            });
+            return ul;
+        }
+
+        map.on('mousemove', function(e) {
             legend.empty().append($('<span class="number coordinates">').text(
                 float_repr(e.latlng.lat, 4) + ', ' +
                 float_repr(e.latlng.lng, 4)
             ));
 
+            var hit_list = features_at(e.latlng);
             if(hit_list.length > 0) {
-                var hit_html = $('<ul class="hit-list">').appendTo(legend);
-                $.each(hit_list, function(i, hit) {
-                    var item = $('<li>').appendTo(hit_html);
-                    var sample = $('<div class="legend-sample">');
-                    sample.css({background: hit['layer']['color']});
-                    item.append(sample, hit['name'])[0];
-                });
+                legend.append(hit_list_html(hit_list));
             }
+
             if(R.debug) { circle.setLatLng(e.latlng); }
         });
 
