@@ -669,13 +669,13 @@ label[for="f_text"] {
   border: 1px solid #bbb;
 }
 
-.map .legend ul.hit-list {
+ul.hit-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.map .legend ul.hit-list .legend-sample {
+ul.hit-list .legend-sample {
   display: inline-block;
   width: 10px;
   height: 10px;

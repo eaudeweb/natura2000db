@@ -34,7 +34,8 @@ $(document).ready(function() {
                 layer.features.push(e.properties['_feature']);
                 feature_layer.setStyle({
                     color: layer['color'],
-                    weight: 2
+                    weight: 2,
+                    clickable: false
                 });
             });
 
@@ -89,6 +90,16 @@ $(document).ready(function() {
             }
 
             if(R.debug) { circle.setLatLng(e.latlng); }
+        });
+
+        map.on('click', function(e) {
+            var hit_list = features_at(e.latlng);
+            if(hit_list.length > 0) {
+                var popup = new L.Popup();
+                popup.setLatLng(e.latlng);
+                popup.setContent(hit_list_html(hit_list)[0]);
+                map.openPopup(popup);
+            }
         });
 
         function process_geometry(feature) {
