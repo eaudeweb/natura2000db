@@ -123,24 +123,27 @@ $(document).ready(function() {
             feature['geometry']['bbox'] = bounding_box(feature['geometry']);
         }
 
+        var site_data_map = {};
         var sitecode_hash = {};
         var sitename = {};
         var site_url = {};
         $('.search-results .sitecode').each(function() {
             var code = $(this).text();
-            sitecode_hash[code] = true;
             var a = $(this).parent('li').children('a.sitename')
-            sitename[code] = a.text();
-            site_url[code] = a.attr('href');
+            site_data_map[code] = {
+                'name': a.text(),
+                'url': a.attr('href')
+            }
         });
-        var keep = function(code) { return sitecode_hash[code]; };
+        var keep = function(code) { return site_data_map.hasOwnProperty(code); };
 
         function add_site_features(features, layer) {
             $.each(features, function(i, feature) {
                 var sitecode = feature['properties']['SITECODE'];
-                feature['properties']['name'] = sitename[sitecode];
-                feature['properties']['url'] = site_url[sitecode];
                 if(! keep(sitecode)) { return; }
+                var site_data = site_data_map[sitecode];
+                feature['properties']['name'] = site_data['name'];
+                feature['properties']['url'] = site_data['url'];
                 process_geometry(feature);
                 layer.addGeoJSON(feature);
             });
