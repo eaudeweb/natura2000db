@@ -86,11 +86,16 @@ $(document).ready(function() {
             });
         });
 
+        function process_geometry(feature) {
+            feature['properties']['_geometry'] = feature['geometry'];
+            feature['geometry']['bbox'] = bounding_box(feature['geometry']);
+        }
+
         function filter_features(features, keep) {
             return $.map(features, function(feature) {
-                feature['properties']['_geometry'] = feature['geometry'];
                 var sitecode = feature['properties']['SITECODE'];
                 if(keep(sitecode)) {
+                    process_geometry(feature);
                     return feature;
                 }
             });
@@ -102,9 +107,35 @@ $(document).ready(function() {
 
 
 
+    function bounding_box(geometry) {
+        if(geometry['type'] == 'Polygon') {
+            var ring = geometry['coordinates'][0];
+            var lng_list = $.map(ring, function(lnglat) { return lnglat[0]; });
+            var lat_list = $.map(ring, function(lnglat) { return lnglat[1]; });
+            return [
+                Math.min.apply(null, lng_list),
+                Math.min.apply(null, lat_list),
+                Math.max.apply(null, lng_list),
+                Math.max.apply(null, lat_list)
+            ];
+        }
+    }
+
+    function point_in_box(latlng, bbox) {
+        if(! bbox)
+            return true;
+        if(latlng.lng < bbox[0] || latlng.lng > bbox[2])
+            return false;
+        if(latlng.lat < bbox[1] || latlng.lat > bbox[3])
+            return false;
+        return true;
+    }
+
     function hit_test(geometry, latlng) {
-        // TODO bounding box
         // TODO multipolygon
+        if(! point_in_box(latlng, geometry['bbox'])) {
+            return false;
+        }
         if(geometry['type'] == 'Polygon') {
             return hit_test_polygon(geometry['coordinates'], latlng);
         }
