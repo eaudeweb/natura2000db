@@ -11,9 +11,9 @@
     <thead>
       <tr>
         <th>Nume</th>
-        <th>Arie</th>
-        <th>Proporție categorie</th>
-        <th>Arie categorie</th>
+        <th>Suprafața totală (ha) (ha)</th>
+        <th>Pondere (%)</th>
+        <th>Suprafața (ha)</th>
       </tr>
     </thead>
 
@@ -25,7 +25,7 @@
       <tr>
         <td><a href="{{ url }}">{{ row['name'] }}</a></td>
         <td class="number">{{ number(row['total_area']) }}</td>
-        <td class="number">{{ number(row['protected_percent'], fmt='%.0f') }}%</td>
+        <td class="number">{{ number(row['protected_percent'], fmt='%.0f') }}</td>
         <td class="number">{{ number(row['protected_area']) }}</td>
       </tr>
 
@@ -34,7 +34,7 @@
 
     <tfoot>
       <tr>
-        <td colspan="3">Total (ha)</td>
+        <td colspan="3">Total</td>
         <td class="number">{{ number(stat['total_%s' % code]) }}</td>
       </tr>
     </tfoot>

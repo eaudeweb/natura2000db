@@ -2,18 +2,22 @@
 
 {% block content %}
 
-<h1>FORMULAR STANDARD</h1>
-<p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile 
-  ca situri de importanta comunitara (SCI)</p>
+<div class="doc-edit">
 
-<form method="post">
+  <h1>FORMULAR STANDARD</h1>
+  <p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile
+     ca situri de importanta comunitara (SCI)</p>
 
-  {%- for name in form.order(doc) %}
-    <div>{{ form.widget(doc[name]) }}</div>
-  {%- endfor %}
+  <form method="post">
 
-  <input type="submit">
+    {%- for name in form.order(doc) %}
+      <div>{{ form.widget(doc[name]) }}</div>
+    {%- endfor %}
 
-</form>
+    <input type="submit">
+
+  </form>
+
+</div>
 
 {% endblock %}
