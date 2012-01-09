@@ -8,6 +8,7 @@
 /* #################################
        EDIT A NATURA 2000 FORM 
    ################################ */
+   
 /* GLOBAL */
 .natura2000 {
   /*font-family: Arial, Verdana, sans-serif;*/
@@ -372,110 +373,100 @@ a.add {
   margin-left: 15px;
 }
 
+.doc-edit input[type="submit"] {
+  margin-left: 0;
+  margin-bottom: 10px;
+}
+
+
 
 /* #################################
        VIEW A NATURA 2000 FORM 
    ################################ */
-/*#header,
-#breadcrumb,
-#footer,
-.wrap > ul,
-.button {
-  display: block;
-}    only for Opera */
 
-.editedForm {
+.doc-view {
   color: #335C9E;
   border: 1px solid #335C9E;
   padding: 5px;
   margin-top: 15px;
+  margin-bottom: 25px;
 }
 
-.editedForm h1 {
+.doc-view h1 {
   font-size: 19px !important;
   text-align: center !important;
 }
 
-.editedForm > p {
-  text-align: center !important;
-}
-
-.editedForm h2 {
+.doc-view h2 {
   color: #fff;
   font-size: 13px;
   background: #335C9E;
   padding-left: 5px;
 }
 
-.editedForm div div ul li {
-  color: #335C9E;
+.doc-view .field-other_sites {
+  margin-left: 10px;
+}
+
+.doc-view .field-other_sites li,
+.field-biogeographic .label,
+.doc-view .field-number,
+.doc-view .field-scale,
+.doc-view .field-projection {
+  color: #335C9E !important;
 }
 
 /* space between h2 title and div with a certain input, in the view standard form */
-.editedForm h2~div {
+.doc-view h2~div {
   margin-top: 10px;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
   padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
-  /*background: #D9F0FF;*/
 }
 
-.center-column h1 ~ p {
-  /*text-align: left;*/
-}
-
-.center-column form input[type="submit"] {
-  margin-left: 0;
-  margin-bottom: 10px;
-}
-
-.center-column {
-  margin-bottom: 20px;
-}
-
-.center-column div div {
-  margin-bottom: 5px;
-}
-
-.label {
-  color: #000;
+.label,
+.field-characteristics .label {
+  color: #000 !important;
   margin-left: 5px;
 }
 
-.editedForm table td {
+.doc-view table td {
   padding: 0px 5px;
 }
 
-.editedForm table {
+.doc-view table {
   margin-left: 5px;
 }
 
-.editedForm h2~div p {
-  color:#000;/*#335C9E; #0098AA;*/
+.doc-view h2~div p {
+  color:#000;
   text-align: left !important;
   margin-left: 5px;
 }
 
-.editedForm h2~div div p {
+.doc-view h2~div div p {
   margin-top: 5px;
 }
 
-.editedForm h2~div  p~div .label {
-  color: #444; /*#707070;*/
+.doc-view h2~div  p~div .label,
+.field-section3 .helpText,
+.field-activity .helpText {
+  color: #707070;
   margin-left: 15px;
 }
 
-.editedForm table caption {
+/*.doc-view table caption*/
+.doc-view .label {
   min-width: 500px;
-  color: #000;/*#707070;*/
+  color: #000;
   margin-top: 5px;
 }
 
-.editedForm thead {
+.doc-view thead {
   background: #516E9E;
 }
 
-.editedForm th,
-.editedForm thead tr td  {
+.doc-view th,
+.doc-view thead tr td  {
   color: #fff;
 }
 
@@ -488,7 +479,40 @@ h2~div ul li div {
   font-family: monospace;
 }
 
+.doc-view .field-code,
+.doc-view .field-code a {
+  min-width: 150px !important;
+}
 
+.doc-view .field-internal th:first-child,
+.doc-view .field-external th:first-child,
+.doc-view .field-administrative th:first-child,
+.doc-view .field-classification th:first-child {
+  min-width: 150px !important;
+}
+
+.doc-view .field-internal th:first-child,
+.doc-view .field-internal .field-code,
+.doc-view .field-external th:first-child,
+.doc-view .field-external .field-code {
+  min-width: 430px !important;
+}
+
+.doc-view .field-name {
+  font-size: 14px;
+}
+
+.doc-view table caption {
+  display: none;
+  padding: 0px !important;
+}
+
+.doc-view .field-habitat,
+.doc-view .field-internal {
+  margin-bottom: 10px;
+}
+  
+  
 
 /* #################################
       SEARCH IN NATURA 2000 FORMS
@@ -920,7 +944,7 @@ ul.hit-list .legend-sample {
 
     .editedForm table caption {
       min-width: 500px;
-      color: #000;/*#707070;*/
+      color: #000;
       margin-top: 5px;
     }
 
