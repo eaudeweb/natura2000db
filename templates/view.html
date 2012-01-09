@@ -10,8 +10,13 @@
        ca situri de importanta comunitara (SCI)</p>
   </hgroup>
 
-  <span class="editButton">
+  <span class="button">
    [<a href="{{ url_for('webpages.edit', doc_id=doc_id) }}">edit</a>]
+  </span>
+
+  <span class="button">
+    [<a href="javascript:window.print()">print
+    <img src="{{ url_for('static', filename='printer.png') }}"></a>]
   </span>
 
   {% do form.begin(widgets_template='view') -%}
