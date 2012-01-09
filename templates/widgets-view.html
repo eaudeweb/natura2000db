@@ -26,7 +26,7 @@
     {%- if not field.is_empty %}
       {{ _label(form, field) }}
       <div class="{{ "field-%s" % field.name }}">
-      {{ field.properties.value_labels[field.value] }}
+      {{ form.linkify(field, field.properties.value_labels[field.value]) }}
       </div>
     {%- else -%}
       {{ empty_value(field) }}

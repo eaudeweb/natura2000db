@@ -4,6 +4,7 @@ import os.path
 import re
 import json
 import flatland as fl
+import flask
 
 
 def _load_json(name):
@@ -170,6 +171,10 @@ nuts3 = _load_json('reference/nuts2003_level3_ro.json')
 biogeographic_map = _load_json('reference/biogeographic_ro.json')
 
 
+def link_search_nuts3(field):
+    return flask.url_for('webpages.search', nuts3=field.value)
+
+
 section_2 = fl.Dict.of(
 
     CommonGeoFloat.named('longitude').with_properties(label=u'Longitudine'),
@@ -192,7 +197,8 @@ section_2 = fl.Dict.of(
                       .using(optional=False) \
                       .with_properties(label=u'Județ',
                                        widget='select',
-                                       value_labels=id_and_label(nuts3)),
+                                       value_labels=id_and_label(nuts3),
+                                       view_href=link_search_nuts3),
             CommonFloat.named('coverage') \
                        .using(optional=False) \
                        .with_properties(label=u'Pondere (%)'),
