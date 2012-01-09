@@ -591,7 +591,7 @@ label[for="f_text"] {
   border: 1px solid #0098AA;
   margin-left: 230px;
   margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 0px;
   padding-bottom: 5px;
 }
 
@@ -603,9 +603,9 @@ label[for="f_text"] {
   color: #fff;
   background: #0098AA;
   margin-bottom: 10px;
+  margin-top: 0px !important;
   text-align: center;
   font-size: 16px;
-  margin-top: 0;
 }
 
 /* list with filtered results */
@@ -704,6 +704,12 @@ ul.hit-list .legend-sample {
   max-width: 721px;
 }
 
+.help {
+  text-align: left;
+  background: url("./help.png") no-repeat;
+  padding-left: 18px;
+}
+
 
 /* #####################################
       STATISTICS FOR NATURA 2000 FORMS
@@ -755,7 +761,7 @@ ul.hit-list .legend-sample {
 .stats-results {
   border: 1px solid #FC8E3A;/*D96207;*/
   margin-left: 230px;
-  margin-bottom: 30px;
+  margin-bottom: 30px !important;
   padding-bottom: 5px;
 }
 
@@ -774,7 +780,6 @@ ul.hit-list .legend-sample {
 
 .stats table tfoot tr:last-of-type {
   background: #FFFF78;  /* light yellow for hightlight */
-  /*border-top: 2px solid #335C9E;*/
 }
 
 .stats-caption {
@@ -782,8 +787,7 @@ ul.hit-list .legend-sample {
   font-size: 16px;
   font-weight: bold;
   font-family: Georgia, "Times New Roman", serif; /* recommended for hightlight */
-  margin:0;
-  margin-bottom: 0;
+  margin: 0px !important;
 }
 
 .backToSearch {
