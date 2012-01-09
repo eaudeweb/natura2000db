@@ -121,7 +121,12 @@
 
 {% macro table(form, field) %}
   <table class="field-{{ field.name }}">
-    <caption>{{field.properties.label}}</caption>
+    <caption>
+      <p class="label">{{ field.properties.label }}</p>
+      {% if field.properties.helptext %}
+        <p class="helptext">{{ field.properties.helptext }}</p>
+      {% endif %}
+    </caption>
     <thead>
       {{ form.table_nested_th(field) }}
     </thead>

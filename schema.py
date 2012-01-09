@@ -240,7 +240,12 @@ section_3 = fl.Dict.of(
 
         ).with_properties(label=u'Tipuri de habitat prezente în sit și evaluarea sitului în ceea ce le priveste:'),
 
-    InfoTable.named('species_bird').with_properties(label=u'Specii de păsări enumerate în anexa I la Directiva Consiliului 79/409/CEE'),
+    InfoTable.named('species_bird') \
+             .with_properties(label=u"Specii de păsări enumerate în anexa I "
+                                    u"la Directiva Consiliului 79/409/CEE",
+                              helptext=u"C - conservare, "
+                                       u"B - broaște, "
+                                       u"A - ana"),
     InfoTable.named('species_bird_extra').with_properties(label=u'Specii de păsări cu migrație regulată nemenționate în anexa I la Directiva Consiliului 79/409/CEE'),
     InfoTable.named('species_mammal').with_properties(label=u'Specii de mamifere enumerate în anexa II la Directiva Consiliului 92/43/CEE'),
     InfoTable.named('species_reptile').with_properties(label=u'Specii de amfibieni și reptile enumerate în anexa II la Directiva Consiliului 92/43/CEE'),
