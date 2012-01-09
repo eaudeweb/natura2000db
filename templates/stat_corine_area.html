@@ -5,7 +5,8 @@
 {% for code, name in corine_areas %}
   {% if stat['total_%s' % code] != 0 %}
 
-  {{ name }}: <span class="number">{{ number(stat['total_%s' % code]) }}</span> ha
+  <h2>{{ name }}</h2>
+
   <table>
     <thead>
       <tr>
@@ -30,6 +31,13 @@
 
     {% endfor %}
     </tbody>
+
+    <tfoot>
+      <tr>
+        <td colspan="3">Total (ha)</td>
+        <td class="number">{{ number(stat['total_%s' % code]) }}</td>
+      </tr>
+    </tfoot>
 
   </table>
   {% endif %}
