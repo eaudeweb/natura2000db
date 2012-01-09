@@ -377,13 +377,13 @@ a.add {
        VIEW A NATURA 2000 FORM 
    ################################ */
 /*#header,
-#breadcrumb, 
+#breadcrumb,
 #footer,
 .wrap > ul,
-.editButton {
-  display: block; 
+.button {
+  display: block;
 }    only for Opera */
-   
+
 .editedForm {
   color: #335C9E;
   border: 1px solid #335C9E;
@@ -814,7 +814,7 @@ ul.hit-list .legend-sample {
     #breadcrumb, 
     #footer,
     .wrap > ul,
-    .editButton {
+    .button {
       display: none; /* hide the rest of the page and the edit button */
     }
      
