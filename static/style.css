@@ -732,6 +732,27 @@ ul.hit-list .legend-sample {
   text-align: center; /* might not work on every table ! */
 }
 
+.stats-results {
+  border: 1px solid #FC8E3A;/*D96207;*/
+  margin-left: 230px;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+}
+
+.stats-results h2 {
+  color: white;
+  background: #FC8E3A;/*FF672B;*/
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 0;
+}
+
+.stats-results a {
+  margin-left: 10px;
+}
+
+
 
 /* #################################################
        PRINT A NATURA 2000 FORM (black & white)
