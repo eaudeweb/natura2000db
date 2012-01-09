@@ -10,7 +10,7 @@
 {{ search_facets_html(form, stat_form) }}
 
 {% set url = form.url_for_search(stat_form, 'webpages.search') %}
-<p>Înapoi la <a href="{{ url }}">căutare</a></p>
+<p class="backToSearch">Înapoi la <a href="{{ url }}">căutare</a></p>
 
 <div class="stats">
   {{ stat_html }}

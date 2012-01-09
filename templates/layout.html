@@ -13,18 +13,18 @@
     <script src="{{ url_for('static', filename='map.js') }}"></script>
 </head>
 <body>
+  <div class="natura2000">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
-{% block content %}{% endblock %}
-
+    {% block content %}{% endblock %}
+  </div>
 </body>
 </html>

@@ -5,7 +5,7 @@
 {% for code, name in corine_areas %}
   {% if stat['total_%s' % code] != 0 %}
 
-  <h2>{{ name }}</h2>
+  <div class="stats-caption">{{ name }}</div>
 
   <table>
     <thead>

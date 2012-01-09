@@ -1,6 +1,6 @@
 /* Standard Form for SPA and SCI
  * stylised by Sonia Andriu (tab = 2 spaces)
- * dark turquoise: #0098AA, light turquoise: #B6E9F8, gray: #7D7D7D, darker gray: #707070, blue: #335C9E, light blue: #D3E9F8.
+ * dark turquoise: #0098AA, light turquoise: #B6E9F8, gray: #7D7D7D, darker gray: #707070, blue: #335C9E, light blue: #D3E9F8, orange: #FC8E3A.
  * NO ERRORS on http://jigsaw.w3.org/css-validator/ if 'Profile:CSS level 3' is selected.
  */
 
@@ -9,6 +9,10 @@
        EDIT A NATURA 2000 FORM 
    ################################ */
 /* GLOBAL */
+.natura2000 {
+  /*font-family: Arial, Verdana, sans-serif;*/
+}
+
 .error {
   color: red;
 }
@@ -705,17 +709,17 @@ ul.hit-list .legend-sample {
 
 .stats table {
   border: none;
-  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .stats thead {
   background: #fff;
-  border-bottom: 2px solid #335C9E;
+  border-bottom: 2px solid #335C9E; /* recommended for hightlight */
 }  
 
 .stats th {
   color: #335C9E;
-  font-weight: bold;
+  /*font-weight: bold;*/
   text-align: left;
 }
 
@@ -734,7 +738,7 @@ ul.hit-list .legend-sample {
 }  
 
 .stats table td:nth-child(4n) {
-  background: #eee;
+  background: #E3E3E3;
 }
 
 .stats table th:nth-child(2n) {
@@ -759,6 +763,24 @@ ul.hit-list .legend-sample {
 
 .stats-results a {
   margin-left: 10px;
+}
+
+.stats table tfoot tr:last-of-type {
+  background: #FFFF78;  /* light yellow for hightlight */
+  /*border-top: 2px solid #335C9E;*/
+}
+
+.stats-caption {
+  color: #335C9E;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Georgia, "Times New Roman", serif; /* recommended for hightlight */
+  margin:0;
+  margin-bottom: 0;
+}
+
+.backToSearch {
+  text-align: right;
 }
 
 
