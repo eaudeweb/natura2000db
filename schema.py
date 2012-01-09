@@ -130,7 +130,16 @@ InfoTable = CommonList.of(
 
         ),
     )
-
+InfoTable_help = u"""Populație: C – specie comună, R - specie rară, V - foarte rară, P - specia este prezentă
+                     Evaluare (populație): A - 100 ≥ p > 15%, B - 15 ≥ p > 2%, C - 2 ≥ p > 0%, D - nesemnificativă
+                     Evaluare (conservare): A - excelentă, B - bună, C - medie sau redusă
+                     Evaluare (izolare): A - (aproape) izolată,
+                                         B - populație ne-izolată, dar la limita ariei de distribuție,
+                                         C - populație ne-izolată cu o arie de răspândire extinsă
+                     Evaluare (globală): A - excelentă, B - bună, C - considerabilă"""
+                     
+section6_helptext = u"""Intensitatea influenței: A – mare, B - medie, C - scăzută
+                       Influență: (+) - pozitivă, (0) - neutră, (-) - negativă"""
 
 section_1 = fl.Dict.of(
 
@@ -238,19 +247,36 @@ section_3 = fl.Dict.of(
             CommonEnum.named('global_evaluation').valued('A', 'B', 'C').with_properties(label=u'Evaluare globală'),
             ),
 
-        ).with_properties(label=u'Tipuri de habitat prezente în sit și evaluarea sitului în ceea ce le priveste:'),
+        ).with_properties(label=u"Tipuri de habitat prezente în sit și evaluarea sitului în ceea ce le priveste:",
+                        helptext=u"Reprezentivitate: A - excelentă, B - bună, C - semnificativă, D - nesemnificativă"
+                                 u"Suprafața relativă: A - 100 ≥ p > 15%, B - 15 ≥ p > 2%, C - 2 ≥ p > 0%"
+                                 u"Starea de conservare: A - excelentă, B - bună, C - medie sau redusă"
+                                 u"Evaluarea globală: A - valoare excelentă, B - valoare bună, C - valoare considerabilă"),
 
     InfoTable.named('species_bird') \
-             .with_properties(label=u"Specii de păsări enumerate în anexa I "
+            .with_properties(label=u"Specii de păsări enumerate în anexa I "
                                     u"la Directiva Consiliului 79/409/CEE",
-                              helptext=u"C - conservare, "
-                                       u"B - broaște, "
-                                       u"A - ana"),
-    InfoTable.named('species_bird_extra').with_properties(label=u'Specii de păsări cu migrație regulată nemenționate în anexa I la Directiva Consiliului 79/409/CEE'),
-    InfoTable.named('species_mammal').with_properties(label=u'Specii de mamifere enumerate în anexa II la Directiva Consiliului 92/43/CEE'),
-    InfoTable.named('species_reptile').with_properties(label=u'Specii de amfibieni și reptile enumerate în anexa II la Directiva Consiliului 92/43/CEE'),
-    InfoTable.named('species_fish').with_properties(label=u'Specii de pești enumerate în anexa II la Directiva Consiliului 92/43/CEE'),
-    InfoTable.named('species_invertebrate').with_properties(label=u'Specii de nevertebrate enumerate în anexa II la Directiva Consiliului 92/43/CEE'),
+                              helptext=InfoTable_help),
+    InfoTable.named('species_bird_extra') \
+            .with_properties(label=u"Specii de păsări cu migrație regulată "
+                                   u"nemenționate în anexa I la Directiva Consiliului 79/409/CEE", 
+                             helptext=InfoTable_help),
+    InfoTable.named('species_mammal') \
+            .with_properties(label=u"Specii de mamifere enumerate în anexa II "
+                                   u"la Directiva Consiliului 92/43/CEE",
+                             helptext=InfoTable_help),
+    InfoTable.named('species_reptile') \
+            .with_properties(label=u"Specii de amfibieni și reptile enumerate "
+                                   u"în anexa II la Directiva Consiliului 92/43/CEE",
+                             helptext=InfoTable_help),
+    InfoTable.named('species_fish') \
+            .with_properties(label=u"Specii de pești enumerate în anexa II "
+                                   u"la Directiva Consiliului 92/43/CEE",
+                             helptext=InfoTable_help),
+    InfoTable.named('species_invertebrate') \
+            .with_properties(label=u"Specii de nevertebrate enumerate în "
+                                   u"anexa II la Directiva Consiliului 92/43/CEE",
+                             helptext=InfoTable_help),
 
     CommonList.named('species_plant').of(
 
@@ -284,7 +310,11 @@ section_3 = fl.Dict.of(
 
             ),
 
-        ).with_properties(label=u'Alte specii importante de floră si faună'),
+        ).with_properties(label=u'Alte specii importante de floră si faună',
+                          helptext=u"A - Lista roşie de date naţionale, "
+                                   u"B - Endemic, "
+                                   u"C - Convenţii internaţionale (Berna, Bonn, etc), "
+                                   u"D - Alte motive"),
 
     ).with_properties(label=u'3. INFORMATII ECOLOGICE')
 
@@ -407,10 +437,12 @@ section_6 = fl.Dict.of(
     fl.Dict.of(
 
         CommonList.named('internal').of(antropic_activity) \
-            .with_properties(label=u'Activități și consecințe în interiorul sitului'),
+            .with_properties(label=u'Activități și consecințe în interiorul sitului',
+                             helptext=section6_helptext),
 
         CommonList.named('external').of(antropic_activity) \
-            .with_properties(label=u'Activități și consecințe în jurul sitului'),
+            .with_properties(label=u'Activități și consecințe în jurul sitului',
+                             helptext=section6_helptext),
 
         ).named('activity') \
          .with_properties(widget='dict', label=u"Activități antropice, consecințele lor generale și suprafața din sit afectată"),
