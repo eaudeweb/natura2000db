@@ -28,12 +28,9 @@
 
     <field name="id" type="string" indexed="true" stored="true" required="true" />
     <field name="orig" type="string" indexed="false" stored="true"/>
-    <field name="name" type="string" indexed="false" stored="true"/>
+    <field name="name" type="text_general" indexed="true" stored="true"/>
     <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="true"/>
-
-    <copyField source="name" dest="title"/>
-    <field name="title" type="text_general" indexed="true" stored="false"/>
 
   </fields>
 
