@@ -1,5 +1,10 @@
 $(document).ready(function() {
 
+    if(R.ie_disable_map) {
+        $('.map').addClass('disabled').text("Maps are disabled");
+        return;
+    }
+
     function new_map_viewer(parent, options) {
         var map_viewer = {};
 

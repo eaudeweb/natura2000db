@@ -710,6 +710,11 @@ label[for="f_text"] {
   cursor: crosshair;
 }
 
+.map.disabled {
+  height: auto;
+  width: auto;
+}
+
 .map .legend {
   position: absolute;
   left: 0;
