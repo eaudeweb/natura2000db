@@ -57,7 +57,39 @@ $(document).ready(function() {
             return hit_list;
         };
 
+        map_viewer.add_control = function(elem) {
+            var map_div = map_viewer.map._container;
+            $('.leaflet-control-container', map_div).append(elem);
+        }
+
         return map_viewer;
+    }
+
+    function full_page_button(map_viewer) {
+        var map_div = $(map_viewer.map._container);
+        var map_placeholder = $('<div>');
+        var map_container = $('<div class="full-page-container">');
+        var button = $('<a class="full-page-button" href="#">').text('[zoom]');
+        var is_full_page = false;
+        button.click(function(evt) {
+            evt.preventDefault();
+            if(is_full_page) {
+                map_placeholder.after(map_div).remove();
+                $('body').removeClass('full-page-body');
+                $('.full-page-container').remove();
+                is_full_page = false;
+            }
+            else {
+                map_div.after(map_placeholder);
+                map_div.appendTo(map_container);
+                $('body').addClass('full-page-body').append(map_container);
+                is_full_page = true;
+            }
+            map_viewer.map._onResize();
+        });
+
+        var control = $('<div class="leaflet-top leaflet-right">');
+        map_viewer.add_control(control.append(button));
     }
 
     function hit_test_legend(map_viewer) {
@@ -68,8 +100,7 @@ $(document).ready(function() {
         }
 
         var legend = $('<div class="legend leaflet-control">');
-        var map_div = map_viewer.map._container;
-        legend.appendTo($('.leaflet-control-container', map_div));
+        map_viewer.add_control(legend);
 
         map_viewer.map.on('mousemove', function(e) {
             legend.empty().append($('<span class="number coordinates">').text(
@@ -110,6 +141,7 @@ $(document).ready(function() {
             }
         });
 
+        full_page_button(map_viewer);
         hit_test_legend(map_viewer);
 
         add_default_layers(map_viewer, site_data_map);
