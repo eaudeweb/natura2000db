@@ -183,6 +183,8 @@ biogeographic_map = _load_json('reference/biogeographic_ro.json')
 def link_search_nuts3(field):
     return flask.url_for('webpages.search', nuts3=field.value)
 
+def link_search_corine(field):
+    return flask.url_for('webpages.search', habitat_class=field.name)
 
 section_2 = fl.Dict.of(
 
@@ -327,11 +329,14 @@ section_4 = fl.Dict.of(
     fl.Dict.of(
 
         fl.Dict.of(
-            *[CommonFloat.named(key).with_properties(label=habitat_class_map[key])
+            *[CommonFloat.named(key).with_properties(label=habitat_class_map[key],
+                                                     view_href=link_search_corine,
+                                                     value_labels=id_and_label(habitat_class_map))
               for key in sorted(habitat_class_map)]
             ).named('habitat') \
              .using(optional=True) \
-             .with_properties(label=u'Clase de habitat', widget='habitat_breakdown'),
+             .with_properties(label=u'Clase de habitat',
+                              widget='habitat_breakdown'),
 
         CommonString.named('other').with_properties(label=u'Alte caracteristici ale sitului', widget='textarea'),
 
