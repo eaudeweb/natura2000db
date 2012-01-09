@@ -145,6 +145,12 @@ $(document).ready(function() {
 
     });
 
+    $('.editedForm .map').each(function() {
+
+        var map_viewer = new_map_viewer(this);
+
+    });
+
     function hit_list_html(hit_list, item_content) {
         if(! item_content) {
             item_content = function(feature) {
