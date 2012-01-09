@@ -683,6 +683,15 @@ ul.hit-list .legend-sample {
   margin-right: 5px;
 }
 
+/* drop down list with habitat classes; to be shrunk from 721px to 124px when not focus, otherwise show its full width; */
+#f_habitat_class {
+  max-width: 124px;
+}  
+
+#f_habitat_class:focus,
+#f_habitat_class:visited {
+  max-width: 721px;
+}
 
 
 /* #####################################
