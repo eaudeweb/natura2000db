@@ -105,43 +105,7 @@ $(document).ready(function() {
             }
         });
 
-        function add_site_features(features, layer) {
-            $.each(features, function(i, feature) {
-                var sitecode = feature['properties']['SITECODE'];
-                if(! site_data_map.hasOwnProperty(sitecode)) { return; }
-                var site_data = site_data_map[sitecode];
-                feature['properties']['name'] = site_data['name'];
-                feature['properties']['url'] = site_data['url'];
-                process_geometry(feature);
-                layer.addGeoJSON(feature);
-            });
-        }
-
-        map_viewer.new_layer('judete', {color: '#888'}),
-        $.getJSON(R.assets + 'sci-wgs84.geojson', function(data) {
-            add_site_features(data['features'], map_viewer.layers['sci']);
-        });
-
-        map_viewer.new_layer('sci', {color: '#b92'}),
-        $.getJSON(R.assets + 'spa-wgs84.geojson', function(data) {
-            add_site_features(data['features'], map_viewer.layers['spa']);
-        });
-
-        map_viewer.new_layer('spa', {color: '#9b2'})
-        $.getJSON(R.assets + 'judete-wgs84.geojson', function(data) {
-            var layer = map_viewer.layers['judete'];
-            $.each(data['features'], function(i, feature) {
-                var name = feature['properties']['denjud'];
-                name = name[0] + name.slice(1).toLowerCase();
-                process_geometry(feature);
-                feature['properties']['name'] = name;
-                layer.addGeoJSON(feature);
-            });
-            layer.setStyle({
-                color: layer['color'],
-                weight: 2
-            });
-        });
+        add_default_layers(map_viewer, site_data_map);
 
     });
 
@@ -149,7 +113,72 @@ $(document).ready(function() {
 
         var map_viewer = new_map_viewer(this);
 
+        var code = $('.field-section1 .field-code').text();
+        var site_data = {
+            name: $('.field-section1 .field-name').text(),
+            url: window.location.href
+        };
+        var site_data_map = {};
+        site_data_map[code] = site_data;
+
+        add_default_layers(map_viewer, site_data_map).done(function() {
+            var bbox = site_data['feature']['geometry']['bbox'];
+            var sw = new L.LatLng(bbox[1], bbox[0]);
+            var ne = new L.LatLng(bbox[3], bbox[2]);
+            var bounds = new L.LatLngBounds(sw, ne);
+            map_viewer.map.fitBounds(bounds);
+        });
+
     });
+
+    function add_default_layers(map_viewer, site_data_map) {
+        function url(name) { return R.assets + name + '.geojson'; }
+
+        map_viewer.new_layer('judete', {color: '#888'});
+        var ajax_sci = $.getJSON(url('sci-wgs84'), function(data) {
+            add_site_features(data['features'],
+                              map_viewer.layers['sci'],
+                              site_data_map);
+        });
+
+        map_viewer.new_layer('sci', {color: '#b92'});
+        var ajax_spa = $.getJSON(url('spa-wgs84'), function(data) {
+            add_site_features(data['features'],
+                              map_viewer.layers['spa'],
+                              site_data_map);
+        });
+
+        map_viewer.new_layer('spa', {color: '#9b2'});
+        var ajax_judete = $.getJSON(url('judete-wgs84'), function(data) {
+            add_judet_features(data['features'],
+                               map_viewer.layers['judete']);
+        });
+
+        return $.when(ajax_sci, ajax_spa, ajax_judete);
+    }
+
+    function add_site_features(features, layer, site_data_map) {
+        $.each(features, function(i, feature) {
+            var sitecode = feature['properties']['SITECODE'];
+            if(! site_data_map.hasOwnProperty(sitecode)) { return; }
+            var site_data = site_data_map[sitecode];
+            feature['properties']['name'] = site_data['name'];
+            feature['properties']['url'] = site_data['url'];
+            process_geometry(feature);
+            site_data['feature'] = feature;
+            layer.addGeoJSON(feature);
+        });
+    }
+
+    function add_judet_features(features, layer) {
+        $.each(features, function(i, feature) {
+            var name = feature['properties']['denjud'];
+            name = name[0] + name.slice(1).toLowerCase();
+            feature['properties']['name'] = name;
+            process_geometry(feature);
+            layer.addGeoJSON(feature);
+        });
+    }
 
     function hit_list_html(hit_list, item_content) {
         if(! item_content) {
