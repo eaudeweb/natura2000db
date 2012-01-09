@@ -21,7 +21,8 @@ table .error {
   display: block;
 }
 
-h1, p {
+.doc-view hgroup,
+.doc-edit hgroup {
   text-align: center;
 }
 
@@ -58,6 +59,14 @@ thead {
 table th {
   color: #707070;
   padding: 4px;
+}
+
+td, th {
+  border: 1px solid silver;
+}
+
+caption p {
+  margin: 0;
 }
 
 textarea {

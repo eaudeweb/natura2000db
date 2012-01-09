@@ -67,29 +67,19 @@
 {% endmacro %}
 
 {% macro dict(form, field) %}
-  <p>{{ field.properties.label }}</p>
+  <p class="label">{{ field.properties.label }}</p>
   <div class="{{ "field-%s" % field.name }}">
   {{ _dict_children(form, field) }}
   </div>
 {% endmacro %}
 
 {% macro list(form, field) %}
-  {{ field.properties.label }}
+  <p class="label">{{ field.properties.label }}</p>
   <ul class="{{ "field-%s" % field.name }}">
   {% for child in field %}
     <li>{{ form.widget(child) }}</li>
   {% endfor %}
   </ul>
-{% endmacro %}
-
-{% macro _table_th(form, field, prefix='') %}
-  {% if form.order(field) %}
-    {% for child_name in form.order(field) %}
-      {{ _table_th(form, field[child_name], prefix=prefix + field[child_name].properties.label + ' - ') }}
-    {% endfor %}
-  {% else %}
-    <td>{{ prefix[:-3] }}</td>
-  {% endif %}
 {% endmacro %}
 
 {% macro _table_td(form, field) %}
@@ -110,7 +100,7 @@
 
 {% macro table(form, field) %}
 {% if not field.is_empty %}
-  <table border=1 class="{{ "field-%s" % field.name }}">
+  <table class="{{ "field-%s" % field.name }}">
     <caption>{{field.properties.label}}</caption>
     <thead>
       {{ form.table_nested_th(field) }}
@@ -129,7 +119,7 @@
 {% endmacro %}
 
 {% macro habitat_breakdown(form, field) %}
-  <table border=1 class="{{ "field-%s" % field.name }}">
+  <table class="{{ "field-%s" % field.name }}">
     <thead>
       <tr>
         <td>{{ field.properties.label }}</td>
