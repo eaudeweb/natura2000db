@@ -25,8 +25,10 @@ SolrAnswer = namedtuple('SolrAnswer', ['docs', 'facets'])
 FacetItem = namedtuple('FacetItem', ['name', 'count'])
 
 
-class OrList(list):
+class Or(list):
     """ Marker class used to ask for the 'or' query operation """
+
+And = list # the 'and' query operation is default
 
 
 class FsStorage(object):
@@ -72,18 +74,27 @@ def quote_solr_text(text):
     return _solr_text_pattern.sub(r'\\\1', text);
 
 
-def quote_solr_query(key, value):
+def quote_solr_query(value, op=u' AND '):
     if isinstance(value, str):
         value = unicode(value)
 
     if isinstance(value, unicode):
-        esc_value = quote_solr_text(value)
-    elif isinstance(value, OrList):
-        esc_value = ' OR '.join(quote_solr_text(v) for v in value)
+        return quote_solr_text(value) if value else u''
+    elif isinstance(value, Or):
+        return quote_solr_query(list(value), op=u' OR ')
+    elif isinstance(value, And):
+        quoted = filter(None, map(quote_solr_query, value))
+        return u'(%s)' % (op.join(quoted),) if quoted else u''
+    elif isinstance(value, dict):
+        quoted = filter(None, map(quote_solr_query, value.iteritems()))
+        return u'(%s)' % (op.join(quoted),) if quoted else u''
+    elif isinstance(value, tuple) and len(value) == 2:
+        k, v = value
+        if not v:
+            return u''
+        return u'(%s:%s)' % (quote_solr_query(k), quote_solr_query(v))
     else:
         raise ValueError("Can't quote value of type %r" % type(value))
-
-    return u'%s:%s' % (key, esc_value)
 
 
 class SolrStorage(object):
@@ -177,11 +188,11 @@ class SolrStorage(object):
         return sorted([d['id'] for d in self.solr_query('*').docs])
 
     def search(self, criteria, get_data=False, facets=False):
-        query = u' '.join(quote_solr_query(k, v)
-                          for k, v in criteria.items()
-                          if v)
+        query = quote_solr_query(criteria)
         if not query:
             query = '*:*'
+
+        log.debug('Solr query %r', query)
 
         args = []
 

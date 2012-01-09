@@ -2,7 +2,7 @@ import flask
 import blinker
 import schema
 import widgets
-from storage import get_db, OrList
+from storage import get_db, Or, And
 import statistics
 
 
@@ -18,7 +18,7 @@ def index():
 
 def _other_site_labels(doc):
     db = get_db()
-    other_site_ids = OrList(o.value for o in doc['section1']['other_sites'])
+    other_site_ids = Or(o.value for o in doc['section1']['other_sites'])
     results = db.search({'id': other_site_ids})
     return dict((data['id'], data['name']) for data in results['docs'])
 
