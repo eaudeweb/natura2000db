@@ -136,7 +136,7 @@
       {% set child_field = field[child_name] %}
       {% if not child_field.is_empty %}
       <tr>
-          <td>{{ child_field.properties.label }}</td>
+          <td>{{ form.linkify(child_field, child_field.properties.value_labels[child_field.label]) }}</td>
           {% do form.begin(skip_labels=True) -%}
           <td class="{{ form.container_class(child_field) }}">{{ form.widget(child_field) }}</td>
           {%- do form.end() %}
