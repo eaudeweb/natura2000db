@@ -9,9 +9,9 @@
   <thead>
     <tr>
       <th>Nume</th>
-      <th>Arie</th>
-      <th>Proporție în județ</th>
-      <th>Arie în județ</th>
+      <th>Arie (ha)</th>
+      <th>Proporție în județ (%)</th>
+      <th>Arie în județ (ha)</th>
     </tr>
   </thead>
 
@@ -23,7 +23,7 @@
     <tr>
       <td><a href="{{ url }}">{{ row['name'] }}</a></td>
       <td class="number">{{ number(row['total_area']) }}</td>
-      <td class="number">{{ number(row['admin_percent'], fmt='%.0f') }}%</td>
+      <td class="number">{{ number(row['admin_percent'], fmt='%.0f') }}</td>
       <td class="number">{{ number(row['admin_area']) }}</td>
     </tr>
 
