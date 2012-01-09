@@ -32,6 +32,9 @@
     <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="true"/>
 
+    <copyField source="name" dest="title"/>
+    <field name="title" type="text_general" indexed="true" stored="false"/>
+
   </fields>
 
 </schema>
