@@ -151,7 +151,8 @@ table caption {
 /* first paragraph from certain sections */
 .field-other_sites p:first-child,
 .field-longitude p:first-child,
-.field-latitude p:first-child {
+.field-latitude p:first-child,
+.field-section2 .dict_children .label {
   color: #0098AA;
   margin-left: 7px;
   font-size: 14px;
@@ -177,7 +178,8 @@ label[for="f_section1_site_name"] {
 .field-altitude .dict_children label,
 .field-biogeographic .dict_children label,
 .field-admin_region .dict_children label,
-.field-administrative label {
+.field-administrative label,
+.doc-edit .field-date label {
   color: #707070;
   margin-left: 15px;
   font-size: 12px;
@@ -264,7 +266,7 @@ label[for="f_section1_site_name"] {
 }
 
 .field-classification select {
-  min-width: 60px; /*  */
+  min-width: 60px;
 }  
 
 .field-habitat td:first-child,
@@ -283,7 +285,11 @@ label[for="f_section1_site_name"] {
 .field-administrative p,
 .field-date p,
 .field-characteristics p,
-.field-activity p {
+.field-activity p,
+.doc-edit .field-section3 .label,
+.doc-edit .field-section3 .label,
+.doc-edit .field-section4 .label,
+.doc-edit .field-section5 .label {
   text-align: left;
   color: #0098AA;
   margin-left: 7px;
@@ -423,8 +429,8 @@ a.add {
   padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
 }
 
-.label,
-.field-characteristics .label {
+.doc-view .label,
+.doc-view .field-characteristics .label {
   color: #000 !important;
   margin-left: 5px;
 }
