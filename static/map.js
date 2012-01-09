@@ -59,9 +59,7 @@ $(document).ready(function() {
         return map_viewer;
     }
 
-    $('.search-results .map').each(function() {
-
-        var map_viewer = new_map_viewer(this);
+    function hit_test_legend(map_viewer) {
 
         if(R.debug) {
             var circle = new L.CircleMarker(new L.LatLng(46, 25));
@@ -69,7 +67,8 @@ $(document).ready(function() {
         }
 
         var legend = $('<div class="legend leaflet-control">');
-        legend.appendTo($('.leaflet-control-container', this));
+        var map_div = map_viewer.map._container;
+        legend.appendTo($('.leaflet-control-container', map_div));
 
         map_viewer.map.on('mousemove', function(e) {
             legend.empty().append($('<span class="number coordinates">').text(
@@ -94,6 +93,11 @@ $(document).ready(function() {
                 map_viewer.map.openPopup(popup);
             }
         });
+    }
+
+    $('.search-results .map').each(function() {
+
+        var map_viewer = new_map_viewer(this);
 
         var site_data_map = {};
         $('.search-results .sitecode').each(function() {
@@ -104,6 +108,8 @@ $(document).ready(function() {
                 'url': a.attr('href')
             }
         });
+
+        hit_test_legend(map_viewer);
 
         add_default_layers(map_viewer, site_data_map);
 
@@ -120,6 +126,8 @@ $(document).ready(function() {
         };
         var site_data_map = {};
         site_data_map[code] = site_data;
+
+        hit_test_legend(map_viewer);
 
         add_default_layers(map_viewer, site_data_map).done(function() {
             var bbox = site_data['feature']['geometry']['bbox'];
