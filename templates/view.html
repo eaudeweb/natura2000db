@@ -4,7 +4,7 @@
 
 <div class="editedForm doc-view">
 
-  <h1>FORMULAR STANDARD</h1>
+  <h1>Situl "{{doc["section1"]["name"]}}", cod {{doc["section1"]["code"]}}</h1>
   <p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile
      ca situri de importanta comunitara (SCI)</p>
 
@@ -18,7 +18,7 @@
   {%- endfor %}
   {%- do form.end() %}
 
-  <script>$('.field-section1 h2').after($('<div class="map">'));</script>
+  <script>$('.field-section7').append($('<div class="map">'));</script>
 
 </div>
 
