@@ -15,7 +15,7 @@ $(document).ready(function() {
             map.addLayer(circle);
         }
 
-        var legend = $('<div class="legend">');
+        var legend = $('<div class="legend leaflet-control">');
         legend.appendTo($('.leaflet-control-container', this));
 
         var osm_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
