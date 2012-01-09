@@ -21,7 +21,8 @@ table .error {
   display: block;
 }
 
-h1, p {
+.doc-view hgroup,
+.doc-edit hgroup {
   text-align: center;
 }
 
@@ -58,6 +59,14 @@ thead {
 table th {
   color: #707070;
   padding: 4px;
+}
+
+td, th {
+  border: 1px solid silver;
+}
+
+caption p {
+  margin: 0;
 }
 
 textarea {
@@ -427,7 +436,7 @@ a.add {
   margin-bottom: 5px;
 }
 
-.nameOfField {
+.label {
   color: #000;
   margin-left: 5px;
 }
@@ -450,7 +459,7 @@ a.add {
   margin-top: 5px;
 }
 
-.editedForm h2~div  p~div .nameOfField {
+.editedForm h2~div  p~div .label {
   color: #444; /*#707070;*/
   margin-left: 15px;
 }
@@ -782,7 +791,7 @@ ul.hit-list .legend-sample {
   background: #FFFF78;  /* light yellow for hightlight */
 }
 
-.stats-caption {
+.stats caption {
   color: #335C9E;
   font-size: 16px;
   font-weight: bold;
@@ -813,7 +822,7 @@ ul.hit-list .legend-sample {
       display: block; /* do we need it? */
       margin: 0;
       padding: 0;
-      color: #636363; /* the color for all text, including field values; must be different from nameOfField's color */
+      color: #636363; /* the color for all text, including field values; must be different from label's color */
       border: none;
       font-size: 9.03pt !important;
     }
@@ -843,7 +852,7 @@ ul.hit-list .legend-sample {
       margin-left: 5px;
     }
 
-    .editedForm h2~div  p~div .nameOfField {
+    .editedForm h2~div  p~div .label {
       color: #000;
       margin-left: 15px;
       font-style: italic;
@@ -899,7 +908,7 @@ ul.hit-list .legend-sample {
       list-style-type: square !important;
     }
     
-    .nameOfField {
+    .label {
       color: #000;
       margin-left: 5px;
     }

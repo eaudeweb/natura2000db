@@ -4,6 +4,7 @@ import os.path
 import re
 import json
 import flatland as fl
+import flask
 
 
 def _load_json(name):
@@ -170,6 +171,10 @@ nuts3 = _load_json('reference/nuts2003_level3_ro.json')
 biogeographic_map = _load_json('reference/biogeographic_ro.json')
 
 
+def link_search_nuts3(field):
+    return flask.url_for('webpages.search', nuts3=field.value)
+
+
 section_2 = fl.Dict.of(
 
     CommonGeoFloat.named('longitude').with_properties(label=u'Longitudine'),
@@ -192,7 +197,8 @@ section_2 = fl.Dict.of(
                       .using(optional=False) \
                       .with_properties(label=u'Județ',
                                        widget='select',
-                                       value_labels=id_and_label(nuts3)),
+                                       value_labels=id_and_label(nuts3),
+                                       view_href=link_search_nuts3),
             CommonFloat.named('coverage') \
                        .using(optional=False) \
                        .with_properties(label=u'Pondere (%)'),
@@ -234,7 +240,12 @@ section_3 = fl.Dict.of(
 
         ).with_properties(label=u'Tipuri de habitat prezente în sit și evaluarea sitului în ceea ce le priveste:'),
 
-    InfoTable.named('species_bird').with_properties(label=u'Specii de păsări enumerate în anexa I la Directiva Consiliului 79/409/CEE'),
+    InfoTable.named('species_bird') \
+             .with_properties(label=u"Specii de păsări enumerate în anexa I "
+                                    u"la Directiva Consiliului 79/409/CEE",
+                              helptext=u"C - conservare, "
+                                       u"B - broaște, "
+                                       u"A - ana"),
     InfoTable.named('species_bird_extra').with_properties(label=u'Specii de păsări cu migrație regulată nemenționate în anexa I la Directiva Consiliului 79/409/CEE'),
     InfoTable.named('species_mammal').with_properties(label=u'Specii de mamifere enumerate în anexa II la Directiva Consiliului 92/43/CEE'),
     InfoTable.named('species_reptile').with_properties(label=u'Specii de amfibieni și reptile enumerate în anexa II la Directiva Consiliului 92/43/CEE'),

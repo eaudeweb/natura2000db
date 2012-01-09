@@ -120,8 +120,13 @@
 {% endmacro %}
 
 {% macro table(form, field) %}
-  <table border=1 class="field-{{ field.name }}">
-    <caption>{{field.properties.label}}</caption>
+  <table class="field-{{ field.name }}">
+    <caption>
+      <p class="label">{{ field.properties.label }}</p>
+      {% if field.properties.helptext %}
+        <p class="helptext">{{ field.properties.helptext }}</p>
+      {% endif %}
+    </caption>
     <thead>
       {{ form.table_nested_th(field) }}
     </thead>
@@ -149,7 +154,7 @@
 {% endmacro %}
 
 {% macro habitat_breakdown(form, field) %}
-  <table border=1 class="field-{{ field.name }}">
+  <table class="field-{{ field.name }}">
     <thead>
       <tr>
         <td>{{ field.properties.label }}</td>

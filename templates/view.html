@@ -4,9 +4,11 @@
 
 <div class="editedForm doc-view">
 
-  <h1>Situl "{{doc["section1"]["name"]}}", cod {{doc["section1"]["code"]}}</h1>
-  <p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile
-     ca situri de importanta comunitara (SCI)</p>
+  <hgroup>
+    <h1>Situl "{{doc["section1"]["name"]}}", cod {{doc["section1"]["code"]}}</h1>
+    <p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile
+       ca situri de importanta comunitara (SCI)</p>
+  </hgroup>
 
   <span class="editButton">
    [<a href="{{ url_for('webpages.edit', doc_id=doc_id) }}">edit</a>]

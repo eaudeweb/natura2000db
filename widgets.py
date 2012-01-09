@@ -26,6 +26,8 @@ class WidgetDispatcher(object):
         return widget_macro(self.context, element)
 
 
+_auto = object()
+
 class MarkupGenerator(Generator):
 
     _default_settings = {
@@ -114,6 +116,18 @@ class MarkupGenerator(Generator):
             return any(self.any_value(child) for child in field.values())
         else:
             return not field.is_empty
+
+    def linkify(self, field, value=_auto):
+        if value is _auto:
+            value = field.value
+
+        if 'view_href' not in field.properties:
+            return value
+        else:
+            return jinja2.Markup('<a href="%(url)s">%(value)s</a>' % {
+                'url': jinja2.escape(field.properties['view_href'](field)),
+                'value': jinja2.escape(value),
+            })
 
 
 class SearchMarkupGenerator(MarkupGenerator):

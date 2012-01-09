@@ -5,9 +5,11 @@
 {% for code, name in protected_areas %}
   {% if stat['total_%s' % code] != 0 %}
 
-  <div class="stats-caption">{{ name }}</div>
 
   <table>
+
+    <caption>{{ name }}</caption>
+
     <thead>
       <tr>
         <th>Nume</th>
