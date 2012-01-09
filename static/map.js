@@ -1,28 +1,23 @@
 $(document).ready(function() {
 
-    $('.search-results .map').each(function() {
-        var map = new L.Map(this, {
+    function new_map_viewer(parent) {
+        var map_viewer = {};
+
+        map_viewer.map = new L.Map(parent, {
             center: new L.LatLng(46, 25.0),
             zoom: 6,
             fadeAnimation: false
         });
 
-        var zoom_box = $('.leaflet-control-zoom').parent();
+        zoom_box = $('.leaflet-control-zoom').parent();
         zoom_box.removeClass('leaflet-left').addClass('leaflet-right');
-
-        if(R.debug) {
-            var circle = new L.CircleMarker(new L.LatLng(46, 25));
-            map.addLayer(circle);
-        }
-
-        var legend = $('<div class="legend leaflet-control">');
-        legend.appendTo($('.leaflet-control-container', this));
 
         var osm_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         var osm = new L.TileLayer(osm_url, {maxZoom: 18});
-        map.addLayer(osm);
+        map_viewer.map.addLayer(osm);
 
-        function new_layer(options) {
+        map_viewer.layers = {};
+        map_viewer.new_layer = function(name, options) {
             var layer = new L.GeoJSON();
             layer.features = [];
             $.extend(layer, options);
@@ -39,21 +34,15 @@ $(document).ready(function() {
                 });
             });
 
-            map.addLayer(layer);
+            map_viewer.map.addLayer(layer);
+            map_viewer.layers[name] = layer;
             return layer;
-        }
-
-        var layers = {
-            judete: new_layer({color: '#888'}),
-            sci: new_layer({color: '#b92'}),
-            spa: new_layer({color: '#9b2'})
         };
-        R.layers = layers;
 
-        function features_at(latlng) {
+        map_viewer.features_at = function(latlng) {
             if(R.debug) { console.time(1); }
             var hit_list = [];
-            $.each(layers, function(layer_name, layer) {
+            $.each(map_viewer.layers, function(layer_name, layer) {
                 $.each(layer.features, function(i, feature) {
                     if(hit_test(feature['geometry'], latlng)) {
                         hit_list.push({
@@ -65,31 +54,30 @@ $(document).ready(function() {
             });
             if(R.debug) { console.timeEnd(1); }
             return hit_list;
+        };
+
+        return map_viewer;
+    }
+
+    $('.search-results .map').each(function() {
+
+        var map_viewer = new_map_viewer(this);
+
+        if(R.debug) {
+            var circle = new L.CircleMarker(new L.LatLng(46, 25));
+            map_viewer.map.addLayer(circle);
         }
 
-        function hit_list_html(hit_list, item_content) {
-            if(! item_content) {
-                item_content = function(feature) {
-                    return feature['properties']['name'];
-                }
-            }
-            var ul = $('<ul class="hit-list">');
-            $.each(hit_list, function(i, hit) {
-                var item = $('<li>').appendTo(ul);
-                var sample = $('<div class="legend-sample">');
-                sample.css({background: hit['layer']['color']});
-                item.append(sample, item_content(hit['feature']))[0];
-            });
-            return ul;
-        }
+        var legend = $('<div class="legend leaflet-control">');
+        legend.appendTo($('.leaflet-control-container', this));
 
-        map.on('mousemove', function(e) {
+        map_viewer.map.on('mousemove', function(e) {
             legend.empty().append($('<span class="number coordinates">').text(
                 float_repr(e.latlng.lat, 4) + ', ' +
                 float_repr(e.latlng.lng, 4)
             ));
 
-            var hit_list = features_at(e.latlng);
+            var hit_list = map_viewer.features_at(e.latlng);
             if(hit_list.length > 0) {
                 legend.append(hit_list_html(hit_list));
             }
@@ -97,36 +85,17 @@ $(document).ready(function() {
             if(R.debug) { circle.setLatLng(e.latlng); }
         });
 
-        map.on('click', function(e) {
-            var hit_list = features_at(e.latlng);
+        map_viewer.map.on('click', function(e) {
+            var hit_list = map_viewer.features_at(e.latlng);
             if(hit_list.length > 0) {
                 var popup = new L.Popup();
                 popup.setLatLng(e.latlng);
                 popup.setContent(hit_list_html(hit_list, linkify)[0]);
-                map.openPopup(popup);
+                map_viewer.map.openPopup(popup);
             }
         });
 
-        function linkify(feature) {
-            var url = feature['properties']['url'];
-            var label = feature['properties']['name'];
-            if(url) {
-                return $('<a>').attr('href', url).text(label);
-            }
-            else {
-                return label;
-            }
-        }
-
-        function process_geometry(feature) {
-            feature['properties']['_feature'] = feature;
-            feature['geometry']['bbox'] = bounding_box(feature['geometry']);
-        }
-
         var site_data_map = {};
-        var sitecode_hash = {};
-        var sitename = {};
-        var site_url = {};
         $('.search-results .sitecode').each(function() {
             var code = $(this).text();
             var a = $(this).parent('li').children('a.sitename')
@@ -135,12 +104,11 @@ $(document).ready(function() {
                 'url': a.attr('href')
             }
         });
-        var keep = function(code) { return site_data_map.hasOwnProperty(code); };
 
         function add_site_features(features, layer) {
             $.each(features, function(i, feature) {
                 var sitecode = feature['properties']['SITECODE'];
-                if(! keep(sitecode)) { return; }
+                if(! site_data_map.hasOwnProperty(sitecode)) { return; }
                 var site_data = site_data_map[sitecode];
                 feature['properties']['name'] = site_data['name'];
                 feature['properties']['url'] = site_data['url'];
@@ -149,16 +117,19 @@ $(document).ready(function() {
             });
         }
 
+        map_viewer.new_layer('judete', {color: '#888'}),
         $.getJSON(R.assets + 'sci-wgs84.geojson', function(data) {
-            add_site_features(data['features'], layers['sci']);
+            add_site_features(data['features'], map_viewer.layers['sci']);
         });
 
+        map_viewer.new_layer('sci', {color: '#b92'}),
         $.getJSON(R.assets + 'spa-wgs84.geojson', function(data) {
-            add_site_features(data['features'], layers['spa']);
+            add_site_features(data['features'], map_viewer.layers['spa']);
         });
 
+        map_viewer.new_layer('spa', {color: '#9b2'})
         $.getJSON(R.assets + 'judete-wgs84.geojson', function(data) {
-            var layer = layers['judete'];
+            var layer = map_viewer.layers['judete'];
             $.each(data['features'], function(i, feature) {
                 var name = feature['properties']['denjud'];
                 name = name[0] + name.slice(1).toLowerCase();
@@ -174,9 +145,37 @@ $(document).ready(function() {
 
     });
 
+    function hit_list_html(hit_list, item_content) {
+        if(! item_content) {
+            item_content = function(feature) {
+                return feature['properties']['name'];
+            }
+        }
+        var ul = $('<ul class="hit-list">');
+        $.each(hit_list, function(i, hit) {
+            var item = $('<li>').appendTo(ul);
+            var sample = $('<div class="legend-sample">');
+            sample.css({background: hit['layer']['color']});
+            item.append(sample, item_content(hit['feature']))[0];
+        });
+        return ul;
+    }
 
+    function linkify(feature) {
+        var url = feature['properties']['url'];
+        var label = feature['properties']['name'];
+        if(url) {
+            return $('<a>').attr('href', url).text(label);
+        }
+        else {
+            return label;
+        }
+    }
 
-
+    function process_geometry(feature) {
+        feature['properties']['_feature'] = feature;
+        feature['geometry']['bbox'] = bounding_box(feature['geometry']);
+    }
 
     function bounding_box(geometry) {
         if(geometry['type'] == 'Polygon') {
