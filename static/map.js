@@ -1,13 +1,14 @@
 $(document).ready(function() {
 
-    function new_map_viewer(parent) {
+    function new_map_viewer(parent, options) {
         var map_viewer = {};
 
-        map_viewer.map = new L.Map(parent, {
-            center: new L.LatLng(46, 25.0),
-            zoom: 6,
-            fadeAnimation: false
-        });
+        var options = $.extend({
+                center: new L.LatLng(46, 25.0),
+                zoom: 6,
+                fadeAnimation: false
+            }, options);
+        map_viewer.map = new L.Map(parent, options);
 
         zoom_box = $('.leaflet-control-zoom').parent();
         zoom_box.removeClass('leaflet-left').addClass('leaflet-right');
@@ -115,9 +116,9 @@ $(document).ready(function() {
 
     });
 
-    $('.editedForm .map').each(function() {
+    $('.doc-view .map').each(function() {
 
-        var map_viewer = new_map_viewer(this);
+        var map_viewer = new_map_viewer(this, {scrollWheelZoom: false});
 
         var code = $('.field-section1 .field-code').text();
         var site_data = {
