@@ -260,7 +260,7 @@ section_3 = fl.Dict.of(
                       .using(optional=False) \
                       .with_properties(label=u'Cod',
                                        value_labels=id_and_label(habitat_type_map)),
-            CommonString.named('percentage').using(optional=False).with_properties(label=u'Pondere'),
+            CommonFloat.named('percentage').using(optional=False).with_properties(label=u'Pondere'),
             CommonEnum.named('representativeness').valued('A', 'B', 'C', 'D').with_properties(label=u'Reprezentativitate'),
             CommonEnum.named('relative_area').valued('A', 'B', 'C').with_properties(label=u'Suprafață relativă'),
             CommonEnum.named('conservation_status').valued('A', 'B', 'C').with_properties(label=u'Stare de conservare'),
