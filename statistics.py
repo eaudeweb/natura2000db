@@ -2,6 +2,7 @@ import operator
 import flask
 import jinja2
 
+import schema
 from schema import corine_map, classification_map
 
 
@@ -114,8 +115,16 @@ def protected_area(search_form, search_answer):
                                                 stat=stat, 
                                                 protected_areas=classification_map.items()))
 
-compute = {
+
+available = {
     'area': area,
     'corine_area': corine_area,
     'protected_area': protected_area,
 }
+
+
+def compute(stat_form, search_answer):
+    stat_name = stat_form['compute'].value
+    stat = available[stat_name]
+    html = stat(stat_form, search_answer)
+    return jinja2.Markup(html)

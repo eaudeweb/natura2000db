@@ -80,7 +80,7 @@ def search():
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer,
-                                 available_stats=statistics.compute.keys())
+                                 available_stats=statistics.available.keys())
 
 
 @webpages.route('/stats')
@@ -92,8 +92,7 @@ def stats():
     search_answer = db.search(search_form.value, get_data=True, facets=True)
 
     stat_form = schema.Statistics.from_flat(args)
-    stat_name = stat_form['compute'].value
-    stat_html = statistics.compute[stat_name](stat_form, search_answer)
+    stat_html = statistics.compute(stat_form, search_answer)
 
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
     form['view_name'] = 'webpages.stats'
