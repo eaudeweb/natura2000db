@@ -882,7 +882,7 @@ ul.hit-list .legend-sample {
       display: none; /* hide the rest of the page and the edit button */
     }
      
-    .editedForm {
+    .doc-view {
       display: block; /* do we need it? */
       margin: 0;
       padding: 0;
@@ -891,18 +891,18 @@ ul.hit-list .legend-sample {
       font-size: 9.03pt !important;
     }
     
-    .editedForm > p { /* the legend of the form */
+    .doc-view > p { /* the legend of the form */
       text-align: center !important;
       color: #000;
     }
     
-    .editedForm h1 {
+    .doc-view h1 {
       font-size: 14.3pt !important;
       text-align: center !important;
       color: #000;
     }
     
-    .editedForm h2 {
+    .doc-view h2 {
       color: #000;
       font-size: 9.78pt;
       background: #fff !important;
@@ -910,65 +910,65 @@ ul.hit-list .legend-sample {
       padding-left: 5px;
     }
     
-    .editedForm h2~div p {
+    .doc-view h2~div p {
       color: #000;
       text-align: left !important;
       margin-left: 5px;
     }
 
-    .editedForm h2~div  p~div .label {
+    .doc-view h2~div  p~div .label {
       color: #000;
       margin-left: 15px;
       font-style: italic;
     }
      
     /* space between h2 title and div with a certain input, in the view standard form */
-    .editedForm h2~div {
+    .doc-view h2~div {
       margin-top: 10px;
       margin-bottom: 20px;
       padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
     }
     
-    .editedForm div div ul li {
+    .doc-view div div ul li {
       color: #636363; /* same as the rest of field values */
     }
     
-    .editedForm table thead {
+    .doc-view table thead {
       font-weight: normal !important;
     }
     
-    .editedForm table td {
+    .doc-view table td {
       padding: 0px 5px;
     }
 
-    .editedForm table {
+    .doc-view table {
       margin-left: 2px;
     }
 
-    .editedForm table tr {
+    .doc-view table tr {
       page-break-inside: avoid !important; /*?*/
     }  
 
-    .editedForm h2~div div p {
+    .doc-view h2~div div p {
       margin-top: 5px;
     }
 
-    .editedForm table caption {
+    .doc-view table caption {
       min-width: 500px;
       color: #000;
       margin-top: 5px;
     }
 
-    .editedForm thead {
+    .doc-view thead {
       background: #eee;
     }
 
-    .editedForm th,
-    .editedForm thead tr td  {
+    .doc-view th,
+    .doc-view thead tr td  {
       color: #333;
     }  
     
-    .editedForm ul {
+    .doc-view ul {
       list-style-type: square !important;
     }
     
