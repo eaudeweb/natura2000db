@@ -4,10 +4,6 @@
  * NO ERRORS on http://jigsaw.w3.org/css-validator/ if 'Profile:CSS level 3' is selected.
  */
 
-
-/* #################################
-       EDIT A NATURA 2000 FORM 
-   ################################ */
    
 /* GLOBAL */
 .natura2000 {
@@ -27,59 +23,69 @@ table .error {
   text-align: center;
 }
 
-h1 {
+.number {
+  text-align: right;
+  font-family: monospace;
+}
+
+
+/* #################################
+       EDIT A NATURA 2000 FORM 
+   ################################ */
+.doc-edit h1 {
   font-size: 16px;
 }
 
-form {
+.doc-edit form {
   width: 100%;
   margin: 0px;
   padding: 0;
   font-size: 12px;
 }
 
-table {
+.doc-edit table {
   border-collapse: collapse;
   border: 1px solid #C0C0C0; 
 }
 
-table input, textarea, input {
+.doc-edit table input, 
+.doc-edit textarea, 
+.doc-edit input {
   font-size: 12px;
 }
 
-table td {
+.doc-edit table td {
   font-size: 12px;
 }
 
-thead {
+.doc-edit thead {
   text-align: center;
   font-weight: bold;
   background: #ddd;
 }
 
-table th {
+.doc-edit table th {
   color: #707070;
   padding: 4px;
 }
 
-td, th {
+.doc-edit td, 
+.doc-edit th {
   border: 1px solid silver;
 }
 
-caption p {
+.doc-edit caption p {
   margin: 0;
 }
 
-textarea {
+.doc-edit textarea {
   min-width: 68%;
   min-height: 30px;
   max-width: 90%;
   margin-left: 7px;
 }
 
-
-/* SECTIONS' COMMON PROPERTIES */
-h2 {
+.doc-edit h2 {
   color: #0098AA;
   /*margin-left: 5px; 15px;*/
   margin-top: 33px;
@@ -87,60 +93,58 @@ h2 {
   font-size: 16px;
 }
 
-.dict_children {
+.doc-edit .dict_children {
   background: #D9F0FF; 
   margin: 0px 2px 10px 2px; /* white space between sections */
   padding: 5px 0px;
 }
 
-.dict_children label {
+.doc-edit .dict_children label {
   color: #0098AA;
   margin-left: 5px;
   font-size: 14px;
 }
 
-.dict_children input, 
-.dict_children textarea {
+.doc-edit .dict_children input, 
+.doc-edit .dict_children textarea {
   border: 1px solid #C0C0C0;
 }
 
-table caption {
+.doc-edit table caption {
   color: #0098AA;
   text-align: left;
   padding: 5px;
   font-size: 14px;
 }
 
-.field-species_bird_extra caption,
-.field-history caption,
-.field-national caption,
-.field-international caption {
+.doc-edit .field-species_bird_extra caption,
+.doc-edit .field-history caption,
+.doc-edit .field-national caption,
+.doc-edit .field-international caption {
   min-width: 570px;  /* otherwise these captions appear on 2 rows, when the tables have no data yet */
 }
 
-.field-corine caption,
-.field-administrative caption {
+.doc-edit .field-corine caption,
+.doc-edit .field-administrative caption {
   min-width: 370px;  /* otherwise these captions appear on 2 rows, when the tables have no data yet */
 }
 
-.dict_children table {
+.doc-edit .dict_children table {
   margin-left: 3px;
 }
 
-.dict_children table td {
+.doc-edit .dict_children table td {
   color: #707070;
   padding: 3px 2px;
 }
 
 
-/* SECTIONS' PARTICULAR PROPERTIES */
-
 /* "Coduri ale siturilor Natura 2000", 
    "Longitudine",
    "Latitudine" */
-.field-other_sites p,
-.field-longitude p,
-.field-latitude p {
+.doc-edit .field-other_sites p,
+.doc-edit .field-longitude p,
+.doc-edit .field-latitude p {
   color: #707070;
   text-align: left;
   margin-left: 15px;
@@ -149,36 +153,36 @@ table caption {
 }
 
 /* first paragraph from certain sections */
-.field-other_sites p:first-child,
-.field-longitude p:first-child,
-.field-latitude p:first-child,
-.field-section2 .dict_children .label {
+.doc-edit .field-other_sites p:first-child,
+.doc-edit .field-longitude p:first-child,
+.doc-edit .field-latitude p:first-child,
+.doc-edit .field-section2 .dict_children .label {
   color: #0098AA;
   margin-left: 7px;
   font-size: 14px;
 }
 
-.field-other_sites input {
+.doc-edit .field-other_sites input {
   margin-left: 15px;
 }
 
 /* label "Responsabili" ,
    label "Numele sitului" */
-label[for="f_section1_responsible"],
-label[for="f_section1_site_name"] {
+.doc-edit label[for="f_section1_responsible"],
+.doc-edit label[for="f_section1_site_name"] {
   display: block;
   margin-top: 5px;
   margin-right: 5px;
 }
 
 /* labels displayed in gray */
-.field-date label,
-.field-longitude label,
-.field-latitude label,
-.field-altitude .dict_children label,
-.field-biogeographic .dict_children label,
-.field-admin_region .dict_children label,
-.field-administrative label,
+.doc-edit .field-date label,
+.doc-edit .field-longitude label,
+.doc-edit .field-latitude label,
+.doc-edit .field-altitude .dict_children label,
+.doc-edit .field-biogeographic .dict_children label,
+.doc-edit .field-admin_region .dict_children label,
+.doc-edit .field-administrative label,
 .doc-edit .field-date label {
   color: #707070;
   margin-left: 15px;
@@ -187,13 +191,13 @@ label[for="f_section1_site_name"] {
 
 
 /* divs displayed inline in order to save vertical space */
- .field-date .dict_children,
-.field-longitude .dict_children,
-.field-latitude .dict_children,
-.field-altitude .dict_children,
-.field-admin_region .dict_children,
-.field-biogeographic .dict_children,
-.field-map .dict_children {
+.doc-edit .field-date .dict_children,
+.doc-edit .field-longitude .dict_children,
+.doc-edit .field-latitude .dict_children,
+.doc-edit .field-altitude .dict_children,
+.doc-edit .field-admin_region .dict_children,
+.doc-edit .field-biogeographic .dict_children,
+.doc-edit .field-map .dict_children {
   display: inline;
   margin-right: 5px;
   margin-left: 0px;
@@ -201,91 +205,91 @@ label[for="f_section1_site_name"] {
 
 
 /* set the max width for all text inputs: (number_of_digits+1) * 10 px */
-#f_section1_type {
+.doc-edit #f_section1_type {
   max-width: 20px; /* that input holds one letter */
 }
 
-#f_section1_code,
-.field-other_sites input {
+.doc-edit #f_section1_code,
+.doc-edit .field-other_sites input {
   max-width: 100px; /* that input holds 9 digits */
 }
 
-#f_section1_date_document_add,
-#f_section1_date_document_update,
-.field-date input,
-.field-history .field-date {
+.doc-edit #f_section1_date_document_add,
+.doc-edit #f_section1_date_document_update,
+.doc-edit .field-date input,
+.doc-edit .field-history .field-date {
   max-width: 70px; /* those inputs hold 6 digits, i.e. it's a date (yyyymm) */
 }
 
-.field-longitude input,
-.field-latitude input {
+.doc-edit .field-longitude input,
+.doc-edit .field-latitude input {
   max-width: 50px; /* those inputs hold max 3 digits + a sign */
 }
 
-#f_section2_long,
-#f_section2_lat {
+.doc-edit #f_section2_long,
+.doc-edit #f_section2_lat {
   max-width: 80px; /* those input hold 6-7 digits */
 }
 
-.field-altitude input {
+.doc-edit .field-altitude input {
   max-width: 60px; /* those inputs hold max 5 digits */
 }
 
-.field-percentage,
-.field-code {
+.doc-edit .field-percentage,
+.doc-edit .field-code {
   max-width: 55px; /* those inputs hold 3-4 digits */
 }
 
-.field-coverage,
-.field-characteristics input,
-.field-overlap {
+.doc-edit .field-coverage,
+.doc-edit .field-characteristics input,
+.doc-edit .field-overlap {
   max-width: 40px; /* those inputs hold max 3 digits; it's a percent */
 }  
 
-.field-reproduction,
-.field-wintering,
-.field-passage {
+.doc-edit .field-reproduction,
+.doc-edit .field-wintering,
+.doc-edit .field-passage {
   max-width: 110px; /* those inputs hold 13-14 digits */
 }
 
-.field-resident {
+.doc-edit .field-resident {
   max-width: 100px; /* those inputs hold less than 13 digits */
 }
 
-.field-name {
+.doc-edit .field-name {
   max-width: 160px; /* those inputs can hold more than 28 letters */
   font-size: 12px;
 }
 
-.field-history .field-field {
+.doc-edit .field-history .field-field {
   min-width: 200px; /* number of digits not specified */
 }
 
-.field-history .field-description {
+.doc-edit .field-history .field-description {
   min-width: 500px; /* number of digits not specified, but should be 2.5 times greater than .field-history field-field */
 }
 
-.field-classification select {
+.doc-edit .field-classification select {
   min-width: 60px;
 }  
 
-.field-habitat td:first-child,
-.field-habitat th:first-child,
-.field-classification td:first-child,
-.field-classification th:first-child {
+.doc-edit .field-habitat td:first-child,
+.doc-edit .field-habitat th:first-child,
+.doc-edit .field-classification td:first-child,
+.doc-edit .field-classification th:first-child {
   min-width: 80px;
 }
 
 /* labels for main sections */
-.field-altitude p,
-.field-admin_region p,
-.field-biogeographic p,
-.field-map p,
-.field-management p,
-.field-administrative p,
-.field-date p,
-.field-characteristics p,
-.field-activity p,
+.doc-edit .field-altitude p,
+.doc-edit .field-admin_region p,
+.doc-edit .field-biogeographic p,
+.doc-edit .field-map p,
+.doc-edit .field-management p,
+.doc-edit .field-administrative p,
+.doc-edit .field-date p,
+.doc-edit .field-characteristics p,
+.doc-edit .field-activity p,
 .doc-edit .field-section3 .label,
 .doc-edit .field-section3 .label,
 .doc-edit .field-section4 .label,
@@ -298,7 +302,7 @@ label[for="f_section1_site_name"] {
   font-size: 14px;
 }
 
-.field-species_plant {
+.doc-edit .field-species_plant {
   width: 60%;
   margin: 0;
   padding: 0;
@@ -306,72 +310,72 @@ label[for="f_section1_site_name"] {
 
 
 /* labels displayed as blocks */
-label[for="f_section4_quality"],
-label[for="f_section4_vulnerability"],
-label[for="f_section4_designation"],
-label[for="f_section4_ownership"],
-label[for="f_section4_documentation"],
-label[for="f_section6_responsible"],
-label[for="f_section6_plans"],
-label[for="f_section7_limits"],
-label[for="f_section1_name"] {
+.doc-edit label[for="f_section4_quality"],
+.doc-edit label[for="f_section4_vulnerability"],
+.doc-edit label[for="f_section4_designation"],
+.doc-edit label[for="f_section4_ownership"],
+.doc-edit label[for="f_section4_documentation"],
+.doc-edit label[for="f_section6_responsible"],
+.doc-edit label[for="f_section6_plans"],
+.doc-edit label[for="f_section7_limits"],
+.doc-edit label[for="f_section1_name"] {
   display: block;
   margin-top: 5px;
   margin-right: 5px;
 }
 
-.field-classification caption,
-.field-external caption {
+.doc-edit .field-classification caption,
+.doc-edit .field-external caption {
   width: 300px;
 }
 
 
 /* labels for subsections, displayed with gray */
-.field-map .dict_children label,
-.field-internal caption,
-.field-external caption {
+.doc-edit .field-map .dict_children label,
+.doc-edit .field-internal caption,
+.doc-edit .field-external caption {
   color: #707070;
 }
 
-.field-internal caption {
+.doc-edit .field-internal caption {
   min-width: 300px;
 }
 
-input[type="submit"] {
+.doc-edit input[type="submit"] {
   margin-left: 15px;
 }
 
 
 /* table rows, displayed with gray, and some labels */
-.field-characteristics label,
-.field-management .dict_children label {
+.doc-edit .field-characteristics label,
+.doc-edit .field-management .dict_children label {
   display: block;
   margin-top: 5px;
   margin-right: 5px;
   color: #707070;
 }
 
-.field-administrative select {
+.doc-edit .field-administrative select {
   min-width: 150px;
 }
 
-.field-management .dict_children {
+.doc-edit .field-management .dict_children {
   margin-bottom: 0px;
 }
 
-.field-date .dict_children {
+.doc-edit .field-date .dict_children {
   margin-left: 0px;
 }
 
-.field-map .dict_children label {
+.doc-edit .field-map .dict_children label {
   font-size: 12px;
 } 
 
-.virtual-child {
+.doc-edit .virtual-child {
   display: none;
 }
 
-a.add {
+.doc-edit a.add {
   display: block;
   width: 16px;
   height: 16px;
@@ -379,7 +383,7 @@ a.add {
   margin-left: 15px;
 }
 
-.doc-edit input[type="submit"] {
+.doc-edit .doc-edit input[type="submit"] {
   margin-left: 0;
   margin-bottom: 10px;
 }
@@ -389,7 +393,6 @@ a.add {
 /* #################################
        VIEW A NATURA 2000 FORM 
    ################################ */
-
 .doc-view {
   color: #335C9E;
   border: 1px solid #335C9E;
@@ -415,7 +418,7 @@ a.add {
 }
 
 .doc-view .field-other_sites li,
-.field-biogeographic .label,
+.doc-view .field-biogeographic .label,
 .doc-view .field-number,
 .doc-view .field-scale,
 .doc-view .field-projection {
@@ -441,6 +444,8 @@ a.add {
 
 .doc-view table {
   margin-left: 5px;
+  border: 1px solid #D4D4D4;
+  border-collapse: collapse;
 }
 
 .doc-view h2~div p {
@@ -468,22 +473,18 @@ a.add {
 }
 
 .doc-view thead {
-  background: #516E9E;
+  background: #D4D4D4;
 }
 
 .doc-view th,
 .doc-view thead tr td  {
-  color: #fff;
+  color: #6E6E6E;
+  border: 1px solid #AEAEAE;
 }
 
-h2~div ul li div {
+.doc-view h2~div ul li div {
   display: inline; /* section 'Harta fizica' */
 }  
-
-.number {
-  text-align: right;
-  font-family: monospace;
-}
 
 .doc-view .field-code,
 .doc-view .field-code a {
@@ -517,7 +518,21 @@ h2~div ul li div {
 .doc-view .field-internal {
   margin-bottom: 10px;
 }
+
+.doc-view .field-species_other .field-text {
+  border: 0px;
+}
   
+.doc-view tr,
+.doc-view td {
+  border: 1px solid #AEAEAE; /* temporary */
+}
+
+.doc-view .field-percentage {
+  text-align: right;
+  color: red;
+}
+
   
 
 /* #################################
@@ -563,7 +578,7 @@ label[for="f_text"] {
 }
 
 /* text field for search */
-.field-text {
+.search-field .field-text {
   border: 1px solid #335C9E;
   width: 350px;
   height: 22px; /* otherwise IE makes it too small */
