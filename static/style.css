@@ -428,7 +428,6 @@ table .error {
 /* space between h2 title and div with a certain input, in the view standard form */
 .doc-view h2~div {
   margin-top: 10px;
-  /*margin-bottom: 20px;*/
   padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
 }
 
@@ -530,7 +529,6 @@ table .error {
 
 .doc-view .field-percentage {
   text-align: right;
-  color: red;
 }
 
   
@@ -538,10 +536,6 @@ table .error {
 /* #################################
       SEARCH IN NATURA 2000 FORMS
    ################################ */
-.center-column {
-  border: 0px solid red;  
-}  
-
 .search-facet-selected {
   font-weight: bold;
 }
@@ -718,7 +712,7 @@ label[for="f_text"] {
 .doc-view .map {
   width: 100%;
   height: 350px;
-  border: 1px solid #335C9E;
+  border: 1px solid #8F8F8F; /*#335C9E;*/
 }
 
 .map, .map .leaflet-clickable {
