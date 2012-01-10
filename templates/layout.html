@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script>var R = {assets: "{{ url_for('static', filename='') }}"};</script>
+    <script class="link-to-static">var R = {assets: "{{ url_for('static', filename='') }}"};</script>
     {% if config['JS_DEBUG'] %}<script>R['debug'] = true;</script>{% endif %}
     <!--[if lt IE 9]><script>R.ie_disable_map = true;</script><![endif]-->
     <script src="{{ url_for('static', filename='jquery-1.7.1.min.js') }}"></script>
