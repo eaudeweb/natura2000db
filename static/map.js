@@ -255,11 +255,26 @@ $(document).ready(function() {
 
         map_viewer.new_layer('judete', {color: '#B59C7D'});
         var ajax_judete = $.getJSON(url('judete-wgs84'), function(data) {
-            add_judet_features(data['features'],
-                               map_viewer.layers['judete']);
+            add_reference_features(data['features'],
+                               map_viewer.layers['judete'],
+                               'denjud');
         });
 
-        return $.when(ajax_sci, ajax_spa, ajax_judete);
+        map_viewer.new_layer('parcuri', {color: '#B59C7D'});
+        var ajax_parcuri = $.getJSON(url('parcuri-wgs84'), function(data) {
+            add_reference_features(data['features'],
+                               map_viewer.layers['parcuri'],
+                               'NUME');
+        });
+
+        map_viewer.new_layer('rezervatii', {color: '#B59C7D'});
+        var ajax_rezervatii = $.getJSON(url('rezervatii-wgs84'), function(data) {
+            add_reference_features(data['features'],
+                               map_viewer.layers['rezervatii'],
+                               'DENUMIRE');
+        });
+
+        return $.when(ajax_sci, ajax_spa, ajax_judete, ajax_parcuri, ajax_rezervatii);
     }
 
     function add_site_features(features, layer, site_data_map) {
@@ -275,10 +290,11 @@ $(document).ready(function() {
         });
     }
 
-    function add_judet_features(features, layer) {
+    function add_reference_features(features, layer, nameprop) {
         $.each(features, function(i, feature) {
-            var name = feature['properties']['denjud'];
-            name = name[0] + name.slice(1).toLowerCase();
+            var name = feature['properties'][nameprop];
+            if(! name) { console.log(':('); return; }
+            name = name[0].toUpperCase() + name.slice(1).toLowerCase();
             feature['properties']['name'] = name;
             process_geometry(feature);
             layer.addGeoJSON(feature);
