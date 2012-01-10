@@ -2,7 +2,7 @@ import operator
 import flask
 import jinja2
 
-from schema import habitat_class_map, classification_map
+from schema import corine_map, classification_map
 
 def area(search_form, search_answer):
     stat = {'table': [], 'total': 0}
@@ -44,7 +44,7 @@ def area(search_form, search_answer):
 
 def corine_area(search_form, search_answer):
     stat = {}
-    for code in habitat_class_map.keys():
+    for code in corine_map.keys():
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
 
@@ -62,7 +62,7 @@ def corine_area(search_form, search_answer):
         raise ValueError("Either a nuts3 or nuts2 code must be specified")
 
     def match_corine(code):
-        return habitat_class_map.has_key(code)
+        return corine_map.has_key(code)
 
     for doc in search_answer['docs']:
         data = doc['data']
@@ -81,12 +81,12 @@ def corine_area(search_form, search_answer):
                                             'corine_area': corine_area,
                                             })
 
-    for code in habitat_class_map.keys():
+    for code in corine_map.keys():
         stat['table_%s' % code].sort(key=operator.itemgetter('corine_area'), reverse=True)
 
     return jinja2.Markup(flask.render_template('stat_corine_area.html', 
                                                 stat=stat, 
-                                                corine_areas=habitat_class_map.items()))
+                                                corine_areas=corine_map.items()))
 
 def protected_area(search_form, search_answer):
     stat = {}

@@ -184,7 +184,7 @@ def link_search_nuts3(field):
     return flask.url_for('webpages.search', nuts3=field.value)
 
 def link_search_corine(field):
-    return flask.url_for('webpages.search', habitat_class=field.name)
+    return flask.url_for('webpages.search', corine=field.name)
 
 section_2 = fl.Dict.of(
 
@@ -321,7 +321,7 @@ section_3 = fl.Dict.of(
     ).with_properties(label=u'3. INFORMATII ECOLOGICE')
 
 
-habitat_class_map = _load_json('reference/habitat_class_ro.json')
+corine_map = _load_json('reference/corine_ro.json')
 
 
 section_4 = fl.Dict.of(
@@ -329,10 +329,10 @@ section_4 = fl.Dict.of(
     fl.Dict.of(
 
         fl.Dict.of(
-            *[CommonFloat.named(key).with_properties(label=habitat_class_map[key],
+            *[CommonFloat.named(key).with_properties(label=corine_map[key],
                                                      view_href=link_search_corine,
-                                                     value_labels=id_and_label(habitat_class_map))
-              for key in sorted(habitat_class_map)]
+                                                     value_labels=id_and_label(corine_map))
+              for key in sorted(corine_map)]
             ).named('habitat') \
              .using(optional=True) \
              .with_properties(label=u'Clase de habitat',
@@ -520,7 +520,7 @@ def bio_region_index(doc):
     return out
 
 
-def habitat_class_index(doc):
+def corine_index(doc):
     hc_element = doc['section4']['characteristics']['habitat']
     return [element.name for element in hc_element.children if element.value]
 
@@ -592,12 +592,12 @@ Search = fl.Dict.of(
              .with_properties(label=u'Text',
                               index=indexer(*full_text_fields, concat=True),
                               advanced=False),
-    fl.Enum.named('habitat_class') \
-           .valued(*sorted(habitat_class_map)) \
+    fl.Enum.named('corine') \
+           .valued(*sorted(corine_map)) \
            .with_properties(label=u'Clase de habitat',
-                            index=habitat_class_index,
+                            index=corine_index,
                             widget='select',
-                            value_labels=habitat_class_map),
+                            value_labels=corine_map),
     fl.Enum.named('nuts2') \
            .valued(*sorted(nuts2.keys())) \
            .with_properties(label=u'Regiune administrativă',
