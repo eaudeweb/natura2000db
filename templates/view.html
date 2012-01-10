@@ -1,10 +1,12 @@
 {% extends 'layout.html' %}
 
+{% block title %}{{ super() }} &mdash; {{ title }}{% endblock %}
+
 {% block content %}
 
 <div class="doc-view">
 
-  <h1>Situl "{{doc["section1"]["name"]}}", cod {{doc["section1"]["code"]}}</h1>
+  <h1>{{ title }}</h1>
 
   <span class="button">
    [<a href="{{ url_for('webpages.edit', doc_id=doc_id) }}">edit</a>]

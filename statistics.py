@@ -2,23 +2,30 @@ import operator
 import flask
 import jinja2
 
-from schema import habitat_class_map, classification_map
+import schema
+from schema import corine_map, classification_map
+
+
+class MissingFilterError(ValueError):
+    """ A filter is missing from the search form """
+
+
+def _nuts3_matcher(search_form):
+    if not search_form['nuts3'].is_empty:
+        search_nuts3 = search_form['nuts3'].value
+        return lambda(code): (code == search_nuts3)
+
+    elif not search_form['nuts2'].is_empty:
+        search_nuts2 = search_form['nuts2'].value
+        return lambda(code): code.startswith(search_nuts2)
+
+    else:
+        raise MissingFilterError("Either a nuts3 or nuts2 code must be specified")
+
 
 def area(search_form, search_answer):
     stat = {'table': [], 'total': 0}
 
-    if not search_form['nuts3'].is_empty:
-        search_nuts3 = search_form['nuts3'].value
-        def match_nuts3(code):
-            return (code == search_nuts3)
-
-    elif not search_form['nuts2'].is_empty:
-        search_nuts2 = search_form['nuts2'].value
-        def match_nuts3(code):
-            return code.startswith(search_nuts2)
-
-    else:
-        raise ValueError("Either a nuts3 or nuts2 code must be specified")
 
     for doc in search_answer['docs']:
         data = doc['data']
@@ -44,25 +51,14 @@ def area(search_form, search_answer):
 
 def corine_area(search_form, search_answer):
     stat = {}
-    for code in habitat_class_map.keys():
+    for code in corine_map.keys():
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
 
-    if not search_form['nuts3'].is_empty:
-        search_nuts3 = search_form['nuts3'].value
-        def match_nuts3(code):
-            return (code == search_nuts3)
-
-    elif not search_form['nuts2'].is_empty:
-        search_nuts2 = search_form['nuts2'].value
-        def match_nuts3(code):
-            return code.startswith(search_nuts2)
-
-    else:
-        raise ValueError("Either a nuts3 or nuts2 code must be specified")
+    match_nuts3 = _nuts3_matcher(search_form)
 
     def match_corine(code):
-        return habitat_class_map.has_key(code)
+        return corine_map.has_key(code)
 
     for doc in search_answer['docs']:
         data = doc['data']
@@ -81,12 +77,12 @@ def corine_area(search_form, search_answer):
                                             'corine_area': corine_area,
                                             })
 
-    for code in habitat_class_map.keys():
+    for code in corine_map.keys():
         stat['table_%s' % code].sort(key=operator.itemgetter('corine_area'), reverse=True)
 
     return jinja2.Markup(flask.render_template('stat_corine_area.html', 
                                                 stat=stat, 
-                                                corine_areas=habitat_class_map.items()))
+                                                corine_areas=corine_map.items()))
 
 def protected_area(search_form, search_answer):
     stat = {}
@@ -94,18 +90,7 @@ def protected_area(search_form, search_answer):
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
 
-    if not search_form['nuts3'].is_empty:
-        search_nuts3 = search_form['nuts3'].value
-        def match_nuts3(code):
-            return (code == search_nuts3)
-
-    elif not search_form['nuts2'].is_empty:
-        search_nuts2 = search_form['nuts2'].value
-        def match_nuts3(code):
-            return code.startswith(search_nuts2)
-
-    else:
-        raise ValueError("Either a nuts3 or nuts2 code must be specified")
+    match_nuts3 = _nuts3_matcher(search_form)
 
     def match_protected(code):
         return classification_map.has_key(code)
@@ -134,8 +119,21 @@ def protected_area(search_form, search_answer):
                                                 stat=stat, 
                                                 protected_areas=classification_map.items()))
 
-compute = {
+
+available = {
     'area': area,
     'corine_area': corine_area,
     'protected_area': protected_area,
 }
+
+
+def compute(stat_form, search_answer):
+    stat_name = stat_form['compute'].value
+    stat = available[stat_name]
+
+    try:
+        html = stat(stat_form, search_answer)
+    except MissingFilterError, e:
+        html = flask.render_template('stat_error.html', msg=e.message)
+
+    return jinja2.Markup(html)

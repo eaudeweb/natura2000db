@@ -1,14 +1,12 @@
 {% extends 'layout.html' %}
 
+{% block title %}{{ super() }} &mdash; {{ title }}{% endblock %}
+
 {% block content %}
 
 <div class="doc-edit">
 
-  <hgroup>
-    <h1>FORMULAR STANDARD</h1>
-    <p>Pentru ariile de protectie speciala (SPA), pentru situri eligibile
-       ca situri de importanta comunitara (SCI)</p>
-  </hgroup>
+  <h1>{{ title }}</h1>
 
   <form method="post">
 

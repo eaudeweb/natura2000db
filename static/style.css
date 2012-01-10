@@ -783,12 +783,12 @@ ul.hit-list .legend-sample {
 }
 
 /* drop down list with habitat classes; to be shrunk from 721px to 124px when not focus, otherwise show its full width; */
-#f_habitat_class {
+#f_corine {
   max-width: 124px;
 }  
 
-#f_habitat_class:focus,
-#f_habitat_class:visited {
+#f_corine:focus,
+#f_corine:visited {
   max-width: 721px;
 }
 

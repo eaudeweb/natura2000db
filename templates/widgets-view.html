@@ -11,7 +11,9 @@
 {% macro input(form, field) %}
   {%- if not field.is_empty %}
     {{ _label(form, field) }}
-    <span class="{{ "field-%s" % field.name }}">{{ field.u }}</span>
+    <span class="{{ "field-%s" % field.name }}">
+      {{- form.linkify(field) -}}
+    </span>
   {%- else -%}
     {{ empty_value(field) }}
   {%- endif -%}

@@ -90,6 +90,15 @@ def id_and_label(mapping):
     return dict((k, '%s (%s)' % (k, v)) for k, v in mapping.iteritems())
 
 
+_strip_brackets_pattern = re.compile(r'(\([^\)]*\))')
+def strip_brackets(txt):
+    return _strip_brackets_pattern.sub('', txt)
+
+
+def strip_brackets_dict_values(dic):
+    return dict((k, strip_brackets(v)) for k, v in dic.iteritems())
+
+
 CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f').with_properties(container_class='number')
 CommonDate = fl.String.using(optional=True, validators=[valid_year_month])
 CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget='checkbox')
@@ -184,7 +193,16 @@ def link_search_nuts3(field):
     return flask.url_for('webpages.search', nuts3=field.value)
 
 def link_search_corine(field):
-    return flask.url_for('webpages.search', habitat_class=field.name)
+    return flask.url_for('webpages.search', corine=field.name)
+
+def link_search_protected_areas(field):
+    return flask.url_for('webpages.search', protected_areas=field.value)
+
+def link_search_antropic_activities(field):
+    return flask.url_for('webpages.search', text=antropic_activities_map[field.value])
+
+def link_search_national_sites(field):
+    return flask.url_for('webpages.search', text=field.value)
 
 section_2 = fl.Dict.of(
 
@@ -321,7 +339,7 @@ section_3 = fl.Dict.of(
     ).with_properties(label=u'3. INFORMATII ECOLOGICE')
 
 
-habitat_class_map = _load_json('reference/habitat_class_ro.json')
+corine_map = _load_json('reference/corine_ro.json')
 
 
 section_4 = fl.Dict.of(
@@ -329,10 +347,10 @@ section_4 = fl.Dict.of(
     fl.Dict.of(
 
         fl.Dict.of(
-            *[CommonFloat.named(key).with_properties(label=habitat_class_map[key],
+            *[CommonFloat.named(key).with_properties(label=corine_map[key],
                                                      view_href=link_search_corine,
-                                                     value_labels=id_and_label(habitat_class_map))
-              for key in sorted(habitat_class_map)]
+                                                     value_labels=id_and_label(corine_map))
+              for key in sorted(corine_map)]
             ).named('habitat') \
              .using(optional=True) \
              .with_properties(label=u'Clase de habitat',
@@ -379,7 +397,8 @@ section_5 = fl.Dict.of(
                       .with_properties(optional=False) \
                       .valued(*sorted(classification_map.keys())) \
                       .with_properties(label=u'Cod',
-                                       value_labels=id_and_label(classification_map)),
+                                       value_labels=id_and_label(classification_map),
+                                       view_href=link_search_protected_areas),
             CommonFloat.named('percentage').with_properties(label=u'Pondere %'),
             ),
 
@@ -391,7 +410,9 @@ section_5 = fl.Dict.of(
             CommonString.named('site_type').with_properties(label=u'Cod'),
             CommonString.named('type').with_properties(label=u'Tip'),
             CommonFloat.named('overlap').with_properties(label=u'Suprapunere %'),
-            CommonString.named('site_name').using(optional=False).with_properties(label=u'Numele sitului'),
+            CommonString.named('site_name').using(optional=False) \
+                                           .with_properties(label=u'Numele sitului',
+                                                            view_href=link_search_national_sites),
             ),
 
         ).with_properties(label=u'Relațiile sitului descris cu alte situri - desemnate la nivel national sau regional'),
@@ -430,7 +451,8 @@ antropic_activity = fl.Dict.of(
               .using(optional=False) \
               .valued(*sorted(antropic_activities_map.keys())) \
               .with_properties(label=u'Cod',
-                               value_labels=id_and_label(antropic_activities_map)),
+                               value_labels=id_and_label(antropic_activities_map),
+                               view_href=link_search_antropic_activities),
     CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label=u'Intensitate'),
     CommonFloat.named('percentage').with_properties(label=u'% din sit'),
     CommonEnum.named('influence').valued('+', '0', '-').with_properties(label=u'Influență'),
@@ -519,8 +541,16 @@ def bio_region_index(doc):
             out.append(name)
     return out
 
+def protected_area_index(doc):
+    values = set()
+    for element in doc.find('section5/classification[:]/code'):
+        code = element.value
+        if code in classification_map.keys():
+            values.add(code)
+    return sorted(values)
 
-def habitat_class_index(doc):
+
+def corine_index(doc):
     hc_element = doc['section4']['characteristics']['habitat']
     return [element.name for element in hc_element.children if element.value]
 
@@ -583,21 +613,24 @@ full_text_fields = [
     'section5/national[:]/site_name',
     'section5/international[:]/name',
     'section5/corine[:]/code',
+    'section6/activity/internal[:]/code',
+    'section6/activity/external[:]/code',
     'section6/management/organisation',
     'section6/management/plan',
 ]
+
 
 Search = fl.Dict.of(
     fl.String.named('text') \
              .with_properties(label=u'Text',
                               index=indexer(*full_text_fields, concat=True),
                               advanced=False),
-    fl.Enum.named('habitat_class') \
-           .valued(*sorted(habitat_class_map)) \
+    fl.Enum.named('corine') \
+           .valued(*sorted(corine_map)) \
            .with_properties(label=u'Clase de habitat',
-                            index=habitat_class_index,
+                            index=corine_index,
                             widget='select',
-                            value_labels=habitat_class_map),
+                            value_labels=strip_brackets_dict_values(corine_map)),
     fl.Enum.named('nuts2') \
            .valued(*sorted(nuts2.keys())) \
            .with_properties(label=u'Regiune administrativă',
@@ -626,6 +659,13 @@ Search = fl.Dict.of(
                             index=bio_region_index,
                             widget='select',
                             value_labels=biogeographic_map,
+                            facet=True),
+    fl.Enum.named('protected_areas') \
+           .valued(*sorted(classification_map.keys())) \
+           .with_properties(label=u'Clasificare',
+                            index=protected_area_index,
+                            widget='select',
+                            value_labels=classification_map,
                             facet=True),
 )
 

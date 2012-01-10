@@ -2,7 +2,7 @@ import flask
 import blinker
 import schema
 import widgets
-from storage import get_db, Or, And
+from storage import get_db, Or, And, AllowWildcards
 import statistics
 
 
@@ -30,7 +30,12 @@ def view():
     doc = db.load_document(doc_id)
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
     form.other_site_labels = _other_site_labels(doc)
-    return flask.render_template('view.html', form=form, doc=doc, doc_id=doc_id)
+    return flask.render_template('view.html', title=_doc_title(doc), form=form,
+                                 doc=doc, doc_id=doc_id)
+
+
+def _doc_title(doc):
+    return u"%s (%s)" % (doc['section1']['name'].u, doc['section1']['code'].u)
 
 
 @webpages.route('/new', methods=['GET', 'POST'])
@@ -38,6 +43,7 @@ def view():
 def edit():
     doc_id = flask.request.args.get('doc_id', None)
     db = get_db()
+    new_doc = bool(doc_id is None)
 
     if flask.request.method == 'POST':
         doc = schema.SpaDoc.from_flat(flask.request.form.to_dict())
@@ -53,19 +59,21 @@ def edit():
             flask.flash("Errors in document")
 
     else:
-        if doc_id is None:
+        if new_doc:
             doc = schema.SpaDoc()
         else:
             doc = db.load_document(doc_id)
 
+    title = u"Introducere sit nou" if new_doc else _doc_title(doc)
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
-    return flask.render_template('edit.html', doc=doc, form=form)
+    return flask.render_template('edit.html', title=title,
+                                 doc=doc, form=form)
 
 
 def _db_search(search_form):
     db = get_db()
     query = search_form.value
-    text = query.pop('text')
+    text = AllowWildcards(query.pop('text'))
     text_or = Or([('name', text), ('text', text)])
     full_query = And([text_or, query])
     return db.search(full_query, facets=True)
@@ -80,7 +88,7 @@ def search():
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer,
-                                 available_stats=statistics.compute.keys())
+                                 available_stats=statistics.available.keys())
 
 
 @webpages.route('/stats')
@@ -92,8 +100,7 @@ def stats():
     search_answer = db.search(search_form.value, get_data=True, facets=True)
 
     stat_form = schema.Statistics.from_flat(args)
-    stat_name = stat_form['compute'].value
-    stat_html = statistics.compute[stat_name](stat_form, search_answer)
+    stat_html = statistics.compute(stat_form, search_answer)
 
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
     form['view_name'] = 'webpages.stats'
