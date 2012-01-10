@@ -54,7 +54,12 @@ class MarkupGenerator(Generator):
         return member_template.element
 
     def colspan(self, field):
-        return len([f for f in field.all_children if not self.is_hidden(f)])
+        if self.is_hidden(field):
+            return 0
+        elif len(list(field.children)):
+            return sum(self.colspan(child) for child in field.children)
+        else:
+            return 1
 
     def order(self, field):
         if isinstance(field, containers.Mapping):
