@@ -5,6 +5,21 @@ $(document).ready(function() {
         return;
     }
 
+    var cookie_name = 'chm-rio-map-config';
+    var config = {};
+    load_config();
+
+    function load_config() {
+        var config_json = $.cookie(cookie_name);
+        if(! config_json) { return; }
+        config = JSON.parse(config_json);
+    }
+
+    function save_config() {
+        var cookie_value = JSON.stringify(config);
+        $.cookie(cookie_name, cookie_value, {path: '/', expires: 1});
+    }
+
     function new_map_viewer(parent, options) {
         var map_viewer = {};
 
@@ -96,6 +111,12 @@ $(document).ready(function() {
         var minimize_button = $('<a class="minimize-button" href="#">');
         minimize_button.click(function(evt) {
             evt.preventDefault();
+            if(config['minimized']) {
+                unminimize_map();
+            }
+            else {
+                minimize_map();
+            }
         });
 
         var control = $('<div class="leaflet-top leaflet-right map-size-buttons">');
@@ -139,9 +160,41 @@ $(document).ready(function() {
         });
     }
 
+    var need_search_results_map = $.Deferred();
     $('.search-results .map').each(function() {
+        var div = this;
+        need_search_results_map.done(function() {
+            load_search_results_map(div);
+        });
+        var show_map_button = $('<a href="#">').click(function(evt) {
+            unminimize_map();
+        }).text('[show map]');
+        $('<div class="map-show">').append(show_map_button).insertAfter(this);
+    });
 
-        var map_viewer = new_map_viewer(this);
+
+    if(config['minimized']) {
+        minimize_map();
+    }
+    else {
+        unminimize_map();
+    }
+
+    function minimize_map() {
+        config['minimized'] = true;
+        save_config();
+        $('.search-results').addClass('map-hidden');
+    }
+
+    function unminimize_map() {
+        config['minimized'] = false;
+        save_config();
+        $('.search-results').removeClass('map-hidden');
+        need_search_results_map.resolve();
+    }
+
+    function load_search_results_map(div) {
+        var map_viewer = new_map_viewer(div);
 
         var site_data_map = {};
         $('.search-results .sitecode').each(function() {
@@ -157,8 +210,7 @@ $(document).ready(function() {
         hit_test_legend(map_viewer);
 
         add_default_layers(map_viewer, site_data_map);
-
-    });
+    }
 
     $('.doc-view .map').each(function() {
 

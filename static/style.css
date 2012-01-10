@@ -751,6 +751,19 @@ label[for="f_text"] {
   width: auto;
 }
 
+.map-hidden .map {
+  display: none;
+}
+
+.map-show {
+  display: none;
+}
+
+.map-hidden .map-show {
+  display: block;
+  float: right;
+}
+
 .map .legend {
   position: absolute;
   left: 0;
