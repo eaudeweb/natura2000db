@@ -30,6 +30,9 @@ class Or(list):
 
 And = list # the 'and' query operation is default
 
+class AllowWildcards(unicode):
+    """ don't quote the wildcard character """
+
 
 class FsStorage(object):
 
@@ -70,15 +73,22 @@ class FsStorage(object):
 
 
 _solr_text_pattern = re.compile(r'([\\+\-&|!(){}[\]^~*?:"; ])')
-def quote_solr_text(text):
-    return _solr_text_pattern.sub(r'\\\1', text);
+_solr_text_wildcards_ok_pattern = re.compile(r'([\\+\-&|!(){}[\]^~?:"; ])')
+def quote_solr_text(text, wildcards_ok=False):
+    if wildcards_ok:
+        pattern = _solr_text_wildcards_ok_pattern
+    else:
+        pattern = _solr_text_pattern
+    return pattern.sub(r'\\\1', text);
 
 
 def quote_solr_query(value, op=u' AND '):
     if isinstance(value, str):
         value = unicode(value)
 
-    if isinstance(value, unicode):
+    if isinstance(value, AllowWildcards):
+        return quote_solr_text(value, wildcards_ok=True)
+    elif isinstance(value, unicode):
         return quote_solr_text(value) if value else u''
     elif isinstance(value, Or):
         return quote_solr_query(list(value), op=u' OR ')

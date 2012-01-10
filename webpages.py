@@ -2,7 +2,7 @@ import flask
 import blinker
 import schema
 import widgets
-from storage import get_db, Or, And
+from storage import get_db, Or, And, AllowWildcards
 import statistics
 
 
@@ -73,7 +73,7 @@ def edit():
 def _db_search(search_form):
     db = get_db()
     query = search_form.value
-    text = query.pop('text')
+    text = AllowWildcards(query.pop('text'))
     text_or = Or([('name', text), ('text', text)])
     full_query = And([text_or, query])
     return db.search(full_query, facets=True)
