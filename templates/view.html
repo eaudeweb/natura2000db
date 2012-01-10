@@ -9,12 +9,13 @@
   <h1>{{ title }}</h1>
 
   <span class="button">
-   [<a href="{{ url_for('webpages.edit', doc_id=doc_id) }}">edit</a>]
+   [<a href="{{ url_for('webpages.edit', doc_id=doc_id) }}">edit
+   <img src="{{ url_for('static', filename='edit.png') }}"></a>]
   </span>
 
   <span class="button">
     [<a href="javascript:window.print()">print
-    <img src="{{ url_for('static', filename='printer.png') }}"></a>]
+    <img src="{{ url_for('static', filename='print.png') }}"></a>]
   </span>
 
   {% do form.begin(widgets_template='view') -%}
