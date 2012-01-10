@@ -186,6 +186,9 @@ def link_search_nuts3(field):
 def link_search_corine(field):
     return flask.url_for('webpages.search', corine=field.name)
 
+def link_search_protected_areas(field):
+    return flask.url_for('webpages.search', protected_areas=field.value)
+
 section_2 = fl.Dict.of(
 
     CommonGeoFloat.named('longitude').with_properties(label=u'Longitudine'),
@@ -379,7 +382,8 @@ section_5 = fl.Dict.of(
                       .with_properties(optional=False) \
                       .valued(*sorted(classification_map.keys())) \
                       .with_properties(label=u'Cod',
-                                       value_labels=id_and_label(classification_map)),
+                                       value_labels=id_and_label(classification_map),
+                                       view_href=link_search_protected_areas,),
             CommonFloat.named('percentage').with_properties(label=u'Pondere %'),
             ),
 
