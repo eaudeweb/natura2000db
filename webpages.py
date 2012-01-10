@@ -73,7 +73,7 @@ def edit():
 def _db_search(search_form):
     db = get_db()
     query = search_form.value
-    text = AllowWildcards(query.pop('text'))
+    text = AllowWildcards(query.pop('text') or u"")
     text_or = Or([('name', text), ('text', text)])
     full_query = And([text_or, query])
     return db.search(full_query, facets=True)

@@ -16,7 +16,6 @@ $(document).ready(function() {
         map_viewer.map = new L.Map(parent, options);
 
         zoom_box = $('.leaflet-control-zoom').parent();
-        zoom_box.removeClass('leaflet-left').addClass('leaflet-right');
 
         var osm_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         var osm = new L.TileLayer(osm_url, {maxZoom: 18});
@@ -74,9 +73,10 @@ $(document).ready(function() {
         var map_div = $(map_viewer.map._container);
         var map_placeholder = $('<div>');
         var map_container = $('<div class="full-page-container">');
-        var button = $('<a class="full-page-button" href="#">').text('[zoom]');
         var is_full_page = false;
-        button.click(function(evt) {
+
+        var full_page_button = $('<a class="full-page-button" href="#">');
+        full_page_button.click(function(evt) {
             evt.preventDefault();
             if(is_full_page) {
                 map_placeholder.after(map_div).remove();
@@ -93,8 +93,13 @@ $(document).ready(function() {
             map_viewer.map._onResize();
         });
 
-        var control = $('<div class="leaflet-top leaflet-right">');
-        map_viewer.add_control(control.append(button));
+        var minimize_button = $('<a class="minimize-button" href="#">');
+        minimize_button.click(function(evt) {
+            evt.preventDefault();
+        });
+
+        var control = $('<div class="leaflet-top leaflet-right map-size-buttons">');
+        map_viewer.add_control(control.append(minimize_button, full_page_button));
     }
 
     function hit_test_legend(map_viewer) {
@@ -108,15 +113,17 @@ $(document).ready(function() {
         map_viewer.add_control(legend);
 
         map_viewer.map.on('mousemove', function(e) {
-            legend.empty().append($('<span class="number coordinates">').text(
-                float_repr(e.latlng.lat, 4) + ', ' +
-                float_repr(e.latlng.lng, 4)
-            ));
+            legend.empty();
 
             var hit_list = map_viewer.features_at(e.latlng);
             if(hit_list.length > 0) {
                 legend.append(hit_list_html(hit_list));
             }
+
+            legend.append($('<span class="number coordinates">').text(
+                float_repr(e.latlng.lat, 4) + ', ' +
+                float_repr(e.latlng.lng, 4)
+            ));
 
             if(R.debug) { circle.setLatLng(e.latlng); }
         });

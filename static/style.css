@@ -745,7 +745,7 @@ label[for="f_text"] {
 .map .legend {
   position: absolute;
   left: 0;
-  top: 0;
+  bottom: 0;
   padding: 0 5px;
   background: white;
   border: 1px solid #bbb;
@@ -771,13 +771,46 @@ body.full-page-body {
   height: 100%;
 }
 
-.map .full-page-button {
+.map-size-buttons {
   position: absolute;
-  right: 50px;
-  padding: 5px;
-  background: rgba(0, 0, 0, 0.25);
-  color: black;
-  font-weight: bold;
+  right: 0px;
+  padding-right: 7px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.map-size-buttons a {
+  display: block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin: 7px;
+  margin-right: 0;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.75);
+  background-position: 50% 50%;
+  background-size: 75%;
+  background-repeat: no-repeat;
+}
+
+.map-size-buttons .full-page-button {
+  background-image: url(fullscreen.png);
+}
+
+.map-size-buttons .minimize-button {
+  background-image: url(minimize.png);
+}
+
+.full-page-container .map-size-buttons .full-page-button {
+  background-image: url(collapse.png);
+}
+
+.full-page-container .map-size-buttons .minimize-button {
+  display: none;
 }
 
 ul.hit-list {

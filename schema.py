@@ -407,7 +407,12 @@ section_5 = fl.Dict.of(
     CommonList.named('national').of(
 
         fl.Dict.of(
-            CommonString.named('site_type').with_properties(label=u'Cod'),
+            CommonEnum.named('site_type') \
+                      .with_properties(optional=False) \
+                      .valued(*sorted(classification_map.keys())) \
+                      .with_properties(label=u'Cod',
+                                       value_labels=id_and_label(classification_map),
+                                       view_href=link_search_protected_areas),
             CommonString.named('type').with_properties(label=u'Tip'),
             CommonFloat.named('overlap').with_properties(label=u'Suprapunere %'),
             CommonString.named('site_name').using(optional=False) \
