@@ -90,6 +90,15 @@ def id_and_label(mapping):
     return dict((k, '%s (%s)' % (k, v)) for k, v in mapping.iteritems())
 
 
+_strip_brackets_pattern = re.compile(r'(\([^\)]*\))')
+def strip_brackets(txt):
+    return _strip_brackets_pattern.sub('', txt)
+
+
+def strip_brackets_dict_values(dic):
+    return dict((k, strip_brackets(v)) for k, v in dic.iteritems())
+
+
 CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f').with_properties(container_class='number')
 CommonDate = fl.String.using(optional=True, validators=[valid_year_month])
 CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget='checkbox')
@@ -599,6 +608,7 @@ full_text_fields = [
     'section6/management/plan',
 ]
 
+
 Search = fl.Dict.of(
     fl.String.named('text') \
              .with_properties(label=u'Text',
@@ -609,7 +619,7 @@ Search = fl.Dict.of(
            .with_properties(label=u'Clase de habitat',
                             index=corine_index,
                             widget='select',
-                            value_labels=corine_map),
+                            value_labels=strip_brackets_dict_values(corine_map)),
     fl.Enum.named('nuts2') \
            .valued(*sorted(nuts2.keys())) \
            .with_properties(label=u'Regiune administrativă',
