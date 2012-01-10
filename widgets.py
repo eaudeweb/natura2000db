@@ -32,6 +32,7 @@ class MarkupGenerator(Generator):
 
     _default_settings = {
         'skip_labels': False,
+        'skip_linkify': False,
         'widgets_template': 'edit',
         'auto_domid': True,
         'auto_for': True,
@@ -126,7 +127,7 @@ class MarkupGenerator(Generator):
         if value is _auto:
             value = field.u
 
-        if 'view_href' not in field.properties:
+        if 'view_href' not in field.properties or  self['skip_linkify']:
             return value
         else:
             return jinja2.Markup('<a href="%(url)s">%(value)s</a>' % {
