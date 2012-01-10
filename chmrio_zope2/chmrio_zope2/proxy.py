@@ -1,4 +1,5 @@
 import urllib
+import re
 from Products.Five.browser import BrowserView
 from App.config import getConfiguration
 from AccessControl import Unauthorized
@@ -43,18 +44,56 @@ def get_backend_page(ctx, relative_url, headers,
     return response.status_int, dict(response.headerlist), response.body
 
 
-class HtmlExtract(object):
+def _css_iter(tree, selector):
+    return CSSSelector(selector)(tree)
 
-    def __init__(self, html):
-        self.doc = lxml.html.soupparser.fromstring(html)
 
-    def css(self, selector):
-        xpath = CSSSelector(selector)
-        return u' '.join(lxml.html.tostring(e) for e in xpath(self.doc)).strip()
+_res_pattern = re.compile(r'(?<=^var R = {assets: ")'
+                          r'[^"]*'
+                          r'(?="};$)')
+
+def fix_resource_link(script_tag, zope_link):
+    flask_link = _res_pattern.search(script_tag.text).group(0)
+    script_tag.text = _res_pattern.sub(script_tag.text, zope_link)
+    return flask_link
+
+def reframe_html(html, site):
+    doc = lxml.html.soupparser.fromstring(html)
+
+    zope_link = site.absolute_url() + '/++resource++chmrio_zope2/'
+    script_tag = _css_iter(doc, 'script.link-to-static')[0]
+    flask_link = fix_resource_link(script_tag, zope_link)
+
+    for e in list(_css_iter(doc, 'head title')):
+        e.getparent().remove(e)
+
+    def translated_elements_in(selector):
+        for selected in _css_iter(doc, selector):
+            for e in _css_iter(selected, 'script[src], img[src]'):
+                url = e.attrib['src']
+                if url.startswith(flask_link):
+                    e.attrib['src'] = zope_link + url[len(flask_link):]
+            for e in _css_iter(selected, 'link[href], a[href]'):
+                url = e.attrib['href']
+                if url.startswith(flask_link):
+                    e.attrib['href'] = zope_link + url[len(flask_link):]
+
+            for e in selected:
+                yield e
+
+    def fetch(selector):
+        elements = translated_elements_in(selector)
+        html = u' '.join(lxml.html.tostring(e) for e in elements)
+        return html.strip()
+
+    options = {
+        'head': fetch('head'),
+        'body': fetch('body'),
+    }
+    return frame_zpt.__of__(site)(**options)
 
 
 class ChmRioFormsProxy(BrowserView):
-    # TODO views are not protected by ViewManagementScreens permission :(
 
     def __call__(self):
         name = self.request.steps[-1]
@@ -96,12 +135,8 @@ class ChmRioFormsProxy(BrowserView):
         for name, value in headers.iteritems():
             response.setHeader(name, value)
 
-        page = HtmlExtract(body)
-        options = {
-            'head': '', #page.css('head'),
-            'body': page.css('body'),
-        }
-        return frame_zpt.__of__(self.aq_parent)(**options)
+        return reframe_html(body, self.aq_parent.getSite())
+
 
 
 class ChmRioFormsProxyEdit(ChmRioFormsProxy):
