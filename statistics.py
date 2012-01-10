@@ -6,6 +6,10 @@ import schema
 from schema import corine_map, classification_map
 
 
+class MissingFilterError(ValueError):
+    """ A filter is missing from the search form """
+
+
 def _nuts3_matcher(search_form):
     if not search_form['nuts3'].is_empty:
         search_nuts3 = search_form['nuts3'].value
@@ -16,7 +20,7 @@ def _nuts3_matcher(search_form):
         return lambda(code): code.startswith(search_nuts2)
 
     else:
-        raise ValueError("Either a nuts3 or nuts2 code must be specified")
+        raise MissingFilterError("Either a nuts3 or nuts2 code must be specified")
 
 
 def area(search_form, search_answer):
@@ -126,5 +130,10 @@ available = {
 def compute(stat_form, search_answer):
     stat_name = stat_form['compute'].value
     stat = available[stat_name]
-    html = stat(stat_form, search_answer)
+
+    try:
+        html = stat(stat_form, search_answer)
+    except MissingFilterError, e:
+        html = flask.render_template('stat_error.html', msg=e.message)
+
     return jinja2.Markup(html)
