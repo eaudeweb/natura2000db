@@ -180,21 +180,21 @@ $(document).ready(function() {
     function add_default_layers(map_viewer, site_data_map) {
         function url(name) { return R.assets + name + '.geojson'; }
 
-        map_viewer.new_layer('judete', {color: '#888'});
+        map_viewer.new_layer('sci', {color: '#3F5C02'});
         var ajax_sci = $.getJSON(url('sci-wgs84'), function(data) {
             add_site_features(data['features'],
                               map_viewer.layers['sci'],
                               site_data_map);
         });
 
-        map_viewer.new_layer('sci', {color: '#b92'});
+        map_viewer.new_layer('spa', {color: '#C8376E'});
         var ajax_spa = $.getJSON(url('spa-wgs84'), function(data) {
             add_site_features(data['features'],
                               map_viewer.layers['spa'],
                               site_data_map);
         });
 
-        map_viewer.new_layer('spa', {color: '#9b2'});
+        map_viewer.new_layer('judete', {color: '#B59C7D'});
         var ajax_judete = $.getJSON(url('judete-wgs84'), function(data) {
             add_judet_features(data['features'],
                                map_viewer.layers['judete']);
