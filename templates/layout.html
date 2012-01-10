@@ -6,7 +6,7 @@
     <script>var R = {assets: "{{ url_for('static', filename='') }}"};</script>
     {% if config['JS_DEBUG'] %}<script>R['debug'] = true;</script>{% endif %}
     <!--[if lt IE 9]><script>R.ie_disable_map = true;</script><![endif]-->
-    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="{{ url_for('static', filename='jquery-1.7.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='jquery.cookie.js') }}"></script>
     <script src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
     <script src="{{ url_for('static', filename='search.js') }}"></script>
