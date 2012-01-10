@@ -4,21 +4,23 @@ import jinja2
 
 from schema import corine_map, classification_map
 
-def area(search_form, search_answer):
-    stat = {'table': [], 'total': 0}
 
+def _nuts3_matcher(search_form):
     if not search_form['nuts3'].is_empty:
         search_nuts3 = search_form['nuts3'].value
-        def match_nuts3(code):
-            return (code == search_nuts3)
+        return lambda(code): (code == search_nuts3)
 
     elif not search_form['nuts2'].is_empty:
         search_nuts2 = search_form['nuts2'].value
-        def match_nuts3(code):
-            return code.startswith(search_nuts2)
+        return lambda(code): code.startswith(search_nuts2)
 
     else:
         raise ValueError("Either a nuts3 or nuts2 code must be specified")
+
+
+def area(search_form, search_answer):
+    stat = {'table': [], 'total': 0}
+
 
     for doc in search_answer['docs']:
         data = doc['data']
@@ -48,18 +50,7 @@ def corine_area(search_form, search_answer):
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
 
-    if not search_form['nuts3'].is_empty:
-        search_nuts3 = search_form['nuts3'].value
-        def match_nuts3(code):
-            return (code == search_nuts3)
-
-    elif not search_form['nuts2'].is_empty:
-        search_nuts2 = search_form['nuts2'].value
-        def match_nuts3(code):
-            return code.startswith(search_nuts2)
-
-    else:
-        raise ValueError("Either a nuts3 or nuts2 code must be specified")
+    match_nuts3 = _nuts3_matcher(search_form)
 
     def match_corine(code):
         return corine_map.has_key(code)
@@ -94,18 +85,7 @@ def protected_area(search_form, search_answer):
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
 
-    if not search_form['nuts3'].is_empty:
-        search_nuts3 = search_form['nuts3'].value
-        def match_nuts3(code):
-            return (code == search_nuts3)
-
-    elif not search_form['nuts2'].is_empty:
-        search_nuts2 = search_form['nuts2'].value
-        def match_nuts3(code):
-            return code.startswith(search_nuts2)
-
-    else:
-        raise ValueError("Either a nuts3 or nuts2 code must be specified")
+    match_nuts3 = _nuts3_matcher(search_form)
 
     def match_protected(code):
         return classification_map.has_key(code)
