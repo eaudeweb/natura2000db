@@ -519,6 +519,14 @@ def bio_region_index(doc):
             out.append(name)
     return out
 
+def protected_area_index(doc):
+    values = set()
+    for element in doc.find('section5/classification[:]/code'):
+        code = element.value
+        if code in classification_map.keys():
+            values.add(code)
+    return sorted(values)
+
 
 def corine_index(doc):
     hc_element = doc['section4']['characteristics']['habitat']
@@ -626,6 +634,13 @@ Search = fl.Dict.of(
                             index=bio_region_index,
                             widget='select',
                             value_labels=biogeographic_map,
+                            facet=True),
+    fl.Enum.named('protected_areas') \
+           .valued(*sorted(classification_map.keys())) \
+           .with_properties(label=u'Clasificare',
+                            index=protected_area_index,
+                            widget='select',
+                            value_labels=classification_map,
                             facet=True),
 )
 
