@@ -48,13 +48,11 @@ def _css_iter(tree, selector):
     return CSSSelector(selector)(tree)
 
 
-_res_pattern = re.compile(r'(?<=^var R = {assets: ")'
-                          r'[^"]*'
-                          r'(?="};$)')
+_res_pattern = re.compile(r'^var R = {assets: "([^"]*)"};$')
 
 def fix_resource_link(script_tag, zope_link):
-    flask_link = _res_pattern.search(script_tag.text).group(0)
-    script_tag.text = _res_pattern.sub(script_tag.text, zope_link)
+    flask_link = _res_pattern.search(script_tag.text).group(1)
+    script_tag.text = script_tag.text.replace(flask_link, zope_link)
     return flask_link
 
 def reframe_html(html, site):
