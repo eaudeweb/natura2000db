@@ -198,6 +198,12 @@ def link_search_corine(field):
 def link_search_protected_areas(field):
     return flask.url_for('webpages.search', protected_areas=field.value)
 
+def link_search_antropic_activities(field):
+    return flask.url_for('webpages.search', text=antropic_activities_map[field.value])
+
+def link_search_national_sites(field):
+    return flask.url_for('webpages.search', text=field.value)
+
 section_2 = fl.Dict.of(
 
     CommonGeoFloat.named('longitude').with_properties(label=u'Longitudine'),
@@ -392,7 +398,7 @@ section_5 = fl.Dict.of(
                       .valued(*sorted(classification_map.keys())) \
                       .with_properties(label=u'Cod',
                                        value_labels=id_and_label(classification_map),
-                                       view_href=link_search_protected_areas,),
+                                       view_href=link_search_protected_areas),
             CommonFloat.named('percentage').with_properties(label=u'Pondere %'),
             ),
 
@@ -404,7 +410,9 @@ section_5 = fl.Dict.of(
             CommonString.named('site_type').with_properties(label=u'Cod'),
             CommonString.named('type').with_properties(label=u'Tip'),
             CommonFloat.named('overlap').with_properties(label=u'Suprapunere %'),
-            CommonString.named('site_name').using(optional=False).with_properties(label=u'Numele sitului'),
+            CommonString.named('site_name').using(optional=False) \
+                                           .with_properties(label=u'Numele sitului',
+                                                            view_href=link_search_national_sites),
             ),
 
         ).with_properties(label=u'Relațiile sitului descris cu alte situri - desemnate la nivel national sau regional'),
@@ -443,7 +451,8 @@ antropic_activity = fl.Dict.of(
               .using(optional=False) \
               .valued(*sorted(antropic_activities_map.keys())) \
               .with_properties(label=u'Cod',
-                               value_labels=id_and_label(antropic_activities_map)),
+                               value_labels=id_and_label(antropic_activities_map),
+                               view_href=link_search_antropic_activities),
     CommonEnum.named('intensity').valued('A', 'B', 'C').with_properties(label=u'Intensitate'),
     CommonFloat.named('percentage').with_properties(label=u'% din sit'),
     CommonEnum.named('influence').valued('+', '0', '-').with_properties(label=u'Influență'),
@@ -604,6 +613,8 @@ full_text_fields = [
     'section5/national[:]/site_name',
     'section5/international[:]/name',
     'section5/corine[:]/code',
+    'section6/activity/internal[:]/code',
+    'section6/activity/external[:]/code',
     'section6/management/organisation',
     'section6/management/plan',
 ]

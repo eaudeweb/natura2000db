@@ -124,7 +124,7 @@ class MarkupGenerator(Generator):
 
     def linkify(self, field, value=_auto):
         if value is _auto:
-            value = field.value
+            value = field.u
 
         if 'view_href' not in field.properties:
             return value
