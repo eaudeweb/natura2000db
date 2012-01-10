@@ -590,13 +590,22 @@ label[for="f_text"] {
   text-align: right;
 }
 
-.search-criteria input[type="submit"] {
+.search-criteria input[type="submit"],
+.search-advanced-visible .search-advanced .searchButton {
   margin: 0px 10px;
+  padding: 0px 10px;
   background: #335C9E;
   border: none;
   color: #fff;
   font-weight: bold;
   font-size: 14px;
+  cursor: pointer;
+  height: 34px;
+}
+
+.search-advanced-visible .search-advanced .searchButton[value="Șterge filtre"] {
+  background: #AB3716;
+  margin-left: 10px;
 }
 
 .search-advanced {
@@ -856,17 +865,18 @@ ul.hit-list .legend-sample {
 .stats table {
   border: none;
   margin-bottom: 30px;
+  border-collapse: collapse;
 }
 
 .stats thead {
   background: #fff;
-  border-bottom: 2px solid #335C9E; /* recommended for hightlight */
+  border-bottom: 2px solid #444; /*#335C9E;*/ /* recommended for hightlight */
 }  
 
 .stats th {
-  color: #335C9E;
-  /*font-weight: bold;*/
+  color: #444; /*#335C9E;*/
   text-align: left;
+  padding-right: 15px;
 }
 
 .stats table td {
@@ -916,11 +926,12 @@ ul.hit-list .legend-sample {
 }
 
 .stats caption {
-  color: #335C9E;
+  color: #444; /*#335C9E;*/
   font-size: 16px;
   font-weight: bold;
   font-family: Georgia, "Times New Roman", serif; /* recommended for hightlight */
   margin: 0px !important;
+  text-align: left;
 }
 
 .backToSearch {
