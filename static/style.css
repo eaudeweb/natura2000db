@@ -86,21 +86,20 @@ table .error {
 }
 
 .doc-edit h2 {
-  color: #0098AA;
-  /*margin-left: 5px; 15px;*/
+  color: #0066CC; /* not #0098AA; because it might be confused with anchors */
   margin-top: 33px;
   margin-bottom: 0px;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .doc-edit .dict_children {
-  background: #D9F0FF; 
-  margin: 0px 2px 10px 2px; /* white space between sections */
+  background: #E0EAF8;/*C9EAF3; #D9F0FF; */
+  margin: 0px 2px 5px 2px; /* white space between sections */
   padding: 5px 0px;
 }
 
 .doc-edit .dict_children label {
-  color: #0098AA;
+  color: #444; /*#0098AA;*/
   margin-left: 5px;
   font-size: 14px;
 }
@@ -157,7 +156,7 @@ table .error {
 .doc-edit .field-longitude p:first-child,
 .doc-edit .field-latitude p:first-child,
 .doc-edit .field-section2 .dict_children .label {
-  color: #0098AA;
+  color: #444;/*#0098AA;*/
   margin-left: 7px;
   font-size: 14px;
 }
@@ -289,17 +288,21 @@ table .error {
 .doc-edit .field-administrative p,
 .doc-edit .field-date p,
 .doc-edit .field-characteristics p,
-.doc-edit .field-activity p,
+.doc-edit .field-activity p:not([class="helpText"]),
 .doc-edit .field-section3 .label,
 .doc-edit .field-section3 .label,
 .doc-edit .field-section4 .label,
 .doc-edit .field-section5 .label {
   text-align: left;
-  color: #0098AA;
+  color: #444; /*#0098AA;*/
   margin-left: 7px;
   margin-top: 5px;
   margin-bottom: 2px;
   font-size: 14px;
+}
+
+.doc-edit .field-activity p:not([class="helpText"]).label {
+  color: #707070;
 }
 
 .doc-edit .field-species_plant {
@@ -383,10 +386,14 @@ table .error {
   margin-left: 15px;
 }
 
-.doc-edit .doc-edit input[type="submit"] {
+.doc-edit input[type="submit"] {
   margin-left: 0;
   margin-bottom: 10px;
 }
+
+.doc-edit .helpText {
+  color: #707070;
+}  
 
 
 
