@@ -16,7 +16,6 @@ $(document).ready(function() {
         map_viewer.map = new L.Map(parent, options);
 
         zoom_box = $('.leaflet-control-zoom').parent();
-        zoom_box.removeClass('leaflet-left').addClass('leaflet-right');
 
         var osm_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         var osm = new L.TileLayer(osm_url, {maxZoom: 18});
@@ -108,15 +107,17 @@ $(document).ready(function() {
         map_viewer.add_control(legend);
 
         map_viewer.map.on('mousemove', function(e) {
-            legend.empty().append($('<span class="number coordinates">').text(
-                float_repr(e.latlng.lat, 4) + ', ' +
-                float_repr(e.latlng.lng, 4)
-            ));
+            legend.empty();
 
             var hit_list = map_viewer.features_at(e.latlng);
             if(hit_list.length > 0) {
                 legend.append(hit_list_html(hit_list));
             }
+
+            legend.append($('<span class="number coordinates">').text(
+                float_repr(e.latlng.lat, 4) + ', ' +
+                float_repr(e.latlng.lng, 4)
+            ));
 
             if(R.debug) { circle.setLatLng(e.latlng); }
         });

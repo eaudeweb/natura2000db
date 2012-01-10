@@ -738,7 +738,7 @@ label[for="f_text"] {
 .map .legend {
   position: absolute;
   left: 0;
-  top: 0;
+  bottom: 0;
   padding: 0 5px;
   background: white;
   border: 1px solid #bbb;
@@ -766,7 +766,7 @@ body.full-page-body {
 
 .map .full-page-button {
   position: absolute;
-  right: 50px;
+  right: 0px;
   padding: 5px;
   background: rgba(0, 0, 0, 0.25);
   color: black;
