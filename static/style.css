@@ -579,6 +579,10 @@ label[for="f_text"] {
   padding: 0;
 }
 
+.search-field label {
+  text-align: right;
+}
+
 .search-criteria input[type="submit"] {
   margin: 0px 10px;
   background: #335C9E;
@@ -595,6 +599,13 @@ label[for="f_text"] {
 
 .search-advanced-visible .search-advanced {
   display: block;
+  width: 680px;
+  margin-left: 30px;
+}
+
+.search-advanced-visible .search-advanced .searchButton {
+  margin-left: 157px;
+  margin-top: 10px;
 }
 
 .search-advanced-visible .search-simple .search-toggle,
