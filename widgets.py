@@ -130,7 +130,7 @@ class MarkupGenerator(Generator):
         if 'view_href' not in field.properties or  self['skip_linkify']:
             return value
         else:
-            return jinja2.Markup('<a href="%(url)s">%(value)s</a>' % {
+            return jinja2.Markup('<a href="%(url)s" rel="external">%(value)s</a>' % {
                 'url': jinja2.escape(field.properties['view_href'](field)),
                 'value': jinja2.escape(value),
             })
