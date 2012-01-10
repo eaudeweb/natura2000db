@@ -19,7 +19,7 @@ $(document).ready(function() {
     function toggle_advanced_search() {
         $('.search-criteria').toggleClass(advanced);
         var cookie_value = advanced_on() ? 'on' : null;
-        $.cookie(cookie_name, cookie_value, {expires: 1});
+        $.cookie(cookie_name, cookie_value, {path: '/', expires: 1});
     }
 
     $('form[name=search]').submit(function(evt) {
