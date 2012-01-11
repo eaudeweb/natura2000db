@@ -250,14 +250,14 @@ $(document).ready(function() {
     function add_default_layers(map_viewer, site_data_map) {
         function url(name) { return R.assets + name + '.geojson'; }
 
-        map_viewer.new_layer('sci', {color: '#3F5C02'});
+        map_viewer.new_layer('sci', {color: '#201F73'});
         var ajax_sci = $.getJSON(url('sci-wgs84'), function(data) {
             add_site_features(data['features'],
                               map_viewer.layers['sci'],
                               site_data_map);
         });
 
-        map_viewer.new_layer('spa', {color: '#C8376E'});
+        map_viewer.new_layer('spa', {color: '#D91B0F'});
         var ajax_spa = $.getJSON(url('spa-wgs84'), function(data) {
             add_site_features(data['features'],
                               map_viewer.layers['spa'],
@@ -270,21 +270,21 @@ $(document).ready(function() {
     function add_extra_layers(map_viewer, site_data_map) {
         function url(name) { return R.assets + name + '.geojson'; }
 
-        map_viewer.new_layer('judete', {color: '#B59C7D'});
+        map_viewer.new_layer('judete', {color: '#73797B'});
         var ajax_judete = $.getJSON(url('judete-wgs84'), function(data) {
             add_reference_features(data['features'],
                                map_viewer.layers['judete'],
                                'denjud');
         });
 
-        map_viewer.new_layer('parcuri', {color: '#B59C7D'});
+        map_viewer.new_layer('parcuri', {color: '#FFD900'});
         var ajax_parcuri = $.getJSON(url('parcuri-wgs84'), function(data) {
             add_reference_features(data['features'],
                                map_viewer.layers['parcuri'],
                                'NUME');
         });
 
-        map_viewer.new_layer('rezervatii', {color: '#B59C7D'});
+        map_viewer.new_layer('rezervatii', {color: '#FF009A'});
         var ajax_rezervatii = $.getJSON(url('rezervatii-wgs84'), function(data) {
             add_reference_features(data['features'],
                                map_viewer.layers['rezervatii'],

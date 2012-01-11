@@ -778,7 +778,7 @@ label[for="f_text"] {
 
 .map-hidden .map-show {
   display: block;
-  float: right;
+  margin-left: 345px; /* centered */
 }
 
 .map .legend {
@@ -860,9 +860,9 @@ ul.hit-list {
 
 ul.hit-list .legend-sample {
   display: inline-block;
-  width: 10px;
+  width: 15px;
   height: 10px;
-  border: 1px solid #999;
+  border: 0px solid #999;
   margin-right: 5px;
 }
 
@@ -953,6 +953,7 @@ ul.hit-list .legend-sample {
 
 .stats-results a {
   margin-left: 10px;
+  display: block; /* temporary */
 }
 
 .stats table tfoot tr:last-of-type {
