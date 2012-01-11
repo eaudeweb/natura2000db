@@ -16,9 +16,9 @@
   {% if (not search_form['nuts2'].is_empty) or (not search_form['nuts3'].is_empty) %}
   <div class="stats-results">
     <h2>Statistici</h2>
-    {% for compute in available_stats %}
+    {% for compute, label in stat_labels.items()|sort %}
       {% set url = form.url_for_search(search_form, 'webpages.stats', compute=compute) %}
-      <a href="{{ url }}">{{ compute }}</a>  
+      <a href="{{ url }}">{{ label }}</a>  
     {% endfor %}
   </div>
   {% endif %}

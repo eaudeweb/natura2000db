@@ -5,6 +5,18 @@ import jinja2
 import schema
 
 
+available = {}
+label = {}
+
+def register_statistic(stat_label):
+    def decorator(func):
+        name = func.__name__
+        available[name] = func
+        label[name] = stat_label
+        return func
+    return decorator
+
+
 class MissingFilterError(ValueError):
     """ A filter is missing from the search form """
 
@@ -22,6 +34,7 @@ def _nuts3_matcher(search_form):
         raise MissingFilterError("Either a nuts3 or nuts2 code must be specified")
 
 
+@register_statistic('Area')
 def area(search_form, search_answer):
     stat = {'table': [], 'total': 0}
 
@@ -49,6 +62,7 @@ def area(search_form, search_answer):
 
     return jinja2.Markup(flask.render_template('stat_area.html', stat=stat))
 
+@register_statistic('Corine area')
 def corine_area(search_form, search_answer):
     stat = {}
     for code in schema.corine_map.keys():
@@ -82,6 +96,7 @@ def corine_area(search_form, search_answer):
                                                 stat=stat, 
                                                 corine_areas=schema.corine_map.items()))
 
+@register_statistic('Protected area')
 def protected_area(search_form, search_answer):
     stat = {}
     calculate = set()
@@ -125,6 +140,7 @@ def protected_area(search_form, search_answer):
                                                 stat=stat, 
                                                 protected_areas=schema.classification_map.items()))
 
+@register_statistic('Habitat area')
 def habitat_area(search_form, search_answer):
     stat = {}
     for code in schema.habitat_type_map.keys():
@@ -160,6 +176,7 @@ def habitat_area(search_form, search_answer):
                                                 stat=stat, 
                                                 habitat_areas=schema.habitat_type_map.items()))
 
+@register_statistic('Internal antropic activities')
 def internal_antropic_activities(search_form, search_answer):
     stat = {}
     for code in schema.antropic_activities_map.keys():
@@ -192,6 +209,7 @@ def internal_antropic_activities(search_form, search_answer):
                                                 stat=stat, 
                                                 activities=schema.antropic_activities_map.items()))
 
+@register_statistic('External antropic activities')
 def external_antropic_activities(search_form, search_answer):
     stat = {}
     for code in schema.antropic_activities_map.keys():
@@ -223,17 +241,6 @@ def external_antropic_activities(search_form, search_answer):
     return jinja2.Markup(flask.render_template('stat_external_antropic_activities.html', 
                                                 stat=stat, 
                                                 activities=schema.antropic_activities_map.items()))
-
-
-
-available = {
-    'area': area,
-    'corine_area': corine_area,
-    'protected_area': protected_area,
-    'habitat_area': habitat_area,
-    'internal_antropic_activities': internal_antropic_activities,
-    'external_antropic_activities': external_antropic_activities
-}
 
 
 def compute(stat_form, search_answer):
