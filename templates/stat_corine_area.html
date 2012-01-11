@@ -2,7 +2,7 @@
 {{- fmt | format(value) -}}
 {% endmacro %}
 
-<h2>Statistici - Suprafata claselor de habitat în siturile selectate</h2>
+<h2>Statistici - Suprafața siturilor CORINE în siturile selectate</h2>
 
 {% for code, name in corine_areas|sort %}
   {% if stat['total_%s' % code] != 0 %}

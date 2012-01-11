@@ -101,7 +101,7 @@ def search():
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer,
-                                 available_stats=statistics.available.keys())
+                                 stat_labels=statistics.label)
 
 
 @webpages.route('/stats')
