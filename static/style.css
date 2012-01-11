@@ -959,18 +959,26 @@ ul.hit-list .legend-sample {
   text-align: right;
 }
 
+.doc-view #header,
+.doc-view #breadcrumb, 
+.doc-view #footer,
+.doc-view .wrap > ul,
+.doc-view .button {
+  display: block; /* do not hide them; ONLY for Opera */
+}
+
 
 
 /* #################################################
        PRINT A NATURA 2000 FORM (black & white)
    ################################################ */
-@media print { 
+@media print {
      
-    #header,
-    #breadcrumb, 
-    #footer,
-    .wrap > ul,
-    .button {
+    .doc-view #header,
+    .doc-view #breadcrumb, 
+    .doc-view #footer,
+    .doc-view .wrap > ul,
+    .doc-view .button {
       display: none; /* hide the rest of the page and the edit button */
     }
      
