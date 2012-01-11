@@ -193,6 +193,12 @@ $(document).ready(function() {
         need_search_results_map.resolve();
     }
 
+    function bbox_to_bounds(bbox) {
+        var sw = new L.LatLng(bbox[1], bbox[0]);
+        var ne = new L.LatLng(bbox[3], bbox[2]);
+        return new L.LatLngBounds(sw, ne);
+    }
+
     function load_search_results_map(div) {
         var map_viewer = new_map_viewer(div);
 
@@ -209,7 +215,14 @@ $(document).ready(function() {
         full_page_button(map_viewer);
         hit_test_legend(map_viewer);
 
-        add_default_layers(map_viewer, site_data_map);
+        add_default_layers(map_viewer, site_data_map).done(function() {
+            var sites = $.merge(map_viewer.layers['sci']['features'],
+                                map_viewer.layers['spa']['features']);
+            if(! sites.length) return;
+            var bounds = bbox_to_bounds(bounding_box_features(sites));
+            map_viewer.map.fitBounds(bounds);
+        });
+        add_extra_layers(map_viewer, site_data_map)
     }
 
     $('.doc-view .map').each(function() {
@@ -228,9 +241,7 @@ $(document).ready(function() {
 
         add_default_layers(map_viewer, site_data_map).done(function() {
             var bbox = site_data['feature']['geometry']['bbox'];
-            var sw = new L.LatLng(bbox[1], bbox[0]);
-            var ne = new L.LatLng(bbox[3], bbox[2]);
-            var bounds = new L.LatLngBounds(sw, ne);
+            var bounds = bbox_to_bounds(bbox);
             map_viewer.map.fitBounds(bounds);
         });
 
@@ -253,6 +264,12 @@ $(document).ready(function() {
                               site_data_map);
         });
 
+        return $.when(ajax_sci, ajax_spa);
+    }
+
+    function add_extra_layers(map_viewer, site_data_map) {
+        function url(name) { return R.assets + name + '.geojson'; }
+
         map_viewer.new_layer('judete', {color: '#B59C7D'});
         var ajax_judete = $.getJSON(url('judete-wgs84'), function(data) {
             add_reference_features(data['features'],
@@ -274,7 +291,7 @@ $(document).ready(function() {
                                'DENUMIRE');
         });
 
-        return $.when(ajax_sci, ajax_spa, ajax_judete, ajax_parcuri, ajax_rezervatii);
+        return $.when(ajax_judete, ajax_parcuri, ajax_rezervatii);
     }
 
     function add_site_features(features, layer, site_data_map) {
@@ -293,7 +310,7 @@ $(document).ready(function() {
     function add_reference_features(features, layer, nameprop) {
         $.each(features, function(i, feature) {
             var name = feature['properties'][nameprop];
-            if(! name) { console.log(':('); return; }
+            if(! name) { return; }
             name = name[0].toUpperCase() + name.slice(1).toLowerCase();
             feature['properties']['name'] = name;
             process_geometry(feature);
@@ -354,10 +371,7 @@ $(document).ready(function() {
         ];
     }
 
-    function bounding_box_multipolygon(coordinates) {
-        var boxes = $.map(coordinates, function(poly_coords) {
-            return [bounding_box_polygon(poly_coords[0])];
-        });
+    function bounding_box_aggregate(boxes) {
         function extract(list, name) {
             return $.map(list, function(dic) { return dic[name]; });
         }
@@ -367,6 +381,18 @@ $(document).ready(function() {
             Math.max.apply(null, extract(boxes, 2)),
             Math.max.apply(null, extract(boxes, 3))
         ];
+    }
+
+    function bounding_box_multipolygon(coordinates) {
+        return bounding_box_aggregate($.map(coordinates, function(poly_coords) {
+            return [bounding_box_polygon(poly_coords[0])];
+        }));
+    }
+
+    function bounding_box_features(features) {
+        return bounding_box_aggregate($.map(features, function(feature) {
+            return [feature['geometry']['bbox']];
+        }));
     }
 
     function point_in_box(latlng, bbox) {
