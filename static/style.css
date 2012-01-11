@@ -747,10 +747,12 @@ label[for="f_text"] {
 }
 
 .search-results .map {
-  width: 99%;
+  width: 98.5%;
   height: 350px;
-  margin-bottom: 10px;
-  margin-left: 5px;
+  margin: 0px 5px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
 
 .doc-view .map {
@@ -788,6 +790,17 @@ label[for="f_text"] {
   padding: 0 5px;
   background: white;
   border: 1px solid #bbb;
+}
+
+.search-results .legend {
+  margin: 0px 5px 10px;
+  border-left: 1px solid #8F8F8F;
+  border-right: 1px solid #8F8F8F;
+  border-bottom: 1px solid #8F8F8F;
+}
+
+.search-results .legend ul li {
+  color: #8F8F8F;
 }
 
 body.full-page-body {
