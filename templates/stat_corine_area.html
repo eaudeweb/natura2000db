@@ -2,9 +2,10 @@
 {{- fmt | format(value) -}}
 {% endmacro %}
 
+<h2>Statistici - Suprafata claselor de habitat în siturile selectate</h2>
+
 {% for code, name in corine_areas %}
   {% if stat['total_%s' % code] != 0 %}
-
 
   <table>
     <caption>{{ name }}</caption>

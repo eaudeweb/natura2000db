@@ -2,7 +2,7 @@ import operator
 import flask
 import jinja2
 
-from schema import corine_map, classification_map, habitat_type_map
+import schema
 
 
 class MissingFilterError(ValueError):
@@ -50,14 +50,14 @@ def area(search_form, search_answer):
 
 def corine_area(search_form, search_answer):
     stat = {}
-    for code in corine_map.keys():
+    for code in schema.corine_map.keys():
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
 
     match_nuts3 = _nuts3_matcher(search_form)
 
     def match_corine(code):
-        return corine_map.has_key(code)
+        return schema.corine_map.has_key(code)
 
     for doc in search_answer['docs']:
         data = doc['data']
@@ -76,23 +76,23 @@ def corine_area(search_form, search_answer):
                                             'corine_area': corine_area,
                                             })
 
-    for code in corine_map.keys():
+    for code in schema.corine_map.keys():
         stat['table_%s' % code].sort(key=operator.itemgetter('corine_area'), reverse=True)
 
     return jinja2.Markup(flask.render_template('stat_corine_area.html', 
                                                 stat=stat, 
-                                                corine_areas=corine_map.items()))
+                                                corine_areas=schema.corine_map.items()))
 
 def protected_area(search_form, search_answer):
     stat = {}
-    for code in classification_map.keys():
+    for code in schema.classification_map.keys():
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
 
     match_nuts3 = _nuts3_matcher(search_form)
 
     def match_protected(code):
-        return classification_map.has_key(code)
+        return schema.classification_map.has_key(code)
 
     for doc in search_answer['docs']:
         data = doc['data']
@@ -111,23 +111,23 @@ def protected_area(search_form, search_answer):
                                             'protected_area': protected_area,
                                             })
 
-    for code in classification_map.keys():
+    for code in schema.classification_map.keys():
         stat['table_%s' % code].sort(key=operator.itemgetter('protected_area'), reverse=True)
 
     return jinja2.Markup(flask.render_template('stat_protected_area.html', 
                                                 stat=stat, 
-                                                protected_areas=classification_map.items()))
+                                                protected_areas=schema.classification_map.items()))
 
 def habitat_area(search_form, search_answer):
     stat = {}
-    for code in habitat_type_map.keys():
+    for code in schema.habitat_type_map.keys():
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
 
     match_nuts3 = _nuts3_matcher(search_form)
 
     def match_habitat(code):
-        return habitat_type_map.has_key(code)
+        return schema.habitat_type_map.has_key(code)
 
     for doc in search_answer['docs']:
         data = doc['data']
@@ -146,12 +146,76 @@ def habitat_area(search_form, search_answer):
                                             'habitat_area': habitat_area,
                                             })
 
-    for code in habitat_type_map.keys():
+    for code in schema.habitat_type_map.keys():
         stat['table_%s' % code].sort(key=operator.itemgetter('habitat_area'), reverse=True)
 
     return jinja2.Markup(flask.render_template('stat_habitat_area.html', 
                                                 stat=stat, 
-                                                habitat_areas=habitat_type_map.items()))
+                                                habitat_areas=schema.habitat_type_map.items()))
+
+def internal_antropic_activities(search_form, search_answer):
+    stat = {}
+    for code in schema.antropic_activities_map.keys():
+        stat['table_%s' % code] = []
+
+    match_nuts3 = _nuts3_matcher(search_form)
+
+    def match_activity(code):
+        return schema.antropic_activities_map.has_key(code)
+
+    for doc in search_answer['docs']:
+        data = doc['data']
+        total_area = data['section2']['area']
+
+        for activity in data['section6']['activity']['internal']:
+            if match_activity(code) and activity['percentage'] is not None:
+                stat['table_%s' % activity['code']].append({
+                                            'id': doc['id'],
+                                            'name': doc['name'],
+                                            'total_area': total_area,
+                                            'percentage': activity['percentage'],
+                                            'intensity': activity['intensity'],
+                                            'influence': activity['influence']
+                                            })
+
+    for code in schema.antropic_activities_map.keys():
+        stat['table_%s' % code].sort(key=operator.itemgetter('percentage'), reverse=True)
+
+    return jinja2.Markup(flask.render_template('stat_internal_antropic_activities.html', 
+                                                stat=stat, 
+                                                activities=schema.antropic_activities_map.items()))
+
+def external_antropic_activities(search_form, search_answer):
+    stat = {}
+    for code in schema.antropic_activities_map.keys():
+        stat['table_%s' % code] = []
+
+    match_nuts3 = _nuts3_matcher(search_form)
+
+    def match_activity(code):
+        return schema.antropic_activities_map.has_key(code)
+
+    for doc in search_answer['docs']:
+        data = doc['data']
+        total_area = data['section2']['area']
+
+        for activity in data['section6']['activity']['external']:
+            if match_activity(code) and activity['percentage'] is not None:
+                stat['table_%s' % activity['code']].append({
+                                            'id': doc['id'],
+                                            'name': doc['name'],
+                                            'total_area': total_area,
+                                            'percentage': activity['percentage'],
+                                            'intensity': activity['intensity'],
+                                            'influence': activity['influence']
+                                            })
+
+    for code in schema.antropic_activities_map.keys():
+        stat['table_%s' % code].sort(key=operator.itemgetter('percentage'), reverse=True)
+
+    return jinja2.Markup(flask.render_template('stat_external_antropic_activities.html', 
+                                                stat=stat, 
+                                                activities=schema.antropic_activities_map.items()))
 
 
 
@@ -160,6 +224,8 @@ available = {
     'corine_area': corine_area,
     'protected_area': protected_area,
     'habitat_area': habitat_area,
+    'internal_antropic_activities': internal_antropic_activities,
+    'external_antropic_activities': external_antropic_activities
 }
 
 

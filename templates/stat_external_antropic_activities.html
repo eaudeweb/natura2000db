@@ -1,0 +1,44 @@
+{% macro number(value, fmt='%.2f') %}
+{{- fmt | format(value) -}}
+{% endmacro %}
+
+<h2>Statistici - Activități și consecințe în jurul sitului</h2>
+
+{% for code, name in activities %}
+  {% if stat['table_%s' % code] %}
+
+    <table>
+
+      <caption>{{ name }}</caption>
+
+      <thead>
+        <tr>
+          <th>Nume sit</th>
+          <th>Suprafața totală sit (ha)</th>
+          <th>Pondere din sit(%)</th>
+          <th>Intensitate</th>
+          <th>Influență</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for row in stat['table_%s' % code] %}
+
+        {% set url = url_for('webpages.view', doc_id=row['id']) %}
+
+        <tr>
+          <td><a href="{{ url }}">{{ row['name'] }}</a></td>
+          <td class="number">{{ number(row['total_area']) }}</td>
+          <td class="number">{{ number(row['percentage'], fmt='%.0f') }}</td>
+          <td class="number">{{ row['intensity'] }}</td>
+          <td class="number">{{ row['influence'] }}</td>
+        </tr>
+
+      {% endfor %}
+      </tbody>
+
+
+    </table>
+
+  {% endif %}
+{% endfor %}
