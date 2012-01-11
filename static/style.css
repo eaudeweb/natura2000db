@@ -970,7 +970,18 @@ ul.hit-list .legend-sample {
 
 .backToSearch {
   text-align: right;
+  max-width: 140px;
+  margin-left: 858px;
+  margin-bottom: 20px;
+  padding: 3px;
+  background: #D3E9F8 url("./arrow_left.png") 3px 5px no-repeat;
+  border: 1px solid #C5D9E8;
+  color: #335C9E;
 }
+
+.backToSearch a {
+  color: #335C9E;
+}  
 
 .doc-view #header,
 .doc-view #breadcrumb, 
