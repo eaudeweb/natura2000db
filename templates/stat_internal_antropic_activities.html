@@ -4,7 +4,7 @@
 
 <h2>Statistici - Activități și consecințe în interiorul sitului</h2>
 
-{% for code, name in activities %}
+{% for code, name in activities|sort %}
   {% if stat['table_%s' % code] %}
 
     <table>

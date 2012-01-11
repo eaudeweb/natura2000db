@@ -4,7 +4,7 @@
 
 <h2>Statistici - Suprafata habitatelor în siturile selectate</h2>
 
-{% for code, name in habitat_areas %}
+{% for code, name in habitat_areas|sort %}
   {% if stat['total_%s' % code] != 0 %}
 
   <table>
