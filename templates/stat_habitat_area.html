@@ -2,7 +2,7 @@
 {{- fmt | format(value) -}}
 {% endmacro %}
 
-{% for code, name in corine_areas %}
+{% for code, name in habitat_areas %}
   {% if stat['total_%s' % code] != 0 %}
 
 
@@ -25,8 +25,8 @@
       <tr>
         <td><a href="{{ url }}">{{ row['name'] }}</a></td>
         <td class="number">{{ number(row['total_area']) }}</td>
-        <td class="number">{{ number(row['corine_percent'], fmt='%.0f') }}</td>
-        <td class="number">{{ number(row['corine_area']) }}</td>
+        <td class="number">{{ number(row['habitat_percent'], fmt='%.0f') }}</td>
+        <td class="number">{{ number(row['habitat_area']) }}</td>
       </tr>
 
     {% endfor %}
