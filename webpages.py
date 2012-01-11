@@ -1,3 +1,4 @@
+import os.path
 import flask
 import blinker
 import schema
@@ -30,8 +31,20 @@ def view():
     doc = db.load_document(doc_id)
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
     form.other_site_labels = _other_site_labels(doc)
-    return flask.render_template('view.html', title=_doc_title(doc), form=form,
-                                 doc=doc, doc_id=doc_id)
+    options = {
+        'title': _doc_title(doc),
+        'form': form,
+        'doc_id': doc_id,
+        'doc': doc,
+    }
+
+    app = flask.current_app
+    if 'PDF_FOLDER' in app.config:
+        pdf_name = doc_id.lower() + '.pdf'
+        if os.path.isfile(os.path.join(app.config['PDF_FOLDER'], pdf_name)):
+            options['pdf_url'] = flask.url_for('static',
+                                               filename='pdf/' + pdf_name)
+    return flask.render_template('view.html', **options)
 
 
 def _doc_title(doc):

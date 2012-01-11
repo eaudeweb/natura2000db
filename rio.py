@@ -18,6 +18,12 @@ def create_app():
     if 'APP_SETTINGS' in os.environ:
         app.config.from_envvar('APP_SETTINGS')
 
+    if 'PDF_FOLDER' in app.config:
+        from werkzeug.wsgi import SharedDataMiddleware
+        app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
+            '/static/pdf': app.config['PDF_FOLDER'],
+        })
+
     return app
 
 
