@@ -91,6 +91,12 @@ def runserver(args):
         app.run(host, debug=True)
 
 
+def shell(args):
+    from code import interact
+    app = create_app()
+    interact(local={'app': app})
+
+
 def create_argument_parser():
     import argparse
     parser = argparse.ArgumentParser()
@@ -108,6 +114,9 @@ def create_argument_parser():
 
     parser_import_mjson = subparsers.add_parser('import_mjson')
     parser_import_mjson.set_defaults(func=import_mjson)
+
+    parser_import_mjson = subparsers.add_parser('shell')
+    parser_import_mjson.set_defaults(func=shell)
 
     return parser
 

@@ -25,6 +25,7 @@ def _nuts3_matcher(search_form):
 def area(search_form, search_answer):
     stat = {'table': [], 'total': 0}
 
+    match_nuts3 = _nuts3_matcher(search_form)
 
     for doc in search_answer['docs']:
         data = doc['data']
@@ -53,8 +54,6 @@ def corine_area(search_form, search_answer):
     for code in schema.corine_map.keys():
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
-
-    match_nuts3 = _nuts3_matcher(search_form)
 
     def match_corine(code):
         return schema.corine_map.has_key(code)
@@ -85,9 +84,14 @@ def corine_area(search_form, search_answer):
 
 def protected_area(search_form, search_answer):
     stat = {}
+    calculate = set()
     for code in schema.classification_map.keys():
         stat['table_%s' % code] = []
         stat['total_%s' % code] = 0
+        calculate.add(code)
+
+    if not search_form['protected_areas'].is_empty:
+        calculate = set([search_form['protected_areas'].value])
 
     match_nuts3 = _nuts3_matcher(search_form)
 
@@ -100,6 +104,9 @@ def protected_area(search_form, search_answer):
 
         protected_area = 0
         for area in data['section5']['classification']:
+            if area['code'] not in calculate:
+                continue
+
             if match_protected(area['code']) and area['percentage'] is not None:
                 protected_area += total_area * (area['percentage'] / 100)
                 stat['total_%s' % area['code']] += protected_area

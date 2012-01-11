@@ -25,7 +25,7 @@ $(document).ready(function() {
     $('form[name=search]').submit(function(evt) {
         if(! advanced_on()) {
             // clear advanced search inputs
-            $('.search-advanced :input').val(null);
+            $('.search-advanced :input:not([type=hidden])').val(null);
         }
     });
 
