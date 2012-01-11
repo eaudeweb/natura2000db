@@ -4,7 +4,7 @@
 
 <h2>Statistici - Suprafata ariilor protejate în siturile selectate</h2>
 
-{% for code, name in protected_areas %}
+{% for code, name in protected_areas|sort %}
   {% if stat['total_%s' % code] != 0 %}
 
   <table>
