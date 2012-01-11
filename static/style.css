@@ -971,12 +971,18 @@ ul.hit-list .legend-sample {
 
 .backToSearch {
   text-align: right;
-  max-width: 140px;
-  margin-left: 858px;
+  max-width: 100px;
+  margin-left: 872px;
   margin-bottom: 20px;
   padding: 3px;
-  background: #D3E9F8 url("./arrow_left.png") 3px 5px no-repeat;
+  background: #D3E9F8;
   border: 1px solid #C5D9E8;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px; /* Firefox up to version 3.6 */
+  -moz-border-radius-bottomright: 5px; /* Firefox up to version 3.6 */
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
   color: #335C9E;
 }
 
