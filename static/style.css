@@ -1,7 +1,7 @@
 /* Standard Form for SPA and SCI
  * stylised by Sonia Andriu (tab = 2 spaces)
- * dark turquoise: #0098AA, light turquoise: #B6E9F8, gray: #7D7D7D, darker gray: #707070, blue: #335C9E, light blue: #D3E9F8, orange: #FC8E3A.
- * 4 ERRORS on http://jigsaw.w3.org/css-validator/ if 'Profile:CSS level 3' is selected, all of them related to -moz-border-radius & -webkit-border-radius.
+ * dark turquoise: #0098AA, light turquoise: #B6E9F8, blue: #335C9E, light blue: #D3E9F8.
+ * 16 ERRORS on http://jigsaw.w3.org/css-validator/ if 'Profile:CSS level 3' is selected, BUT ALL of them related to -moz-border-radius & -webkit-border-radius.
  */
 
    
@@ -86,20 +86,20 @@ table .error {
 }
 
 .doc-edit h2 {
-  color: #0066CC; /* not #0098AA; because it might be confused with anchors */
+  color: #0066CC; 
   margin-top: 33px;
   margin-bottom: 0px;
   font-size: 14px;
 }
 
 .doc-edit .dict_children {
-  background: #E0EAF8;/*C9EAF3; #D9F0FF; */
+  background: #E0EAF8;
   margin: 0px 2px 5px 2px; /* white space between sections */
   padding: 5px 0px;
 }
 
 .doc-edit .dict_children label {
-  color: #444; /*#0098AA;*/
+  color: #444; 
   margin-left: 5px;
   font-size: 14px;
 }
@@ -156,7 +156,7 @@ table .error {
 .doc-edit .field-longitude p:first-child,
 .doc-edit .field-latitude p:first-child,
 .doc-edit .field-section2 .dict_children .label {
-  color: #444;/*#0098AA;*/
+  color: #444;
   margin-left: 7px;
   font-size: 14px;
 }
@@ -294,7 +294,7 @@ table .error {
 .doc-edit .field-section4 .label,
 .doc-edit .field-section5 .label {
   text-align: left;
-  color: #444; /*#0098AA;*/
+  color: #444; 
   margin-left: 7px;
   margin-top: 5px;
   margin-bottom: 2px;
@@ -531,7 +531,7 @@ table .error {
   
 .doc-view tr,
 .doc-view td {
-  border: 1px solid #AEAEAE; /* temporary */
+  border: 1px solid #AEAEAE;
 }
 
 .doc-view .field-percentage {
@@ -680,7 +680,7 @@ label[for="f_text"] {
 }
 
 .search-results {
-  border: 1px solid #467ED9;/*#335C9E; same color as "Cauta" button */
+  border: 1px solid #335C9E; /* same color as "Cauta" button */
   margin-left: 230px;
   margin-bottom: 10px;
   margin-top: 0px;
@@ -756,7 +756,7 @@ label[for="f_text"] {
 .doc-view .map {
   width: 100%;
   height: 350px;
-  border: 1px solid #8F8F8F; /*#335C9E;*/
+  border: 1px solid #8F8F8F;
 }
 
 .map, .map .leaflet-clickable {
@@ -866,7 +866,7 @@ ul.hit-list .legend-sample {
   margin-right: 5px;
 }
 
-/* drop down list with habitat classes; to be shrunk from 721px to 124px when not focus, otherwise show its full width; */
+/* drop down list with habitat classes; to be shrunk from 510px to 124px when not focus, otherwise show its full width */
 #f_corine {
   max-width: 124px;
 }  
@@ -904,11 +904,11 @@ ul.hit-list .legend-sample {
 
 .stats thead {
   background: #fff;
-  border-bottom: 2px solid #444; /*#335C9E;*/ /* recommended for hightlight */
+  border-bottom: 2px solid #444; /* recommended for hightlight */
 }  
 
 .stats th {
-  color: #444; /*#335C9E;*/
+  color: #444;
   text-align: left;
   padding-right: 10px;
 }
@@ -953,7 +953,7 @@ ul.hit-list .legend-sample {
 
 .stats-results a {
   margin-left: 10px;
-  display: block; /* temporary */
+  display: block; 
 }
 
 .stats table tfoot tr:last-of-type {
@@ -1014,7 +1014,7 @@ ul.hit-list .legend-sample {
     }
      
     .doc-view {
-      display: block; /* do we need it? */
+      display: block; 
       margin: 0;
       padding: 0;
       color: #636363; /* the color for all text, including field values; must be different from label's color */
