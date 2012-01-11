@@ -750,9 +750,7 @@ label[for="f_text"] {
   width: 98.5%;
   height: 350px;
   margin: 0px 5px;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-top: 1px solid #ddd;
+  border: 1px solid #8F8F8F;
 }
 
 .doc-view .map {
@@ -792,15 +790,22 @@ label[for="f_text"] {
   border: 1px solid #bbb;
 }
 
-.search-results .legend {
-  margin: 0px 5px 10px;
-  border-left: 1px solid #8F8F8F;
-  border-right: 1px solid #8F8F8F;
-  border-bottom: 1px solid #8F8F8F;
+.search-results .legend ul:not([class="hit-list"]) {
+  list-style-type: none;
+  padding-left: 0px;
+  margin-bottom: 20px;
+}  
+
+.search-results .legend ul:not([class="hit-list"]) li,
+.search-results .legend ul:not([class="hit-list"]) li div {
+  color: #8F8F8F;
+  display: inline-block;
+  padding-right: 20px;
+  margin: 5px 0px;
 }
 
-.search-results .legend ul li {
-  color: #8F8F8F;
+.legend .leaflet-control {
+  border: none;
 }
 
 body.full-page-body {
