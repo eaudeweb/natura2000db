@@ -747,10 +747,10 @@ label[for="f_text"] {
 }
 
 .search-results .map {
-  width: 98.5%;
+  width: 97%;/*98.5%;*/
   height: 350px;
-  margin: 0px 5px;
-  border: 1px solid #8F8F8F;
+  margin: 0px 10px;
+  border: 1px solid #CFCFCF;/*ADADAD;*/
 }
 
 .doc-view .map {
@@ -958,6 +958,7 @@ ul.hit-list .legend-sample {
   margin-left: 230px;
   margin-bottom: 30px !important;
   padding-bottom: 5px;
+  background: #eee;
 }
 
 .stats-results h2 {
