@@ -781,7 +781,11 @@ label[for="f_text"] {
   margin-left: 345px; /* centered */
 }
 
-.map .legend {
+.map-hidden .below-map {
+  display: none;
+}
+
+.map .legend.leaflet-control {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -790,23 +794,32 @@ label[for="f_text"] {
   border: 1px solid #bbb;
 }
 
-.legendBeyondMap ul {
-  list-style-type: none;
-  padding-left: 0px;
-  margin-bottom: 20px;
-}  
+.legend-sample {
+  display: inline-block;
+  width: 15px;
+  height: 10px;
+  border: 0px solid #999;
+  margin-right: 5px;
+}
 
-.legendBeyondMap ul li,
-.legendBeyondMap div {
+ul.layer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/*
+.legend.below-map ul.layer-list {
+  margin-bottom: 20px;
+}
+*/
+
+.legend.below-map ul.layer-list li {
   color: #8F8F8F;
   display: inline-block;
   padding: 0px;
   margin-left: 10px;
   margin-right: 0px;
-}
-
-.legend .leaflet-control {
-  border: none;
 }
 
 body.full-page-body {
@@ -870,41 +883,6 @@ body.full-page-body {
 .full-page-container .map-size-buttons .minimize-button {
   display: none;
 }
-
-ul.hit-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.legend-sample {
-  display: inline-block;
-  width: 15px;
-  height: 10px;
-  border: 0px solid #999;
-  margin-right: 5px;
-}
-
-/* colors for map's legend */
-.legend-spa {
-  background:#D91B0F;
-}
-
-.legend-sci {
-  background: #201F73;
-}    
-
-.legend-adm {
-  background: #73797B;
-}
-
-.legend-area {
-  background: #FFD900;
-}
-
-.legend-protected {
-  background: #FF009A;
-}      
 
 /* drop down list with habitat classes; to be shrunk from 510px to 124px when not focus, otherwise show its full width */
 #f_corine {
