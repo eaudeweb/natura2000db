@@ -967,8 +967,8 @@ ul.hit-list {
   border-bottom: 1px solid #C0C0C0; 
 }  
 
-.stats table td:nth-child(4n) {
-  background: #E3E3E3;
+.stats .highlight-row td:nth-child(4n) {
+  background: #E3E3E3; /* highlight the 4th column only on tables related to area */
 }
 
 .stats table th:nth-child(2n) {
