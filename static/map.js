@@ -6,7 +6,7 @@ $(document).ready(function() {
     }
 
     var cookie_name = 'chm-rio-map-config';
-    var config = {};
+    var config = {minimized: true};
     load_config();
 
     function load_config() {
