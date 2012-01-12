@@ -1030,16 +1030,17 @@ ul.hit-list {
   color: #335C9E;
 }  
 
-.doc-view #header,
-.doc-view #breadcrumb, 
-.doc-view #footer,
-.doc-view .wrap > ul {
-  display: block; /* do not hide them; ONLY for Opera */
+/* do not hide them; ONLY for Opera */
+#header,
+#breadcrumb, 
+#footer,
+.wrap > ul {
+  display: block; 
 }
 
 .doc-view .button {
-  display: inline-block; /* do not hide them; ONLY for Opera */
-}  
+  display: inline-block;
+}
 
 
 
@@ -1048,10 +1049,10 @@ ul.hit-list {
    ################################################ */
 @media print {
      
-    .doc-view #header,
-    .doc-view #breadcrumb, 
-    .doc-view #footer,
-    .doc-view .wrap > ul,
+     #header,
+     #breadcrumb, 
+     #footer,
+    .wrap > ul,
     .doc-view .button {
       display: none; /* hide the rest of the page and the edit button */
     }
