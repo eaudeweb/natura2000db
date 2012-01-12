@@ -4,7 +4,7 @@ import flask
 import blinker
 import schema
 import widgets
-from storage import get_db, Or, And, AllowWildcards
+from storage import get_db, Or, And, AllowWildcards, StorageError
 import statistics
 
 
@@ -100,7 +100,11 @@ def _db_search(search_form, **kwargs):
     text = AllowWildcards(text_str)
     text_or = Or([('name', text), ('text', text)])
     full_query = And([text_or, query])
-    return db.search(full_query, **kwargs)
+
+    try:
+        return db.search(full_query, **kwargs)
+    except StorageError, e:
+        raise SearchError(u"Eroare bază de date: %s" % e.message)
 
 
 @webpages.route('/search')
