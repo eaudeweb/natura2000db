@@ -140,7 +140,7 @@ class SolrStorage(object):
             response = urllib2.urlopen(request)
         except urllib2.URLError, e:
             if hasattr(e, 'reason') and e.reason.errno == errno.ECONNREFUSED:
-                raise StorageError("Could not connect to Solr", e)
+                raise StorageError("Nu se poate stabili conexiunea")
             else:
                 raise
 

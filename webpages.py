@@ -1,9 +1,10 @@
+# encoding: utf-8
 import os.path
 import flask
 import blinker
 import schema
 import widgets
-from storage import get_db, Or, And, AllowWildcards
+from storage import get_db, Or, And, AllowWildcards, StorageError
 import statistics
 
 
@@ -83,20 +84,39 @@ def edit():
                                  doc=doc, form=form)
 
 
-def _db_search(search_form):
+class SearchError(Exception):
+    """ Error occurred during search """
+
+
+def _db_search(search_form, **kwargs):
     db = get_db()
     query = search_form.value
-    text = AllowWildcards(query.pop('text') or u"")
+
+    text_str = (query.pop('text') or u"").strip()
+    if any(text_str.startswith(ch) for ch in ['*', '?']):
+        # the Solr QueryParser does not accept leading-wildcard queries
+        raise SearchError(u"Textul nu poate să înceapă cu '*' sau '?'")
+
+    text = AllowWildcards(text_str)
     text_or = Or([('name', text), ('text', text)])
     full_query = And([text_or, query])
-    return db.search(full_query, facets=True)
+
+    try:
+        return db.search(full_query, **kwargs)
+    except StorageError, e:
+        raise SearchError(u"Eroare bază de date: %s" % e.message)
 
 
 @webpages.route('/search')
 def search():
-    search_form = schema.Search.from_flat(flask.request.args.to_dict())
-    search_answer = _db_search(search_form)
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
+    search_form = schema.Search.from_flat(flask.request.args.to_dict())
+    try:
+        search_answer = _db_search(search_form, facets=True)
+    except SearchError, e:
+        return flask.render_template('search_error.html', msg=e.message,
+                                     form=form, search_form=search_form)
+
     form['facets'] = search_answer['facets']
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
@@ -108,9 +128,11 @@ def search():
 def stats():
     args = flask.request.args.to_dict()
 
-    db = get_db()
     search_form = schema.Search.from_flat(args)
-    search_answer = db.search(search_form.value, get_data=True, facets=True)
+    try:
+        search_answer = _db_search(search_form, get_data=True, facets=True)
+    except SearchError, e:
+        return flask.render_template('error.html', msg=e.message)
 
     stat_form = schema.Statistics.from_flat(args)
     stat_html = statistics.compute(stat_form, search_answer)
