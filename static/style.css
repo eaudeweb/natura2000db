@@ -790,18 +790,19 @@ label[for="f_text"] {
   border: 1px solid #bbb;
 }
 
-.search-results .legend ul:not([class="hit-list"]) {
+.legendBeyondMap ul {
   list-style-type: none;
   padding-left: 0px;
   margin-bottom: 20px;
 }  
 
-.search-results .legend ul:not([class="hit-list"]) li,
-.search-results .legend ul:not([class="hit-list"]) li div {
+.legendBeyondMap ul li,
+.legendBeyondMap div {
   color: #8F8F8F;
   display: inline-block;
-  padding-right: 20px;
-  margin: 5px 0px;
+  padding: 0px;
+  margin-left: 10px;
+  margin-right: 0px;
 }
 
 .legend .leaflet-control {
@@ -876,13 +877,34 @@ ul.hit-list {
   margin: 0;
 }
 
-ul.hit-list .legend-sample {
+.legend-sample {
   display: inline-block;
   width: 15px;
   height: 10px;
   border: 0px solid #999;
   margin-right: 5px;
 }
+
+/* colors for map's legend */
+.legend-spa {
+  background:#D91B0F;
+}
+
+.legend-sci {
+  background: #201F73;
+}    
+
+.legend-adm {
+  background: #73797B;
+}
+
+.legend-area {
+  background: #FFD900;
+}
+
+.legend-protected {
+  background: #FF009A;
+}      
 
 /* drop down list with habitat classes; to be shrunk from 510px to 124px when not focus, otherwise show its full width */
 #f_corine {
