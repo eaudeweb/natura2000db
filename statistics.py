@@ -33,7 +33,7 @@ def _nuts3_matcher(search_form):
         return lambda(code): code.startswith(search_nuts2)
 
     else:
-        raise MissingFilterError(u"Trebuie selectată o regiune administrativă sau un judeţ pentru a vedea statisticile")
+        raise MissingFilterError(u"Trebuie selectată o regiune administrativă sau un judeţ pentru a vedea această statistică")
 
 
 @register_statistic(u'Suprafata siturilor')
