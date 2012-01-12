@@ -87,7 +87,7 @@ def validated(sender, element, result, **kwargs):
 
 
 def id_and_label(mapping):
-    return dict((k, '%s (%s)' % (k, v)) for k, v in mapping.iteritems())
+    return dict((k, '%s - %s' % (k, v)) for k, v in mapping.iteritems())
 
 
 _strip_brackets_pattern = re.compile(r'(\([^\)]*\))')
