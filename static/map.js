@@ -31,6 +31,10 @@ $(document).ready(function() {
             }, options);
         map_viewer.map = new L.Map(parent, options);
 
+        var attribution = map_viewer.map.attributionControl;
+        attribution.setPrefix("");
+        attribution.addAttribution("&copy; OpenStreetMap contributors, CC-BY-SA")
+
         zoom_box = $('.leaflet-control-zoom').parent();
 
         var osm_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
