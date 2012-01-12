@@ -18,6 +18,10 @@ class StorageError(Exception):
     pass
 
 
+class NotFound(StorageError):
+    pass
+
+
 QUERY_ROWS = 1000
 
 
@@ -191,7 +195,10 @@ class SolrStorage(object):
         return [doc['section1']['code'].value for doc in batch]
 
     def load_document(self, doc_id):
-        doc = self.solr_query('id:%s' % doc_id).docs[0]
+        docs = self.solr_query('id:%s' % doc_id).docs
+        if not docs:
+            raise NotFound()
+        doc = docs[0]
         return schema.SpaDoc(json.loads(doc['orig']))
 
     def document_ids(self):

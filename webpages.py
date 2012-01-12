@@ -4,7 +4,7 @@ import flask
 import blinker
 import schema
 import widgets
-from storage import get_db, Or, And, AllowWildcards, StorageError
+from storage import get_db, Or, And, AllowWildcards, StorageError, NotFound
 import statistics
 
 
@@ -29,7 +29,10 @@ def _other_site_labels(doc):
 def view():
     doc_id = flask.request.args.get('doc_id')
     db = get_db()
-    doc = db.load_document(doc_id)
+    try:
+        doc = db.load_document(doc_id)
+    except NotFound:
+        flask.abort(404)
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
     form.other_site_labels = _other_site_labels(doc)
     options = {
