@@ -1040,6 +1040,7 @@ ul.hit-list {
 
 .doc-view .button {
   display: inline-block;
+  margin-left: 10px;
 }
 
 
