@@ -199,6 +199,17 @@ $(document).ready(function() {
         return new L.LatLngBounds(sw, ne);
     }
 
+    function show_legend_below_map(map_viewer) {
+        var map_div = $(map_viewer.map._container);
+        var legend_div = $('<div class="legend below-map">');
+        var legend_ul = $('<ul class="layer-list">').appendTo(legend_div);
+        legend_div.insertAfter(map_div);
+        $.each(map_viewer.layers, function(i, layer) {
+            var li = $('<li>').append(layer_sample_box(layer), layer.label);
+            li.appendTo(legend_ul);
+        });
+    }
+
     function load_search_results_map(div) {
         var map_viewer = new_map_viewer(div);
 
@@ -223,6 +234,8 @@ $(document).ready(function() {
             map_viewer.map.fitBounds(bounds);
         });
         add_extra_layers(map_viewer, site_data_map)
+
+        show_legend_below_map(map_viewer);
     }
 
     $('.doc-view .map').each(function() {
@@ -250,14 +263,14 @@ $(document).ready(function() {
     function add_default_layers(map_viewer, site_data_map) {
         function url(name) { return R.assets + name + '.geojson'; }
 
-        map_viewer.new_layer('sci', {color: '#201F73'});
+        map_viewer.new_layer('sci', {color: '#201F73', label: "SCI"});
         var ajax_sci = $.getJSON(url('sci-wgs84'), function(data) {
             add_site_features(data['features'],
                               map_viewer.layers['sci'],
                               site_data_map);
         });
 
-        map_viewer.new_layer('spa', {color: '#D91B0F'});
+        map_viewer.new_layer('spa', {color: '#D91B0F', label: "SPA"});
         var ajax_spa = $.getJSON(url('spa-wgs84'), function(data) {
             add_site_features(data['features'],
                               map_viewer.layers['spa'],
@@ -270,21 +283,21 @@ $(document).ready(function() {
     function add_extra_layers(map_viewer, site_data_map) {
         function url(name) { return R.assets + name + '.geojson'; }
 
-        map_viewer.new_layer('judete', {color: '#73797B'});
+        map_viewer.new_layer('judete', {color: '#73797B', label: "Județe"});
         var ajax_judete = $.getJSON(url('judete-wgs84'), function(data) {
             add_reference_features(data['features'],
                                map_viewer.layers['judete'],
                                'denjud');
         });
 
-        map_viewer.new_layer('parcuri', {color: '#FFD900'});
+        map_viewer.new_layer('parcuri', {color: '#FFD900', label: "Parc național"});
         var ajax_parcuri = $.getJSON(url('parcuri-wgs84'), function(data) {
             add_reference_features(data['features'],
                                map_viewer.layers['parcuri'],
                                'NUME');
         });
 
-        map_viewer.new_layer('rezervatii', {color: '#FF009A'});
+        map_viewer.new_layer('rezervatii', {color: '#FF009A', label: "Rezervație naturală"});
         var ajax_rezervatii = $.getJSON(url('rezervatii-wgs84'), function(data) {
             add_reference_features(data['features'],
                                map_viewer.layers['rezervatii'],
@@ -318,18 +331,23 @@ $(document).ready(function() {
         });
     }
 
+    function layer_sample_box(layer) {
+        var sample = $('<div class="legend-sample">');
+        sample.css({background: layer['color']});
+        return sample;
+    }
+
     function hit_list_html(hit_list, item_content) {
         if(! item_content) {
             item_content = function(feature) {
                 return feature['properties']['name'];
             }
         }
-        var ul = $('<ul class="hit-list">');
+        var ul = $('<ul class="layer-list">');
         $.each(hit_list, function(i, hit) {
             var item = $('<li>').appendTo(ul);
-            var sample = $('<div class="legend-sample">');
-            sample.css({background: hit['layer']['color']});
-            item.append(sample, item_content(hit['feature']))[0];
+            item.append(layer_sample_box(hit['layer']),
+                        item_content(hit['feature']))[0];
         });
         return ul;
     }
