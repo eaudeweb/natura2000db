@@ -594,51 +594,44 @@ label[for="f_text"] {
   text-align: right;
 }
 
-.search-criteria input[type="submit"],
-.search-advanced-visible .search-advanced .searchButton {
+.search-button {
   margin: 0px 10px;
-  padding: 0px 10px;
+  padding: 0px 6px;
   background: #335C9E;
   border: none;
   color: #fff;
   font-weight: bold;
   font-size: 14px;
   cursor: pointer;
-  height: 34px;
+  height: 22px;
 }
 
-.search-criteria input[type="submit"]:hover,
-.search-advanced-visible .search-advanced .searchButton:hover {
+.search-criteria .submit-search:hover {
   background: #264475; /* darker blue */
-}  
+}
 
-.search-advanced-visible .search-advanced .searchButton[value="Șterge filtre"] {
+.search-advanced .clear-filters {
   background: #0098AA;
   margin-left: 5px;
 }
 
-.search-advanced-visible .search-advanced .searchButton[value="Șterge filtre"]:hover {
+.search-advanced .clear-filters:hover {
   background: #007E8C; /* darker turqouise */
-}  
+}
 
 .search-advanced {
   display: none;
-  margin-top: 10px;
 }
 
 .search-advanced-visible .search-advanced {
   display: block;
+  margin-top: 10px;
   width: 680px;
   margin-left: 30px;
 }
 
-.search-advanced-visible .search-advanced .searchButton {
-  margin-left: 157px;
-  margin-top: 10px;
-}
-
 .search-advanced-visible .search-simple .search-toggle,
-.search-advanced-visible .search-simple input[type=submit] {
+.search-advanced-visible .search-simple .search-button {
   display: none;
 }
 
@@ -650,6 +643,14 @@ label[for="f_text"] {
 .search-advanced label {
   width: 150px;
   display: inline-block;
+}
+
+.search-advanced .search-button {
+  margin-top: 10px;
+}
+
+.search-advanced .search-button.submit-search {
+  margin-left: 157px;
 }
 
 .search-facets {
@@ -730,11 +731,6 @@ label[for="f_text"] {
   color: #444;
   padding-left: 10px;
 }
-
-.searchButton {
-  padding: 0px 6px;
-  height: 22px !important;
-}  
 
 .noResults {
   color: #D94F15;
