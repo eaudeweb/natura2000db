@@ -582,6 +582,7 @@ def nuts2_index(doc):
 full_text_fields = [
     'section1/name',
     'section1/code',
+    'section1/other_sites[:]',
     'section1/responsible',
     'section2/administrative[:]/code',
     'section3/habitat[:]/code',

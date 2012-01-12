@@ -32,6 +32,11 @@
     <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="true"/>
 
+    <!-- boost `id` field relevance by 3x -->
+    <copyField source="id" dest="text"/>
+    <copyField source="id" dest="text"/>
+    <copyField source="id" dest="text"/>
+
   </fields>
 
 </schema>
