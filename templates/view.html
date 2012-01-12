@@ -24,8 +24,10 @@
 
   {% if pdf_url %}
   <span class="button">
-    [<a href="{{ pdf_url }}">pdf
-    <img src="{{ url_for('static', filename='pdf.png') }}"></a>]
+    <a href="{{ pdf_url }}">
+      <img src="{{ url_for('static', filename='pdf.png') }}">
+      descarcă original
+    </a>
   </span>
   {% endif %}
 
