@@ -1033,10 +1033,13 @@ ul.hit-list {
 .doc-view #header,
 .doc-view #breadcrumb, 
 .doc-view #footer,
-.doc-view .wrap > ul,
-.doc-view .button {
+.doc-view .wrap > ul {
   display: block; /* do not hide them; ONLY for Opera */
 }
+
+.doc-view .button {
+  display: inline-block; /* do not hide them; ONLY for Opera */
+}  
 
 
 
