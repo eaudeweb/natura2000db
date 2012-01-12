@@ -29,4 +29,9 @@ $(document).ready(function() {
         }
     });
 
+    $('.clear-filters').click(function(evt) {
+        evt.preventDefault();
+        $('.search-criteria :input:not(.search-button)').val(null);
+    });
+
 });
