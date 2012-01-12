@@ -173,8 +173,9 @@ $(document).ready(function() {
         });
         var show_map_button = $('<a href="#">').click(function(evt) {
             unminimize_map();
-        }).text('[show map]');
-        $('<div class="map-show">').append(show_map_button).insertAfter(this);
+        });
+        var map_show = $('<div class="map-show">').insertAfter(div);
+        map_show.append('[', show_map_button.text('arată harta'), ']');
     });
 
 

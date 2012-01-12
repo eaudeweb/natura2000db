@@ -839,13 +839,12 @@ body.full-page-body {
 }
 
 .map-size-buttons {
-  position: absolute;
-  right: 0px;
   padding-right: 7px;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px;
   background-color: rgba(0, 0, 0, 0.25);
+  z-index: 10;
 }
 
 .map-size-buttons a {
