@@ -7,7 +7,7 @@
 {% for code, name in protected_areas|sort %}
   {% if stat['total_%s' % code] != 0 %}
 
-  <table>
+  <table class="highlight-row">
 
     <caption>{{ name }}</caption>
 
