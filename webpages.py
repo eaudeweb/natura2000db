@@ -83,19 +83,20 @@ def edit():
                                  doc=doc, form=form)
 
 
-def _db_search(search_form):
+def _db_search(search_form, **kwargs):
     db = get_db()
     query = search_form.value
     text = AllowWildcards(query.pop('text') or u"")
     text_or = Or([('name', text), ('text', text)])
     full_query = And([text_or, query])
-    return db.search(full_query, facets=True)
+    return db.search(full_query, **kwargs)
 
 
 @webpages.route('/search')
 def search():
     search_form = schema.Search.from_flat(flask.request.args.to_dict())
-    search_answer = _db_search(search_form)
+    search_answer = _db_search(search_form, facets=True)
+
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
     form['facets'] = search_answer['facets']
     return flask.render_template('search.html', form=form,
@@ -108,9 +109,8 @@ def search():
 def stats():
     args = flask.request.args.to_dict()
 
-    db = get_db()
     search_form = schema.Search.from_flat(args)
-    search_answer = db.search(search_form.value, get_data=True, facets=True)
+    search_answer = _db_search(search_form, get_data=True, facets=True)
 
     stat_form = schema.Statistics.from_flat(args)
     stat_html = statistics.compute(stat_form, search_answer)
