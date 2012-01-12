@@ -26,7 +26,8 @@ $(document).ready(function() {
         var options = $.extend({
                 center: new L.LatLng(46, 25.0),
                 zoom: 6,
-                fadeAnimation: false
+                fadeAnimation: false,
+                scrollWheelZoom: false
             }, options);
         map_viewer.map = new L.Map(parent, options);
 
@@ -240,7 +241,7 @@ $(document).ready(function() {
 
     $('.doc-view .map').each(function() {
 
-        var map_viewer = new_map_viewer(this, {scrollWheelZoom: false});
+        var map_viewer = new_map_viewer(this);
 
         var code = $('.field-section1 .field-code').text();
         var site_data = {
