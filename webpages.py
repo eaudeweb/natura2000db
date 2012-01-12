@@ -145,6 +145,7 @@ def stats():
     form['facets'] = search_answer['facets']
     return flask.render_template('stats.html', form=form,
                                  stat_form=stat_form,
+                                 stat_labels=statistics.label,
                                  stat_html=stat_html)
 
 

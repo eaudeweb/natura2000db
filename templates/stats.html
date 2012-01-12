@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
-{% from 'search_macros.html' import search_form_html, search_facets_html %}
+{% from 'search_macros.html' import search_form_html,
+                                    search_facets_html,
+                                    stats_links_html %}
 
 {% block title %}{{ super() }} &mdash; statistici{% endblock %}
 
@@ -10,6 +12,8 @@
 {{ search_form_html(form, stat_form) }}
 
 {{ search_facets_html(form, stat_form) }}
+
+{{ stats_links_html(form, stat_form, stat_labels) }}
 
 {% set url = form.url_for_search(stat_form, 'webpages.search') %}
 <p class="backToSearch">Înapoi la <a href="{{ url }}">căutare</a></p>

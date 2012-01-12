@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
-{% from 'search_macros.html' import search_form_html, search_facets_html %}
+{% from 'search_macros.html' import search_form_html,
+                                    search_facets_html,
+                                    stats_links_html %}
 
 {% block title %}{{ super() }} &mdash; căutare{% endblock %}
 
@@ -13,15 +15,7 @@
 
   {{ search_facets_html(form, search_form) }}
 
-  {% if (not search_form['nuts2'].is_empty) or (not search_form['nuts3'].is_empty) %}
-  <div class="stats-results">
-    <h2>Statistici</h2>
-    {% for compute, label in stat_labels.items()|sort %}
-      {% set url = form.url_for_search(search_form, 'webpages.stats', compute=compute) %}
-      <a href="{{ url }}">{{ label }}</a>  
-    {% endfor %}
-  </div>
-  {% endif %}
+  {{ stats_links_html(form, search_form, stat_labels) }}
 
   <div class="search-results">
 

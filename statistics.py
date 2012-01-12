@@ -247,6 +247,10 @@ def external_antropic_activities(search_form, search_answer):
 
 def compute(stat_form, search_answer):
     stat_name = stat_form['compute'].value
+
+    if stat_name not in available:
+        return jinja2.Markup(u"")
+
     stat = available[stat_name]
 
     try:
