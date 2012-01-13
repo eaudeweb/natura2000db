@@ -150,6 +150,12 @@ def stats():
                                  stat_labels=statistics.label,
                                  stat_html=stat_html)
 
+@webpages.route('/dump')
+def dump():
+    db = get_db()
+    docs = db.search({}, get_data=True)['docs']
+    return flask.jsonify(dict((d['id'], d['data']) for d in docs))
+
 
 def register(app):
     app.register_blueprint(webpages)
