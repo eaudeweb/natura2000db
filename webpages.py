@@ -132,12 +132,14 @@ def stats():
     args = flask.request.args.to_dict()
 
     search_form = schema.Search.from_flat(args)
+    stat_form = schema.Statistics.from_flat(args)
+    get_data = statistics.need_data(stat_form)
+
     try:
-        search_answer = _db_search(search_form, get_data=True, facets=True)
+        search_answer = _db_search(search_form, get_data=get_data, facets=True)
     except SearchError, e:
         return flask.render_template('error.html', msg=e.message)
 
-    stat_form = schema.Statistics.from_flat(args)
     stat_html = statistics.compute(stat_form, search_answer)
 
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)

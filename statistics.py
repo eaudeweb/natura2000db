@@ -245,6 +245,17 @@ def external_antropic_activities(search_form, search_answer):
                                                 activities=schema.antropic_activities_map.items()))
 
 
+def need_data(stat_form):
+    if stat_form['compute'].is_empty:
+        return False
+    elif (stat_form['compute'].value != 'corine_area' and
+          stat_form['nuts3'].is_empty and
+          stat_form['nuts2'].is_empty):
+        return False
+    else:
+        return True
+
+
 def compute(stat_form, search_answer):
     stat_name = stat_form['compute'].value
 
