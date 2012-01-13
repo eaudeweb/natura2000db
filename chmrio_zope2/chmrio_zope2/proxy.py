@@ -133,7 +133,10 @@ class ChmRioFormsProxy(BrowserView):
         for name, value in headers.iteritems():
             response.setHeader(name, value)
 
-        return reframe_html(body, self.aq_parent.getSite())
+        if response.headers.get('content-type', '').startswith('text/html'):
+            body = reframe_html(body, self.aq_parent.getSite())
+
+        return body
 
 
 
