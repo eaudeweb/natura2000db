@@ -7,24 +7,28 @@
 
 {{ search_form_html(form, search_form, url_for('webpages.search')) }}
 
-<p class="help">
-  Această aplicaţie permite automatizarea colectării, gestionarii şi
-  interoperabilităţii datelor şi informaţiilor referitoare la conservarea
-  biodiversităţii, prin înregistrarea online a SPA-urilor si SCI-urilor
-  Natura2000 la nivel local, cât şi prelucrarea lor de către reprezentanţi
-  ai Agenţiilor Regionale de Protecţie a Mediului.
+<p>Aplicația <em>Baza de date Natura 2000</em> este un catalog al
+siturilor <a href="http://en.wikipedia.org/wiki/Natura_2000">Natura
+2000</a> din România, disponibil liber online.</p>
 
-  <br />
+<ul>
+  <li>Siturile pot fi filtrate după cuvinte cheie, regiune
+  administrativă, clase de habitat Corine și clasificare ca arie
+  protejată.</li>
 
-  Datele astfel înregistrate în sistem pot fi vizualizate, filtrate şi agregate
-  de către publicul larg, cât şi inspectate pe o hartă dinamică.
-  Exportul acestor date în diferite formate este în lucru.
-</p>
+  <li>Rezultatele sunt afișate suprapuse pe o hartă interactivă.</li>
 
-<div class="linkToNewForm">
-  [<a href="{{ url_for('webpages.edit') }}">adaugă sit nou</a>]
-  [<a href="{{ url_for('webpages.dump') }}">download baza de date</a>]
-  [<a href="https://github.com/eaudeweb/natura2000db">cod sursă aplicație</a>]
-</div>
+  <li>Se pot calcula statistici despre suprafețe totale în funcție de
+  filtrări.</li>
+</ul>
+
+
+<p>Aplicația este dezvoltată de către <a
+href="http://www.anpm.ro/">Agenția Națională de Protecție a
+Mediului</a>. Codul sursă este disponibil <a
+href="https://github.com/eaudeweb/natura2000db">pe GitHub</a> iar baza
+de date poate fi <a href="{{ url_for('webpages.dump') }}">downloadată în
+format JSON</a>. Site-ul este găzduit de către <a
+href="http://www.eea.europa.eu/">Agenția Europeană de Mediu</a>.
 
 {% endblock %}
