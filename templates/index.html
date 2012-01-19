@@ -7,28 +7,48 @@
 
 {{ search_form_html(form, search_form, url_for('webpages.search')) }}
 
-<p>Aplicația <em>Baza de date Natura 2000</em> este un catalog al
-siturilor <a href="http://en.wikipedia.org/wiki/Natura_2000">Natura
-2000</a> din România, disponibil liber online.</p>
+<p>
+  Aplicația <em>Managementul SCI-urilor si SPA-urilor Natura2000 la
+  nivel regional</em> este un catalog al siturilor <a
+  href="http://en.wikipedia.org/wiki/Natura_2000">Natura 2000</a> din
+  România, disponibil liber online. Aplicația permite:
+</p>
 
 <ul>
-  <li>Siturile pot fi filtrate după cuvinte cheie, regiune
-  administrativă, clase de habitat Corine și clasificare ca arie
-  protejată.</li>
+  <li>Completarea online a formularelor standard pentru SCI-uri si
+  SPA-uri Natura2000 de catre operatorii locali</li>
 
-  <li>Rezultatele sunt afișate suprapuse pe o hartă interactivă.</li>
+  <li>Validarea inregistrarilor de catre membri Agentiilor Regionale de
+  Protectia Mediului</li>
 
-  <li>Se pot calcula statistici despre suprafețe totale în funcție de
-  filtrări.</li>
+  <li>Căutare și filtrare după cuvinte cheie, regiune administrativă,
+  clase de habitat Corine și clasificare ca arie protejată</li>
+
+  <li>Afișare a siturilor pe o hartă interactivă</li>
+
+  <li>Calculare a statisticilor despre suprafețe totale în funcție de
+  filtrări</li>
+
+  <li>Exportul datelor în diverse formate</li>
 </ul>
 
+<p>
+  Aplicația este dezvoltată în cadrul proiectului CB2 "<a
+  href="http://www.undp.ro/projects.php?project_id=56">Strengthening
+  Capacity to Integrate Environment and Natural Resources Management for
+  Global Environmental Benefits</a>" al UNDP.
+  <a href="https://github.com/eaudeweb/natura2000db">Codul sursă</a>
+  este disponibil sub licență BSD iar site-ul este găzduit de către
+  <a href="http://www.eea.europa.eu/">Agenția Europeană de Mediu</a>.
+</p>
 
-<p>Aplicația este dezvoltată de către <a
-href="http://www.anpm.ro/">Agenția Națională de Protecție a
-Mediului</a>. Codul sursă este disponibil <a
-href="https://github.com/eaudeweb/natura2000db">pe GitHub</a> iar baza
-de date poate fi <a href="{{ url_for('webpages.dump') }}">downloadată în
-format JSON</a>. Site-ul este găzduit de către <a
-href="http://www.eea.europa.eu/">Agenția Europeană de Mediu</a>.
+<p>
+  Informațiile despre situri (SCI, SPA) sunt preluate din <a
+  href="http://cdr.eionet.europa.eu/ro/eu/n2000/envtow6nq/">raportul
+  României actualizat pe 2011</a> la Agenția Europeană de Mediu cu
+  privire la siturile Natura2000.
+  Datele pot fi <a href="{{ url_for('webpages.dump') }}">descărcate în
+  format JSON</a>.
+</p>
 
 {% endblock %}
