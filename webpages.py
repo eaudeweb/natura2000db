@@ -107,7 +107,7 @@ def _db_search(search_form, **kwargs):
     try:
         return db.search(full_query, **kwargs)
     except StorageError, e:
-        raise SearchError(u"Eroare bază de date: %s" % e.message)
+        raise SearchError(u"Eroare bază de date: %s" % e)
 
 
 @webpages.route('/search')
@@ -117,7 +117,7 @@ def search():
     try:
         search_answer = _db_search(search_form, facets=True)
     except SearchError, e:
-        return flask.render_template('search_error.html', msg=e.message,
+        return flask.render_template('search_error.html', msg=unicode(e),
                                      form=form, search_form=search_form)
 
     form['facets'] = search_answer['facets']
@@ -138,7 +138,7 @@ def stats():
     try:
         search_answer = _db_search(search_form, get_data=get_data, facets=True)
     except SearchError, e:
-        return flask.render_template('error.html', msg=e.message)
+        return flask.render_template('error.html', msg=unicode(e))
 
     stat_html = statistics.compute(stat_form, search_answer)
 

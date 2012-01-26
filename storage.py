@@ -11,7 +11,6 @@ import flask
 import schema
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
 
 
 class StorageError(Exception):

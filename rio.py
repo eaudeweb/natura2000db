@@ -73,6 +73,17 @@ def import_mjson(args):
 def runserver(args):
     app = create_app()
 
+    if 'ERROR_LOG_FILE' in app.config:
+        logging.basicConfig(filename=app.config['ERROR_LOG_FILE'],
+                            loglevel=logging.ERROR)
+
+    if args.verbose:
+        logging.getLogger('werkzeug').setLevel(logging.INFO)
+        logging.getLogger('storage').setLevel(logging.DEBUG)
+        logging.basicConfig(loglevel=logging.DEBUG)
+    else:
+        logging.getLogger('werkzeug').setLevel(logging.ERROR)
+
     host = '0.0.0.0' if args.listen_all else '127.0.0.1'
 
     if args.proxied:
@@ -88,7 +99,7 @@ def runserver(args):
             server.stop()
 
     else:
-        app.run(host, debug=True)
+        app.run(host)
 
 
 def shell(args):
@@ -107,6 +118,7 @@ def create_argument_parser():
     parser_runserver.add_argument('--cherrypy', action='store_true')
     parser_runserver.add_argument('--proxied', action='store_true')
     parser_runserver.add_argument('--listen-all', action='store_true')
+    parser_runserver.add_argument('-v', '--verbose', action='store_true')
 
     parser_accessdb_mjson = subparsers.add_parser('accessdb_mjson')
     parser_accessdb_mjson.set_defaults(func=accessdb_mjson)
@@ -122,7 +134,5 @@ def create_argument_parser():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(loglevel=logging.DEBUG)
-    logging.getLogger('werkzeug').setLevel(logging.INFO)
     args = create_argument_parser().parse_args()
     args.func(args)
