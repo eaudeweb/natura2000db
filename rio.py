@@ -106,7 +106,7 @@ def runserver(args):
     if app.config['HTTP_CHERRYPY']:
         from cherrypy import wsgiserver
         listen = (app.config['HTTP_LISTEN_HOST'], 5000)
-        server = wsgiserver.CherryPyWSGIServer(listen, app)
+        server = wsgiserver.CherryPyWSGIServer(listen, app.wsgi_app)
         try:
             server.start()
         except KeyboardInterrupt:
