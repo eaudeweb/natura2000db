@@ -9,14 +9,24 @@ import webpages
 from storage import get_db
 
 
+default_config = {
+    'DEBUG': False,
+    'ERROR_LOG_FILE': None,
+    'HTTP_LISTEN_HOST': '127.0.0.1',
+    'HTTP_PROXIED': False,
+    'HTTP_CHERRYPY': False,
+}
+
+
 def create_app():
     app = flask.Flask(__name__)
 
-    webpages.register(app)
-
+    app.config.update(default_config)
     app.config.from_pyfile('default_config.py')
     if 'APP_SETTINGS' in os.environ:
         app.config.from_envvar('APP_SETTINGS')
+
+    webpages.register(app)
 
     if 'PDF_FOLDER' in app.config:
         from werkzeug.wsgi import SharedDataMiddleware
@@ -73,33 +83,37 @@ def import_mjson(args):
 def runserver(args):
     app = create_app()
 
-    if 'ERROR_LOG_FILE' in app.config:
-        logging.basicConfig(filename=app.config['ERROR_LOG_FILE'],
-                            loglevel=logging.ERROR)
+    if args.listen_all:
+        app.config['HTTP_LISTEN_HOST'] = '0.0.0.0'
 
     if args.verbose:
         logging.getLogger('werkzeug').setLevel(logging.INFO)
         logging.getLogger('storage').setLevel(logging.DEBUG)
         logging.basicConfig(loglevel=logging.DEBUG)
+
     else:
         logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
-    host = '0.0.0.0' if args.listen_all else '127.0.0.1'
 
-    if args.proxied:
+    if app.config['ERROR_LOG_FILE'] is not None:
+        logging.basicConfig(filename=app.config['ERROR_LOG_FILE'],
+                            loglevel=logging.ERROR)
+
+    if app.config['HTTP_PROXIED']:
         from revproxy import ReverseProxied
         app.wsgi_app = ReverseProxied(app.wsgi_app)
 
-    if args.cherrypy:
+    if app.config['HTTP_CHERRYPY']:
         from cherrypy import wsgiserver
-        server = wsgiserver.CherryPyWSGIServer((host, 5000), app)
+        listen = (app.config['HTTP_LISTEN_HOST'], 5000)
+        server = wsgiserver.CherryPyWSGIServer(listen, app)
         try:
             server.start()
         except KeyboardInterrupt:
             server.stop()
 
     else:
-        app.run(host)
+        app.run(app.config['HTTP_LISTEN_HOST'])
 
 
 def shell(args):
@@ -115,8 +129,6 @@ def create_argument_parser():
 
     parser_runserver = subparsers.add_parser('runserver')
     parser_runserver.set_defaults(func=runserver)
-    parser_runserver.add_argument('--cherrypy', action='store_true')
-    parser_runserver.add_argument('--proxied', action='store_true')
     parser_runserver.add_argument('--listen-all', action='store_true')
     parser_runserver.add_argument('-v', '--verbose', action='store_true')
 
