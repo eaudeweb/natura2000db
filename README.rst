@@ -1,34 +1,24 @@
 Setup
 =====
 
-1. Install Python >= 2.6 and virtualenv; activate the virtualenv.
+1. Install Python >= 2.6 and virtualenv; activate the virtualenv::
+
+    virtualenv -p python2.6 sandbox
+    echo '*' > sandbox/.gitignore
+    . sandbox/bin/activate
 
 2. Install dependencies::
 
     pip install -r requirements-dev.txt
 
-3. Create a local data directory, make sure it's not committed to the
-   repository by mistake. We'll call it ``$DATA``.
-
-4. Optionally create a local configuration file::
+3. Optionally create a local configuration file::
 
     mkdir instance
     echo "DEBUG = True" > instance/settings.py
 
-5. Run the server::
+4. Run the server::
 
-    APP_SETTINGS=$DATA/config.py python rio.py runserver
-
-6. Optionally create a script in __venv__/bin/rio to simplify the above
-   command (__venv__ stands for the path to the virtualenv folder).
-   Don't forget to make it executable (``chmod +x __venv__/bin/rio``)::
-
-    #!/bin/bash
-    PRJ='__venv__'
-    export APP_SETTINGS=$PRJ/data/config.py
-    exec $PRJ/sandbox/bin/python $PRJ/rio.py $@
-
-   Run the script as ``rio runserver``.
+    ./manage.py runserver
 
 
 Solr database
@@ -43,8 +33,8 @@ separately but the configuration is provided in the ``solr`` directory.
     tar xzf apache-solr-3.5.0.tgz
 
 2. Start Solr with our configuration. Assuming __solrkit__ is the
-``apache-solr-3.5.0`` folder unpacked above, and __repo__ is the project
-repository, run::
+   ``apache-solr-3.5.0`` folder unpacked above, and __repo__ is the
+   project repository, run::
 
     cd __solrkit__/example
     java -Dsolr.solr.home=__repo__/solr -jar start.jar
@@ -72,7 +62,7 @@ In the ``buildout`` directory, bootstrap and run the buildout::
 
 Finally, copy the database file (``Data.fs``) to ``var/filestorage/``.
 
-To run the application with Zope, first start Solr, then the `rio.py`
+To run the application with Zope, first start Solr, then the `manage.py`
 server, and then zope (by running ``bin/zope-instance fg`` from within
 the ``buildout`` directory). The application should be accessible at
 ``http://localhost:8080/chm_ro/rio/natura2000/``.
@@ -85,8 +75,8 @@ Loading data from Access database
    MySQL on `localhost`, in the database `rio`::
 
     pip install -r migrations/requrements.txt
-    rio accessdb_mjson > $DATA/access.mjson
+    ./manage.py accessdb_mjson > instance/access.mjson
 
 2. Load json to Solr::
 
-    rio import_mjson < $DATA/access.mjson
+    ./manage.py import_mjson < instance/access.mjson
