@@ -16,16 +16,15 @@ default_config = {
     'HTTP_LISTEN_HOST': '127.0.0.1',
     'HTTP_PROXIED': False,
     'HTTP_CHERRYPY': False,
+    'STORAGE_ENGINE': 'solr',
+    'SECRET_KEY': 'demo',
 }
 
 
 def create_app():
-    app = flask.Flask(__name__)
-
+    app = flask.Flask(__name__, instance_relative_config=True)
     app.config.update(default_config)
-    app.config.from_pyfile('default_config.py')
-    if 'APP_SETTINGS' in os.environ:
-        app.config.from_envvar('APP_SETTINGS')
+    app.config.from_pyfile("settings.py", silent=True)
 
     webpages.register(app)
 

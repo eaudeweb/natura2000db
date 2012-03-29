@@ -12,7 +12,8 @@ Setup
 
 4. Optionally create a local configuration file::
 
-    echo "STORAGE_ENGINE = 'solr'" > $DATA/config.py
+    mkdir instance
+    echo "DEBUG = True" > instance/settings.py
 
 5. Run the server::
 
