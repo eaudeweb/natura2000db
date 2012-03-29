@@ -2,3 +2,6 @@
 nose==1.1.2
 py==1.4.6
 unittest2==0.5.1
+Fabric==1.4.0
+pycrypto==2.5
+ssh==1.7.13
