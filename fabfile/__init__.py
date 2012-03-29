@@ -16,6 +16,7 @@ except: pass
 app.update({
     'instance_var': app['repo']/'instance',
     'sandbox': app['repo']/'sandbox',
+    'user': 'zope',
 })
 
 
@@ -52,6 +53,21 @@ def install(force=False):
                     str(app['instance_var']/'settings.py'),
                     context=app, backup=False)
 
-    upload_template(app['localrepo']/'fabfile'/'server.sh',
-                    str(app['sandbox']/'bin'/'server'),
-                    context=app, backup=False, mode=0755)
+    upload_template(app['localrepo']/'fabfile'/'supervisord.conf',
+                    str(app['sandbox']/'supervisord.conf'),
+                    context=app, backup=False)
+
+
+@task
+def service(action):
+    run("sudo -u zope '%(sandbox)s/bin/supervisorctl' %(action)s %(name)s" % {
+            'sandbox': app['sandbox'],
+            'action': action,
+            'name': 'natura2000db',
+        })
+
+
+@task
+def deploy():
+    execute('install')
+    execute('service', 'restart')
