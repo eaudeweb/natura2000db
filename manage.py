@@ -41,13 +41,16 @@ def create_app():
 manager = flaskext.script.Manager(create_app)
 
 
-@manager.command
-def accessdb_mjson(indent=False):
+@manager.option('--indent', '-i', default=False, action='store_true')
+@manager.option('--mysql-login', default='root:',
+                help="MySQL login (username:password)")
+def accessdb_mjson(indent=False, mysql_login='root:'):
     logging.getLogger('migrations.from_access').setLevel(logging.INFO)
 
     from migrations.from_access import load_from_sql, verify_data
     kwargs = {'indent': 2} if indent else {}
-    for doc in verify_data(load_from_sql()):
+    [mysql_user, mysql_pw] = mysql_login.split(':')
+    for doc in verify_data(load_from_sql(mysql_user, mysql_pw)):
         flask.json.dump(doc, sys.stdout, **kwargs)
         sys.stdout.write('\n')
 

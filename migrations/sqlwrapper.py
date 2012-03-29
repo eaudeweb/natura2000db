@@ -41,6 +41,6 @@ class SQLWrapper(object):
         return self.cursor.lastrowid
 
 
-def open_db(db, user='root'):
-    db = MySQLdb.connect(db=db, user=user, use_unicode=True)
+def open_db(db, user='root', password=''):
+    db = MySQLdb.connect(db=db, user=user, passwd=password, use_unicode=True)
     return SQLWrapper(db.cursor())

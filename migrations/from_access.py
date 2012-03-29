@@ -19,10 +19,10 @@ def lower_keys(dic):
     return dict((k.lower(), dic[k]) for k in dic)
 
 
-def load_from_sql():
+def load_from_sql(mysql_user, mysql_pw):
     from itertools import imap
     from sqlwrapper import open_db
-    sw = open_db('rio')
+    sw = open_db('rio', mysql_user, mysql_pw)
 
     biotop_list = {}
     for row in (lower_keys(r) for r in sw.iter_table('biotop')):
