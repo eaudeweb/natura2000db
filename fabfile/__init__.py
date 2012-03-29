@@ -1,10 +1,11 @@
 from fabric.api import *
-from fabric.contrib.files import exists
+from fabric.contrib.files import *
 from path import path as ppath
 
 
 app = env.app = {
     'repo': ppath('/var/local'),
+    'localrepo': ppath('.').abspath(),
 }
 
 
@@ -47,3 +48,7 @@ def install(force=False):
     instance = '%(repo)s/instance' % app
     if not exists(instance):
         run("mkdir -p '%s'" % instance)
+
+    upload_template(app['localrepo']/'fabfile'/'server.sh',
+                    str(app['sandbox']/'bin'/'server'),
+                    context=app, backup=False, mode=0755)
