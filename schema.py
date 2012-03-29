@@ -639,7 +639,7 @@ Search = fl.Dict.of(
                             value_labels=strip_brackets_dict_values(corine_map)),
     fl.Enum.named('nuts2') \
            .valued(*sorted(nuts2.keys())) \
-           .with_properties(label=u'Regiune administrativă',
+           .with_properties(label=u'Regiune de dezvoltare',
                             index=nuts2_index,
                             widget='select',
                             value_labels=nuts2,
