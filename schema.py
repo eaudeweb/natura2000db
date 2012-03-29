@@ -56,7 +56,6 @@ def valid_site_code(element, state):
     patt = re.compile(r'^\w{9}$')
     if element.value is not None and patt.match(element.value):
         return True
-
     else:
         element.add_error(u"Cod incorect")
         return False
@@ -146,7 +145,7 @@ InfoTable_help = u"""Populație: C – specie comună, R - specie rară, V - foa
                                          B - populație ne-izolată, dar la limita ariei de distribuție,
                                          C - populație ne-izolată cu o arie de răspândire extinsă
                      Evaluare (globală): A - excelentă, B - bună, C - considerabilă"""
-                     
+
 section6_helptext = u"""Intensitatea influenței: A – mare, B - medie, C - scăzută
                        Influență: (+) - pozitivă, (0) - neutră, (-) - negativă"""
 
@@ -279,7 +278,7 @@ section_3 = fl.Dict.of(
                               helptext=InfoTable_help),
     InfoTable.named('species_bird_extra') \
             .with_properties(label=u"Specii de păsări cu migrație regulată "
-                                   u"nemenționate în anexa I la Directiva Consiliului 79/409/CEE", 
+                                   u"nemenționate în anexa I la Directiva Consiliului 79/409/CEE",
                              helptext=InfoTable_help),
     InfoTable.named('species_mammal') \
             .with_properties(label=u"Specii de mamifere enumerate în anexa II "

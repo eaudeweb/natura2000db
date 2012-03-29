@@ -63,7 +63,9 @@ def edit():
     new_doc = bool(doc_id is None)
 
     if flask.request.method == 'POST':
-        doc = schema.SpaDoc.from_flat(flask.request.form.to_dict())
+        request_form = flask.request.form.to_dict()
+        request_form["section1_code"] = doc_id
+        doc = schema.SpaDoc.from_flat(request_form)
 
         if doc.validate():
             doc_id = db.save_document(doc_id, doc)
