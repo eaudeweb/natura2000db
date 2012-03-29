@@ -7,7 +7,7 @@ app = env.app = {
 }
 
 
-try: from local_fabfile import *
+try: from localcfg import *
 except: pass
 
 

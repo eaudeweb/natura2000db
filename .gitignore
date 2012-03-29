@@ -3,4 +3,4 @@
 data
 .DS_Store
 instance
-local_fabfile.py
+fabfile/localcfg.py
