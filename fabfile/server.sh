@@ -11,7 +11,7 @@
 # activate the virtualenv
 . '%(sandbox)s/bin/activate'
 
-PIDFILE='%(var)s/server.pid'
+PIDFILE='%(instance_var)s/server.pid'
 APP='%(repo)s/manage.py'
 
 

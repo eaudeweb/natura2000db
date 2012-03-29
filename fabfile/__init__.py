@@ -14,7 +14,7 @@ except: pass
 
 
 app.update({
-    'var': app['repo']/'instance',
+    'instance_var': app['repo']/'instance',
     'sandbox': app['repo']/'sandbox',
 })
 
@@ -45,9 +45,12 @@ def install(force=False):
 
     run("%(sandbox)s/bin/pip install -r %(repo)s/requirements.txt" % app)
 
-    instance = '%(repo)s/instance' % app
-    if not exists(instance):
-        run("mkdir -p '%s'" % instance)
+    if not exists(app['instance_var']):
+        run("mkdir -p '%(instance_var)s'" % app)
+
+    upload_template(app['localrepo']/'fabfile'/'production-settings.py',
+                    str(app['instance_var']/'settings.py'),
+                    context=app, backup=False)
 
     upload_template(app['localrepo']/'fabfile'/'server.sh',
                     str(app['sandbox']/'bin'/'server'),
