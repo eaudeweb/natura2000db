@@ -1,9 +1,10 @@
 from fabric.api import *
 from fabric.contrib.files import exists
+from path import path as ppath
 
 
 app = env.app = {
-    'repo': '/var/local',
+    'repo': ppath('/var/local'),
 }
 
 
@@ -12,8 +13,8 @@ except: pass
 
 
 app.update({
-    'var': '%(repo)s/instance' % app,
-    'sandbox': '%(repo)s/sandbox' % app,
+    'var': app['repo']/'instance',
+    'sandbox': app['repo']/'sandbox',
 })
 
 
