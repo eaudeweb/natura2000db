@@ -686,7 +686,7 @@ Search = fl.Dict.of(
            .valued(*sorted(species_map.keys()))
            .with_properties(label=u"Specii",
                             index=species_index,
-                            widget="select",
+                            widget="select_field",
                             value_labels=species_map,
                             facet=True)
 )

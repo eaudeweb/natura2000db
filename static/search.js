@@ -34,4 +34,7 @@ $(document).ready(function() {
         $('.search-criteria :input:not(.search-button)').val(null);
     });
 
+    $("#species").on("change", function () {
+        document.location = $(this).find("option:selected").data("url");
+    }).val("");
 });
