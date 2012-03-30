@@ -577,6 +577,13 @@ def nuts2_index(doc):
             values.add(n2code)
     return sorted(values)
 
+def species_index(doc):
+    values = set()
+    for element in doc.find("section3/[:]"):
+        code = [e["code"] for e in element.value if "code" in e]
+        values.update(code)
+    return sorted(values)
+
 
 full_text_fields = [
     'section1/name',
@@ -665,6 +672,7 @@ Search = fl.Dict.of(
                             widget='select',
                             value_labels=biogeographic_map,
                             facet=True),
+
     fl.Enum.named('protected_areas') \
            .valued(*sorted(classification_map.keys())) \
            .with_properties(label=u'Clasificare',
@@ -672,6 +680,14 @@ Search = fl.Dict.of(
                             widget='select',
                             value_labels=classification_map,
                             facet=True),
+
+    fl.Enum.named('species') \
+           .valued("1","2","3")
+           .with_properties(label=u"Specii",
+                            value_labels={},
+                            index=species_index,
+                            facet=True,
+                            widget="select",)
 )
 
 
