@@ -31,8 +31,10 @@
   {% set field_name = field.name.encode('ascii') %}
 
   {% if field.is_empty %}
-    <select id="{{ field_name }}"
-            name="{{ field_name }}" data-placeholder="Alege o optiune">
+    {{ form.select.open(field, **{
+                        "id": "field-%s" % field.name,
+                        "class": "field-%s" % field.name,
+                        "data-placeholder": "Alege o optiune"}) }}
       <option selected="selected"></option>
       {% for item in form["facets"][field_name] %}
         {% set url = form.url_for_search(field.root, **{field_name: item.name}) %}
@@ -41,7 +43,7 @@
           {{- value_label|default(item.name)|title }} ({{ item.count }})
         </option>
       {% endfor %}
-    </select>
+    {{ form.select.close() }}
   {% else %}
     {{ select(form, field) }}
   {% endif %}

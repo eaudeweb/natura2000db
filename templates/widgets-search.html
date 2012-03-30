@@ -16,14 +16,15 @@
 {% macro select(form, field) %}
   {{ _label(form, field) }}
   {% set field_name = field.name.encode('ascii') %}
-  <select name="{{ field_name }}"
-          class="{{ field_name }}"
-          data-placeholder="Alege o optiune">
+
+  {{ form.select.open(field, **{
+                      "class": "field-%s" % field.name,
+                      "data-placeholder": "Alege o optiune"}) }}
   {{ form.option(field, contents='') }}
   {% for value, value_label in form.sorted_with_labels(field) %}
     {{ form.option(field, value=value, contents=value_label|title) }}
   {% endfor %}
-  </select>
+  {{ form.select.close() }}
 {% endmacro %}
 
 {% macro select_field(form, field) %}
