@@ -308,7 +308,9 @@ section_3 = fl.Dict.of(
     CommonList.named('species_plant').of(
 
         fl.Dict.of(
-            CommonString.named('code').using(optional=False).with_properties(label=u'Cod'),
+            CommonString.named('code').using(optional=False)
+                        .with_properties(label=u'Cod',
+                                         view_href=link_search_species),
             CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
             CommonString.named('name').using(optional=False).with_properties(label=u'Nume'),
             CommonString.named('population').with_properties(label=u'Populație'),
@@ -326,7 +328,8 @@ section_3 = fl.Dict.of(
                       .with_properties(label=u'Categorie',
                                        value_labels=species_category_map),
 
-            CommonString.named('code').with_properties(label=u'Cod'),
+            CommonString.named('code').with_properties(label=u'Cod',
+                                                       view_href=link_search_species),
             CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
             CommonString.named('scientific_name').using(optional=False).with_properties(label=u'Denumire științifică'),
 
