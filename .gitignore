@@ -5,3 +5,4 @@ data
 instance
 sandbox
 fabfile/localcfg.py
+.vagrant
