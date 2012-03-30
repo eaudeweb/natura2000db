@@ -682,7 +682,6 @@ Search = fl.Dict.of(
                             facet=True),
 
     fl.Enum.named('species') \
-           .valued("1","2","3")
            .with_properties(label=u"Specii",
                             value_labels={},
                             index=species_index,

@@ -89,6 +89,22 @@ def import_mjson():
 
 
 @manager.command
+def species_to_json():
+    values = set()
+    db = get_db()
+
+    search =  webpages._db_search(schema.Search.from_flat({}), facets=True)
+    for d in search["docs"]:
+        doc = db.load_document(d["id"])
+        codes_and_labels = []
+        for specie in ("species_bird", "species_bird_extra", "species_mammal",
+                       "species_reptile", "species_fish", "species_invertebrate",
+                       "species_plant"):
+            for s in doc["section3"][specie]:
+                values.add((s["code"].value, s["name"].value.strip().lower()))
+    print flask.json.dumps(dict(values), indent=4)
+
+@manager.command
 def runserver(verbose=False):
     app = create_app()
 
