@@ -3,22 +3,97 @@
   <!ENTITY EPSG_31700 "+proj=sterea +lat_0=46 +lon_0=25 +k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +units=m +no_defs">
   <!ENTITY GOOGLE_MERCATOR "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs">
   <!ENTITY WGS84 "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+
+  <!ENTITY color-SCI        "#201F73">
+  <!ENTITY color-SPA        "#D91B0F">
+  <!ENTITY color-Judete     "#73797B">
+  <!ENTITY color-Parcuri    "#FFD900">
+  <!ENTITY color-Rezervatii "#FF009A">
+  <!ENTITY fill-opacity "0.2">
 ]>
 
 <Map srs="&GOOGLE_MERCATOR;">
 
-  <Style name="Sites">
+  <Style name="SCI">
     <Rule>
-      <PolygonSymbolizer fill="#575" fill-opacity="0.3" />
-      <LineSymbolizer stroke="#575" stroke-width="1.0" />
+      <PolygonSymbolizer fill="&color-SCI;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-SCI;" stroke-width="1.0" />
     </Rule>
   </Style>
 
   <Layer name="SCI" srs="&WGS84;">
-    <StyleName>Sites</StyleName>
+    <StyleName>SCI</StyleName>
     <Datasource>
       <Parameter name="type">ogr</Parameter>
       <Parameter name="file">../static/sci-wgs84.geojson</Parameter>
+      <Parameter name="layer">OGRGeoJSON</Parameter>
+    </Datasource>
+  </Layer>
+
+
+  <Style name="SPA">
+    <Rule>
+      <PolygonSymbolizer fill="&color-SPA;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-SPA;" stroke-width="1.0" />
+    </Rule>
+  </Style>
+
+  <Layer name="SPA" srs="&WGS84;">
+    <StyleName>SPA</StyleName>
+    <Datasource>
+      <Parameter name="type">ogr</Parameter>
+      <Parameter name="file">../static/spa-wgs84.geojson</Parameter>
+      <Parameter name="layer">OGRGeoJSON</Parameter>
+    </Datasource>
+  </Layer>
+
+
+  <Style name="Judete">
+    <Rule>
+      <PolygonSymbolizer fill="&color-Judete;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-Judete;" stroke-width="1.0" />
+    </Rule>
+  </Style>
+
+  <Layer name="Judete" srs="&WGS84;">
+    <StyleName>Judete</StyleName>
+    <Datasource>
+      <Parameter name="type">ogr</Parameter>
+      <Parameter name="file">../static/judete-wgs84.geojson</Parameter>
+      <Parameter name="layer">OGRGeoJSON</Parameter>
+    </Datasource>
+  </Layer>
+
+
+  <Style name="Parcuri">
+    <Rule>
+      <PolygonSymbolizer fill="&color-Parcuri;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-Parcuri;" stroke-width="1.0" />
+    </Rule>
+  </Style>
+
+  <Layer name="Parcuri" srs="&WGS84;">
+    <StyleName>Parcuri</StyleName>
+    <Datasource>
+      <Parameter name="type">ogr</Parameter>
+      <Parameter name="file">../static/parcuri-wgs84.geojson</Parameter>
+      <Parameter name="layer">OGRGeoJSON</Parameter>
+    </Datasource>
+  </Layer>
+
+
+  <Style name="Rezervatii">
+    <Rule>
+      <PolygonSymbolizer fill="&color-Rezervatii;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-Rezervatii;" stroke-width="1.0" />
+    </Rule>
+  </Style>
+
+  <Layer name="Rezervatii" srs="&WGS84;">
+    <StyleName>Rezervatii</StyleName>
+    <Datasource>
+      <Parameter name="type">ogr</Parameter>
+      <Parameter name="file">../static/rezervatii-wgs84.geojson</Parameter>
       <Parameter name="layer">OGRGeoJSON</Parameter>
     </Datasource>
   </Layer>
