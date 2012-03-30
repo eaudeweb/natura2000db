@@ -98,6 +98,10 @@ def strip_brackets_dict_values(dic):
     return dict((k, strip_brackets(v)) for k, v in dic.iteritems())
 
 
+def link_search_species(field):
+    return flask.url_for('webpages.search', species=field.value)
+
+
 CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f').with_properties(container_class='number')
 CommonDate = fl.String.using(optional=True, validators=[valid_year_month])
 CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget='checkbox')
@@ -118,9 +122,12 @@ InfoColumn = fl.Dict.of(
 InfoTable = CommonList.of(
     fl.Dict.of(
 
-        CommonString.named('code').using(optional=False).with_properties(label=u'Cod'),
+        CommonString.named('code').using(optional=False)
+                    .with_properties(label=u'Cod',
+                                     view_href=link_search_species),
         CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
-        CommonString.named('name').using(optional=False).with_properties(label=u'Nume'),
+        CommonString.named('name').using(optional=False)
+                    .with_properties(label=u'Nume'),
 
         fl.Dict.of(
 
@@ -258,7 +265,8 @@ section_3 = fl.Dict.of(
                       .valued(*sorted(habitat_type_map.keys())) \
                       .using(optional=False) \
                       .with_properties(label=u'Cod',
-                                       value_labels=id_and_label(habitat_type_map)),
+                                       value_labels=id_and_label(habitat_type_map),
+                                       view_href=link_search_species),
             CommonFloat.named('percentage').using(optional=False).with_properties(label=u'Pondere'),
             CommonEnum.named('representativeness').valued('A', 'B', 'C', 'D').with_properties(label=u'Reprezentativitate'),
             CommonEnum.named('relative_area').valued('A', 'B', 'C').with_properties(label=u'Suprafață relativă'),
@@ -577,6 +585,14 @@ def nuts2_index(doc):
             values.add(n2code)
     return sorted(values)
 
+def species_index(doc):
+    values = set()
+    for element in doc.find("section3/[:]"):
+        code = [e["code"] for e in element.value if "code" in e]
+        values.update(code)
+    return sorted(values)
+
+species_map = _load_json("reference/species_ro.json")
 
 full_text_fields = [
     'section1/name',
@@ -665,6 +681,7 @@ Search = fl.Dict.of(
                             widget='select',
                             value_labels=biogeographic_map,
                             facet=True),
+
     fl.Enum.named('protected_areas') \
            .valued(*sorted(classification_map.keys())) \
            .with_properties(label=u'Clasificare',
@@ -672,6 +689,14 @@ Search = fl.Dict.of(
                             widget='select',
                             value_labels=classification_map,
                             facet=True),
+
+    fl.Enum.named('species') \
+           .valued(*sorted(species_map.keys()))
+           .with_properties(label=u"Specii",
+                            index=species_index,
+                            widget="select_field",
+                            value_labels=species_map,
+                            facet=True)
 )
 
 
