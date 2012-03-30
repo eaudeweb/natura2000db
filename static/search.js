@@ -18,6 +18,9 @@ $(document).ready(function() {
 
     function toggle_advanced_search() {
         $('.search-criteria').toggleClass(advanced);
+        if($('.search-criteria').hasClass(advanced)) {
+            $('.search-criteria').find('select').chosen();
+        };
         var cookie_value = advanced_on() ? 'on' : null;
         $.cookie(cookie_name, cookie_value, {path: '/', expires: 1});
     }
@@ -34,4 +37,7 @@ $(document).ready(function() {
         $('.search-criteria :input:not(.search-button)').val(null);
     });
 
+    $("#species").on("change", function () {
+        document.location = $(this).find("option:selected").data("url");
+    }).val("");
 });
