@@ -584,6 +584,7 @@ def species_index(doc):
         values.update(code)
     return sorted(values)
 
+species_map = _load_json("reference/species_ro.json")
 
 full_text_fields = [
     'section1/name',
@@ -682,11 +683,12 @@ Search = fl.Dict.of(
                             facet=True),
 
     fl.Enum.named('species') \
+           .valued(*sorted(species_map.keys()))
            .with_properties(label=u"Specii",
-                            value_labels={},
                             index=species_index,
-                            facet=True,
-                            widget="select",)
+                            widget="select",
+                            value_labels=species_map,
+                            facet=True)
 )
 
 
