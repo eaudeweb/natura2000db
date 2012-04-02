@@ -93,10 +93,14 @@ _strip_brackets_pattern = re.compile(r'(\([^\)]*\))')
 def strip_brackets(txt):
     return _strip_brackets_pattern.sub('', txt)
 
+def strip_special(txt):
+    return txt.replace("*", "")
 
 def strip_brackets_dict_values(dic):
     return dict((k, strip_brackets(v)) for k, v in dic.iteritems())
 
+def strip_special_status(dic):
+    return dict((k, strip_special(v)) for k, v in dic.iteritems())
 
 def link_search_species(field):
     return flask.url_for('webpages.search', species=field.value)
@@ -682,7 +686,8 @@ Search = fl.Dict.of(
            .with_properties(label=u'Județ',
                             index=indexer('section2/administrative[:]/code',
                                           concat=False, labels=False),
-                            widget='select',
+                            placeholder=u"Alege un judet",
+                            widget='select_field',
                             value_labels=nuts3,
                             facet=True),
     fl.Enum.named('type') \
@@ -723,7 +728,7 @@ Search = fl.Dict.of(
                             placeholder=u"Alege un habitat",
                             index=habitat_index,
                             widget="select_field",
-                            value_labels=strip_brackets_dict_values(habitat_type_map),
+                            value_labels=strip_special_status(habitat_type_map),
                             facet=True)
 )
 

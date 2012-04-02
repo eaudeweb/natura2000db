@@ -42,13 +42,15 @@ $(document).ready(function() {
         $('.search-criteria :input:not(.search-button)').val(null);
     });
 
-    $("#field-species").find("option").each(function () {
-        var val = capitalise($(this).text())
+    $("#field-species, #field-habitat, #field-nuts3").chosen().on("change", function () {
+        document.location = $(this).find("option:selected").data("url");
+
+    }).val("");
+
+    $("#field-species option,#f_species option,.search-facets .species").each(function () {
+        var val = capitalise($.trim($(this).text()));
         $(this).text(val);
     });
 
-    $("#field-species, #field-habitat").chosen().on("change", function () {
-        document.location = $(this).find("option:selected").data("url");
-
-    }).val("").trigger("liszt:updated");
+    $("#field-species,#f_species").trigger("liszt:updated");
 });

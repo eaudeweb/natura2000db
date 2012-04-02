@@ -12,13 +12,13 @@
       {% set value_label = field.properties.value_labels[item.name] %}
       <li>
         <a href="{{ url }}">
-          {{- value_label|default(item.name)|title }}
+          {{- value_label|default(item.name) }}
         </a> ({{ item.count }})
       </li>
     {% endfor %}
     </ul>
   {% else %}
-    <span class="filterValue">
+    <span class="filterValue {{ field.name }}">
       {{ field.properties.value_labels[field.value] }}
     </span>
     {% set url = form.url_for_search(field.root, **{field_name: None}) %}
