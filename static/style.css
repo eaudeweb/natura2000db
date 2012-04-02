@@ -634,6 +634,10 @@ label[for="f_text"] {
 .search-advanced-visible .search-simple .search-button {
   display: none;
 }
+.search-advanced select {
+  width: 300px;
+}
+
 
 .search-criteria {
   color: #444;

@@ -102,6 +102,10 @@ def link_search_species(field):
     return flask.url_for('webpages.search', species=field.value)
 
 
+def link_search_habitat(field):
+    return flask.url_for('webpages.search', habitat=field.value)
+
+
 CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f').with_properties(container_class='number')
 CommonDate = fl.String.using(optional=True, validators=[valid_year_month])
 CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget='checkbox')
@@ -266,7 +270,7 @@ section_3 = fl.Dict.of(
                       .using(optional=False) \
                       .with_properties(label=u'Cod',
                                        value_labels=id_and_label(habitat_type_map),
-                                       view_href=link_search_species),
+                                       view_href=link_search_habitat),
             CommonFloat.named('percentage').using(optional=False).with_properties(label=u'Pondere'),
             CommonEnum.named('representativeness').valued('A', 'B', 'C', 'D').with_properties(label=u'Reprezentativitate'),
             CommonEnum.named('relative_area').valued('A', 'B', 'C').with_properties(label=u'Suprafață relativă'),
@@ -366,7 +370,9 @@ section_4 = fl.Dict.of(
              .with_properties(label=u'Clase de habitat',
                               widget='habitat_breakdown'),
 
-        CommonString.named('other').with_properties(label=u'Alte caracteristici ale sitului', widget='textarea'),
+        CommonString.named('other').with_properties(
+            label=u'Alte caracteristici ale sitului',
+            widget='textarea'),
 
         ).named('characteristics') \
          .using(optional=True) \
@@ -590,9 +596,18 @@ def nuts2_index(doc):
 
 def species_index(doc):
     values = set()
-    for element in doc.find("section3/[:]"):
-        code = [e["code"] for e in element.value if "code" in e]
+    for element in doc.find("section3"):
+        # exclude habitat from species index.
+        code = [v["code"].value for label, value in element.items()
+                                for v in value
+                                if label != "habitat" and "code" in v]
         values.update(code)
+    return sorted(values)
+
+def habitat_index(doc):
+    values = set()
+    for element in doc.find("section3/habitat/[:]/code"):
+        values.add(element.value)
     return sorted(values)
 
 species_map = _load_json("reference/species_ro.json")
@@ -693,12 +708,20 @@ Search = fl.Dict.of(
                             value_labels=classification_map,
                             facet=True),
 
-    fl.Enum.named('species') \
+    fl.Enum.named('species')
            .valued(*sorted(species_map.keys()))
            .with_properties(label=u"Specii",
                             index=species_index,
                             widget="select_field",
                             value_labels=species_map,
+                            facet=True),
+
+    fl.Enum.named('habitat')
+           .valued(*sorted(habitat_type_map))
+           .with_properties(label=u"Habitate",
+                            index=habitat_index,
+                            widget="select_field",
+                            value_labels=strip_brackets_dict_values(habitat_type_map),
                             facet=True)
 )
 
