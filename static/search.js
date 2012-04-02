@@ -37,7 +37,7 @@ $(document).ready(function() {
         $('.search-criteria :input:not(.search-button)').val(null);
     });
 
-    $("#species").on("change", function () {
+    $("#field-species, #field-habitat").chosen().on("change", function () {
         document.location = $(this).find("option:selected").data("url");
-    }).val("");
+    }).val("").trigger("liszt:updated");
 });

@@ -34,7 +34,7 @@
     {{ form.select.open(field, **{
                         "id": "field-%s" % field.name,
                         "class": "field-%s" % field.name,
-                        "data-placeholder": "Alege o specie"}) }}
+                        "data-placeholder": field.placeholder}) }}
       <option selected="selected"></option>
       {% for item in form["facets"][field_name] %}
         {% set url = form.url_for_search(field.root, **{field_name: item.name}) %}

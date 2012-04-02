@@ -670,6 +670,9 @@ label[for="f_text"] {
   -webkit-border-bottom-right-radius: 5px;
   margin-bottom: 15px;
 }
+.search-facets select {
+  width: 200px;
+}
 
 .search-facets .chzn-container {
   margin: 14px 0 0 14px;

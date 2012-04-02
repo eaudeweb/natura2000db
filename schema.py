@@ -711,6 +711,7 @@ Search = fl.Dict.of(
     fl.Enum.named('species')
            .valued(*sorted(species_map.keys()))
            .with_properties(label=u"Specii",
+                            placeholder=u"Alege o specie",
                             index=species_index,
                             widget="select_field",
                             value_labels=species_map,
@@ -719,6 +720,7 @@ Search = fl.Dict.of(
     fl.Enum.named('habitat')
            .valued(*sorted(habitat_type_map))
            .with_properties(label=u"Habitate",
+                            placeholder=u"Alege un habitat",
                             index=habitat_index,
                             widget="select_field",
                             value_labels=strip_brackets_dict_values(habitat_type_map),
