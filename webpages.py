@@ -123,10 +123,11 @@ def search():
         return flask.render_template('search_error.html', msg=unicode(e),
                                      form=form, search_form=search_form)
 
+    search_answer['facets']['nuts3'] = [
+        e for e in search_answer['facets']['nuts3']
+          if e.name.startswith(search_form['nuts2'].value)]
     form['facets'] = search_answer['facets']
-    form['facets']['nuts3'] = [e for e in form['facets']['nuts3']
-                                 if e.name.startswith(search_form['nuts2'].value)]
-    # import pdb; pdb.set_trace()
+
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer,
@@ -155,6 +156,28 @@ def stats():
                                  stat_form=stat_form,
                                  stat_labels=statistics.label,
                                  stat_html=stat_html)
+
+@webpages.route('/data/<string:name>')
+def corine_areas(name):
+    datasets = {
+        'corine': schema.corine_map,
+        'text': schema.antropic_activities_map,
+        'habitat': schema.habitat_type_map,
+        'nuts2': schema.nuts2,
+        'nuts3': schema.nuts3,
+        'protected_areas': schema.classification_map
+    }
+    format = flask.request.args.get('fmt', 'html')
+    try:
+        dataset = datasets[name]
+    except KeyError:
+        flask.abort(404)
+
+    if format == 'json':
+        return flask.jsonify(dataset)
+    return flask.render_template('datasets.html',
+                                dataset=dataset.items(),
+                                dataset_name=name)
 
 @webpages.route('/dump')
 def dump():

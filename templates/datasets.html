@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ super() }} &mdash; căutare{% endblock %}
+
+{% block content %}
+
+<h1>Natura2000 - Lista siturilor CORINE</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cod</th>
+      <th>Nume</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for code, name in dataset|sort %}
+    <tr>
+      <td>{{ code }}</td>
+      <td><a href="{{ url_for('webpages.search', **{dataset_name:code}) }}">{{ name }}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+
+<a href="?fmt=json">Descarca datele în format JSON</a>
+
+
+{% endblock %}
