@@ -38,7 +38,7 @@ $(document).ready(function() {
         zoom_box = $('.leaflet-control-zoom').parent();
 
         var osm_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        var osm = new L.TileLayer(osm_url, {maxZoom: 18});
+        var osm = new L.TileLayer(osm_url, {maxZoom: 13});
         map_viewer.map.addLayer(osm);
 
         map_viewer.layers = {};
