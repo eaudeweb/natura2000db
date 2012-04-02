@@ -3,6 +3,7 @@
 import sys
 import os
 import logging
+from path import path as ppath
 import flask
 import flaskext.script
 import schema
@@ -22,6 +23,8 @@ default_config = {
 
 
 def create_app():
+    from werkzeug.wsgi import SharedDataMiddleware
+
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.update(default_config)
     app.config.from_pyfile("settings.py", silent=True)
@@ -29,10 +32,13 @@ def create_app():
     webpages.register(app)
 
     if 'PDF_FOLDER' in app.config:
-        from werkzeug.wsgi import SharedDataMiddleware
         app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
             '/static/pdf': app.config['PDF_FOLDER'],
         })
+
+    app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
+        '/static/tiles': ppath(__file__).parent/'geo'/'tiles',
+    })
 
     return app
 
