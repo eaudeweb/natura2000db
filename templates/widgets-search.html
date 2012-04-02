@@ -22,7 +22,7 @@
                       "data-placeholder": " "}) }}
   {{ form.option(field, contents='') }}
   {% for value, value_label in form.sorted_with_labels(field) %}
-    {{ form.option(field, value=value, contents=value_label|title) }}
+    {{ form.option(field, value=value, contents=value_label) }}
   {% endfor %}
   {{ form.select.close() }}
 {% endmacro %}
