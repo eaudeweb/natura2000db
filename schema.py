@@ -686,6 +686,7 @@ Search = fl.Dict.of(
            .with_properties(label=u'Județ',
                             index=indexer('section2/administrative[:]/code',
                                           concat=False, labels=False),
+                            placeholder=u"Alege un judet",
                             widget='select_field',
                             value_labels=nuts3,
                             facet=True),
