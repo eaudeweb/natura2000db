@@ -9,3 +9,4 @@ Flask-Script==0.3.3
 path.py==2.2.2
 meld3==0.6.8
 supervisor==3.0a12
+simplejson==2.5.0
