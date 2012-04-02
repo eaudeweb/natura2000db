@@ -267,6 +267,7 @@ $(document).ready(function() {
     });
 
     function add_default_layers(map_viewer, site_data_map) {
+        return;
         function url(name) { return R.assets + name + '.geojson'; }
 
         map_viewer.new_layer('sci', {color: '#201F73', label: "SCI"});
@@ -287,6 +288,7 @@ $(document).ready(function() {
     }
 
     function add_extra_layers(map_viewer, site_data_map) {
+        return;
         function url(name) { return R.assets + name + '.geojson'; }
 
         map_viewer.new_layer('judete', {color: '#73797B', label: "Județe"});
