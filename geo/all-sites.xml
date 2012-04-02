@@ -50,7 +50,6 @@
 
   <Style name="Judete">
     <Rule>
-      <PolygonSymbolizer fill="&color-Judete;" fill-opacity="&fill-opacity;" />
       <LineSymbolizer stroke="&color-Judete;" stroke-width="1.0" />
     </Rule>
   </Style>
