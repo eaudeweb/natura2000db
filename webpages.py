@@ -116,6 +116,7 @@ def _db_search(search_form, **kwargs):
 def search():
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
     search_form = schema.Search.from_flat(flask.request.args.to_dict())
+
     try:
         search_answer = _db_search(search_form, facets=True)
     except SearchError, e:
@@ -123,6 +124,9 @@ def search():
                                      form=form, search_form=search_form)
 
     form['facets'] = search_answer['facets']
+    form['facets']['nuts3'] = [e for e in form['facets']['nuts3']
+                                 if e.name.startswith(search_form['nuts2'].value)]
+    # import pdb; pdb.set_trace()
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer,
