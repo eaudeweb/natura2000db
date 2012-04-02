@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-  {{ link_css('leaflet-0.3.1/leaflet.css') }}
+  {{ link_css('lib/leaflet-0.3.1/leaflet.css') }}
   {{ link_css('style.css') }}
   <script class="link-to-static">
     var R = {assets: "{{ url_for('static', filename='') }}"};
@@ -11,7 +11,7 @@
   <!--[if lt IE 9]><script>R.ie_disable_map = true;</script><![endif]-->
   {{ script_src('jquery-1.7.1.min.js') }}
   {{ script_src('jquery.cookie.js') }}
-  {{ script_src('leaflet-0.3.1/leaflet.js') }}
+  {{ script_src('lib/leaflet-0.3.1/leaflet.js') }}
   {{ script_src('search.js') }}
   {{ script_src('form.js') }}
   {{ script_src('map.js') }}
