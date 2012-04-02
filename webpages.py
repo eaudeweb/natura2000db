@@ -123,9 +123,10 @@ def search():
         return flask.render_template('search_error.html', msg=unicode(e),
                                      form=form, search_form=search_form)
 
-    search_answer['facets']['nuts3'] = [
-        e for e in search_answer['facets']['nuts3']
-          if e.name.startswith(search_form['nuts2'].value)]
+    if "nuts2" in search_form and search_form["nuts2"]:
+        search_answer['facets']['nuts3'] = [
+            e for e in search_answer['facets']['nuts3']
+              if e.name.startswith(search_form['nuts2'].value)]
     form['facets'] = search_answer['facets']
 
     return flask.render_template('search.html', form=form,
