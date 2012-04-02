@@ -5,7 +5,7 @@
   {{ link_css('lib/leaflet-0.3.1/leaflet.css') }}
   {{ link_css('style.css') }}
   <script class="link-to-static">
-    var R = {assets: "{{ url_for('static', filename='') }}"};
+    var R = {TILES_URL: "{{ config['TILES_URL'] }}"};
   </script>
   {% if config['JS_DEBUG'] %}<script>R['debug'] = true;</script>{% endif %}
   <!--[if lt IE 9]><script>R.ie_disable_map = true;</script><![endif]-->

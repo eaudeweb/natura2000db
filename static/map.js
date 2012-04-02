@@ -64,7 +64,7 @@ $(document).ready(function() {
             return layer;
         };
 
-        var sites_url = R.assets + 'tiles/all-sites/{z}/{x}/{y}.png';
+        var sites_url = R.TILES_URL + 'all-sites/{z}/{x}/{y}.png';
         var sites = new L.TileLayer(sites_url, {maxZoom: 13});
         map_viewer.map.addLayer(sites);
 

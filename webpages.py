@@ -43,11 +43,9 @@ def view():
     }
 
     app = flask.current_app
-    if 'PDF_FOLDER' in app.config:
+    if 'PDF_URL' in app.config:
         pdf_name = doc_id.lower() + '.pdf'
-        if os.path.isfile(os.path.join(app.config['PDF_FOLDER'], pdf_name)):
-            options['pdf_url'] = flask.url_for('static',
-                                               filename='pdf/' + pdf_name)
+        options['pdf_url'] = app.config['PDF_URL'] + pdf_name
     return flask.render_template('view.html', **options)
 
 

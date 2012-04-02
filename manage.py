@@ -19,6 +19,7 @@ default_config = {
     'HTTP_CHERRYPY': False,
     'STORAGE_ENGINE': 'solr',
     'SECRET_KEY': 'demo',
+    'TILES_FOLDER': ppath(__file__).parent/'geo'/'tiles',
 }
 
 
@@ -31,14 +32,15 @@ def create_app():
 
     webpages.register(app)
 
+    static_url_map = {}
     if 'PDF_FOLDER' in app.config:
-        app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
-            '/static/pdf': app.config['PDF_FOLDER'],
-        })
-
-    app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
-        '/static/tiles': ppath(__file__).parent/'geo'/'tiles',
-    })
+        static_url_map['/static/pdf'] = app.config['PDF_FOLDER']
+        app.config.setdefault('PDF_URL', '/static/pdf/')
+    if 'TILES_FOLDER' in app.config:
+        static_url_map['/static/tiles'] = app.config['TILES_FOLDER']
+        app.config.setdefault('TILES_URL', '/static/tiles/')
+    if static_url_map:
+        app.wsgi_app = SharedDataMiddleware(app.wsgi_app, static_url_map)
 
     return app
 
