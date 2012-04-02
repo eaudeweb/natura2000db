@@ -1,3 +1,8 @@
+function capitalise(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 $(document).ready(function() {
 
     var advanced = 'search-advanced-visible';
@@ -37,7 +42,13 @@ $(document).ready(function() {
         $('.search-criteria :input:not(.search-button)').val(null);
     });
 
+    $("#field-species").find("option").each(function () {
+        var val = capitalise($(this).text())
+        $(this).text(val);
+    });
+
     $("#field-species, #field-habitat").chosen().on("change", function () {
         document.location = $(this).find("option:selected").data("url");
+
     }).val("").trigger("liszt:updated");
 });

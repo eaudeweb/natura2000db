@@ -40,7 +40,7 @@
         {% set url = form.url_for_search(field.root, **{field_name: item.name}) %}
         {% set value_label = field.properties.value_labels[item.name] %}
         <option value="{{ item.name }}" data-url="{{ url }}">
-          {{- value_label|default(item.name)|title }} ({{ item.count }})
+          {{- value_label|default(item.name) }} ({{ item.count }})
         </option>
       {% endfor %}
     {{ form.select.close() }}
