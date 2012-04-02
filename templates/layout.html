@@ -1,18 +1,21 @@
+{%- from 'bits.html' import link_css, script_src -%}
 <!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script class="link-to-static">var R = {assets: "{{ url_for('static', filename='') }}"};</script>
-    {% if config['JS_DEBUG'] %}<script>R['debug'] = true;</script>{% endif %}
-    <!--[if lt IE 9]><script>R.ie_disable_map = true;</script><![endif]-->
-    <script src="{{ url_for('static', filename='jquery-1.7.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='jquery.cookie.js') }}"></script>
-    <script src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
-    <script src="{{ url_for('static', filename='search.js') }}"></script>
-    <script src="{{ url_for('static', filename='form.js') }}"></script>
-    <script src="{{ url_for('static', filename='map.js') }}"></script>
-    <title>{% block title %}Natura2000{% endblock %}</title>
+  {{ link_css('leaflet/leaflet.css') }}
+  {{ link_css('style.css') }}
+  <script class="link-to-static">
+    var R = {assets: "{{ url_for('static', filename='') }}"};
+  </script>
+  {% if config['JS_DEBUG'] %}<script>R['debug'] = true;</script>{% endif %}
+  <!--[if lt IE 9]><script>R.ie_disable_map = true;</script><![endif]-->
+  {{ script_src('jquery-1.7.1.min.js') }}
+  {{ script_src('jquery.cookie.js') }}
+  {{ script_src('leaflet/leaflet.js') }}
+  {{ script_src('search.js') }}
+  {{ script_src('form.js') }}
+  {{ script_src('map.js') }}
+  <title>{% block title %}Natura2000{% endblock %}</title>
 </head>
 <body>
   <div class="natura2000">
