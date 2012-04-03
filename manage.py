@@ -6,9 +6,9 @@ import logging
 from path import path as ppath
 import flask
 import flaskext.script
-import schema
-import webpages
-from storage import get_db
+import naturasites.schema
+import naturasites.views
+from naturasites.storage import get_db
 
 
 default_config = {
@@ -30,7 +30,7 @@ def create_app():
     app.config.update(default_config)
     app.config.from_pyfile("settings.py", silent=True)
 
-    webpages.register(app)
+    naturasites.views.register(app)
 
     static_url_map = {}
     if 'PDF_FOLDER' in app.config:
@@ -81,7 +81,7 @@ def import_mjson():
             yield flask.json.loads(line)
 
     def load_document(data):
-        doc = schema.SpaDoc(data)
+        doc = naturasites.schema.SpaDoc(data)
         assert doc.validate(), '%s does not validate' % data['section1']['code']
         assert doc.value == data, 'failed round-tripping the json data'
         return doc
@@ -101,7 +101,7 @@ def species_to_json():
     values = set()
     db = get_db()
 
-    search =  webpages._db_search(schema.Search.from_flat({}), facets=True)
+    search =  naturasites.views._db_search(naturasites.schema.Search.from_flat({}), facets=True)
     for d in search["docs"]:
         doc = db.load_document(d["id"])
         codes_and_labels = []

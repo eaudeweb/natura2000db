@@ -139,7 +139,7 @@ class MarkupGenerator(Generator):
 class SearchMarkupGenerator(MarkupGenerator):
 
     _default_settings = dict(MarkupGenerator._default_settings, **{
-        'view_name': 'webpages.search',
+        'view_name': 'naturasites.search',
         'facets': [],
     })
 

@@ -55,7 +55,7 @@
 
 {% macro site_link(form, field) %}
   <div class="{{ "field-%s" % field.name }}">
-  <a href="{{ url_for('webpages.view', doc_id=field.value) }}">{{ field.u }}</a>
+  <a href="{{ url_for('naturasites.view', doc_id=field.value) }}">{{ field.u }}</a>
   ({{ form.other_site_labels[field.value] }})
   </div>
 {% endmacro %}

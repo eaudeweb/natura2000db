@@ -8,10 +8,11 @@ from storage import get_db, Or, And, AllowWildcards, StorageError, NotFound
 import statistics
 
 
-webpages = flask.Blueprint('webpages', __name__)
+naturasites = flask.Blueprint('naturasites', __name__,
+                              template_folder='templates')
 
 
-@webpages.route('/')
+@naturasites.route('/')
 def index():
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
     return flask.render_template('index.html', form=form,
@@ -25,7 +26,7 @@ def _other_site_labels(doc):
     return dict((data['id'], data['name']) for data in results['docs'])
 
 
-@webpages.route('/view')
+@naturasites.route('/view')
 def view():
     doc_id = flask.request.args.get('doc_id')
     db = get_db()
@@ -53,8 +54,8 @@ def _doc_title(doc):
     return u"%s (%s)" % (doc['section1']['name'].u, doc['section1']['code'].u)
 
 
-@webpages.route('/new', methods=['GET', 'POST'])
-@webpages.route('/edit', methods=['GET', 'POST'])
+@naturasites.route('/new', methods=['GET', 'POST'])
+@naturasites.route('/edit', methods=['GET', 'POST'])
 def edit():
     doc_id = flask.request.args.get('doc_id', None)
     db = get_db()
@@ -70,7 +71,7 @@ def edit():
             app = flask.current_app
             app.document_signal.send('save', doc_id=doc_id, doc=doc)
             flask.flash("Document %r saved" % doc_id)
-            return flask.redirect(flask.url_for('webpages.view', doc_id=doc_id))
+            return flask.redirect(flask.url_for('naturasites.view', doc_id=doc_id))
 
         else:
             flask.flash("Errors in document")
@@ -110,7 +111,7 @@ def _db_search(search_form, **kwargs):
         raise SearchError(u"Eroare bază de date: %s" % e)
 
 
-@webpages.route('/search')
+@naturasites.route('/search')
 def search():
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
     search_form = schema.Search.from_flat(flask.request.args.to_dict())
@@ -133,7 +134,7 @@ def search():
                                  stat_labels=statistics.label)
 
 
-@webpages.route('/stats')
+@naturasites.route('/stats')
 def stats():
     args = flask.request.args.to_dict()
 
@@ -149,14 +150,14 @@ def stats():
     stat_html = statistics.compute(stat_form, search_answer)
 
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
-    form['view_name'] = 'webpages.stats'
+    form['view_name'] = 'naturasites.stats'
     form['facets'] = search_answer['facets']
     return flask.render_template('stats.html', form=form,
                                  stat_form=stat_form,
                                  stat_labels=statistics.label,
                                  stat_html=stat_html)
 
-@webpages.route('/data/<string:name>')
+@naturasites.route('/data/<string:name>')
 def corine_areas(name):
     datasets = {
         'corine': schema.corine_map,
@@ -178,7 +179,7 @@ def corine_areas(name):
                                 dataset=dataset.items(),
                                 dataset_name=name)
 
-@webpages.route('/dump')
+@naturasites.route('/dump')
 def dump():
     db = get_db()
     docs = db.search({}, get_data=True)['docs']
@@ -186,7 +187,7 @@ def dump():
 
 
 def register(app):
-    app.register_blueprint(webpages)
+    app.register_blueprint(naturasites)
     app.document_signal = blinker.Signal()
 
     _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']

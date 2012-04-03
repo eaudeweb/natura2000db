@@ -2,7 +2,7 @@
 {{- fmt | format(value) -}}
 {% endmacro %}
 
-<h2>Statistici - Activități și consecințe în jurul sitului</h2>
+<h2>Statistici - Activități și consecințe în interiorul sitului</h2>
 
 {% for code, name in activities|sort %}
   {% if stat['table_%s' % code] %}
@@ -24,7 +24,7 @@
       <tbody>
       {% for row in stat['table_%s' % code] %}
 
-        {% set url = url_for('webpages.view', doc_id=row['id']) %}
+        {% set url = url_for('naturasites.view', doc_id=row['id']) %}
 
         <tr>
           <td><a href="{{ url }}">{{ row['name'] }}</a></td>

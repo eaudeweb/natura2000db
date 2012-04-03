@@ -21,7 +21,7 @@
     <tbody>
     {% for row in stat['table_%s' % code] %}
 
-      {% set url = url_for('webpages.view', doc_id=row['id']) %}
+      {% set url = url_for('naturasites.view', doc_id=row['id']) %}
 
       <tr>
         <td><a href="{{ url }}">{{ row['name'] }}</a></td>
