@@ -61,7 +61,9 @@ def edit():
     new_doc = bool(doc_id is None)
 
     if flask.request.method == 'POST':
-        doc = schema.SpaDoc.from_flat(flask.request.form.to_dict())
+        request_form = flask.request.form.to_dict()
+        request_form["section1_code"] = doc_id
+        doc = schema.SpaDoc.from_flat(request_form)
 
         if doc.validate():
             doc_id = db.save_document(doc_id, doc)
@@ -112,13 +114,19 @@ def _db_search(search_form, **kwargs):
 def search():
     form = widgets.SearchMarkupGenerator(flask.current_app.jinja_env)
     search_form = schema.Search.from_flat(flask.request.args.to_dict())
+
     try:
         search_answer = _db_search(search_form, facets=True)
     except SearchError, e:
         return flask.render_template('search_error.html', msg=unicode(e),
                                      form=form, search_form=search_form)
 
+    if "nuts2" in search_form and search_form["nuts2"]:
+        search_answer['facets']['nuts3'] = [
+            e for e in search_answer['facets']['nuts3']
+              if e.name.startswith(search_form['nuts2'].value)]
     form['facets'] = search_answer['facets']
+
     return flask.render_template('search.html', form=form,
                                  search_form=search_form,
                                  search_answer=search_answer,
@@ -147,6 +155,28 @@ def stats():
                                  stat_form=stat_form,
                                  stat_labels=statistics.label,
                                  stat_html=stat_html)
+
+@webpages.route('/data/<string:name>')
+def corine_areas(name):
+    datasets = {
+        'corine': schema.corine_map,
+        'text': schema.antropic_activities_map,
+        'habitat': schema.habitat_type_map,
+        'nuts2': schema.nuts2,
+        'nuts3': schema.nuts3,
+        'protected_areas': schema.classification_map
+    }
+    format = flask.request.args.get('fmt', 'html')
+    try:
+        dataset = datasets[name]
+    except KeyError:
+        flask.abort(404)
+
+    if format == 'json':
+        return flask.jsonify(dataset)
+    return flask.render_template('datasets.html',
+                                dataset=dataset.items(),
+                                dataset_name=name)
 
 @webpages.route('/dump')
 def dump():

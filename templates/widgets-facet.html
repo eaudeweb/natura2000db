@@ -10,12 +10,43 @@
     {% for item in form['facets'][field.name] %}
       {% set url = form.url_for_search(field.root, **{field_name: item.name}) %}
       {% set value_label = field.properties.value_labels[item.name] %}
-      <li><a href="{{ url }}">{{- value_label }}</a> ({{ item.count }})</li>
+      <li>
+        <a href="{{ url }}">
+          {{- value_label|default(item.name) }}
+        </a> ({{ item.count }})
+      </li>
     {% endfor %}
     </ul>
   {% else %}
-    <span class="filterValue">{{ field.properties.value_labels[field.value] }}</span>
+    <span class="filterValue {{ field.name }}">
+      {{ field.properties.value_labels[field.value] }}
+    </span>
     {% set url = form.url_for_search(field.root, **{field_name: None}) %}
     [<a href="{{ url }}" class="facet-remove">X</a>]
   {% endif %}
+{% endmacro %}
+
+{% macro select_field(form, field) %}
+  {% set field_name = field.name.encode('ascii') %}
+
+  {% if field.is_empty %}
+    {{ _label(form, field) }}
+    {{ form.select.open(field, **{
+                        "id": "field-%s" % field.name,
+                        "class": "field-%s" % field.name,
+                        "data-placeholder": field.properties.placeholder}) }}
+      <option selected="selected"></option>
+      {% for item in form["facets"][field_name] %}
+        {% set url = form.url_for_search(field.root, **{field_name: item.name}) %}
+        {% set value_label = field.properties.value_labels[item.name] %}
+        <option value="{{ item.name }}" data-url="{{ url }}">
+          {{- value_label|default(item.name) }} ({{ item.count }})
+        </option>
+      {% endfor %}
+    {{ form.select.close() }}
+  {% else %}
+    {{ select(form, field) }}
+  {% endif %}
+
+
 {% endmacro %}

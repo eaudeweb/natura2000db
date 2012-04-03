@@ -56,7 +56,6 @@ def valid_site_code(element, state):
     patt = re.compile(r'^\w{9}$')
     if element.value is not None and patt.match(element.value):
         return True
-
     else:
         element.add_error(u"Cod incorect")
         return False
@@ -94,9 +93,21 @@ _strip_brackets_pattern = re.compile(r'(\([^\)]*\))')
 def strip_brackets(txt):
     return _strip_brackets_pattern.sub('', txt)
 
+def strip_special(txt):
+    return txt.replace("*", "")
 
 def strip_brackets_dict_values(dic):
     return dict((k, strip_brackets(v)) for k, v in dic.iteritems())
+
+def strip_special_status(dic):
+    return dict((k, strip_special(v)) for k, v in dic.iteritems())
+
+def link_search_species(field):
+    return flask.url_for('webpages.search', species=field.value)
+
+
+def link_search_habitat(field):
+    return flask.url_for('webpages.search', habitat=field.value)
 
 
 CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f').with_properties(container_class='number')
@@ -119,9 +130,12 @@ InfoColumn = fl.Dict.of(
 InfoTable = CommonList.of(
     fl.Dict.of(
 
-        CommonString.named('code').using(optional=False).with_properties(label=u'Cod'),
+        CommonString.named('code').using(optional=False)
+                    .with_properties(label=u'Cod',
+                                     view_href=link_search_species),
         CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
-        CommonString.named('name').using(optional=False).with_properties(label=u'Nume'),
+        CommonString.named('name').using(optional=False)
+                    .with_properties(label=u'Nume'),
 
         fl.Dict.of(
 
@@ -146,7 +160,7 @@ InfoTable_help = u"""Populație: C – specie comună, R - specie rară, V - foa
                                          B - populație ne-izolată, dar la limita ariei de distribuție,
                                          C - populație ne-izolată cu o arie de răspândire extinsă
                      Evaluare (globală): A - excelentă, B - bună, C - considerabilă"""
-                     
+
 section6_helptext = u"""Intensitatea influenței: A – mare, B - medie, C - scăzută
                        Influență: (+) - pozitivă, (0) - neutră, (-) - negativă"""
 
@@ -259,7 +273,8 @@ section_3 = fl.Dict.of(
                       .valued(*sorted(habitat_type_map.keys())) \
                       .using(optional=False) \
                       .with_properties(label=u'Cod',
-                                       value_labels=id_and_label(habitat_type_map)),
+                                       value_labels=id_and_label(habitat_type_map),
+                                       view_href=link_search_habitat),
             CommonFloat.named('percentage').using(optional=False).with_properties(label=u'Pondere'),
             CommonEnum.named('representativeness').valued('A', 'B', 'C', 'D').with_properties(label=u'Reprezentativitate'),
             CommonEnum.named('relative_area').valued('A', 'B', 'C').with_properties(label=u'Suprafață relativă'),
@@ -279,7 +294,7 @@ section_3 = fl.Dict.of(
                               helptext=InfoTable_help),
     InfoTable.named('species_bird_extra') \
             .with_properties(label=u"Specii de păsări cu migrație regulată "
-                                   u"nemenționate în anexa I la Directiva Consiliului 79/409/CEE", 
+                                   u"nemenționate în anexa I la Directiva Consiliului 79/409/CEE",
                              helptext=InfoTable_help),
     InfoTable.named('species_mammal') \
             .with_properties(label=u"Specii de mamifere enumerate în anexa II "
@@ -301,7 +316,9 @@ section_3 = fl.Dict.of(
     CommonList.named('species_plant').of(
 
         fl.Dict.of(
-            CommonString.named('code').using(optional=False).with_properties(label=u'Cod'),
+            CommonString.named('code').using(optional=False)
+                        .with_properties(label=u'Cod',
+                                         view_href=link_search_species),
             CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
             CommonString.named('name').using(optional=False).with_properties(label=u'Nume'),
             CommonString.named('population').with_properties(label=u'Populație'),
@@ -319,7 +336,8 @@ section_3 = fl.Dict.of(
                       .with_properties(label=u'Categorie',
                                        value_labels=species_category_map),
 
-            CommonString.named('code').with_properties(label=u'Cod'),
+            CommonString.named('code').with_properties(label=u'Cod',
+                                                       view_href=link_search_species),
             CommonString.named('tax_code').with_properties(widget='hidden', label=u'Cod taxonomic'),
             CommonString.named('scientific_name').using(optional=False).with_properties(label=u'Denumire științifică'),
 
@@ -356,7 +374,9 @@ section_4 = fl.Dict.of(
              .with_properties(label=u'Clase de habitat',
                               widget='habitat_breakdown'),
 
-        CommonString.named('other').with_properties(label=u'Alte caracteristici ale sitului', widget='textarea'),
+        CommonString.named('other').with_properties(
+            label=u'Alte caracteristici ale sitului',
+            widget='textarea'),
 
         ).named('characteristics') \
          .using(optional=True) \
@@ -578,6 +598,23 @@ def nuts2_index(doc):
             values.add(n2code)
     return sorted(values)
 
+def species_index(doc):
+    values = set()
+    for element in doc.find("section3"):
+        # exclude habitat from species index.
+        code = [v["code"].value for label, value in element.items()
+                                for v in value
+                                if label != "habitat" and "code" in v]
+        values.update(code)
+    return sorted(values)
+
+def habitat_index(doc):
+    values = set()
+    for element in doc.find("section3/habitat/[:]/code"):
+        values.add(element.value)
+    return sorted(values)
+
+species_map = _load_json("reference/species_ro.json")
 
 full_text_fields = [
     'section1/name',
@@ -639,7 +676,7 @@ Search = fl.Dict.of(
                             value_labels=strip_brackets_dict_values(corine_map)),
     fl.Enum.named('nuts2') \
            .valued(*sorted(nuts2.keys())) \
-           .with_properties(label=u'Regiune administrativă',
+           .with_properties(label=u'Regiune de dezvoltare',
                             index=nuts2_index,
                             widget='select',
                             value_labels=nuts2,
@@ -649,7 +686,8 @@ Search = fl.Dict.of(
            .with_properties(label=u'Județ',
                             index=indexer('section2/administrative[:]/code',
                                           concat=False, labels=False),
-                            widget='select',
+                            placeholder=u"Alege un judet",
+                            widget='select_field',
                             value_labels=nuts3,
                             facet=True),
     fl.Enum.named('type') \
@@ -666,6 +704,7 @@ Search = fl.Dict.of(
                             widget='select',
                             value_labels=biogeographic_map,
                             facet=True),
+
     fl.Enum.named('protected_areas') \
            .valued(*sorted(classification_map.keys())) \
            .with_properties(label=u'Clasificare',
@@ -673,6 +712,24 @@ Search = fl.Dict.of(
                             widget='select',
                             value_labels=classification_map,
                             facet=True),
+
+    fl.Enum.named('species')
+           .valued(*sorted(species_map.keys()))
+           .with_properties(label=u"Specii",
+                            placeholder=u"Alege o specie",
+                            index=species_index,
+                            widget="select_field",
+                            value_labels=species_map,
+                            facet=True),
+
+    fl.Enum.named('habitat')
+           .valued(*sorted(habitat_type_map))
+           .with_properties(label=u"Habitate",
+                            placeholder=u"Alege un habitat",
+                            index=habitat_index,
+                            widget="select_field",
+                            value_labels=strip_special_status(habitat_type_map),
+                            facet=True)
 )
 
 

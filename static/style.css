@@ -4,7 +4,7 @@
  * 16 ERRORS on http://jigsaw.w3.org/css-validator/ if 'Profile:CSS level 3' is selected, BUT ALL of them related to -moz-border-radius & -webkit-border-radius.
  */
 
-   
+
 /* GLOBAL */
 .natura2000 {
   /*font-family: Arial, Verdana, sans-serif;*/
@@ -30,7 +30,7 @@ table .error {
 
 
 /* #################################
-       EDIT A NATURA 2000 FORM 
+       EDIT A NATURA 2000 FORM
    ################################ */
 .doc-edit h1 {
   font-size: 16px;
@@ -45,11 +45,11 @@ table .error {
 
 .doc-edit table {
   border-collapse: collapse;
-  border: 1px solid #C0C0C0; 
+  border: 1px solid #C0C0C0;
 }
 
-.doc-edit table input, 
-.doc-edit textarea, 
+.doc-edit table input,
+.doc-edit textarea,
 .doc-edit input {
   font-size: 12px;
 }
@@ -69,7 +69,7 @@ table .error {
   padding: 4px;
 }
 
-.doc-edit td, 
+.doc-edit td,
 .doc-edit th {
   border: 1px solid silver;
 }
@@ -86,7 +86,7 @@ table .error {
 }
 
 .doc-edit h2 {
-  color: #0066CC; 
+  color: #0066CC;
   margin-top: 33px;
   margin-bottom: 0px;
   font-size: 14px;
@@ -99,12 +99,12 @@ table .error {
 }
 
 .doc-edit .dict_children label {
-  color: #444; 
+  color: #444;
   margin-left: 5px;
   font-size: 14px;
 }
 
-.doc-edit .dict_children input, 
+.doc-edit .dict_children input,
 .doc-edit .dict_children textarea {
   border: 1px solid #C0C0C0;
 }
@@ -138,7 +138,7 @@ table .error {
 }
 
 
-/* "Coduri ale siturilor Natura 2000", 
+/* "Coduri ale siturilor Natura 2000",
    "Longitudine",
    "Latitudine" */
 .doc-edit .field-other_sites p,
@@ -243,7 +243,7 @@ table .error {
 .doc-edit .field-characteristics input,
 .doc-edit .field-overlap {
   max-width: 40px; /* those inputs hold max 3 digits; it's a percent */
-}  
+}
 
 .doc-edit .field-reproduction,
 .doc-edit .field-wintering,
@@ -270,7 +270,7 @@ table .error {
 
 .doc-edit .field-classification select {
   min-width: 60px;
-}  
+}
 
 .doc-edit .field-habitat td:first-child,
 .doc-edit .field-habitat th:first-child,
@@ -294,7 +294,7 @@ table .error {
 .doc-edit .field-section4 .label,
 .doc-edit .field-section5 .label {
   text-align: left;
-  color: #444; 
+  color: #444;
   margin-left: 7px;
   margin-top: 5px;
   margin-bottom: 2px;
@@ -372,7 +372,7 @@ table .error {
 
 .doc-edit .field-map .dict_children label {
   font-size: 12px;
-} 
+}
 
 .doc-edit .virtual-child {
   display: none;
@@ -393,12 +393,12 @@ table .error {
 
 .doc-edit .helpText {
   color: #707070;
-}  
+}
 
 
 
 /* #################################
-       VIEW A NATURA 2000 FORM 
+       VIEW A NATURA 2000 FORM
    ################################ */
 .doc-view {
   color: #335C9E;
@@ -490,7 +490,7 @@ table .error {
 
 .doc-view h2~div ul li div {
   display: inline; /* section 'Harta fizica' */
-}  
+}
 
 .doc-view .field-code,
 .doc-view .field-code a {
@@ -528,7 +528,7 @@ table .error {
 .doc-view .field-species_other .field-text {
   border: 0px;
 }
-  
+
 .doc-view tr,
 .doc-view td {
   border: 1px solid #AEAEAE;
@@ -538,7 +538,7 @@ table .error {
   text-align: right;
 }
 
-  
+
 
 /* #################################
       SEARCH IN NATURA 2000 FORMS
@@ -554,7 +554,7 @@ table .error {
   text-transform: uppercase;
   font-size: 16px; /* just like any left-column-title on this site */
   font-weight: bold;
-}  
+}
 
 /* label near search text input */
 label[for="f_text"] {
@@ -634,6 +634,10 @@ label[for="f_text"] {
 .search-advanced-visible .search-simple .search-button {
   display: none;
 }
+.search-advanced select {
+  width: 300px;
+}
+
 
 .search-criteria {
   color: #444;
@@ -665,6 +669,13 @@ label[for="f_text"] {
   -webkit-border-bottom-left-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
   margin-bottom: 15px;
+}
+.search-facets select {
+  width: 200px;
+}
+
+.search-facets .chzn-container {
+  margin: 14px 0 0 14px;
 }
 
 .search-facets label {
@@ -882,7 +893,7 @@ body.full-page-body {
 /* drop down list with habitat classes; to be shrunk from 510px to 124px when not focus, otherwise show its full width */
 #f_corine {
   max-width: 124px;
-}  
+}
 
 #f_corine:focus,
 #f_corine:visited {
@@ -918,7 +929,7 @@ body.full-page-body {
 .stats thead {
   background: #fff;
   border-bottom: 2px solid #444; /* recommended for hightlight */
-}  
+}
 
 .stats th {
   color: #444;
@@ -929,16 +940,16 @@ body.full-page-body {
 .stats table td {
   padding: 0px 10px;
   text-align: right;
-}     
+}
 
 .stats table td:first-child {
   text-align: left;
   padding-left: 5px;
-} 
+}
 
 .stats table tr:nth-child(4n) {
-  border-bottom: 1px solid #C0C0C0; 
-}  
+  border-bottom: 1px solid #C0C0C0;
+}
 
 .stats .highlight-row td:nth-child(4n) {
   background: #E3E3E3; /* highlight the 4th column only on tables related to area */
@@ -966,7 +977,7 @@ body.full-page-body {
 
 .stats-results a {
   margin-left: 10px;
-  display: block; 
+  display: block;
 }
 
 .stats table tfoot tr:last-of-type {
@@ -1001,14 +1012,46 @@ body.full-page-body {
 
 .backToSearch a {
   color: #335C9E;
-}  
+}
+
+
+/* #####################################
+    DATASETS PAGES FOR NATURA 2000 FORMS
+   ##################################### */
+.dataset {
+  max-width: 758px;
+  margin-left: 10px;
+  border: 0px solid #0098AA;
+}
+
+.dataset table {
+  border: none;
+  margin-bottom: 30px;
+  border-collapse: collapse;
+}
+
+.dataset thead {
+  background: #fff;
+  border-bottom: 2px solid #444; /* recommended for hightlight */
+}
+
+.dataset th {
+  color: #444;
+  text-align: left;
+  padding-right: 10px;
+}
+
+.dataset table tr:nth-child(10n) {
+  border-bottom: 1px solid #C0C0C0;
+}
+
 
 /* do not hide them; ONLY for Opera */
 #header,
-#breadcrumb, 
+#breadcrumb,
 #footer,
 .wrap > ul {
-  display: block; 
+  display: block;
 }
 
 .doc-view .button {
@@ -1022,35 +1065,35 @@ body.full-page-body {
        PRINT A NATURA 2000 FORM (black & white)
    ################################################ */
 @media print {
-     
+
      #header,
-     #breadcrumb, 
+     #breadcrumb,
      #footer,
     .wrap > ul,
     .doc-view .button {
       display: none; /* hide the rest of the page and the edit button */
     }
-     
+
     .doc-view {
-      display: block; 
+      display: block;
       margin: 0;
       padding: 0;
       color: #636363; /* the color for all text, including field values; must be different from label's color */
       border: none;
       font-size: 9.03pt !important;
     }
-    
+
     .doc-view > p { /* the legend of the form */
       text-align: center !important;
       color: #000;
     }
-    
+
     .doc-view h1 {
       font-size: 14.3pt !important;
       text-align: center !important;
       color: #000;
     }
-    
+
     .doc-view h2 {
       color: #000;
       font-size: 9.78pt;
@@ -1060,7 +1103,7 @@ body.full-page-body {
       margin-top: 20px;
       margin-bottom: 0px;
     }
-    
+
     .doc-view h2~div p {
       color: #000;
       text-align: left !important;
@@ -1072,14 +1115,14 @@ body.full-page-body {
       margin-left: 15px;
       font-style: italic;
     }
-     
+
     /* space between h2 title and div with a certain input, in the view standard form */
     .doc-view h2~div {
       margin-top: 10px;
       margin-bottom: 20px;
       padding: 0px !important; /* if padding, then sections/tables with no content at all, like section 5, appear in the form */
     }
-    
+
     .doc-view div div ul li,
     .doc-view .field-biogeographic .label,
     .doc-view .field-number,
@@ -1089,11 +1132,11 @@ body.full-page-body {
       color: #636363 !important; /* gray, same as the rest of field values */
       font-style: normal;
     }
-    
+
     .doc-view table thead {
       font-weight: normal !important;
     }
-    
+
     .doc-view table td {
       padding: 0px 5px;
     }
@@ -1105,7 +1148,7 @@ body.full-page-body {
     .doc-view table,
     .doc-view .map {
       page-break-inside: avoid !important;
-    }  
+    }
 
     .doc-view h2~div div p {
       margin-top: 5px;
@@ -1124,12 +1167,12 @@ body.full-page-body {
     .doc-view th,
     .doc-view thead tr td  {
       color: #333;
-    }  
-    
+    }
+
     .doc-view ul {
       list-style-type: square !important;
     }
-    
+
     .label {
       color: #000;
       margin-left: 5px;
@@ -1137,11 +1180,11 @@ body.full-page-body {
 
     h2~div ul li div {
       display: inline; /* section 'Harta fizica' */
-    } 
-     
+    }
+
     h2~div ul {
        display: block; /* the list for section 7, aka maps */
-     } 
+     }
 
     .center-column {
       margin-bottom: 20px !important;
@@ -1149,15 +1192,15 @@ body.full-page-body {
 
     .center-column div div {
       margin-bottom: 5px !important;
-    } 
-    
+    }
+
     .doc-view a {
       text-decoration: none; /* no need for underline text */
       color: #636363; /* gray, same as the rest of field values */
     }
-    
-    .doc-view h2 ~ div p ~ div .label, 
-    .doc-view .field-section3 .helpText, 
+
+    .doc-view h2 ~ div p ~ div .label,
+    .doc-view .field-section3 .helpText,
     .doc-view .field-activity .helpText {
       color: #505050; /* darker gray than #707070, for tables' legend */
     }

@@ -1,3 +1,8 @@
+function capitalise(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 $(document).ready(function() {
 
     var advanced = 'search-advanced-visible';
@@ -18,6 +23,9 @@ $(document).ready(function() {
 
     function toggle_advanced_search() {
         $('.search-criteria').toggleClass(advanced);
+        if($('.search-criteria').hasClass(advanced)) {
+            $('.search-criteria').find('select').chosen();
+        };
         var cookie_value = advanced_on() ? 'on' : null;
         $.cookie(cookie_name, cookie_value, {path: '/', expires: 1});
     }
@@ -34,4 +42,15 @@ $(document).ready(function() {
         $('.search-criteria :input:not(.search-button)').val(null);
     });
 
+    $("#field-species, #field-habitat, #field-nuts3").chosen().on("change", function () {
+        document.location = $(this).find("option:selected").data("url");
+
+    }).val("");
+
+    $("#field-species option,#f_species option,.search-facets .species").each(function () {
+        var val = capitalise($.trim($(this).text()));
+        $(this).text(val);
+    });
+
+    $("#field-species,#f_species").trigger("liszt:updated");
 });

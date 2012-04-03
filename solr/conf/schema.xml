@@ -15,11 +15,22 @@
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.ASCIIFoldingFilterFactory"/>
-      </analyzer>
+        <filter class="solr.TrimFilterFactory"/>
+        <filter class="solr.WordDelimiterFilterFactory"
+                        generateWordParts="1"
+                        generateNumberParts="0"
+                        catenateWords="0"
+                        catenateNumbers="0"
+                        catenateAll="0"
+                        preserveOriginal="1"
+                        />
+       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.ASCIIFoldingFilterFactory"/>
+        <filter class="solr.TrimFilterFactory"/>
+        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="false"/>
       </analyzer>
     </fieldType>
 

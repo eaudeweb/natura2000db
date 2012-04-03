@@ -1,0 +1,162 @@
+valea => vaile
+urnea => lunca
+barbastella barbastellus, liliac carn
+bison bonasus, zimbru
+canis lupus, lup
+castor fiber, castor
+lutra lutra, vidra, lutra
+lynx lynx, ras
+mesocricetus newtoni, grivan mic, hamster romanesc
+microtus tatricus, soarece de tatra
+miniopterus schreibersi, liliac cu aripi lungi
+monachus monachus, vaca de mare, foca cu burta alba
+mustela eversmannii, dihor de stepa
+mustela lutreola, norita, nurca
+myotis bechsteini, liliac cu urechi mari
+myotis blythii, liliac comun mic
+myotis capaccinii, liliac cu picioare lungi
+myotis dasycneme, liliac de iaz
+myotis emarginatus, liliac caramiziu
+myotis myotis, liliac comun
+phocoena phocoena, marsuin, porc de mare
+rhinolophus blasii, liliacul cu potcoava a lui blasius
+rhinolophus euryale, liliacul mediteranean cu potcoava
+rhinolophus ferrumequinum, liliacul mare cu potcoava
+rhinolophus hipposideros, liliacul mic cu potcoava
+rhinolophus mehelyi, liliacul cu potcoava a lui mehely
+sicista subtilis, soarece saritor de stepa
+spermophilus citellus, popandau, suita
+tursiops truncatus, delfin mare, delfin cu bot gros
+ursus arctos, urs brun
+vormela peregusna, dihor patat
+bombina bombina, buhai de balta cu burta rosie
+bombina variegata, buhai de balta cu burta galbena
+elaphe quatuorlineata, balaur mare
+emys orbicularis, broasca testoasa de apa
+testudo graeca, testoasa de uscat dobrogeana
+testudo hermanni, testoasa de uscat banateana
+triturus cristatus, triton cu creasta
+triturus dobrogicus, triton cu creasta dobrogean
+triturus montandoni, triton carpatic
+triturus vulgaris ampelensis, triton comun transilvanean
+vipera ursinii, vipera de stepa
+vipera ursinii rakosiensis, vipera de faneata
+acipenser sturio, sip
+alosa maeotica, scrumbie mica
+alosa pontica, scrumbie de dunare
+alosa tanaica, rezeafca de dunare
+aspius aspius, avat
+barbus meridionalis, moioaga
+chalcalburnuschalcoides(obletmare
+cobitis elongata, fasa mare
+cobitis taenia, zvarluga
+cottus gobio, zglavoc
+eudontomyzon danfordi, chiscar
+eudontomyzon mariae, chiscar de rau
+eudontomyzon vladykovi, chiscar de rau
+gobio albipinnatus, porcusor de nisip
+gobio kessleri, petroc
+gobio uranoscopus, petroc
+gymnocephalus baloni, ghibort de rau
+gymnocephalus schraetzer, raspar
+hucho hucho, lostrita
+leuciscus souffia, clean dungat
+misgurnus fossilis, tipar
+pelecus cultratus, sabita
+rhodeus sericeus amarus, boare
+romanichthys valsanicola, asprete, poprete
+rutilus pigus, babusca de tur
+sabanejewia aurata, dunarita
+umbra krameri, tiganus
+zingel streber, fusar
+zingel zingel, pietrar
+anisus vorticulus, melcul cu carlig
+austropotamobius torrentium, racul de ponoare
+bolbelasmus unicornis, carabusul cu corn
+buprestis splendens, gandacul auriu
+carabus hampei, carab
+carabus hungaricus, carab
+carabus variolosus, carab
+carabus zawadszkii, carab
+cerambyx cerdo, croitor mare
+coenagrion mercuriale, tarancuta
+coenagrion ornatum, tarancuta
+cordulegaster heros, calul dracului
+graphoderus bilineatus, gandac de apa
+isophya costata, cosas
+isophya harzi, cosas
+isophya stysi, cosas
+leucorrhinia pectoralis, calul dracului
+lucanus cervus, radasca, ragacea
+morimus funereus, croitorul cenusiu
+odontopodisma rubripes, lacusta de munte
+osmoderma eremita, carabus
+oxyporus mannerheimii, gandac cu aripile scurte
+paracaloptenus caloptenoides, calul dracului
+pholidoptera transsylvanica, cosasul transilvan
+phryganophilus ruficollis, gandac
+pilemia tigrina, croitor marmorat
+pseudogaurotina excellens, croitor
+rhysodes sulcatus, gandac de apa
+rosalia alpina, croitor de fag
+stenobothrus eurasius, lacusta
+stephanopachys substriatus, gandac
+theodoxus transversalis, melc
+unio crassus, scoica de rau
+agrimonia pilosa, turita
+aldrovanda vesiculosa, otratel
+angelica palustris, angelica de balta
+apium repens, telina
+asplenium adulterinum, feriguta, ruginita
+astragalus peterfii, cosad
+caldesia parnassifolia, limbarita
+campanula romanica, clopotel dobrogean
+campanula serrata, clopotel
+centaurea jankae, vinetele, dioc, zglavoc
+centaurea pontica, vinetele, dioc, zglavoc
+cirsium brachycephalum, palamida
+colchicum arenarium, brandusa
+crambe tataria, tartan, hodolean
+cypripedium calceolus, papucul doamnei, blabornic
+dianthus diutinus, garofita
+draba dorneri, flamanzica
+dracocephalum austriacum, mataciune
+drepanocladus vernicosus
+echium russicum, capul sarpelui
+ferula sadleriana, aerel
+gladiolus palustris, gladiola de balta
+himantoglossum caprinum, ouale popii
+iris aphylla ssp. hungarica, iris
+iris humilis ssp. arenaria, iris
+ligularia sibirica, curechi de munte, galbenele
+liparis loeselii, mosisoare
+marsilea quadrifolia, trifoias de balta
+moehringia jankae, merinana
+paeonia officinalis ssp. banatica, bujor
+poa granitica ssp. disparilis, firuta de munte
+potentilla emilii popii, buruiana cu cinci degete
+pulsatilla patens, deditei
+pulsatilla pratensis ssp. hungarica, deditei
+saxifraga hirculus, ochii soricelului
+serratula lycopifolia, galbinare
+stipa danubialis, colilie
+syringa josikaea, liliac transilvanean, lemnu vantului
+thesium ebracteatum, maciulie
+thlaspi jankae, pungulita
+tozzia carpathica, iarba gatului
+tulipa hungarica, lalea galbena
+pajisti saraturate de tip mediteranean, juncetalia maritimi
+pajisti panonice de stancarii, stipo festucetalia pallentis
+pajisti uscate seminaturale si faciesuri cu tufarisuri pe substrat calcaros, festuco brometalia
+pajisti cu molinia pe soluri calcaroase, turboase sau argiloase, molinion caeruleae
+pajisti de altitudine joasa, alopecurus pratensis sanguisorba officinalis
+izvoare petrifiante cu formare de travertin, cratoneurion
+grohotisuri silicioase din etajul montan pana în cel alpin, androsacetalia alpinae si prezent galeopsietalia ladani
+grohotisuri calcaroase si de sisturi calcaroase din etajul montan pana în cel alpin prezent prezent, thlaspietea rotundifolii
+paduri aluviale cu alnus glutinosa si fraxinus excelsior, alno padion, alnion prezent prezent incanae, salicion albae
+paduri ripariene mixte cu quercus robur, ulmus laevis, fraxinus excelsior sau prezent fraxinus angustifolia, din lungul marilor rauri, ulmenion minoris
+paduri ilirice de fagus sylvatica, aremonio fagion
+paduri ilirice de stejar cu carpen, erythronio carpiniori
+paduri dacice de fag, symphyto fagion
+galerii ripariene si tufarisuri, nerio tamaricetea si securinegion tinctoriae
+paduri acidofile de picea abies din regiunea montana, vaccinio piceetea

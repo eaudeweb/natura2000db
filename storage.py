@@ -127,7 +127,6 @@ class SolrStorage(object):
             value = element.properties['index'](doc)
             log.debug('index %s: %r', element.name, value)
             solr_doc[element.name] = value
-
         return solr_doc
 
     @contextmanager
