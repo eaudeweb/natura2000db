@@ -16,12 +16,23 @@ var Map = Backbone.View.extend({
         var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
         this.map.addLayer(osm_layer);
         this.map.setCenter(this.project(new OpenLayers.LonLat(25, 46)), 7);
+
+        this.map.events.register("mousemove", this, function(e) {
+            lonLat = this.invproject(this.map.getLonLatFromPixel(e.xy));
+            this.trigger("mousemove", {lng: lonLat.lon, lat: lonLat.lat});
+        });
     },
 
     project: function(value) {
         var wgs84 = new OpenLayers.Projection("EPSG:4326");
         var map_proj = this.map.getProjectionObject();
         return value.transform(wgs84, map_proj);
+    },
+
+    invproject: function(value) {
+        var wgs84 = new OpenLayers.Projection("EPSG:4326");
+        var map_proj = this.map.getProjectionObject();
+        return value.transform(map_proj, wgs84);
     },
 
     addLayer: function(layer) {
