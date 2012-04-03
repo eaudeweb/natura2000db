@@ -69,16 +69,38 @@ TG.TileLayer = Backbone.Model.extend({
 TG.Identify = Backbone.Model.extend({
 
     initialize: function() {
+        this._pending = false;
         this._in_flight = false;
     },
 
     updateCoordinates: function(coords) {
-        if(this._in_flight) return;
+        this.set(coords);
+        this._next_coords = coords;
+        this._pending = true;
+        this._tick();
+    },
+
+    _tick: function() {
+        if(this._in_flight) { return; }
+        if(! this._pending) { return; }
         this._in_flight = true;
-        var _this = this;
-        $.get('get_features_at', coords, function(data) {
-            _this.set(_.extend({}, data, coords));
-            _this._in_flight = false;
+        this._pending = false;
+        this.trigger('update-start');
+        $.ajax({
+            url: 'get_features_at',
+            data: {lat: this.get('lat'), lng: this.get('lng')},
+            context: this
+        }).done(function(data) {
+            this.set(_.extend({error: false}, data));
+            this.trigger('change');
+        }).fail(function() {
+            this.set({error: true, hit_list: []});
+            this.trigger('change');
+            this.trigger('update-error');
+        }).always(function() {
+            this._in_flight = false;
+            this.trigger('update-end');
+            this._tick();
         });
     }
 
@@ -92,6 +114,12 @@ TG.IdentifyView = Backbone.View.extend({
 
     initialize: function() {
         this.model.on('change', this.render, this);
+        this.model.on('update-start', function() {
+            this.$el.addClass('update-in-progress');
+        }, this);
+        this.model.on('update-end', function() {
+            this.$el.removeClass('update-in-progress');
+        }, this);
     },
 
     render: function() {

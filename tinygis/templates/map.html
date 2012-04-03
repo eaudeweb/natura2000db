@@ -18,11 +18,16 @@
     <p class="identify-coordinates">
         <%= lat.toFixed(4) %> <%= lng.toFixed(4) %>
     </p>
+
     <ul class="identify-features">
     <% _(hit_list).map(function(hit) { %>
         <li><%= hit.feature %></li>
     <% }); %>
     </ul>
+
+    <% if(error) { %>
+        <span class="error-text">error identifying features</span>
+    <% } %>
 </script>
 
 </html>

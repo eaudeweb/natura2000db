@@ -6,3 +6,5 @@ html, body { height: 100%; width: 100%; margin: 0; }
             background: #fff; }
 .identify-coordinates { margin: 5px; padding: 0; }
 .identify-features { margin: 0; padding: 0; padding-left: 10px; list-style: none; }
+.update-in-progress .identify-features { color: #888; }
+.error-text { color: red; }
