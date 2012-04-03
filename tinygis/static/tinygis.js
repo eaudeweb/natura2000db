@@ -4,6 +4,16 @@
 window.TG = {};
 
 
+TG.load_templates = function() {
+    TG.templates = {};
+    $('.template-src').each(function() {
+        var name = $(this).attr('data-name');
+        var template = _.template($(this).text());
+        TG.templates[name] = template;
+    });
+};
+
+
 var Map = Backbone.View.extend({
 
     tagName: 'div',
@@ -76,19 +86,25 @@ TG.Identify = Backbone.Model.extend({
 
 
 TG.IdentifyView = Backbone.View.extend({
+    tagName: 'div',
+    className: 'identify',
+    templateName: 'identify',
 
     initialize: function() {
         this.model.on('change', this.render, this);
     },
 
     render: function() {
-        console.log(this.model.attributes);
+        var template = TG.templates[this.templateName];
+        this.$el.html(template(this.model.attributes));
     }
 
 });
 
 
 $(function() {
+    TG.load_templates();
+
     TG.map = new Map({parent: $('body')[0]});
     TG.map.addLayer(new TG.TileLayer({
         name: "SCI + SPA",
@@ -100,6 +116,7 @@ $(function() {
                            TG.identify);
 
     TG.identifyView = new TG.IdentifyView({model: TG.identify});
+    TG.identifyView.$el.appendTo($('body'));
 });
 
 
