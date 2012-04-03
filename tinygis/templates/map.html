@@ -1,0 +1,15 @@
+{%- from 'bits.html' import link_css, script_src -%}
+<!doctype html>
+<html>
+<head>
+  {{ link_css('tinygis.css', 'tinygis.static') }}
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  {{ script_src('lib/OpenLayers-2.11/OpenLayers.js', 'static') }}
+  {{ script_src('tinygis.js', 'tinygis.static') }}
+  <title>{% block title %}Natura2000{% endblock %}</title>
+</head>
+
+<body>
+</body>
+
+</html>
