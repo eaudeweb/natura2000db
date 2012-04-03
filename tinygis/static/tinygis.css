@@ -1,8 +1,12 @@
 html, body { height: 100%; width: 100%; margin: 0; }
 #tinygis-map { height: 100%; width: 100%; cursor: crosshair; }
 
-.identify { z-index: 1100; position: absolute; top: 0; right: 0;
-            border: 2px solid #888; border-top: 0; border-right: 0;
+.menu { z-index: 1100; position: absolute; top: 0; right: 0;
+        border: 2px solid #888; border-right: 0; border-top: 0;
+        background: #fff; padding: 5px; }
+
+.identify { z-index: 1100; position: absolute; top: 50px; right: 0;
+            border: 2px solid #888; border-right: 0;
             background: #fff; }
 .identify-coordinates { margin: 5px; padding: 0; }
 .identify-features { margin: 0; padding: 0; padding-left: 10px; list-style: none; }

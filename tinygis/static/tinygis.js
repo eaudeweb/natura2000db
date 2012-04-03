@@ -21,7 +21,7 @@ var Map = Backbone.View.extend({
 
     initialize: function() {
         this.parent = this.options['parent'];
-        this.$el.appendTo(this.parent);
+        this.$el.prependTo(this.parent);
         this.map = new OpenLayers.Map(this.el.id);
         var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
         this.map.addLayer(osm_layer);
