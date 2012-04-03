@@ -56,12 +56,50 @@ TG.TileLayer = Backbone.Model.extend({
 });
 
 
+TG.Identify = Backbone.Model.extend({
+
+    initialize: function() {
+        this._in_flight = false;
+    },
+
+    updateCoordinates: function(coords) {
+        if(this._in_flight) return;
+        this._in_flight = true;
+        var _this = this;
+        $.get('get_features_at', coords, function(data) {
+            _this.set(_.extend({}, data, coords));
+            _this._in_flight = false;
+        });
+    }
+
+});
+
+
+TG.IdentifyView = Backbone.View.extend({
+
+    initialize: function() {
+        this.model.on('change', this.render, this);
+    },
+
+    render: function() {
+        console.log(this.model.attributes);
+    }
+
+});
+
+
 $(function() {
     TG.map = new Map({parent: $('body')[0]});
     TG.map.addLayer(new TG.TileLayer({
         name: "SCI + SPA",
         url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
     }));
+
+    TG.identify = new TG.Identify;
+    TG.map.on("mousemove", TG.identify.updateCoordinates,
+                           TG.identify);
+
+    TG.identifyView = new TG.IdentifyView({model: TG.identify});
 });
 
 
