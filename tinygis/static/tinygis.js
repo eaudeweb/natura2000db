@@ -22,13 +22,35 @@ var Map = Backbone.View.extend({
         var wgs84 = new OpenLayers.Projection("EPSG:4326");
         var map_proj = this.map.getProjectionObject();
         return value.transform(wgs84, map_proj);
+    },
+
+    addLayer: function(layer) {
+        this.map.addLayer(layer.olLayer);
     }
 
 });
 
 
+TG.TileLayer = Backbone.Model.extend({
+    initialize: function() {
+        this.olLayer = new OpenLayers.Layer.XYZ(
+            this.attributes.name,
+            this.attributes.url_template,
+            {
+                isBaseLayer: false,
+                sphericalMercator: true
+            }
+        );
+    }
+});
+
+
 $(function() {
     TG.map = new Map({parent: $('body')[0]});
+    TG.map.addLayer(new TG.TileLayer({
+        name: "SCI + SPA",
+        url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
+    }));
 });
 
 
