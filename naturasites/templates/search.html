@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% from 'search_macros.html' import search_form_html,
+                                    search_facets_html,
+                                    stats_links_html %}
+
+{% block title %}{{ super() }} &mdash; căutare{% endblock %}
+
+{% block content %}
+
+<h1>Natura2000 - Căutare</h1>
+
+{{ search_form_html(form, search_form) }}
+
+{% if search_answer.docs %}
+
+  {{ search_facets_html(form, search_form) }}
+
+  {{ stats_links_html(form, search_form, stat_labels) }}
+
+  <div class="search-results">
+
+    <h2>{{ search_answer.docs|count }} rezultate</h2>
+
+    <div class="map"></div>
+
+    <ul>
+    {% for r in search_answer.docs %}
+      <li>
+        {% set url = url_for('naturasites.view', doc_id=r['id']) %}
+        <a class="sitename" href="{{ url }}">{{ r.name }}</a>
+        <span class="sitecode">{{ r['id'] }}</span>
+      </li>
+    {% endfor %}
+    </ul>
+
+  </div>
+{% else %}
+
+  <span class="noResults">Nici un rezultat in baza de date pentru acest query.</span>
+
+{% endif %}
+
+{% endblock %}

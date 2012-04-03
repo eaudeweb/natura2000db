@@ -1,0 +1,45 @@
+{% macro number(value, fmt='%.2f') %}
+{{- fmt | format(value) -}}
+{% endmacro %}
+
+<h2>Statistici - Suprafața siturilor CORINE în siturile selectate</h2>
+
+{% for code, name in corine_areas|sort %}
+  {% if stat['total_%s' % code] != 0 %}
+
+  <table class="highlight-row">
+    <caption>{{ name }}</caption>
+    <thead>
+      <tr>
+        <th>Nume</th>
+        <th>Suprafața totală (ha)</th>
+        <th>Pondere (%)</th>
+        <th>Suprafața (ha)</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    {% for row in stat['table_%s' % code] %}
+
+      {% set url = url_for('naturasites.view', doc_id=row['id']) %}
+
+      <tr>
+        <td><a href="{{ url }}">{{ row['name'] }}</a></td>
+        <td class="number">{{ number(row['total_area']) }}</td>
+        <td class="number">{{ number(row['corine_percent'], fmt='%.0f') }}</td>
+        <td class="number">{{ number(row['corine_area']) }}</td>
+      </tr>
+
+    {% endfor %}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <td colspan="3">Total</td>
+        <td class="number">{{ number(stat['total_%s' % code]) }}</td>
+      </tr>
+    </tfoot>
+
+  </table>
+  {% endif %}
+{% endfor %}

@@ -1,0 +1,73 @@
+{% macro search_fields_html(form, search_form, advanced) %}
+  {%- for name in form.order(search_form) %}
+    {% set field = search_form[name] %}
+    {% if field.properties.get('advanced', True) == advanced %}
+      <div class="search-field">
+      {{ form.widget(field) }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
+
+{% macro search_form_html(form, search_form, action="") %}
+{% do form.begin(widgets_template='search') -%}
+<form action="{{ action }}" name="search">
+
+  <div class="search-criteria">
+
+    <div class="search-simple">
+
+      {{ search_fields_html(form, search_form, advanced=False) }}
+
+      <input type="submit" value="Caută" class="search-button submit-search" />
+
+      <span class="search-toggle">
+        [<a href="#" class="advanced">căutare avansată</a>]
+      </span>
+
+    </div>
+
+    <div class="search-advanced">
+
+      {{ search_fields_html(form, search_form, advanced=True) }}
+
+      <input type="submit" value="Caută" class="search-button submit-search" />
+      <input type="button" value="Șterge filtre" class="search-button clear-filters" />
+
+      <span class="search-toggle">
+        [<a href="#" class="simple">căutare simplă</a>]
+      </span>
+
+    </div>
+
+  </div>
+
+</form>
+{%- do form.end() %}
+{% endmacro %}
+
+
+{% macro search_facets_html(form, search_form) %}
+<div class="search-facets">
+  {% do form.begin(widgets_template='facet') -%}
+  {%- for name in form.order(search_form) %}
+    {% if search_form[name].properties.facet %}
+    <div>{{ form.widget(search_form[name]) }}</div>
+    {% endif %}
+  {%- endfor %}
+  {%- do form.end() %}
+</div>
+{% endmacro %}
+
+
+{% macro stats_links_html(form, search_form, stat_labels) %}
+<div class="stats-results">
+  <h2>Statistici</h2>
+  {% for compute, label in stat_labels.items()|sort %}
+    {% set url = form.url_for_search(search_form, 'naturasites.stats',
+                                     compute=compute) %}
+    <a href="{{ url }}">{{ label }}</a>
+  {% endfor %}
+</div>
+{% endmacro %}

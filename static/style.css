@@ -1014,6 +1014,38 @@ body.full-page-body {
   color: #335C9E;
 }
 
+
+/* #####################################
+    DATASETS PAGES FOR NATURA 2000 FORMS
+   ##################################### */
+.dataset {
+  max-width: 758px;
+  margin-left: 10px;
+  border: 0px solid #0098AA;
+}
+
+.dataset table {
+  border: none;
+  margin-bottom: 30px;
+  border-collapse: collapse;
+}
+
+.dataset thead {
+  background: #fff;
+  border-bottom: 2px solid #444; /* recommended for hightlight */
+}
+
+.dataset th {
+  color: #444;
+  text-align: left;
+  padding-right: 10px;
+}
+
+.dataset table tr:nth-child(10n) {
+  border-bottom: 1px solid #C0C0C0;
+}
+
+
 /* do not hide them; ONLY for Opera */
 #header,
 #breadcrumb,

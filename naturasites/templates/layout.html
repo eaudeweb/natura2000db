@@ -1,0 +1,38 @@
+{%- from 'bits.html' import link_css, script_src -%}
+<!doctype html>
+<html>
+<head>
+  {{ link_css('lib/leaflet-0.3.1/leaflet.css') }}
+  {{ link_css('lib/choosen/chosen.css') }}
+  {{ link_css('style.css') }}
+  <script class="link-to-static">
+    var R = {TILES_URL: "{{ config['TILES_URL'] }}"};
+  </script>
+  {% if config['JS_DEBUG'] %}<script>R['debug'] = true;</script>{% endif %}
+  <!--[if lt IE 9]><script>R.ie_disable_map = true;</script><![endif]-->
+  <script src="http://code.jquery.com/jquery.min.js"></script>
+  {{ script_src('jquery.cookie.js') }}
+  {{ script_src('lib/leaflet-0.3.1/leaflet.js') }}
+  {{ script_src('lib/choosen/chosen.js') }}
+  {{ script_src('search.js') }}
+  {{ script_src('form.js') }}
+  {{ script_src('map.js') }}
+  <title>{% block title %}Natura2000{% endblock %}</title>
+</head>
+
+<body>
+  <div class="natura2000">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+</html>

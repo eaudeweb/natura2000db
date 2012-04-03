@@ -38,7 +38,7 @@ $(document).ready(function() {
         zoom_box = $('.leaflet-control-zoom').parent();
 
         var osm_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        var osm = new L.TileLayer(osm_url, {maxZoom: 18});
+        var osm = new L.TileLayer(osm_url, {maxZoom: 13});
         map_viewer.map.addLayer(osm);
 
         map_viewer.layers = {};
@@ -63,6 +63,10 @@ $(document).ready(function() {
             map_viewer.layers[name] = layer;
             return layer;
         };
+
+        var sites_url = R.TILES_URL + 'all-sites/{z}/{x}/{y}.png';
+        var sites = new L.TileLayer(sites_url, {maxZoom: 13});
+        map_viewer.map.addLayer(sites);
 
         map_viewer.features_at = function(latlng) {
             if(R.debug) { console.time(1); }
@@ -267,6 +271,7 @@ $(document).ready(function() {
     });
 
     function add_default_layers(map_viewer, site_data_map) {
+        return;
         function url(name) { return R.assets + name + '.geojson'; }
 
         map_viewer.new_layer('sci', {color: '#201F73', label: "SCI"});
@@ -287,6 +292,7 @@ $(document).ready(function() {
     }
 
     function add_extra_layers(map_viewer, site_data_map) {
+        return;
         function url(name) { return R.assets + name + '.geojson'; }
 
         map_viewer.new_layer('judete', {color: '#73797B', label: "Județe"});
