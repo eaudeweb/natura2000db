@@ -103,11 +103,11 @@ def strip_special_status(dic):
     return dict((k, strip_special(v)) for k, v in dic.iteritems())
 
 def link_search_species(field):
-    return flask.url_for('webpages.search', species=field.value)
+    return flask.url_for('naturasites.search', species=field.value)
 
 
 def link_search_habitat(field):
-    return flask.url_for('webpages.search', habitat=field.value)
+    return flask.url_for('naturasites.search', habitat=field.value)
 
 
 CommonFloat = fl.Float.using(optional=True, validators=[valid_float], format='%.2f').with_properties(container_class='number')
@@ -204,19 +204,19 @@ biogeographic_map = _load_json('reference/biogeographic_ro.json')
 
 
 def link_search_nuts3(field):
-    return flask.url_for('webpages.search', nuts3=field.value)
+    return flask.url_for('naturasites.search', nuts3=field.value)
 
 def link_search_corine(field):
-    return flask.url_for('webpages.search', corine=field.name)
+    return flask.url_for('naturasites.search', corine=field.name)
 
 def link_search_protected_areas(field):
-    return flask.url_for('webpages.search', protected_areas=field.value)
+    return flask.url_for('naturasites.search', protected_areas=field.value)
 
 def link_search_antropic_activities(field):
-    return flask.url_for('webpages.search', text=antropic_activities_map[field.value])
+    return flask.url_for('naturasites.search', text=antropic_activities_map[field.value])
 
 def link_search_national_sites(field):
-    return flask.url_for('webpages.search', text=field.value)
+    return flask.url_for('naturasites.search', text=field.value)
 
 section_2 = fl.Dict.of(
 

@@ -65,7 +65,7 @@
 <div class="stats-results">
   <h2>Statistici</h2>
   {% for compute, label in stat_labels.items()|sort %}
-    {% set url = form.url_for_search(search_form, 'webpages.stats',
+    {% set url = form.url_for_search(search_form, 'naturasites.stats',
                                      compute=compute) %}
     <a href="{{ url }}">{{ label }}</a>
   {% endfor %}

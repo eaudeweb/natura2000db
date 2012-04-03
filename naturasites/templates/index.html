@@ -5,7 +5,7 @@
 
 <h1>Natura2000 - Căutare</h1>
 
-{{ search_form_html(form, search_form, url_for('webpages.search')) }}
+{{ search_form_html(form, search_form, url_for('naturasites.search')) }}
 
 <p>
   Aplicația <em>Managementul SCI-urilor si SPA-urilor Natura2000 la
@@ -47,19 +47,19 @@
   href="http://cdr.eionet.europa.eu/ro/eu/n2000/envtow6nq/">raportul
   României actualizat pe 2011</a> la Agenția Europeană de Mediu cu
   privire la siturile Natura2000.
-  Datele pot fi <a href="{{ url_for('webpages.dump') }}">descărcate în
+  Datele pot fi <a href="{{ url_for('naturasites.dump') }}">descărcate în
   format JSON</a>.
 </p>
 
 <h2>Sumar aplicatie</h2>
 
 <ul>
-  <li><a href="{{ url_for('webpages.corine_areas', name='protected_areas') }}">Clasificarea națională a siturilor</a></li>
-  <li><a href="{{ url_for('webpages.corine_areas', name='corine') }}">Lista siturilor CORINE</a></li>
-  <li><a href="{{ url_for('webpages.corine_areas', name='text') }}">Lista activităților antropice</a></li>
-  <li><a href="{{ url_for('webpages.corine_areas', name='habitat') }}">Lista habitatelor</a></li>
-  <li><a href="{{ url_for('webpages.corine_areas', name='nuts2') }}">Lista regiunilor de dezvoltare</a></li>
-  <li><a href="{{ url_for('webpages.corine_areas', name='nuts3') }}" title="Sistem de clasificare a regiunilor din Uniunea Europeana, folosit de Comisia Europeană, conform Reglementarii CE nr. 1059/2003 privind stabilirea Nomenclatorului Unităților Statistice Teritoriale.">Lista codurilor NUTS</a></li>
+  <li><a href="{{ url_for('naturasites.corine_areas', name='protected_areas') }}">Clasificarea națională a siturilor</a></li>
+  <li><a href="{{ url_for('naturasites.corine_areas', name='corine') }}">Lista siturilor CORINE</a></li>
+  <li><a href="{{ url_for('naturasites.corine_areas', name='text') }}">Lista activităților antropice</a></li>
+  <li><a href="{{ url_for('naturasites.corine_areas', name='habitat') }}">Lista habitatelor</a></li>
+  <li><a href="{{ url_for('naturasites.corine_areas', name='nuts2') }}">Lista regiunilor de dezvoltare</a></li>
+  <li><a href="{{ url_for('naturasites.corine_areas', name='nuts3') }}" title="Sistem de clasificare a regiunilor din Uniunea Europeana, folosit de Comisia Europeană, conform Reglementarii CE nr. 1059/2003 privind stabilirea Nomenclatorului Unităților Statistice Teritoriale.">Lista codurilor NUTS</a></li>
 </ul>
 
 {% endblock %}

@@ -21,7 +21,7 @@
     {% for code, name in dataset|sort %}
     <tr>
       <td>{{ code }}</td>
-      <td><a href="{{ url_for('webpages.search', **{dataset_name:code}) }}">{{ name }}</a></td>
+      <td><a href="{{ url_for('naturasites.search', **{dataset_name:code}) }}">{{ name }}</a></td>
     </tr>
     {% endfor %}
   </tbody>

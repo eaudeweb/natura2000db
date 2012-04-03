@@ -2,15 +2,13 @@
 {{- fmt | format(value) -}}
 {% endmacro %}
 
-<h2>Statistici - Suprafața ariilor protejate în siturile selectate</h2>
+<h2>Statistici - Suprafața siturilor CORINE în siturile selectate</h2>
 
-{% for code, name in protected_areas|sort %}
+{% for code, name in corine_areas|sort %}
   {% if stat['total_%s' % code] != 0 %}
 
   <table class="highlight-row">
-
     <caption>{{ name }}</caption>
-
     <thead>
       <tr>
         <th>Nume</th>
@@ -23,13 +21,13 @@
     <tbody>
     {% for row in stat['table_%s' % code] %}
 
-      {% set url = url_for('webpages.view', doc_id=row['id']) %}
+      {% set url = url_for('naturasites.view', doc_id=row['id']) %}
 
       <tr>
         <td><a href="{{ url }}">{{ row['name'] }}</a></td>
         <td class="number">{{ number(row['total_area']) }}</td>
-        <td class="number">{{ number(row['protected_percent'], fmt='%.0f') }}</td>
-        <td class="number">{{ number(row['protected_area']) }}</td>
+        <td class="number">{{ number(row['corine_percent'], fmt='%.0f') }}</td>
+        <td class="number">{{ number(row['corine_area']) }}</td>
       </tr>
 
     {% endfor %}
