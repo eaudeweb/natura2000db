@@ -1,30 +1,34 @@
 (function() {
 
 
-var map;
+window.TG = {};
 
 
-function map_coord(value) {
-    map.getProjectionObject()
-    var wgs84 = new OpenLayers.Projection("EPSG:4326");
-    var map_proj = map.getProjectionObject();
-    return value.transform(wgs84, map_proj);
-}
+var Map = Backbone.View.extend({
 
+    tagName: 'div',
+    id: 'tinygis-map',
 
-function setup_map(map_div_id) {
-    window.map = map = new OpenLayers.Map(map_div_id);
+    initialize: function() {
+        this.parent = this.options['parent'];
+        this.$el.appendTo(this.parent);
+        this.map = new OpenLayers.Map(this.el.id);
+        var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
+        this.map.addLayer(osm_layer);
+        this.map.setCenter(this.project(new OpenLayers.LonLat(25, 46)), 7);
+    },
 
-    osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
+    project: function(value) {
+        var wgs84 = new OpenLayers.Projection("EPSG:4326");
+        var map_proj = this.map.getProjectionObject();
+        return value.transform(wgs84, map_proj);
+    }
 
-    map.addLayer(osm_layer);
-    map.setCenter(map_coord(new OpenLayers.LonLat(25, 46)), 7);
-}
+});
 
 
 $(function() {
-    var map_div = $('<div id="tinygis-map">').appendTo($('body'));
-    setup_map('tinygis-map');
+    TG.map = new Map({parent: $('body')[0]});
 });
 
 

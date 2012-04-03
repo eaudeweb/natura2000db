@@ -50,17 +50,16 @@ def _css_iter(tree, selector):
 
 _res_pattern = re.compile(r'^var R = {assets: "([^"]*)"};$')
 
-def fix_resource_link(script_tag, zope_link):
-    flask_link = _res_pattern.search(script_tag.text).group(1)
-    script_tag.text = script_tag.text.replace(flask_link, zope_link)
+def _get_flask_resource_link(doc):
+    meta_tag = _css_iter(doc, 'script.link-to-static')[0]
+    flask_link = meta_tag.attrib['static_base']
     return flask_link
 
 def reframe_html(html, site):
     doc = lxml.html.soupparser.fromstring(html)
 
     zope_link = site.absolute_url() + '/++resource++chmrio_zope2/'
-    script_tag = _css_iter(doc, 'script.link-to-static')[0]
-    flask_link = fix_resource_link(script_tag, zope_link)
+    flask_link = _get_flask_resource_link(doc)
 
     for e in list(_css_iter(doc, 'head title')):
         e.getparent().remove(e)
