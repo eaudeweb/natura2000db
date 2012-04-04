@@ -136,12 +136,12 @@ $(function() {
         url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
     }));
 
-    TG.identify = new TG.Identify;
-    TG.map.on("mousemove", TG.identify.updateCoordinates,
-                           TG.identify);
+    //TG.identify = new TG.Identify;
+    //TG.map.on("mousemove", TG.identify.updateCoordinates,
+    //                       TG.identify);
 
-    TG.identifyView = new TG.IdentifyView({model: TG.identify});
-    TG.identifyView.$el.appendTo($('body'));
+    //TG.identifyView = new TG.IdentifyView({model: TG.identify});
+    //TG.identifyView.$el.appendTo($('body'));
 
     TG.featureCollection = new TG.FeatureCollection;
     TG.featureCollection.urlRoot = '/map/userlayers';
