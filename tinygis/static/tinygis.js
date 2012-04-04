@@ -1,9 +1,6 @@
 (function() {
 
 
-window.TG = {};
-
-
 TG.load_templates = function() {
     TG.templates = {};
     $('.template-src').each(function() {
@@ -145,6 +142,10 @@ $(function() {
 
     TG.identifyView = new TG.IdentifyView({model: TG.identify});
     TG.identifyView.$el.appendTo($('body'));
+
+    TG.userLayer = new TG.UserLayer;
+    TG.userLayerEditor = new TG.UserLayerEditor({model: TG.userLayer});
+    TG.userLayerEditor.$el.appendTo($('body'));
 });
 
 
