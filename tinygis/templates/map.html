@@ -15,7 +15,12 @@
 <body>
 
     <div class="menu">
-        <a class="btn">Login</a>
+    {% if g.user %}
+        {{ g.user['name'] }}
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-mini">Logout</a>
+    {% else %}
+        <a href="{{ url_for('auth.login') }}" class="btn btn-mini">Login</a>
+    {% endif %}
     </div>
 
 </body>
