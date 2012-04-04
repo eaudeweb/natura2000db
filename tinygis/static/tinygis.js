@@ -143,12 +143,13 @@ $(function() {
     TG.identifyView = new TG.IdentifyView({model: TG.identify});
     TG.identifyView.$el.appendTo($('body'));
 
-    TG.userLayer = new TG.UserLayer;
-    TG.userLayerEditor = new TG.UserLayerEditor({model: TG.userLayer});
-    TG.userLayerEditor.$el.appendTo($('body'));
+    TG.featureCollection = new TG.FeatureCollection;
+    TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
+        model: TG.featureCollection});
+    TG.featureCollectionEditor.$el.appendTo($('body'));
 
     TG.vectorLayer = new TG.VectorLayer({
-        model: TG.userLayer,
+        model: TG.featureCollection,
         proj: _.bind(TG.map.project, TG.map)
     });
     TG.map.map.addLayer(TG.vectorLayer.layer);

@@ -8,7 +8,7 @@ TG.PointFeature = Backbone.Model.extend({
 });
 
 
-TG.UserLayer = Backbone.Model.extend({
+TG.FeatureCollection = Backbone.Model.extend({
     initialize: function() {
         this.features = new Backbone.Collection;
     }
@@ -79,7 +79,7 @@ TG.PointEditor = Backbone.View.extend({
 });
 
 
-TG.UserLayerFeatureList = Backbone.View.extend({
+TG.FeatureList = Backbone.View.extend({
     tagName: 'ul',
     className: 'editor-features',
 
@@ -94,13 +94,13 @@ TG.UserLayerFeatureList = Backbone.View.extend({
 });
 
 
-TG.UserLayerEditor = Backbone.View.extend({
+TG.FeatureCollectionEditor = Backbone.View.extend({
     tagName: 'div',
     className: 'editor',
     templateName: 'editor',
 
     initialize: function() {
-        this.features = new TG.UserLayerFeatureList({model: this.model.features});
+        this.features = new TG.FeatureList({model: this.model.features});
         this.render();
     },
 
