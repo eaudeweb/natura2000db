@@ -52,6 +52,20 @@ def userlayer_create():
     return flask.jsonify({'id': key})
 
 
+@tinygis.route('/userlayers/<string:key>', methods=['PUT'])
+@auth.require_login
+def userlayer_update(key):
+    db = _get_db()
+    try:
+        meta = db[key + '.meta']
+    except KeyError:
+        flask.abort(404)
+    if meta['owner'] != flask.g.user_id:
+        flask.abort(403)
+    db[key + '.geojson'] = flask.json.dumps(flask.request.json, indent=2)
+    return flask.jsonify({})
+
+
 def register(app, url_prefix='/map'):
     app.register_blueprint(tinygis, url_prefix=url_prefix)
     db = SqliteDict(ppath(app.instance_path)/'tinygis.db', autocommit=True)
