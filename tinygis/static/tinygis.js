@@ -146,6 +146,12 @@ $(function() {
     TG.userLayer = new TG.UserLayer;
     TG.userLayerEditor = new TG.UserLayerEditor({model: TG.userLayer});
     TG.userLayerEditor.$el.appendTo($('body'));
+
+    TG.vectorLayer = new TG.VectorLayer({
+        model: TG.userLayer,
+        proj: _.bind(TG.map.project, TG.map)
+    });
+    TG.map.map.addLayer(TG.vectorLayer.layer);
 });
 
 

@@ -2,12 +2,55 @@
 
 
 TG.PointFeature = Backbone.Model.extend({
+    initialize: function() {
+        this.set({lat: 0, lng: 0});
+    }
 });
 
 
 TG.UserLayer = Backbone.Model.extend({
     initialize: function() {
         this.features = new Backbone.Collection;
+    }
+});
+
+
+TG.VectorFeature = Backbone.View.extend({
+    initialize: function() {
+        this.proj = this.options.proj;
+        this.geometry = new OpenLayers.Geometry.Point(0, 0);
+        this.feature = new OpenLayers.Feature.Vector(this.geometry);
+        this.updateGeometry();
+        this.model.on('change', this.updateGeometry, this);
+    },
+
+    updateGeometry: function() {
+        var lat = this.model.get('lat'), lng = this.model.get('lng');
+        new_geometry = this.proj(new OpenLayers.Geometry.Point(lng, lat));
+        this.geometry.y = new_geometry.y;
+        this.geometry.x = new_geometry.x;
+        this.geometry.clearBounds();
+        this.trigger('geometry-change');
+    }
+});
+
+
+TG.VectorLayer = Backbone.View.extend({
+    initialize: function() {
+        this.layer = new OpenLayers.Layer.Vector("Vector");
+        this.proj = this.options.proj;
+        this.model.features.on('add', this.addOne, this);
+    },
+
+    addOne: function(feature) {
+        var vectorFeature = new TG.VectorFeature({
+            model: feature,
+            proj: this.proj
+        });
+        this.layer.addFeatures([vectorFeature.feature]);
+        vectorFeature.on('geometry-change', function() {
+            this.layer.drawFeature(vectorFeature.feature);
+        }, this);
     }
 });
 
@@ -29,8 +72,8 @@ TG.PointEditor = Backbone.View.extend({
 
     uiChange: function() {
         this.model.set({
-            lat: $('.point-geometry [name=lat]', this.el).val(),
-            lng: $('.point-geometry [name=lng]', this.el).val()
+            lat: parseFloat($('.point-geometry [name=lat]', this.el).val()),
+            lng: parseFloat($('.point-geometry [name=lng]', this.el).val())
         });
     }
 });
