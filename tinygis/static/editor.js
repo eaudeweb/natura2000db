@@ -109,10 +109,16 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
         this.$el.html(template(this.model.attributes));
         $('[name="add-point"]', this.el).click(_.bind(this.createPoint, this));
         this.$el.append(this.features.$el);
+        $('.editor-save', this.el).click(_.bind(this.save, this));
     },
 
     createPoint: function() {
         this.model.features.add(new TG.PointFeature);
+    },
+
+    save: function(evt) {
+        evt.preventDefault();
+        this.model.save();
     }
 
 });

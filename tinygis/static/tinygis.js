@@ -144,6 +144,7 @@ $(function() {
     TG.identifyView.$el.appendTo($('body'));
 
     TG.featureCollection = new TG.FeatureCollection;
+    TG.featureCollection.urlRoot = '/map/userlayers';
     TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
         model: TG.featureCollection});
     TG.featureCollectionEditor.$el.appendTo($('body'));
