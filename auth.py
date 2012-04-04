@@ -1,4 +1,4 @@
-# encoding: utf-8
+from functools import wraps
 from path import path as ppath
 import flask
 from flaskext.openid import OpenID, COMMON_PROVIDERS
@@ -15,10 +15,10 @@ def _get_users_db():
 
 def lookup_current_user():
     flask.g.user = None
-    openid_url = flask.session.get('openid_url')
-    if openid_url is not None:
+    flask.g.user_id = flask.session.get('openid_url')
+    if flask.g.user_id is not None:
         users_db = _get_users_db()
-        flask.g.user = users_db.get(openid_url)
+        flask.g.user = users_db.get(flask.g.user_id)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -34,8 +34,8 @@ def login():
 @oid.after_login
 def update_user(resp):
     users_db = _get_users_db()
-    openid_url = flask.session['openid_url'] = resp.identity_url
-    flask.g.user = users_db.get(openid_url) or {}
+    flask.g.user_id = flask.session['openid_url'] = resp.identity_url
+    flask.g.user = users_db.get(flask.g.user_id) or {}
     flask.g.user.update({
         'name': resp.fullname or resp.nickname or u"",
         'email': resp.email,
@@ -45,9 +45,21 @@ def update_user(resp):
 
 
 def save_user():
-    assert flask.session['openid_url']
+    assert flask.g.user_id
     assert flask.g.user
-    users_db[flask.session['openid_url']] = flask.g.user
+    users_db = _get_users_db()
+    users_db[flask.g.user_id] = flask.g.user
+
+
+def require_login(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if flask.g.user is None:
+            flask.abort(403)
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 @auth.route('/logout')
