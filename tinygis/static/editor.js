@@ -18,13 +18,20 @@ TG.PointEditor = Backbone.View.extend({
     templateName: 'point-editor',
 
     initialize: function() {
-        this.model.on('change', this.render, this);
         this.render();
     },
 
     render: function() {
         var template = TG.templates[this.templateName];
         this.$el.html(template(this.model.attributes));
+        $('.point-geometry input', this.el).change(_.bind(this.uiChange, this));
+    },
+
+    uiChange: function() {
+        this.model.set({
+            lat: $('.point-geometry [name=lat]', this.el).val(),
+            lng: $('.point-geometry [name=lng]', this.el).val()
+        });
     }
 });
 
