@@ -1,3 +1,5 @@
+import random
+import string
 import flask
 from path import path as ppath
 from sqlitedict import SqliteDict
@@ -24,14 +26,33 @@ def get_features_at():
     })
 
 
+def _get_db():
+    return flask.current_app.extensions['tinygis-db']
+
+
+def _random_id(length=6, exists=lambda new_id: False):
+    vocabulary = string.ascii_letters + string.digits
+    for c in xrange(100):
+        new_id = ''.join(random.choice(vocabulary) for c in xrange(length))
+        if not exists(new_id):
+            return new_id
+    else:
+        raise ValueError("Random ID generator giving up after 100 attempts")
+
+
 @tinygis.route('/userlayers', methods=['POST'])
 @auth.require_login
-def userlayers_create():
-    print flask.g.user_id, flask.request.json
-    return ""
+def userlayer_create():
+    db = _get_db()
+    key = _random_id(exists=lambda new_id: (new_id + '.meta') in db)
+    db[key + '.meta'] = {
+        'owner': flask.g.user_id,
+    }
+    db[key + '.geojson'] = flask.json.dumps(flask.request.json, indent=2)
+    return flask.jsonify({'id': key})
 
 
 def register(app, url_prefix='/map'):
     app.register_blueprint(tinygis, url_prefix=url_prefix)
-    db = SqliteDict(ppath(app.instance_path)/'tinygis.db', autocommit=True),
+    db = SqliteDict(ppath(app.instance_path)/'tinygis.db', autocommit=True)
     app.extensions['tinygis-db'] = db
