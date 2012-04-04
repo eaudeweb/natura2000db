@@ -1,5 +1,8 @@
 import flask
+from path import path as ppath
+from sqlitedict import SqliteDict
 import polygons
+import auth
 
 
 tinygis = flask.Blueprint('tinygis', __name__,
@@ -21,5 +24,14 @@ def get_features_at():
     })
 
 
+@tinygis.route('/userlayers', methods=['POST'])
+@auth.require_login
+def userlayers_create():
+    print flask.g.user_id, flask.request.json
+    return ""
+
+
 def register(app, url_prefix='/map'):
     app.register_blueprint(tinygis, url_prefix=url_prefix)
+    db = SqliteDict(ppath(app.instance_path)/'tinygis.db', autocommit=True),
+    app.extensions['tinygis-db'] = db

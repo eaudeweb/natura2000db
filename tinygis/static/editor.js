@@ -4,6 +4,17 @@
 TG.PointFeature = Backbone.Model.extend({
     initialize: function() {
         this.set({lat: 0, lng: 0});
+    },
+
+    toJSON: function() {
+        return {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: [this.get('lng'), this.get('lat')],
+                properties: _.clone(this.attributes)
+            }
+        };
     }
 });
 
@@ -11,6 +22,13 @@ TG.PointFeature = Backbone.Model.extend({
 TG.FeatureCollection = Backbone.Model.extend({
     initialize: function() {
         this.features = new Backbone.Collection;
+    },
+
+    toJSON: function() {
+        return {
+            type: "FeatureCollection",
+            features: this.features.invoke('toJSON')
+        };
     }
 });
 
