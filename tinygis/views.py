@@ -52,6 +52,21 @@ def userlayer_create():
     return flask.jsonify({'id': key})
 
 
+@tinygis.route('/userlayers', methods=['GET'])
+def userlayer_create():
+    db = _get_db()
+    key_list = []
+    for db_key in db:
+        if not db_key.endswith('.meta'):
+            continue
+        key = db_key.rsplit('.', 1)[0]
+        meta = db[key + '.meta']
+        if meta['owner'] != flask.g.user_id:
+            continue
+        key_list.append(key)
+    return flask.jsonify({'ids': key_list})
+
+
 @tinygis.route('/userlayers/<string:key>', methods=['PUT'])
 @auth.require_login
 def userlayer_update(key):
