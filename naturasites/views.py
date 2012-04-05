@@ -4,8 +4,11 @@ import flask
 import blinker
 import schema
 import widgets
-from storage import get_db, Or, And, AllowWildcards, StorageError, NotFound
 import statistics
+
+from storage import get_db, Or, And, AllowWildcards, StorageError, NotFound
+from jinja2 import ChoiceLoader, FileSystemLoader
+from loader import ZopeTemplateLoader
 
 
 naturasites = flask.Blueprint('naturasites', __name__,
@@ -189,6 +192,16 @@ def dump():
 def register(app):
     app.register_blueprint(naturasites)
     app.document_signal = blinker.Signal()
-
     _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
-    app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
+
+    loaders = []
+    if app.config["ZOPE_TEMPLATE_CACHE"]:
+        loaders.append(ZopeTemplateLoader(app.config["ZOPE_TEMPLATE_PATH"],
+                                          app.config["ZOPE_TEMPLATE_CACHE"],
+                                          app.config["ZOPE_TEMPLATE_LIST"]))
+    loaders.append(FileSystemLoader(app.blueprints["naturasites"].jinja_loader.searchpath))
+
+    app.jinja_options = dict(app.jinja_options,
+                             extensions=_my_extensions,
+                             loader=ChoiceLoader(loaders))
+
