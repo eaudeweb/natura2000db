@@ -1,10 +1,7 @@
 {% extends "frame.html" %}
 {%- from 'bits.html' import link_css, script_src -%}
-<!doctype html>
-<html>
-<head>
-  <meta name="x-natura2000db-static-prefix"
-        content="{{ url_for('static', filename='') }}">
+
+{% block head %}
   {{ link_css('lib/leaflet-0.3.1/leaflet.css') }}
   {{ link_css('lib/choosen/chosen.css') }}
   {{ link_css('style.css') }}
@@ -19,21 +16,17 @@
   {{ script_src('form.js') }}
   {{ script_src('map.js') }}
   <title>{% block title %}Natura2000{% endblock %}</title>
-</head>
+{% endblock %}
 
-<body>
-  <div class="natura2000">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
-  </div>
-</body>
-
-</html>
+<div class="natura2000">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</div>
