@@ -73,6 +73,11 @@
       </div>
     </div>
     <p class="polygon-label">ze polygon</p>
+    <ul class="polygon-geometry well unstyled">
+        <% _(coordinates).forEach(function(point) { %>
+            <li><%= point[0] %> <%= point[1] %></li>
+        <% }); %>
+    </ul>
 </script>
 
 <script type="text/html" class="template-src" data-name="editor">

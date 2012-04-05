@@ -48,10 +48,7 @@ TG.FeatureCollection = Backbone.Model.extend({
         if(features_data !== undefined) {
             var models = _(features_data).map(function(feature_data) {
                 var geometry = _(feature_data).pop('geometry');
-                return new TG.GeoJSONGeometry({
-                    type: 'Point',
-                    coordinates: geometry['coordinates']
-                });
+                return new TG.GeoJSONGeometry(geometry);
             });
             this.features.reset(models);
         }
@@ -136,6 +133,7 @@ TG.PolygonEditor = Backbone.View.extend({
     templateName: 'polygon-editor',
 
     initialize: function() {
+        this.model.on('change', this.render, this);
         this.render();
     },
 
@@ -149,7 +147,17 @@ TG.PolygonEditor = Backbone.View.extend({
     importCoordinates: function(evt) {
         evt.preventDefault();
         var coordinateData = $('[name=coordinate-data]', this.el).val();
-        console.log(coordinateData);
+        $('.modal', this.el).modal('hide');
+        var newCoordinates = [];
+        _(coordinateData.split(/\n/)).forEach(function(row) {
+            var m = row.match(/^\s*(\d+([.,]\d+)?)\s+(\d+([.,]\d+)?)\s*$/);
+            if(! m) return;
+            newCoordinates.push([parseFloat(m[1]), parseFloat(m[3])]);
+        });
+        if(! _.isEqual(_(newCoordinates).first(), _(newCoordinates).last())) {
+            newCoordinates.push(newCoordinates[0]);
+        }
+        this.model.set({coordinates: newCoordinates});
     }
 });
 
