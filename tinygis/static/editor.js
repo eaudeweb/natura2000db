@@ -121,9 +121,29 @@ TG.PointEditor = Backbone.View.extend({
 });
 
 
+TG.PolygonEditor = Backbone.View.extend({
+    tagName: 'li',
+    className: 'polygon-editor',
+    templateName: 'polygon-editor',
+
+    initialize: function() {
+        this.render();
+    },
+
+    render: function() {
+        var template = TG.templates[this.templateName];
+        this.$el.html(template({coordinates: this.model.get('coordinates')}));
+    }
+});
+
+
 TG.FeatureList = Backbone.View.extend({
     tagName: 'ul',
     className: 'editor-features',
+    editorClass: {
+        'Point': TG.PointEditor,
+        'Polygon': TG.PolygonEditor
+    },
 
     initialize: function() {
         this.model.on('add', this.addOne, this);
@@ -131,7 +151,8 @@ TG.FeatureList = Backbone.View.extend({
     },
 
     addOne: function(feature) {
-        var view = new TG.PointEditor({model: feature});
+        var editorCls = this.editorClass[feature.get('type')];
+        var view = new editorCls({model: feature});
         this.$el.append(view.$el);
     },
 
@@ -155,12 +176,17 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
         var template = TG.templates[this.templateName];
         this.$el.html(template(this.model.attributes));
         $('[name="add-point"]', this.el).click(_.bind(this.createPoint, this));
+        $('[name="add-polygon"]', this.el).click(_.bind(this.createPolygon, this));
         this.$el.append(this.features.$el);
         $('.editor-save', this.el).click(_.bind(this.save, this));
     },
 
     createPoint: function() {
         this.model.features.add(new TG.GeoJSONGeometry({type: 'Point'}));
+    },
+
+    createPolygon: function() {
+        this.model.features.add(new TG.GeoJSONGeometry({type: 'Polygon'}));
     },
 
     save: function(evt) {

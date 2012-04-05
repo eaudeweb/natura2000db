@@ -21,3 +21,5 @@ html, body { height: 100%; width: 100%; margin: 0; }
 .point-label { margin: 0; }
 .point-geometry { margin-bottom: 5px; padding: 5px 5px 0; }
 .point-geometry input { font-size: 10px; height: 10px; }
+
+.polygon-geometry { margin: 0 0 5px; padding: 5px 5px 0; }
