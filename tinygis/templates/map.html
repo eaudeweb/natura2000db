@@ -10,6 +10,9 @@
   {{ script_src('lib/OpenLayers-2.11/OpenLayers.js', 'static') }}
   {{ script_src('lib/bootstrap-2.0.2/js/bootstrap.min.js') }}
   <script>window.TG = {};</script>
+  {%- if config['BING_MAPS_KEY'] %}
+    <script>window.TG['BING_MAPS_KEY'] = "{{ config['BING_MAPS_KEY'] }}";</script>
+  {% endif -%}
   {{ script_src('tinygis.js', 'tinygis.static') }}
   {{ script_src('editor.js', 'tinygis.static') }}
   <title>{% block title %}Natura2000{% endblock %}</title>

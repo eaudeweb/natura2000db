@@ -28,6 +28,8 @@ var Map = Backbone.View.extend({
             lonLat = this.invproject(this.map.getLonLatFromPixel(e.xy));
             this.trigger("mousemove", {lng: lonLat.lon, lat: lonLat.lat});
         });
+
+        this.map.addControl(new OpenLayers.Control.LayerSwitcher());
     },
 
     project: function(value) {
@@ -44,6 +46,25 @@ var Map = Backbone.View.extend({
 
     addLayer: function(layer) {
         this.map.addLayer(layer.olLayer);
+    },
+
+    addBingLayers: function(bingKey) {
+        var road = new OpenLayers.Layer.Bing({
+            name: "Bing Road",
+            key: bingKey,
+            type: "Road"
+        });
+        var hybrid = new OpenLayers.Layer.Bing({
+            name: "Bing Hybrid",
+            key: bingKey,
+            type: "AerialWithLabels"
+        });
+        var aerial = new OpenLayers.Layer.Bing({
+            name: "Bing Aerial",
+            key: bingKey,
+            type: "Aerial"
+        });
+        this.map.addLayers([road, hybrid, aerial]);
     }
 
 });
@@ -135,6 +156,9 @@ $(function() {
         name: "SCI + SPA",
         url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
     }));
+    if(TG['BING_MAPS_KEY']) {
+        TG.map.addBingLayers(TG['BING_MAPS_KEY']);
+    }
 
     //TG.identify = new TG.Identify;
     //TG.map.on("mousemove", TG.identify.updateCoordinates,
