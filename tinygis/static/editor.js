@@ -13,15 +13,6 @@ _.mixin({
 
 
 TG.GeoJSONGeometry = Backbone.Model.extend({
-    toJSON: function() {
-        return {
-            type: "Feature",
-            geometry: {
-                type: this.get('type'),
-                coordinates: this.get('coordinates')
-            }
-        };
-    }
 });
 
 
@@ -33,7 +24,12 @@ TG.FeatureCollection = Backbone.Model.extend({
     toJSON: function() {
         return {
             type: "FeatureCollection",
-            features: this.features.invoke('toJSON')
+            features: this.features.map(function(geojsonGeometry) {
+                return {
+                    type: "Feature",
+                    geometry: geojsonGeometry.toJSON()
+                };
+            })
         };
     },
 
@@ -42,10 +38,11 @@ TG.FeatureCollection = Backbone.Model.extend({
         var features_data = _(data).pop('features');
         if(features_data !== undefined) {
             var models = _(features_data).map(function(feature_data) {
-                var feature = new TG.GeoJSONGeometry({type: 'Point'});
                 var geometry = _(feature_data).pop('geometry');
-                feature.set({coordinates: geometry['coordinates']});
-                return feature;
+                return new TG.GeoJSONGeometry({
+                    type: 'Point',
+                    coordinates: geometry['coordinates']
+                });
             });
             this.features.reset(models);
         }
