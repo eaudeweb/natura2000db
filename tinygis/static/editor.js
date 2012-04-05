@@ -12,6 +12,15 @@ _.mixin({
 });
 
 
+var lastAutoId = 0;
+_.mixin({
+    generateAutoId: function() {
+        lastAutoId += 1;
+        return lastAutoId;
+    }
+});
+
+
 TG.GeoJSONGeometry = Backbone.Model.extend({
 });
 
@@ -133,6 +142,14 @@ TG.PolygonEditor = Backbone.View.extend({
     render: function() {
         var template = TG.templates[this.templateName];
         this.$el.html(template({coordinates: this.model.get('coordinates')}));
+        var _importCoordinates = _.bind(this.importCoordinates, this);
+        $('.import-coordinates-save', this.el).click(_importCoordinates);
+    },
+
+    importCoordinates: function(evt) {
+        evt.preventDefault();
+        var coordinateData = $('[name=coordinate-data]', this.el).val();
+        console.log(coordinateData);
     }
 });
 

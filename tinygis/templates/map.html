@@ -54,6 +54,24 @@
 </script>
 
 <script type="text/html" class="template-src" data-name="polygon-editor">
+    <% var autoid = _.generateAutoId() %>
+    <div class="btn-group pull-right">
+      <button data-toggle="modal" href="#import-coordinates-modal-<%= autoid %>"
+              class="btn btn-mini">import</button>
+    </div>
+    <div class="modal hide" id="import-coordinates-modal-<%= autoid %>">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        Import coordinates
+      </div>
+      <div class="modal-body">
+        <textarea class="span6" rows="10" name="coordinate-data"></textarea>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+        <a href="#" class="btn btn-primary import-coordinates-save">Save</a>
+      </div>
+    </div>
     <p class="polygon-label">ze polygon</p>
 </script>
 
