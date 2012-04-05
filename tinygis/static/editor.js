@@ -60,19 +60,36 @@ TG.FeatureCollection = Backbone.Model.extend({
 TG.VectorFeature = Backbone.View.extend({
     initialize: function() {
         this.proj = this.options.proj;
-        this.geometry = new OpenLayers.Geometry.Point(0, 0);
+        var type = this.model.get('type');
+        if(type == 'Point') {
+            this.geometry = new OpenLayers.Geometry.Point();
+        } else if(type == 'Polygon') {
+            this.geometry = new OpenLayers.Geometry.Polygon();
+        }
         this.feature = new OpenLayers.Feature.Vector(this.geometry);
         this.updateGeometry();
         this.model.on('change', this.updateGeometry, this);
     },
 
     updateGeometry: function() {
-        var coordinates = this.model.get('coordinates') || [null, null];
-        var lng = coordinates[0], lat = coordinates[1];
-        var new_geometry = this.proj(new OpenLayers.Geometry.Point(lng, lat));
-        this.geometry.y = new_geometry.y;
-        this.geometry.x = new_geometry.x;
-        this.geometry.clearBounds();
+        var coordinates = this.model.get('coordinates');
+        var type = this.model.get('type');
+        if(type == 'Point') {
+            var lng = coordinates[0], lat = coordinates[1];
+            var newGeometry = this.proj(new OpenLayers.Geometry.Point(lng, lat));
+            this.geometry.y = newGeometry.y;
+            this.geometry.x = newGeometry.x;
+            this.geometry.clearBounds();
+        } else if(type == 'Polygon') {
+            while(this.geometry.components.length > 0) {
+                this.geometry.removeComponent(this.geometry.components[0]);
+            }
+            var pointList = _(coordinates).map(function(pc) {
+                return new OpenLayers.Geometry.Point(pc[0], pc[1]);
+            });
+            var newLinearRing = new OpenLayers.Geometry.LinearRing(pointList);
+            this.geometry.addComponent(this.proj(newLinearRing));
+        }
         this.trigger('geometry-change');
     }
 });
