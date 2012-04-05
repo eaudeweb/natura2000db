@@ -195,7 +195,8 @@ def register(app):
     _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
 
     loaders = []
-    if app.config["ZOPE_TEMPLATE_CACHE"]:
+    # import pdb; pdb.set_trace()
+    if app.config["ZOPE_TEMPLATE_PATH"]:
         loaders.append(ZopeTemplateLoader(app.config["ZOPE_TEMPLATE_PATH"],
                                           app.config["ZOPE_TEMPLATE_CACHE"],
                                           app.config["ZOPE_TEMPLATE_LIST"]))

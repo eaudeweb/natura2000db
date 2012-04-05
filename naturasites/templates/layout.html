@@ -18,15 +18,17 @@
   <title>{% block title %}Natura2000{% endblock %}</title>
 {% endblock %}
 
-<div class="natura2000">
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul class=flashes>
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
-  {% block content %}{% endblock %}
-</div>
+{% block natura2000_content %}
+  <div class="natura2000">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+{% endblock %}
