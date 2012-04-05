@@ -153,7 +153,9 @@ $(function() {
         }
 
         TG.featureCollection = new TG.FeatureCollection({id: layer_id});
-        TG.featureCollection.fetch();
+        if(layer_id !== null) {
+            TG.featureCollection.fetch();
+        }
         TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
             model: TG.featureCollection});
         TG.featureCollectionEditor.$el.appendTo($('body'));
