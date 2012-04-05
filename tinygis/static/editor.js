@@ -1,20 +1,41 @@
 (function() {
 
 
+_.mixin({
+    pop: function(obj, name) {
+        if(_.has(obj, name)) {
+            var value = obj[name];
+            delete obj[name];
+            return value;
+        }
+    }
+});
+
+
 TG.PointFeature = Backbone.Model.extend({
-    initialize: function() {
-        this.set({lat: 0, lng: 0});
-    },
+    defaults: {lat: 0, lng: 0},
 
     toJSON: function() {
         return {
             type: "Feature",
             geometry: {
                 type: "Point",
-                coordinates: [this.get('lng'), this.get('lat')],
-                properties: _.clone(this.attributes)
+                coordinates: [this.get('lng'), this.get('lat')]
             }
         };
+    },
+
+    parse: function(resp, xhr) {
+        console.log('PointFeature.parse', resp);
+        var data = _(resp).clone();
+        var geometry = _(data).pop('geometry');
+        if(geometry !== undefined) {
+            _(data).extend({
+                lng: geometry['coordinates'][0],
+                lat: geometry['coordinates'][1]
+            });
+        }
+        return data;
     }
 });
 
@@ -29,6 +50,20 @@ TG.FeatureCollection = Backbone.Model.extend({
             type: "FeatureCollection",
             features: this.features.invoke('toJSON')
         };
+    },
+
+    parse: function(resp, xhr) {
+        console.log('FeatureCollection.parse', resp);
+        var data = _(resp).clone();
+        var features = _(data).pop('features');
+        if(features !== undefined) {
+            var models = _(features).map(function(feature_data) {
+                return new TG.PointFeature(feature_data,
+                    {parse: TG.PointFeature.prototype.parse});
+            });
+            this.features.reset(models);
+        }
+        return data;
     }
 });
 
@@ -58,6 +93,7 @@ TG.VectorLayer = Backbone.View.extend({
         this.layer = new OpenLayers.Layer.Vector("Vector");
         this.proj = this.options.proj;
         this.model.features.on('add', this.addOne, this);
+        this.model.features.on('reset', this.addAll, this);
     },
 
     addOne: function(feature) {
@@ -69,6 +105,11 @@ TG.VectorLayer = Backbone.View.extend({
         vectorFeature.on('geometry-change', function() {
             this.layer.drawFeature(vectorFeature.feature);
         }, this);
+    },
+
+    addAll: function(features) {
+        console.log('VectorLayer.addAll', arguments);
+        features.each(this.addOne, this);
     }
 });
 
@@ -103,11 +144,16 @@ TG.FeatureList = Backbone.View.extend({
 
     initialize: function() {
         this.model.on('add', this.addOne, this);
+        this.model.on('reset', this.addAll, this);
     },
 
     addOne: function(feature) {
         var view = new TG.PointEditor({model: feature});
         this.$el.append(view.$el);
+    },
+
+    addAll: function(features) {
+        features.each(this.addOne, this);
     }
 });
 

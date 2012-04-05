@@ -143,17 +143,27 @@ $(function() {
     //TG.identifyView = new TG.IdentifyView({model: TG.identify});
     //TG.identifyView.$el.appendTo($('body'));
 
-    TG.featureCollection = new TG.FeatureCollection;
-    TG.featureCollection.urlRoot = '/map/userlayers';
-    TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
-        model: TG.featureCollection});
-    TG.featureCollectionEditor.$el.appendTo($('body'));
+    TG.FeatureCollection.prototype.urlRoot = '/map/userlayers';
 
-    TG.vectorLayer = new TG.VectorLayer({
-        model: TG.featureCollection,
-        proj: _.bind(TG.map.project, TG.map)
+    $.get('/map/userlayers').done(function(data) {
+        var id_list = data['ids'];
+        var layer_id = null;
+        if(id_list.length > 0) {
+            layer_id = id_list[0];
+        }
+
+        TG.featureCollection = new TG.FeatureCollection({id: layer_id});
+        TG.featureCollection.fetch();
+        TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
+            model: TG.featureCollection});
+        TG.featureCollectionEditor.$el.appendTo($('body'));
+
+        TG.vectorLayer = new TG.VectorLayer({
+            model: TG.featureCollection,
+            proj: _.bind(TG.map.project, TG.map)
+        });
+        TG.map.map.addLayer(TG.vectorLayer.layer);
     });
-    TG.map.map.addLayer(TG.vectorLayer.layer);
 });
 
 
