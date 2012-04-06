@@ -163,7 +163,10 @@ TG.PolygonEditor = Backbone.View.extend({
 
     render: function() {
         var template = TG.templates[this.templateName];
-        this.$el.html(template({coordinates: this.model.get('coordinates')}));
+        var coordinates = this.model.get('coordinates');
+        this.$el.html(template({
+            coordinates: _(coordinates).initial() // last point is same as first
+        }));
         var _importCoordinates = _.bind(this.importCoordinates, this);
         $('.import-coordinates-save', this.el).click(_importCoordinates);
         $('.feature-delete', this.el).click(_.bind(function(evt) {
