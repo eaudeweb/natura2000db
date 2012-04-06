@@ -5,7 +5,7 @@ from path import path as ppath
 
 app = env.app = {
     'repo': ppath('/var/local'),
-    'localrepo': ppath('.').abspath(),
+    'localrepo': ppath('.').abspath().parent,
 }
 
 
@@ -60,7 +60,7 @@ def install(force=False):
 
 @task
 def service(action):
-    run("sudo -u zope '%(sandbox)s/bin/supervisorctl' %(action)s %(name)s" % {
+    run("'%(sandbox)s/bin/supervisorctl' %(action)s %(name)s" % {
             'sandbox': app['sandbox'],
             'action': action,
             'name': 'natura2000db',
