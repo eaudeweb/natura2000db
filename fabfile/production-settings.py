@@ -1,5 +1,6 @@
 HTTP_PROXIED = True
 HTTP_CHERRYPY = True
+ZOPE_TEMPLATE_PATH = 'http://chm-root.eea.europa.eu/chm_ro/rio/natura2000/'
 
 import logging.handlers
 error_log = logging.handlers.WatchedFileHandler('%(instance_var)s/error.log')
