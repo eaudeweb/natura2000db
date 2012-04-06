@@ -4,11 +4,15 @@
 <head>
   {{ link_css('lib/bootstrap-2.0.2/css/bootstrap.min.css') }}
   {{ link_css('tinygis.css', 'tinygis.static') }}
+
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.4.2/mustache.min.js"></script>
+
   {{ script_src('lib/OpenLayers-2.11/OpenLayers.js', 'static') }}
   {{ script_src('lib/bootstrap-2.0.2/js/bootstrap.min.js') }}
+
   <script>window.TG = {};</script>
   {%- if config['BING_MAPS_KEY'] %}
     <script>window.TG['BING_MAPS_KEY'] = "{{ config['BING_MAPS_KEY'] }}";</script>
