@@ -14,7 +14,10 @@ from naturasites.storage import get_db
 default_config = {
     'DEBUG': False,
     'ERROR_LOG_FILE': None,
+
     'HTTP_LISTEN_HOST': '127.0.0.1',
+    'HTTP_LISTEN_PORT': 5000,
+
     'HTTP_PROXIED': False,
     'HTTP_CHERRYPY': False,
     'STORAGE_ENGINE': 'solr',
@@ -143,7 +146,7 @@ def runserver(verbose=False):
 
     if app.config['HTTP_CHERRYPY']:
         from cherrypy import wsgiserver
-        listen = (app.config['HTTP_LISTEN_HOST'], 5000)
+        listen = (app.config['HTTP_LISTEN_HOST'], app.config['HTTP_LISTEN_PORT'])
         server = wsgiserver.CherryPyWSGIServer(listen, app.wsgi_app)
         try:
             server.start()
