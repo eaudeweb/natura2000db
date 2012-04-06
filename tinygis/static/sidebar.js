@@ -1,5 +1,45 @@
 (function () {
 
+var mapLayersTemplate = "<li class='{{#visible}}active{{/visible}}'><a data-id={{cid}}>{{name}}</a></li>";
+
+TG.MapLayers = Backbone.View.extend({
+
+    id: "map-layers",
+
+    tagName: "ul",
+
+    className: "nav nav-pills nav-stacked",
+
+    events: {
+        "click a": "show"
+    },
+
+    initialize: function () {
+        this.render();
+    },
+
+    render: function () {
+        var self = this;
+        this.collection.each(function (model, i) {
+            var data = model.toJSON();
+            data["cid"] = model.cid;
+            self.$el.append(Mustache.to_html(mapLayersTemplate, data));
+        });
+        $("#sidebar").append(this.$el);
+    },
+
+    show: function (e) {
+        var that = $(e.currentTarget);
+        if(that.parent().hasClass("active")) {
+            return;
+        }
+
+        var model = this.collection.getByCid(that.data("id"));
+        model.pleaseShow();
+    }
+
+});
+
 TG.Sidebar = Backbone.View.extend({
 
     id: "sidebar-container",
@@ -45,10 +85,6 @@ TG.Sidebar = Backbone.View.extend({
                 self.trigger("resize");
              });
         }
-    },
-
-    attachView: function () {
-
     }
 
 });

@@ -1,7 +1,5 @@
 $(function () {
 
-var sidebar = new TG.Sidebar();
-
 TG.load_templates();
 
 TG.map = new TG.Map({parent: $('body')[0]});
@@ -40,4 +38,7 @@ $.get('/map/userlayers').done(function(data) {
     TG.map.olMap.addLayer(TG.vectorLayer.olLayer);
 });
 
-})();
+var sidebar = new TG.Sidebar();
+var mapLayers = new TG.MapLayers({"collection": TG.map.baseLayerCollection});
+
+});

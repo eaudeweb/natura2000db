@@ -2,6 +2,10 @@ html, body {
     margin: 0;
 }
 
+a {
+    cursor: pointer;
+}
+
 #tinygis-map {
     position: absolute;
     cursor: crosshair;
