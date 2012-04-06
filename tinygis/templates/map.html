@@ -21,73 +21,94 @@
   <title>{% block title %}Natura2000{% endblock %}</title>
 </head>
 
+
 <body>
 
-    <div class="menu">
-    {% if g.user %}
-        {{ g.user['name'] }}
-        <a href="{{ url_for('auth.logout') }}" class="btn btn-mini">Logout</a>
-    {% else %}
-        <a href="{{ url_for('auth.login') }}" class="btn btn-mini">Login</a>
-    {% endif %}
-    </div>
+  <div class="menu">
+  {% if g.user %}
+    {{ g.user['name'] }}
+    <a href="{{ url_for('auth.logout') }}" class="btn btn-mini">Logout</a>
+  {% else %}
+    <a href="{{ url_for('auth.login') }}" class="btn btn-mini">Login</a>
+  {% endif %}
+  </div>
 
 </body>
 
+
 <script type="text/html" class="template-src" data-name="identify">
-    <p class="identify-coordinates">
-        <%= lng.toFixed(4) %>
-        <%= lat.toFixed(4) %>
-    </p>
 
-    <ul class="identify-features">
-    <% _(hit_list).map(function(hit) { %>
-        <li><%= hit.feature %></li>
-    <% }); %>
-    </ul>
+  <p class="identify-coordinates">
+    <%= lng.toFixed(4) %>
+    <%= lat.toFixed(4) %>
+  </p>
 
-    <% if(error) { %>
-        <span class="error-text">error identifying features</span>
-    <% } %>
+  <ul class="identify-features">
+  <% _(hit_list).map(function(hit) { %>
+    <li><%= hit.feature %></li>
+  <% }); %>
+  </ul>
+
+  <% if(error) { %>
+    <span class="error-text">error identifying features</span>
+  <% } %>
+
 </script>
 
+
 <script type="text/html" class="template-src" data-name="point-editor">
-    <p class="point-label">ze point</p>
-    <div class="point-geometry well form-inline">
-        <label>lng <input name="lng" class="span1" value=<%= lng %>></label>
-        <label>lat <input name="lat" class="span1" value=<%= lat %>></label>
-    </div>
+
+  <p class="point-label">ze point</p>
+
+  <div class="point-geometry well form-inline">
+    <label>lng <input name="lng" class="span1" value=<%= lng %>></label>
+    <label>lat <input name="lat" class="span1" value=<%= lat %>></label>
+  </div>
+
 </script>
 
 <script type="text/html" class="template-src" data-name="polygon-editor">
-    <% var autoid = _.generateAutoId() %>
-    <div class="btn-group pull-right">
-      <button data-toggle="modal" href="#import-coordinates-modal-<%= autoid %>"
-              class="btn btn-mini">import</button>
+
+  <% var autoid = _.generateAutoId() %>
+
+  <div class="btn-group pull-right">
+    <button data-toggle="modal"
+            href="#import-coordinates-modal-<%= autoid %>"
+            class="btn btn-mini">import</button>
+  </div>
+
+  <div class="modal hide" id="import-coordinates-modal-<%= autoid %>">
+
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">×</a>
+      Import coordinates
     </div>
-    <div class="modal hide" id="import-coordinates-modal-<%= autoid %>">
-      <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        Import coordinates
-      </div>
-      <div class="modal-body">
-        <textarea class="span6" rows="10" name="coordinate-data"></textarea>
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-        <a href="#" class="btn btn-primary import-coordinates-save">Save</a>
-      </div>
+
+    <div class="modal-body">
+      <textarea class="span6" rows="10" name="coordinate-data"></textarea>
     </div>
-    <p class="polygon-label">ze polygon</p>
-    <ul class="polygon-geometry well unstyled">
-        <% _(coordinates).forEach(function(point) { %>
-            <li><%= point[0] %> <%= point[1] %></li>
-        <% }); %>
-    </ul>
+
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+      <a href="#" class="btn btn-primary import-coordinates-save">Save</a>
+    </div>
+
+  </div>
+
+  <p class="polygon-label">ze polygon</p>
+
+  <ul class="polygon-geometry well unstyled">
+    <% _(coordinates).forEach(function(point) { %>
+      <li><%= point[0] %> <%= point[1] %></li>
+    <% }); %>
+  </ul>
+
 </script>
 
 <script type="text/html" class="template-src" data-name="editor">
-<div class="btn-toolbar">
+
+  <div class="btn-toolbar">
+
     Create
     <div class="btn-group">
       <button class="btn btn-mini" name="add-point">point</button>
@@ -95,16 +116,21 @@
     </div>
 
     <div class="btn-group">
+
       <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
         <i class="icon-cog"></i>
       </button>
+
       <ul class="dropdown-menu pull-right">
         <li><a href="#" class="editor-save">
           <i class="icon-share-alt"></i> Save
         </a></li>
       </ul>
+
     </div>
-</div>
+
+  </div>
+
 </script>
 
 </html>
