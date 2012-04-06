@@ -66,6 +66,10 @@ TG.Map = Backbone.View.extend({
         this.olMap.addControl(new OpenLayers.Control.LayerSwitcher());
     },
 
+    updateSize: function() {
+        this.olMap.updateSize();
+    },
+
     project: function(value) {
         var wgs84 = new OpenLayers.Projection("EPSG:4326");
         var map_proj = this.olMap.getProjectionObject();
