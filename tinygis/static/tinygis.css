@@ -1,5 +1,13 @@
-html, body { height: 100%; width: 100%; margin: 0; }
-#tinygis-map { height: 100%; width: 100%; cursor: crosshair; }
+html, body { margin: 0; }
+#tinygis-map {
+    position: absolute;
+    cursor: crosshair;
+    z-index: 0;
+    left: 220px;
+    bottom: 0;
+    right: 0;
+    top: 0;
+}
 
 .menu { z-index: 1100; position: absolute; top: 0; right: 0;
         border: 2px solid #888; border-right: 0; border-top: 0;
@@ -24,3 +32,36 @@ html, body { height: 100%; width: 100%; margin: 0; }
 
 .polygon-geometry { margin: 0 0 5px; padding: 5px 5px 0; }
 .polygon-geometry li:last-child { color: #aaa; }
+
+#sidebar {
+    position: absolute;
+    background: #fff;
+    padding: 20px;
+    z-index: 9999;
+    width: 180px;
+    bottom: 0;
+    left: 0;
+    top: 0;
+}
+#togglebar {
+    -webkit-box-shadow: 3px 0px 5px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 3px 0px 5px rgba(50, 50, 50, 0.75);
+    box-shadow: 3px 0px 5px rgba(50, 50, 50, 0.75);
+
+    transition: background 200ms;
+    -moz-transition: background 200ms;
+    -webkit-transition: background 200ms;
+    -o-transition: background 200ms;
+
+    position: absolute;
+    background: #C3DDEB;
+    cursor: pointer;
+    z-index: 9999;
+    left: 220px;
+    width: 8px;
+    bottom: 0;
+    top: 0;
+}
+#togglebar:hover {
+    background: #81b8d6;
+}

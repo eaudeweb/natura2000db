@@ -1,6 +1,7 @@
 HTTP_PROXIED = True
 HTTP_CHERRYPY = True
 # ZOPE_TEMPLATE_PATH = 'http://biodiversitate.mmediu.ro/rio/natura2000_templates'
+ZOPE_TEMPLATE_CACHE = False
 
 import logging.handlers
 error_log = logging.handlers.WatchedFileHandler('%(instance_var)s/error.log')
