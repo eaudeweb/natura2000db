@@ -65,6 +65,28 @@ var Map = Backbone.View.extend({
             type: "Aerial"
         });
         this.map.addLayers([road, hybrid, aerial]);
+    },
+
+    addGoogleLayers: function() {
+        var gsat = new OpenLayers.Layer.Google("Google Satellite", {
+            type: google.maps.MapTypeId.SATELLITE,
+            animationEnabled: false,
+            numZoomLevels: 22
+        });
+        var gphy = new OpenLayers.Layer.Google("Google Physical", {
+            type: google.maps.MapTypeId.TERRAIN,
+            animationEnabled: false
+        });
+        var gmap = new OpenLayers.Layer.Google("Google Streets", {
+            animationEnabled: false,
+            numZoomLevels: 20
+        });
+        var ghyb = new OpenLayers.Layer.Google("Google Hybrid", {
+            type: google.maps.MapTypeId.HYBRID,
+            animationEnabled: false,
+            numZoomLevels: 22
+        });
+        this.map.addLayers([gsat, gphy, gmap, ghyb]);
     }
 
 });
@@ -156,6 +178,9 @@ $(function() {
         name: "SCI + SPA",
         url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
     }));
+    if(window.google && window.google.maps) {
+        TG.map.addGoogleLayers();
+    }
     if(TG['BING_MAPS_KEY']) {
         TG.map.addBingLayers(TG['BING_MAPS_KEY']);
     }
