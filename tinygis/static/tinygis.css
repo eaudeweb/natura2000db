@@ -26,12 +26,13 @@ html, body { margin: 0; }
           background: #fff; padding: 5px; }
 .editor-features { margin: 0; padding: 0; list-style: none; }
 
-.point-label { margin: 0; }
 .point-geometry { margin-bottom: 5px; padding: 5px 5px 0; }
 .point-geometry input { font-size: 10px; height: 10px; }
 
 .polygon-geometry { margin: 0 0 5px; padding: 5px 5px 0; }
 .polygon-geometry li:last-child { color: #aaa; }
+
+.feature-delete i { margin-bottom: -10px; }
 
 #sidebar {
     position: absolute;

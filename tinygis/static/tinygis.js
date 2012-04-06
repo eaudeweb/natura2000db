@@ -11,7 +11,29 @@ TG.load_templates = function() {
 };
 
 
-var Map = Backbone.View.extend({
+TG.MapLayerCollection = Backbone.Collection.extend();
+
+
+TG.MapLayer = Backbone.Model.extend({
+    initialize: function(attributes, options) {
+        this.olLayer = options['olLayer'];
+        this.set('name', this.olLayer.name);
+        this.olLayer.events.register('visibilitychanged',
+                                     this, this._updateVisibility);
+        this._updateVisibility();
+    },
+
+    _updateVisibility: function() {
+        this.set('visible', this.olLayer.visibility);
+    },
+
+    pleaseShow: function() {
+        this.trigger('please:show');
+    }
+});
+
+
+TG.Map = Backbone.View.extend({
 
     tagName: 'div',
     id: 'tinygis-map',
@@ -19,33 +41,45 @@ var Map = Backbone.View.extend({
     initialize: function() {
         this.parent = this.options['parent'];
         this.$el.prependTo(this.parent);
-        this.map = new OpenLayers.Map(this.el.id);
-        var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
-        this.map.addLayer(osm_layer);
-        this.map.setCenter(this.project(new OpenLayers.LonLat(25, 46)), 7);
+        this.olMap = new OpenLayers.Map(this.el.id);
 
-        this.map.events.register("mousemove", this, function(e) {
-            lonLat = this.invproject(this.map.getLonLatFromPixel(e.xy));
+        this.baseLayerCollection = new TG.MapLayerCollection;
+        this.olMap.events.register('addlayer', this, function(e) {
+            var layer = new TG.MapLayer({}, {olLayer: e.layer});
+            if(e.layer.isBaseLayer) {
+                this.baseLayerCollection.add(layer);
+                layer.on('please:show', function() {
+                    this.olMap.setBaseLayer(layer.olLayer);
+                }, this);
+            }
+        });
+
+        var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
+        this.olMap.addLayer(osm_layer);
+        this.olMap.setCenter(this.project(new OpenLayers.LonLat(25, 46)), 7);
+
+        this.olMap.events.register("mousemove", this, function(e) {
+            lonLat = this.invproject(this.olMap.getLonLatFromPixel(e.xy));
             this.trigger("mousemove", {lng: lonLat.lon, lat: lonLat.lat});
         });
 
-        this.map.addControl(new OpenLayers.Control.LayerSwitcher());
+        this.olMap.addControl(new OpenLayers.Control.LayerSwitcher());
     },
 
     project: function(value) {
         var wgs84 = new OpenLayers.Projection("EPSG:4326");
-        var map_proj = this.map.getProjectionObject();
+        var map_proj = this.olMap.getProjectionObject();
         return value.transform(wgs84, map_proj);
     },
 
     invproject: function(value) {
         var wgs84 = new OpenLayers.Projection("EPSG:4326");
-        var map_proj = this.map.getProjectionObject();
+        var map_proj = this.olMap.getProjectionObject();
         return value.transform(map_proj, wgs84);
     },
 
     addLayer: function(layer) {
-        this.map.addLayer(layer.olLayer);
+        this.olMap.addLayer(layer.olLayer);
     },
 
     addBingLayers: function(bingKey) {
@@ -64,7 +98,7 @@ var Map = Backbone.View.extend({
             key: bingKey,
             type: "Aerial"
         });
-        this.map.addLayers([road, hybrid, aerial]);
+        this.olMap.addLayers([road, hybrid, aerial]);
     },
 
     addGoogleLayers: function() {
@@ -86,7 +120,7 @@ var Map = Backbone.View.extend({
             animationEnabled: false,
             numZoomLevels: 22
         });
-        this.map.addLayers([gsat, gphy, gmap, ghyb]);
+        this.olMap.addLayers([gsat, gphy, gmap, ghyb]);
     }
 
 });
@@ -173,7 +207,7 @@ TG.IdentifyView = Backbone.View.extend({
 $(function() {
     TG.load_templates();
 
-    TG.map = new Map({parent: $('body')[0]});
+    TG.map = new TG.Map({parent: $('body')[0]});
     TG.map.addLayer(new TG.TileLayer({
         name: "SCI + SPA",
         url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
@@ -213,7 +247,7 @@ $(function() {
             model: TG.featureCollection,
             proj: _.bind(TG.map.project, TG.map)
         });
-        TG.map.map.addLayer(TG.vectorLayer.layer);
+        TG.map.olMap.addLayer(TG.vectorLayer.olLayer);
     });
 });
 
