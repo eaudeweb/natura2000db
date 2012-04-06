@@ -10,3 +10,4 @@ path.py==2.2.2
 meld3==0.6.8
 supervisor==3.0a12
 simplejson==2.5.0
+requests==0.11.1
