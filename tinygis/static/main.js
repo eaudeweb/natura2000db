@@ -13,7 +13,6 @@ if(window.google && window.google.maps) {
 if(TG['BING_MAPS_KEY']) {
     TG.map.addBingLayers(TG['BING_MAPS_KEY']);
 }
-sidebar.on('resize', TG.map.updateSize, TG.map);
 
 TG.FeatureCollection.prototype.urlRoot = '/map/userlayers';
 
@@ -40,6 +39,7 @@ $.get('/map/userlayers').done(function(data) {
 });
 
 var sidebar = new TG.Sidebar();
+sidebar.on('resize', TG.map.updateSize, TG.map);
 var mapLayers = new TG.MapLayers({"collection": TG.map.baseLayerCollection});
 
 });
