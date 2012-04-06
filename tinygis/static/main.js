@@ -13,6 +13,7 @@ if(window.google && window.google.maps) {
 if(TG['BING_MAPS_KEY']) {
     TG.map.addBingLayers(TG['BING_MAPS_KEY']);
 }
+sidebar.on('resize', TG.map.updateSize, TG.map);
 
 TG.FeatureCollection.prototype.urlRoot = '/map/userlayers';
 
