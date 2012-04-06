@@ -195,12 +195,11 @@ def register(app):
     _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
 
     loaders = []
-    # import pdb; pdb.set_trace()
     if app.config["ZOPE_TEMPLATE_PATH"]:
         loaders.append(ZopeTemplateLoader(app.config["ZOPE_TEMPLATE_PATH"],
                                           app.config["ZOPE_TEMPLATE_CACHE"],
                                           app.config["ZOPE_TEMPLATE_LIST"]))
-    loaders.append(FileSystemLoader(app.blueprints["naturasites"].jinja_loader.searchpath))
+    loaders.append(app.create_global_jinja_loader())
 
     app.jinja_options = dict(app.jinja_options,
                              extensions=_my_extensions,
