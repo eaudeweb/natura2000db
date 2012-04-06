@@ -14,7 +14,11 @@ TG.load_templates = function() {
 TG.MapLayerCollection = Backbone.Collection.extend();
 
 
-TG.MapLayer = Backbone.Model.extend();
+TG.MapLayer = Backbone.Model.extend({
+    pleaseShow: function() {
+        this.trigger('please:show');
+    }
+});
 
 
 TG.Map = Backbone.View.extend({
@@ -33,6 +37,9 @@ TG.Map = Backbone.View.extend({
             layer.olLayer = e.layer;
             if(e.layer.isBaseLayer) {
                 this.baseLayerCollection.add(layer);
+                layer.on('please:show', function() {
+                    this.map.setBaseLayer(layer.olLayer);
+                }, this);
             }
         });
 
