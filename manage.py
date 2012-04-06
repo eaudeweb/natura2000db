@@ -9,6 +9,8 @@ import flaskext.script
 import naturasites.schema
 import naturasites.views
 from naturasites.storage import get_db
+import tinygis.views
+import auth
 
 
 default_config = {
@@ -21,7 +23,6 @@ default_config = {
     'HTTP_PROXIED': False,
     'HTTP_CHERRYPY': False,
     'STORAGE_ENGINE': 'solr',
-    'SECRET_KEY': 'demo',
     'TILES_FOLDER': ppath(__file__).parent/'geo'/'tiles',
 
     'ZOPE_TEMPLATE_CACHE': True,
@@ -38,6 +39,8 @@ def create_app():
     app.config.from_pyfile("settings.py", silent=True)
 
     naturasites.views.register(app)
+    tinygis.views.register(app)
+    auth.register(app)
 
     static_url_map = {}
     if 'PDF_FOLDER' in app.config:
