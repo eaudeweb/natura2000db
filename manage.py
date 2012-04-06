@@ -20,6 +20,10 @@ default_config = {
     'STORAGE_ENGINE': 'solr',
     'SECRET_KEY': 'demo',
     'TILES_FOLDER': ppath(__file__).parent/'geo'/'tiles',
+
+    'ZOPE_TEMPLATE_CACHE': True,
+    'ZOPE_TEMPLATE_PATH': 'http://biodiversitate.mmediu.ro/rio/natura2000/',
+    'ZOPE_TEMPLATE_LIST': ['frame.html'],
 }
 
 
