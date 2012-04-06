@@ -97,7 +97,7 @@ TG.VectorFeature = Backbone.View.extend({
 
 TG.VectorLayer = Backbone.View.extend({
     initialize: function() {
-        this.layer = new OpenLayers.Layer.Vector("Vector");
+        this.olLayer = new OpenLayers.Layer.Vector("Vector");
         this.proj = this.options.proj;
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
@@ -108,9 +108,9 @@ TG.VectorLayer = Backbone.View.extend({
             model: feature,
             proj: this.proj
         });
-        this.layer.addFeatures([vectorFeature.feature]);
+        this.olLayer.addFeatures([vectorFeature.feature]);
         vectorFeature.on('geometry-change', function() {
-            this.layer.drawFeature(vectorFeature.feature);
+            this.olLayer.drawFeature(vectorFeature.feature);
         }, this);
     },
 
