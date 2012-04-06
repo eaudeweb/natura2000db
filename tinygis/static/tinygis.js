@@ -15,6 +15,18 @@ TG.MapLayerCollection = Backbone.Collection.extend();
 
 
 TG.MapLayer = Backbone.Model.extend({
+    initialize: function(attributes, options) {
+        this.olLayer = options['olLayer'];
+        this.set('name', this.olLayer.name);
+        this.olLayer.events.register('visibilitychanged',
+                                     this, this._updateVisibility);
+        this._updateVisibility();
+    },
+
+    _updateVisibility: function() {
+        this.set('visible', this.olLayer.visibility);
+    },
+
     pleaseShow: function() {
         this.trigger('please:show');
     }
@@ -33,8 +45,7 @@ TG.Map = Backbone.View.extend({
 
         this.baseLayerCollection = new TG.MapLayerCollection;
         this.map.events.register('addlayer', this, function(e) {
-            var layer = new TG.MapLayer({name: e.layer.name});
-            layer.olLayer = e.layer;
+            var layer = new TG.MapLayer({}, {olLayer: e.layer});
             if(e.layer.isBaseLayer) {
                 this.baseLayerCollection.add(layer);
                 layer.on('please:show', function() {
