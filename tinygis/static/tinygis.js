@@ -11,7 +11,13 @@ TG.load_templates = function() {
 };
 
 
-var Map = Backbone.View.extend({
+TG.MapLayerCollection = Backbone.Collection.extend();
+
+
+TG.MapLayer = Backbone.Model.extend();
+
+
+TG.Map = Backbone.View.extend({
 
     tagName: 'div',
     id: 'tinygis-map',
@@ -20,6 +26,16 @@ var Map = Backbone.View.extend({
         this.parent = this.options['parent'];
         this.$el.prependTo(this.parent);
         this.map = new OpenLayers.Map(this.el.id);
+
+        this.baseLayerCollection = new TG.MapLayerCollection;
+        this.map.events.register('addlayer', this, function(e) {
+            var layer = new TG.MapLayer({name: e.layer.name});
+            layer.olLayer = e.layer;
+            if(e.layer.isBaseLayer) {
+                this.baseLayerCollection.add(layer);
+            }
+        });
+
         var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
         this.map.addLayer(osm_layer);
         this.map.setCenter(this.project(new OpenLayers.LonLat(25, 46)), 7);
@@ -173,7 +189,7 @@ TG.IdentifyView = Backbone.View.extend({
 $(function() {
     TG.load_templates();
 
-    TG.map = new Map({parent: $('body')[0]});
+    TG.map = new TG.Map({parent: $('body')[0]});
     TG.map.addLayer(new TG.TileLayer({
         name: "SCI + SPA",
         url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
