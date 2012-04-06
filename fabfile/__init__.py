@@ -5,7 +5,7 @@ from path import path as ppath
 
 app = env.app = {
     'repo': ppath('/var/local'),
-    'localrepo': ppath('.').abspath().parent,
+    'localrepo': ppath(__file__).abspath().parent.parent,
 }
 
 
@@ -69,5 +69,5 @@ def service(action):
 
 @task
 def deploy():
-    execute('install')
+    execute('install', force=True)
     execute('service', 'restart')
