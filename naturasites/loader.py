@@ -25,6 +25,7 @@ class ZopeTemplateLoader(jinja2.BaseLoader):
             # escape jinja tags
             source = response.text
             source = source.strip()
+            source = source.replace("{%", "{{ '{%' }}").replace("%}", "{{ '%}' }}")
             source = source.replace("{{", "{{ '{{' }}").replace("}}", "{{ '}}' }}")
             source = source.replace("<!-- block_content -->", "{% block natura2000_content %}{% endblock %}")
             source = source.replace("<!-- block_head -->", "{% block head %}{% endblock %}")
