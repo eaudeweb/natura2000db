@@ -58,6 +58,11 @@
 
 <script type="text/html" class="template-src" data-name="point-editor">
 
+  <div class="btn-group pull-right">
+    <button class="btn btn-mini feature-delete">
+      <i class="icon-remove"></i></button>
+  </div>
+
   <p class="point-label">ze point</p>
 
   <div class="point-geometry well form-inline">
@@ -75,6 +80,8 @@
     <button data-toggle="modal"
             href="#import-coordinates-modal-<%= autoid %>"
             class="btn btn-mini">import</button>
+    <button class="btn btn-mini feature-delete">
+      <i class="icon-remove"></i></button>
   </div>
 
   <div class="modal hide" id="import-coordinates-modal-<%= autoid %>">

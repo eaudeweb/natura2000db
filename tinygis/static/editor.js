@@ -2,10 +2,13 @@
 
 
 _.mixin({
-    pop: function(obj, name) {
-        if(_.has(obj, name)) {
-            var value = obj[name];
-            delete obj[name];
+    pop: function(obj, key) {
+        if(_.isArray(obj)) {
+            return obj.splice(key, 1)[0];
+        }
+        if(_.has(obj, key)) {
+            var value = obj[key];
+            delete obj[key];
             return value;
         }
     }
@@ -134,6 +137,10 @@ TG.PointEditor = Backbone.View.extend({
         var coordinates = this.model.get('coordinates') || ['', ''];
         this.$el.html(template({lng: coordinates[0], lat: coordinates[1]}));
         $('.point-geometry input', this.el).change(_.bind(this.uiChange, this));
+        $('.feature-delete', this.el).click(_.bind(function(evt) {
+            evt.preventDefault();
+            this.model.destroy();
+        }, this));
     },
 
     uiChange: function() {
@@ -159,6 +166,10 @@ TG.PolygonEditor = Backbone.View.extend({
         this.$el.html(template({coordinates: this.model.get('coordinates')}));
         var _importCoordinates = _.bind(this.importCoordinates, this);
         $('.import-coordinates-save', this.el).click(_importCoordinates);
+        $('.feature-delete', this.el).click(_.bind(function(evt) {
+            evt.preventDefault();
+            this.model.destroy();
+        }, this));
     },
 
     importCoordinates: function(evt) {
@@ -190,16 +201,24 @@ TG.FeatureList = Backbone.View.extend({
     initialize: function() {
         this.model.on('add', this.addOne, this);
         this.model.on('reset', this.addAll, this);
+        this.model.on('remove', this.removeOne, this);
+        this.featureViews = {};
     },
 
     addOne: function(feature) {
         var editorCls = this.editorClass[feature.get('type')];
         var view = new editorCls({model: feature});
         this.$el.append(view.$el);
+        this.featureViews[view.model.cid] = view;
     },
 
     addAll: function(features) {
         features.each(this.addOne, this);
+    },
+
+    removeOne: function(feature) {
+        var view = _(this.featureViews).pop(feature.cid);
+        view.$el.remove();
     }
 });
 
