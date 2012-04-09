@@ -4,10 +4,13 @@ TG.main = function() {
     TG.load_templates();
 
     TG.map = new TG.Map({parent: $('body')[0]});
-    TG.map.addLayer(new TG.TileLayer({
+
+    var sciSpaLayer = new TG.TileLayer({
         name: "SCI + SPA",
         url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
-    }));
+    })
+    TG.map.addOverlay(sciSpaLayer.olLayer);
+
     if(window.google && window.google.maps) {
         TG.map.addGoogleLayers();
     }
@@ -28,6 +31,7 @@ TG.main = function() {
         if(layer_id !== null) {
             TG.featureCollection.fetch();
         }
+
         TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
             model: TG.featureCollection});
         TG.featureCollectionEditor.$el.appendTo($('body'));
@@ -36,7 +40,12 @@ TG.main = function() {
             model: TG.featureCollection,
             proj: _.bind(TG.map.project, TG.map)
         });
-        TG.map.olMap.addLayer(TG.vectorLayer.olLayer);
+        var layerModel = new TG.Layer({
+            id: TG.vectorLayer.olLayer.id,
+            name: TG.vectorLayer.olLayer.name
+        });
+        layerModel.geojson = TG.featureCollection;
+        TG.map.addOverlay(TG.vectorLayer.olLayer, {model: layerModel});
     });
 
     var sidebar = new TG.Sidebar();

@@ -101,8 +101,12 @@ TG.Map = Backbone.View.extend({
         return value.transform(map_proj, wgs84);
     },
 
-    addLayer: function(layer) {
-        this.olMap.addLayer(layer.olLayer);
+    addOverlay: function(olLayer, options) {
+        if(options === undefined) { options = {}; }
+        if(options['model'] !== undefined) {
+            this.overlayCollection.add(options['model'], options);
+        }
+        this.olMap.addLayer(olLayer);
     },
 
     addBingLayers: function(bingKey) {
