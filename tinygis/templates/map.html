@@ -10,7 +10,7 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.4.2/mustache.min.js"></script>
 
-  {{ script_src('lib/OpenLayers-2.11/OpenLayers.js', 'static') }}
+  {{ script_src('lib/openlayers-24d421a/OpenLayers.js', 'static') }}
   {{ script_src('lib/bootstrap-2.0.2/js/bootstrap.min.js') }}
 
   <script>window.TG = {};</script>
@@ -70,7 +70,7 @@
 
   <div class="btn-group pull-right">
     <button class="btn btn-mini feature-delete">
-      <i class="icon-remove"></i></button>
+      <i class="icon icon-remove"></i></button>
   </div>
 
   <p class="point-label">ze point</p>
@@ -91,7 +91,7 @@
             href="#import-coordinates-modal-<%= autoid %>"
             class="btn btn-mini">import</button>
     <button class="btn btn-mini feature-delete">
-      <i class="icon-remove"></i></button>
+      <i class="icon icon-remove"></i></button>
   </div>
 
   <div class="modal hide" id="import-coordinates-modal-<%= autoid %>">
@@ -135,12 +135,12 @@
     <div class="btn-group">
 
       <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-        <i class="icon-cog"></i>
+        <i class="icon icon-cog"></i>
       </button>
 
       <ul class="dropdown-menu pull-right">
         <li><a href="#" class="editor-save">
-          <i class="icon-share-alt"></i> Save
+          <i class="icon icon-share-alt"></i> Save
         </a></li>
       </ul>
 
