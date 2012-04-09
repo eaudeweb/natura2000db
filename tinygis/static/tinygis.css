@@ -21,8 +21,17 @@ a {
     overflow: hidden;
     width: 189px;
 }
+#sidebar .nav li .expand {
+    position: absolute;
+    cursor: pointer;
+    left: 10px;
+    top: 10px;
+}
 #sidebar .nav li {
     position: relative;
+}
+#sidebar .overlays li a {
+    padding-left: 30px;
 }
 
 #sidebar .nav .show-more {

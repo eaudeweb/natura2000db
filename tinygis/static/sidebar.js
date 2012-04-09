@@ -9,10 +9,11 @@ var showMoreTemplate = "<li class='show-more' style='display: block'><a>show mor
 
 var overlaysTemplate = "\
     <li data-id='<%=cid%>'> \
-        <div class='expand'></div> \
+        <% if(geojson) { %> <div class='icon icon-play expand'></div> <% } %> \
         <a><%=name%></a> \
         <div class='selector <% if(visible) { %> selected <% } %>'><b></b></div> \
     </li>";
+
 var Layers = Backbone.View.extend({
 
     tagName: "ul",
@@ -83,12 +84,14 @@ TG.Overlays = Layers.extend({
 
     render: function () {
 
+        this.$el.addClass("overlays");
         this.$el.empty();
         this.$el.append(this.make("li", {"class": "nav-header"}, "Overlays"));
 
         this.collection.each(_.bind(function (model, i) {
             var data = model.toJSON();
             data["cid"] = model.cid;
+            data["geojson"] = model.geojson ;
             data["visible"] = data["visible"] || true;
             this.$el.append(_.template(overlaysTemplate, data));
         }, this));
