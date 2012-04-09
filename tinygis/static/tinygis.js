@@ -14,21 +14,31 @@ TG.load_templates = function() {
 TG.MapLayerCollection = Backbone.Collection.extend();
 
 
-TG.MapLayer = Backbone.Model.extend({
-    initialize: function(attributes, options) {
+TG.Layer = Backbone.Model.extend();
+
+
+TG.MapLayer = Backbone.View.extend({
+    initialize: function(options) {
         this.olLayer = options['olLayer'];
-        this.set('name', this.olLayer.name);
         this.olLayer.events.register('visibilitychanged',
-                                     this, this._updateVisibility);
-        this._updateVisibility();
+                                     this, this.mapUpdateVisibility);
+        this.mapUpdateVisibility();
+        this.model.on('change:visible', this.modelUpdateVisibility, this);
     },
 
-    _updateVisibility: function() {
-        this.set('visible', this.olLayer.visibility);
+    modelUpdateVisibility: function(model, visible) {
+        if(this.olLayer.isBaseLayer) {
+            if(visible) {
+                this.olLayer.map.setBaseLayer(this.olLayer);
+            }
+        }
+        else {
+            this.olLayer.setVisibility(visible);
+        }
     },
 
-    pleaseShow: function() {
-        this.trigger('please:show');
+    mapUpdateVisibility: function(options) {
+        this.model.set('visible', this.olLayer.visibility);
     }
 });
 
@@ -44,15 +54,8 @@ TG.Map = Backbone.View.extend({
         this.olMap = new OpenLayers.Map(this.el.id);
 
         this.baseLayerCollection = new TG.MapLayerCollection;
-        this.olMap.events.register('addlayer', this, function(e) {
-            var layer = new TG.MapLayer({}, {olLayer: e.layer});
-            if(e.layer.isBaseLayer) {
-                this.baseLayerCollection.add(layer);
-                layer.on('please:show', function() {
-                    this.olMap.setBaseLayer(layer.olLayer);
-                }, this);
-            }
-        });
+        this.overlayCollection = new TG.MapLayerCollection;
+        this.olMap.events.register('addlayer', this, this.layerAdded);
 
         var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
         this.olMap.addLayer(osm_layer);
@@ -64,6 +67,22 @@ TG.Map = Backbone.View.extend({
         });
 
         this.olMap.addControl(new OpenLayers.Control.LayerSwitcher());
+    },
+
+    layerAdded: function(evt) {
+        var olLayer = evt.layer;
+        var collection = (olLayer.isBaseLayer
+                          ? this.baseLayerCollection
+                          : this.overlayCollection);
+        var layer = collection.get(olLayer.id);
+        if(layer === undefined) {
+            layer = new TG.Layer({
+                id: olLayer.id,
+                name: olLayer.name
+            });
+            collection.add(layer);
+        }
+        var mapLayer = new TG.MapLayer({model: layer, olLayer: olLayer});
     },
 
     updateSize: function() {
@@ -82,8 +101,12 @@ TG.Map = Backbone.View.extend({
         return value.transform(map_proj, wgs84);
     },
 
-    addLayer: function(layer) {
-        this.olMap.addLayer(layer.olLayer);
+    addOverlay: function(olLayer, options) {
+        if(options === undefined) { options = {}; }
+        if(options['model'] !== undefined) {
+            this.overlayCollection.add(options['model'], options);
+        }
+        this.olMap.addLayer(olLayer);
     },
 
     addBingLayers: function(bingKey) {
