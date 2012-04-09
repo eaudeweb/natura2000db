@@ -21,6 +21,7 @@ TG.MapLayers = Backbone.View.extend({
     render: function () {
         var self = this;
 
+        this.$el.append(this.make("li", {"class": "nav-header"}, "Base Layers"));
         this.collection.each(function (model, i) {
             var data = model.toJSON();
             data["cid"] = model.cid;

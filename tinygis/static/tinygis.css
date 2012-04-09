@@ -17,15 +17,29 @@ a {
 }
 
 #map-layers {
+    padding: 10px 0;
+    overflow: hidden;
     width: 189px;
 }
 
 .menu {
-    position: relative;
+    overflow: hidden;
+}
+.menu .title {
+    font-weight: bold;
+    font-size: 12px;
+    float: left;
+    color: #444;
+}
+.menu .btn-container {
     float: right;
-    padding: 5px;
-    padding-right: 0;
-    right: -7px;
+}
+.openid-google {
+    background: no-repeat url("/map/static/openid-google.png");
+    position: relative;
+    padding: 0 5px;
+    left: 2px;
+    top: 1px;
 }
 
 .identify {

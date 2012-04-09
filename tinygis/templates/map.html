@@ -29,17 +29,19 @@
   <title>{% block title %}Natura2000{% endblock %}</title>
 </head>
 
-
 <body></body>
-
 
 <script type="text/html" class="template-src" data-name="login">
   <div class="menu">
   {% if g.user %}
-    {{ g.user['name'] }}
-    <a href="{{ url_for('auth.logout') }}" class="btn btn-mini">Logout</a>
+    <div class="title">{{ g.user['name'] }}</div>
+    <div class="btn-container">
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-mini">Logout</a>
+    </div>
   {% else %}
-    <a href="{{ url_for('auth.login') }}" class="btn btn-mini">Login</a>
+    <div class="btn-container">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-mini">Login <b class="openid-google">&nbsp;</b></a>
+    </div>
   {% endif %}
   </div>
 </script>
