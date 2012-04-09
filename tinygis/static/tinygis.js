@@ -80,9 +80,9 @@ TG.Map = Backbone.View.extend({
                 id: olLayer.id,
                 name: olLayer.name
             });
-            collection.add(layer);
         }
         var mapLayer = new TG.MapLayer({model: layer, olLayer: olLayer});
+        collection.add(layer);
     },
 
     updateSize: function() {
