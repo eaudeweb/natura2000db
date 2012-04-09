@@ -8,7 +8,7 @@ TG.MapLayers = Backbone.View.extend({
 
     tagName: "ul",
 
-    className: "nav nav-pills nav-stacked",
+    className: "nav nav-tabs nav-stacked",
 
     events: {
         "click a": "show"
@@ -27,7 +27,7 @@ TG.MapLayers = Backbone.View.extend({
             self.$el.append(Mustache.to_html(mapLayersTemplate, data));
         });
 
-        $("#sidebar").html(this.$el);
+        $("#sidebar").append(this.$el);
     },
 
     show: function (e) {
@@ -59,13 +59,10 @@ TG.Sidebar = Backbone.View.extend({
     },
 
     render: function () {
-        /* <div id="sidebar-container">
-               <div id="togglebar"></div>
-               <div id="sidebar"></div>
-           </div>
-        */
+
+        var login = _.template($(".template-src[data-name=login]").html())();
         var togglebar = this.make("div", {"id": "togglebar"});
-        var sidebar = this.make("div", {"id": "sidebar"});
+        var sidebar = this.make("div", {"id": "sidebar"}, login);
 
         $("body").append(
             this.$el

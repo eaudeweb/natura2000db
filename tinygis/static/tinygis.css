@@ -21,13 +21,11 @@ a {
 }
 
 .menu {
-    z-index: 1100;
-    position: absolute;
-    top: 0;
-    right: 0;
-    border: 2px solid #888; border-right: 0; border-top: 0;
-    background: #fff;
+    position: relative;
+    float: right;
     padding: 5px;
+    padding-right: 0;
+    right: -7px;
 }
 
 .identify {

@@ -30,8 +30,10 @@
 </head>
 
 
-<body>
+<body></body>
 
+
+<script type="text/html" class="template-src" data-name="login">
   <div class="menu">
   {% if g.user %}
     {{ g.user['name'] }}
@@ -40,9 +42,7 @@
     <a href="{{ url_for('auth.login') }}" class="btn btn-mini">Login</a>
   {% endif %}
   </div>
-
-</body>
-
+</script>
 
 <script type="text/html" class="template-src" data-name="identify">
 
