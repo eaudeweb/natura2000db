@@ -54,14 +54,8 @@ TG.Map = Backbone.View.extend({
         this.olMap = new OpenLayers.Map(this.el.id);
 
         this.baseLayerCollection = new TG.MapLayerCollection;
-        this.olMap.events.register('addlayer', this, function(e) {
-            var olLayer = e.layer;
-            var layer = new TG.Layer({name: olLayer.name});
-            var mapLayer = new TG.MapLayer({model: layer, olLayer: olLayer});
-            if(e.layer.isBaseLayer) {
-                this.baseLayerCollection.add(layer);
-            }
-        });
+        this.overlayCollection = new TG.MapLayerCollection;
+        this.olMap.events.register('addlayer', this, this.layerAdded);
 
         var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
         this.olMap.addLayer(osm_layer);
@@ -73,6 +67,22 @@ TG.Map = Backbone.View.extend({
         });
 
         this.olMap.addControl(new OpenLayers.Control.LayerSwitcher());
+    },
+
+    layerAdded: function(evt) {
+        var olLayer = evt.layer;
+        var collection = (olLayer.isBaseLayer
+                          ? this.baseLayerCollection
+                          : this.overlayCollection);
+        var layer = collection.get(olLayer.id);
+        if(layer === undefined) {
+            layer = new TG.Layer({
+                id: olLayer.id,
+                name: olLayer.name
+            });
+            collection.add(layer);
+        }
+        var mapLayer = new TG.MapLayer({model: layer, olLayer: olLayer});
     },
 
     updateSize: function() {
