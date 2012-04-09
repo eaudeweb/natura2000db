@@ -16,6 +16,10 @@ a {
     top: 0;
 }
 
+#tinygis-map .olImageLoadError {
+    display: none;
+}
+
 #sidebar .nav {
     padding: 10px 0;
     overflow: hidden;
