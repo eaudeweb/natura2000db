@@ -40,7 +40,7 @@ TG.MapLayers = Backbone.View.extend({
         that.parent().addClass("active");
 
         var model = this.collection.getByCid(that.data("id"));
-        model.pleaseShow();
+        model.set('visible', true);
 
     }
 
