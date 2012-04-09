@@ -74,7 +74,8 @@ TG.Overlays = Layers.extend({
 
     events: {
         "click .selector": "select",
-        "click .expand": "expand"
+        "click .expand": "expand",
+        "click a": "expand"
     },
 
     initialize: function () {

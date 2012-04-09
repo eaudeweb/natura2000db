@@ -33,6 +33,9 @@ a {
 #sidebar .overlays li a {
     padding-left: 30px;
 }
+#sidebar .overlays li a:hover {
+    background: #fff;
+}
 
 #sidebar .nav .show-more {
     text-align: center;
