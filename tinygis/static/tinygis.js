@@ -65,8 +65,6 @@ TG.Map = Backbone.View.extend({
             lonLat = this.invproject(this.olMap.getLonLatFromPixel(e.xy));
             this.trigger("mousemove", {lng: lonLat.lon, lat: lonLat.lat});
         });
-
-        this.olMap.addControl(new OpenLayers.Control.LayerSwitcher());
     },
 
     layerAdded: function(evt) {

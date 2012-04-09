@@ -73,7 +73,8 @@ TG.MapLayers = Layers.extend({
 TG.Overlays = Layers.extend({
 
     events: {
-        "click .selector": "select"
+        "click .selector": "select",
+        "click .expand": "expand"
     },
 
     initialize: function () {
@@ -108,6 +109,23 @@ TG.Overlays = Layers.extend({
             model.set("visible", true);
         } else {
             model.set('visible', false);
+        }
+    },
+
+    expand: function (e) {
+
+        var that = $(e.currentTarget);
+        var editor = that.parent().find(".editor");
+        that.toggleClass("icon-play");
+        that.toggleClass("icon-minus");
+
+        if(editor.length == 0 ) {
+            var model = this.collection.getByCid(that.parent().data("id"));
+            TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
+                model: model.geojson});
+            TG.featureCollectionEditor.$el.appendTo(that.parent());
+        } else{
+            editor.slideToggle("fast");
         }
     }
 

@@ -32,10 +32,6 @@ TG.main = function() {
             TG.featureCollection.fetch();
         }
 
-        TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
-            model: TG.featureCollection});
-        TG.featureCollectionEditor.$el.appendTo($('body'));
-
         TG.vectorLayer = new TG.VectorLayer({
             model: TG.featureCollection,
             proj: _.bind(TG.map.project, TG.map)

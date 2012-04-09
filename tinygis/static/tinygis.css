@@ -115,13 +115,15 @@ a {
 }
 
 .editor {
-    z-index: 1100;
-    position: absolute;
-    top: 150px;
-    right: 0;
-    border: 2px solid #888; border-right: 0;
-    background: #fff;
-    padding: 5px;
+    position: relative;
+    background: #eee;
+    padding: 1px 10px;
+    top: -4px;
+}
+.editor .title {
+    position: relative;
+    font-size: 12px;
+    top: -5px;
 }
 
 .editor-features {
