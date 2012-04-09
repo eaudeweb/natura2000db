@@ -20,12 +20,14 @@ TG.MapLayers = Backbone.View.extend({
 
     render: function () {
         var self = this;
+
         this.collection.each(function (model, i) {
             var data = model.toJSON();
             data["cid"] = model.cid;
             self.$el.append(Mustache.to_html(mapLayersTemplate, data));
         });
-        $("#sidebar").append(this.$el);
+
+        $("#sidebar").html(this.$el);
     },
 
     show: function (e) {
@@ -34,8 +36,12 @@ TG.MapLayers = Backbone.View.extend({
             return;
         }
 
+        this.$el.find("li").removeClass("active");
+        that.parent().addClass("active");
+
         var model = this.collection.getByCid(that.data("id"));
         model.pleaseShow();
+
     }
 
 });
@@ -58,7 +64,6 @@ TG.Sidebar = Backbone.View.extend({
                <div id="sidebar"></div>
            </div>
         */
-
         var togglebar = this.make("div", {"id": "togglebar"});
         var sidebar = this.make("div", {"id": "sidebar"});
 

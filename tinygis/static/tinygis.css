@@ -16,6 +16,10 @@ a {
     top: 0;
 }
 
+#map-layers {
+    width: 189px;
+}
+
 .menu {
     z-index: 1100;
     position: absolute;
@@ -93,6 +97,7 @@ a {
 #sidebar {
     position: absolute;
     background: #fff;
+    overflow: hidden;
     padding: 20px;
     z-index: 9999;
     width: 180px;
