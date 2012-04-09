@@ -1,6 +1,7 @@
 (function () {
 
 var mapLayersTemplate = "<li class='{{#visible}}active{{/visible}}'><a data-id={{cid}}>{{name}}</a></li>";
+var showMoreTemplate = "<li class='show-more' style='display: block'><a>show more</a>";
 
 TG.MapLayers = Backbone.View.extend({
 
@@ -11,7 +12,8 @@ TG.MapLayers = Backbone.View.extend({
     className: "nav nav-tabs nav-stacked",
 
     events: {
-        "click a": "show"
+        "click a": "show",
+        "click .show-more a": "more"
     },
 
     initialize: function () {
@@ -27,13 +29,15 @@ TG.MapLayers = Backbone.View.extend({
             data["cid"] = model.cid;
             self.$el.append(Mustache.to_html(mapLayersTemplate, data));
         });
+        this.$el.find("li").slice(0, 3).show();
+        this.$el.append(_.template(showMoreTemplate)());
 
         $("#sidebar").append(this.$el);
     },
 
     show: function (e) {
         var that = $(e.currentTarget);
-        if(that.parent().hasClass("active")) {
+        if(that.parent().hasClass("active") || that.parent().hasClass("show-more")) {
             return;
         }
 
@@ -42,7 +46,13 @@ TG.MapLayers = Backbone.View.extend({
 
         var model = this.collection.getByCid(that.data("id"));
         model.set('visible', true);
+    },
 
+    more: function () {
+        var li = this.$el.find("li")
+        var showMore = li.last().find("a");
+        li.slice(3, li.length - 1).slideToggle("fast");
+        showMore.text(showMore.text() == "show more" ? "show less" : "show more");
     }
 
 });

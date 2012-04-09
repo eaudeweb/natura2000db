@@ -21,6 +21,17 @@ a {
     overflow: hidden;
     width: 189px;
 }
+#map-layers li {
+    display: none;
+}
+#map-layers .show-more {
+    text-align: center;
+}
+#map-layers .icon {
+    opacity: .4;
+    -moz-opacity: .4;
+    filter:alpha(opacity=.44);
+}
 
 .menu {
     overflow: hidden;
