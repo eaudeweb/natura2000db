@@ -89,11 +89,14 @@ TG.VectorFeature = Backbone.View.extend({
         var coordinates = this.model.geometry.get('coordinates');
         var type = this.model.geometry.get('type');
         if(type == 'Point') {
-            var lng = coordinates[0], lat = coordinates[1];
-            var newGeometry = this.proj(new OpenLayers.Geometry.Point(lng, lat));
-            this.geometry.y = newGeometry.y;
-            this.geometry.x = newGeometry.x;
-            this.geometry.clearBounds();
+            if(coordinates) {
+                var lng = coordinates[0], lat = coordinates[1];
+                var newGeometry = this.proj(
+                    new OpenLayers.Geometry.Point(lng, lat));
+                this.geometry.y = newGeometry.y;
+                this.geometry.x = newGeometry.x;
+                this.geometry.clearBounds();
+            }
         } else if(type == 'Polygon') {
             while(this.geometry.components.length > 0) {
                 this.geometry.removeComponent(this.geometry.components[0]);
@@ -174,7 +177,7 @@ TG.PolygonEditor = Backbone.View.extend({
 
     render: function() {
         var template = TG.templates[this.templateName];
-        var coordinates = this.model.geometry.get('coordinates');
+        var coordinates = this.model.geometry.get('coordinates') || [];
         this.$el.html(template({
             coordinates: _(coordinates).initial() // last point is same as first
         }));
@@ -257,11 +260,15 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
     },
 
     createPoint: function() {
-        this.model.features.add(new TG.GeoJSONGeometry({type: 'Point'}));
+        var geometry = new TG.GeoJSONGeometry({type: 'Point'});
+        var feature = new TG.GeoJSONFeature({}, {geometry: geometry});
+        this.model.features.add(feature);
     },
 
     createPolygon: function() {
-        this.model.features.add(new TG.GeoJSONGeometry({type: 'Polygon'}));
+        var geometry = new TG.GeoJSONGeometry({type: 'Polygon'});
+        var feature = new TG.GeoJSONFeature({}, {geometry: geometry});
+        this.model.features.add(feature);
     },
 
     save: function(evt) {
