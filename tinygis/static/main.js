@@ -51,6 +51,7 @@ TG.main = function() {
     var sidebar = new TG.Sidebar();
     sidebar.on('resize', TG.map.updateSize, TG.map);
     var mapLayers = new TG.MapLayers({"collection": TG.map.baseLayerCollection});
+    var overlayLayers = new TG.Overlays({"collection": TG.map.overlayCollection});
 };
 
 $(document).ready(TG.main);

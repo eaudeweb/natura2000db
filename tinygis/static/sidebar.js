@@ -1,23 +1,34 @@
 (function () {
 
-var mapLayersTemplate = "<li class='{{#visible}}active{{/visible}}'><a data-id={{cid}}>{{name}}</a></li>";
+var mapLayersTemplate = " \
+    <li class='hide <% if (visible) { %> visible <% } %>'> \
+        <a data-id=<%=cid%>><%=name%></a> \
+    </li>";
+
 var showMoreTemplate = "<li class='show-more' style='display: block'><a>show more</a>";
 
-TG.MapLayers = Backbone.View.extend({
-
-    id: "map-layers",
+var overlaysTemplate = "\
+    <li data-id='<%=cid%>'> \
+        <div class='expand'></div> \
+        <a><%=name%></a> \
+        <div class='selector <% if(visible) { %> selected <% } %>'><b></b></div> \
+    </li>";
+var Layers = Backbone.View.extend({
 
     tagName: "ul",
 
     className: "nav nav-tabs nav-stacked",
 
+    initialize: function () {
+        this.render();
+    }
+});
+
+TG.MapLayers = Layers.extend({
+
     events: {
         "click a": "show",
         "click .show-more a": "more"
-    },
-
-    initialize: function () {
-        this.render();
     },
 
     render: function () {
@@ -27,7 +38,7 @@ TG.MapLayers = Backbone.View.extend({
         this.collection.each(function (model, i) {
             var data = model.toJSON();
             data["cid"] = model.cid;
-            self.$el.append(Mustache.to_html(mapLayersTemplate, data));
+            self.$el.append(_.template(mapLayersTemplate, data));
         });
         this.$el.find("li").slice(0, 3).show();
         this.$el.append(_.template(showMoreTemplate)());
@@ -49,10 +60,52 @@ TG.MapLayers = Backbone.View.extend({
     },
 
     more: function () {
-        var li = this.$el.find("li")
-        var showMore = li.last().find("a");
+        var li = this.$el.find("li");
+        var liShowMore = li.last().find("a");
+
         li.slice(3, li.length - 1).slideToggle("fast");
-        showMore.text(showMore.text() == "show more" ? "show less" : "show more");
+        liShowMore.text(liShowMore.text() == "show more" ? "show less" : "show more");
+    }
+
+});
+
+TG.Overlays = Layers.extend({
+
+    events: {
+        "click .selector": "select"
+    },
+
+    initialize: function () {
+        this.collection.on("add", function () {
+            this.render();
+        }, this);
+    },
+
+    render: function () {
+
+        this.$el.empty();
+        this.$el.append(this.make("li", {"class": "nav-header"}, "Overlays"));
+
+        this.collection.each(_.bind(function (model, i) {
+            var data = model.toJSON();
+            data["cid"] = model.cid;
+            data["visible"] = data["visible"] || true;
+            this.$el.append(_.template(overlaysTemplate, data));
+        }, this));
+
+        $("#sidebar").append(this.$el);
+    },
+
+    select: function (e) {
+        var that = $(e.currentTarget);
+        that.toggleClass("selected");
+
+        var model = this.collection.getByCid(that.parent().data("id"));
+        if(that.hasClass("selected")) {
+            model.set("visible", true);
+        } else {
+            model.set('visible', false);
+        }
     }
 
 });

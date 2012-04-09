@@ -16,23 +16,46 @@ a {
     top: 0;
 }
 
-#map-layers {
+#sidebar .nav {
     padding: 10px 0;
     overflow: hidden;
     width: 189px;
 }
-#map-layers li {
-    display: none;
+#sidebar .nav li {
+    position: relative;
 }
-#map-layers .show-more {
+
+#sidebar .nav .show-more {
     text-align: center;
 }
-#map-layers .icon {
+#sidebar .nav .icon {
     opacity: .4;
     -moz-opacity: .4;
     filter:alpha(opacity=.44);
 }
 
+#sidebar .nav .selector {
+    box-shadow: 0 0 2px #ccc inset;
+    border: 1px solid #ccc;
+    position: absolute;
+    background: #fff;
+    cursor: pointer;
+    padding: 2px;
+    height: 5px;
+    right: 13px;
+    width: 5px;
+    top: 13px;
+}
+#sidebar .nav .selected {
+    box-shadow: none;
+
+}
+#sidebar .nav .selected b {
+    display: block;
+    width: 5px;
+    height: 5px;
+    background: green;
+}
 .menu {
     overflow: hidden;
 }
@@ -151,4 +174,8 @@ a {
 
 #togglebar:hover {
     background: #81b8d6;
+}
+
+.hide {
+    display: none;
 }
