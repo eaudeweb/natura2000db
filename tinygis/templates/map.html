@@ -121,11 +121,7 @@
         </div>
 
         <div class="tab-pane" id="modal-coordinates-<%= autoid %>">
-          <textarea style="width: 98%" rows="10" name="coordinate-data">
-            <% _(coordinates).forEach(function(point) { %>
-              <%= point[0] %> <%= point[1] %>
-            <% }); %>
-          </textarea>
+          <textarea style="width: 98%" rows="10" name="coordinate-data"><%= coordinates() %></textarea>
         </div>
 
       </div>

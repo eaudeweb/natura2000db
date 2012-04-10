@@ -167,8 +167,15 @@ TG.PointEditor = Backbone.View.extend({
 
 TG.PolygonEditor = Backbone.View.extend({
     tagName: 'li',
+
     className: 'polygon-editor',
+
     templateName: 'polygon-editor',
+
+    events: {
+        "click .import-coordinates-save": "importCoordinates",
+        "click .feature-delete": "featureDelete"
+    },
 
     initialize: function() {
         this.model.geometry.on('change', this.render, this);
@@ -180,21 +187,24 @@ TG.PolygonEditor = Backbone.View.extend({
         var coordinates = this.model.geometry.get('coordinates') || [];
 
         var data = this.model.toJSON();
-        data['coordinates'] =  _(coordinates).initial() // last point is same as firstvar str = "";
-        this.$el.html(template(data));
-        var textarea = this.$el.find('textarea');
-        textarea.val($.trim(textarea.val()));
+        data['coordinates'] =  function () {
+            var str = "";
+            _.each(_(coordinates).initial(), function (i) {
+                str += i[0] + " " + i[1] + "\n";
+            });
+            return str;
+        } // last point is same as firstvar str = "";
 
-        var _importCoordinates = _.bind(this.importCoordinates, this);
-        $('.import-coordinates-save', this.el).click(_importCoordinates);
-        $('.feature-delete', this.el).click(_.bind(function(evt) {
-            evt.preventDefault();
-            this.model.destroy();
-        }, this));
+        this.$el.html(template(data));
     },
 
-    importCoordinates: function(evt) {
-        evt.preventDefault();
+    featureDelete: function (e) {
+        e.preventDefault();
+        this.model.destroy();
+    },
+
+    importCoordinates: function(e) {
+        e.preventDefault();
 
         var coordinateData = $('[name=coordinate-data]', this.el).val();
         var title = $('[name=title]', this.el).val();
@@ -211,9 +221,9 @@ TG.PolygonEditor = Backbone.View.extend({
             newCoordinates.push(newCoordinates[0]);
         }
         this.model.geometry.set({coordinates: newCoordinates});
-        console.log(this.model.geometry);
         this.model.set("title", title);
         this.model.set("description", description);
+        this.render();
     }
 });
 
@@ -283,8 +293,8 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
         this.model.features.add(feature);
     },
 
-    save: function(evt) {
-        evt.preventDefault();
+    save: function(e) {
+        e.preventDefault();
         this.model.save();
     }
 
