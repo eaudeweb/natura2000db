@@ -23,6 +23,11 @@ _.mixin({
     }
 });
 
+if(Proj4js !== undefined) {
+    Proj4js.defs['EPSG:31700'] = ("+proj=sterea +lat_0=46 +lon_0=25 " +
+        "+k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +units=m +no_defs");
+}
+
 
 TG.GeoJSONGeometry = Backbone.Model.extend({
 });
@@ -49,14 +54,31 @@ TG.FeatureCollection = Backbone.Model.extend({
     },
 
     toJSON: function() {
-        return {
+        var data = {
             type: "FeatureCollection",
             features: this.features.toJSON()
         };
+        if(this.crs !== undefined) {
+            data['crs'] = {type: 'name', properties: {name: this.crs}};
+        }
+        return data;
+    },
+
+    getCrs: function() {
+        var crs = this.crs;
+        if(! this.crs) {
+            crs = "EPSG:4326";
+        }
+        return crs;
     },
 
     parse: function(resp, xhr) {
         var data = _(resp).clone();
+        var crs = _(data).pop('crs');
+        if(_.isObject(crs) && crs['type'] == 'name' &&
+           _.isObject(crs['properties']) && crs['properties']['name']) {
+            this.crs = crs['properties']['name'];
+        }
         var features_data = _(data).pop('features');
         if(features_data !== undefined) {
             var models = _(features_data).map(function(feature_data) {
@@ -115,15 +137,19 @@ TG.VectorFeature = Backbone.View.extend({
 TG.VectorLayer = Backbone.View.extend({
     initialize: function() {
         this.olLayer = new OpenLayers.Layer.Vector("Vector");
-        this.proj = this.options.proj;
+        this.mapCrs = this.options['mapCrs'];
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
+    },
+
+    proj: function(value) {
+        return value.transform(this.model.getCrs(), this.mapCrs);
     },
 
     addOne: function(feature) {
         var vectorFeature = new TG.VectorFeature({
             model: feature,
-            proj: this.proj
+            proj: _.bind(this.proj, this)
         });
         this.olLayer.addFeatures([vectorFeature.feature]);
         vectorFeature.on('geometry-change', function() {
@@ -274,11 +300,17 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
 
     render: function() {
         var template = TG.templates[this.templateName];
-        this.$el.html(template(this.model.attributes));
+        this.$el.html(template({model: this.model}));
         $('[name="add-point"]', this.el).click(_.bind(this.createPoint, this));
         $('[name="add-polygon"]', this.el).click(_.bind(this.createPolygon, this));
         this.$el.append(this.features.$el);
         $('.editor-save', this.el).click(_.bind(this.save, this));
+
+        var crsSelect = this.$el.find('select[name=crs]');
+        crsSelect.val(this.model.getCrs());
+        crsSelect.on('change', _.bind(function() {
+            this.model.crs = crsSelect.val();
+        }, this));
     },
 
     createPoint: function() {

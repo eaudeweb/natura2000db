@@ -34,7 +34,7 @@ TG.main = function() {
 
         TG.vectorLayer = new TG.VectorLayer({
             model: TG.featureCollection,
-            proj: _.bind(TG.map.project, TG.map)
+            mapCrs: TG.map.olMap.getProjectionObject()
         });
         var layerModel = new TG.Layer({
             id: TG.vectorLayer.olLayer.id,

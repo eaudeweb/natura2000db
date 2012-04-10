@@ -11,6 +11,7 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.string/2.0.0/underscore.string.min.js"></script>
 
   {{ script_src('lib/openlayers-24d421a/OpenLayers.js', 'static') }}
+  {{ script_src('lib/proj4js-1.1.0/proj4js-compressed.js', 'static') }}
   {{ script_src('lib/bootstrap-2.0.2/js/bootstrap.min.js') }}
 
   <script>window.TG = {};</script>
@@ -158,9 +159,21 @@
         <li><a href="#" class="editor-save">
           <i class="icon icon-share-alt"></i> Save
         </a></li>
+        <% if(model.id) { %>
+          <li><a href="<%= model.url() %>" target="_blank">
+            <i class="icon icon-download-alt"></i> Download GeoJSON
+          </a></li>
+        <% } %>
       </ul>
 
     </div>
+
+    <label class="label-crs">CRS
+      <select name="crs">
+        <option value="EPSG:31700">Stereo 70</option>
+        <option value="EPSG:4326">WGS 84</option>
+      </select>
+    </label>
 
   </div>
 
