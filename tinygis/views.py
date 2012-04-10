@@ -53,7 +53,7 @@ def userlayer_create():
 
 
 @tinygis.route('/userlayers', methods=['GET'])
-def userlayer_create():
+def userlayer_list():
     db = _get_db()
     key_list = []
     for db_key in db:
