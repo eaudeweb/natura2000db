@@ -49,14 +49,31 @@ TG.FeatureCollection = Backbone.Model.extend({
     },
 
     toJSON: function() {
-        return {
+        var data = {
             type: "FeatureCollection",
             features: this.features.toJSON()
         };
+        if(this.crs !== undefined) {
+            data['crs'] = {type: 'name', properties: {name: this.crs}};
+        }
+        return data;
+    },
+
+    getCrs: function() {
+        var crs = this.crs;
+        if(! this.crs) {
+            crs = "EPSG:4326";
+        }
+        return crs;
     },
 
     parse: function(resp, xhr) {
         var data = _(resp).clone();
+        var crs = _(data).pop('crs');
+        if(_.isObject(crs) && crs['type'] == 'name' &&
+           _.isObject(crs['properties']) && crs['properties']['name']) {
+            this.crs = crs['properties']['name'];
+        }
         var features_data = _(data).pop('features');
         if(features_data !== undefined) {
             var models = _(features_data).map(function(feature_data) {
@@ -258,6 +275,12 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
         $('[name="add-polygon"]', this.el).click(_.bind(this.createPolygon, this));
         this.$el.append(this.features.$el);
         $('.editor-save', this.el).click(_.bind(this.save, this));
+
+        var crsSelect = this.$el.find('select[name=crs]');
+        crsSelect.val(this.model.getCrs());
+        crsSelect.on('change', _.bind(function() {
+            this.model.crs = crsSelect.val();
+        }, this));
     },
 
     createPoint: function() {

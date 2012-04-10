@@ -132,6 +132,12 @@ a {
     font-size: 12px;
     top: -5px;
 }
+.editor label.label-crs {
+    display: inline;
+}
+.editor select[name=crs] {
+    width: auto;
+}
 
 .editor-features {
     margin: 0;
