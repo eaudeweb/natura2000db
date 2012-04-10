@@ -72,6 +72,11 @@ TG.FeatureCollection = Backbone.Model.extend({
         return crs;
     },
 
+    setCrs: function(newCrs) {
+        this.crs = newCrs;
+        this.trigger('crs-change', this);
+    },
+
     parse: function(resp, xhr) {
         var data = _(resp).clone();
         var crs = _(data).pop('crs');
@@ -141,6 +146,7 @@ TG.VectorLayer = Backbone.View.extend({
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
         this.model.features.on('destroy', this.destroyFeature, this);
+        this.model.on('crs-change', this.crsChange, this);
         this.vectorFeatures = {};
     },
 
@@ -167,6 +173,12 @@ TG.VectorLayer = Backbone.View.extend({
     destroyFeature: function(model) {
         var vectorFeature = this.vectorFeatures[model.cid];
         this.olLayer.removeFeatures([vectorFeature.feature]);
+    },
+
+    crsChange: function() {
+        _(this.vectorFeatures).forEach(function(vectorFeature) {
+            vectorFeature.updateGeometry();
+        }, this);
     }
 });
 
@@ -296,7 +308,7 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
         var crsSelect = this.$el.find('select[name=crs]');
         crsSelect.val(this.model.getCrs());
         crsSelect.on('change', _.bind(function() {
-            this.model.crs = crsSelect.val();
+            this.model.setCrs(crsSelect.val());
         }, this));
     },
 
