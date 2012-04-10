@@ -2,7 +2,7 @@
 
 var mapLayersTemplate = " \
     <li class='hide <% if (visible) { %> visible <% } %>'> \
-        <a data-id=<%=cid%>><%=name%></a> \
+        <a class='item' data-id=<%=cid%>><%=name%></a> \
     </li>";
 
 var showMoreTemplate = "<li class='show-more' style='display: block'><a>show more</a>";
@@ -10,7 +10,7 @@ var showMoreTemplate = "<li class='show-more' style='display: block'><a>show mor
 var overlaysTemplate = "\
     <li data-id='<%=cid%>'> \
         <% if(geojson) { %> <div class='icon icon-play expand'></div> <% } %> \
-        <a><%=name%></a> \
+        <a class='item'><%=name%></a> \
         <div class='selector <% if(visible) { %> selected <% } %>'><b></b></div> \
     </li>";
 
@@ -32,17 +32,21 @@ TG.MapLayers = Layers.extend({
         "click .show-more a": "more"
     },
 
+    templateName: "sidebar-layers",
+
     render: function () {
         var self = this;
+        var template = TG.templates[this.templateName];
+        var showMoreTemplate = TG.templates["sidebar-more"];
 
         this.$el.append(this.make("li", {"class": "nav-header"}, "Base Layers"));
         this.collection.each(function (model, i) {
             var data = model.toJSON();
             data["cid"] = model.cid;
-            self.$el.append(_.template(mapLayersTemplate, data));
+            self.$el.append(template(data));
         });
         this.$el.find("li").slice(0, 3).show();
-        this.$el.append(_.template(showMoreTemplate)());
+        this.$el.append(showMoreTemplate());
 
         $("#sidebar").append(this.$el);
     },
@@ -75,8 +79,10 @@ TG.Overlays = Layers.extend({
     events: {
         "click .selector": "select",
         "click .expand": "expand",
-        "click a": "expand"
+        "click a.item": "expand"
     },
+
+    templateName: "sidebar-overlays",
 
     initialize: function () {
         this.collection.on("add", function () {
@@ -85,6 +91,7 @@ TG.Overlays = Layers.extend({
     },
 
     render: function () {
+        var template = TG.templates[this.templateName];
 
         this.$el.addClass("overlays");
         this.$el.empty();
@@ -95,7 +102,7 @@ TG.Overlays = Layers.extend({
             data["cid"] = model.cid;
             data["geojson"] = model.geojson ;
             data["visible"] = data["visible"] || true;
-            this.$el.append(_.template(overlaysTemplate, data));
+            this.$el.append(template(data));
         }, this));
 
         $("#sidebar").append(this.$el);
@@ -116,15 +123,18 @@ TG.Overlays = Layers.extend({
     expand: function (e) {
 
         var that = $(e.currentTarget);
-        var editor = that.parent().find(".editor");
-        that.toggleClass("icon-play");
-        that.toggleClass("icon-minus");
+        var parents = that.parents("li");
+        var editor = that.parents("li").find(".editor");
+        var icon = parents.find(".icon");
+
+        icon.toggleClass("icon-play");
+        icon.toggleClass("icon-minus");
 
         if(editor.length == 0 ) {
-            var model = this.collection.getByCid(that.parent().data("id"));
+            var model = this.collection.getByCid(parents.data("id"));
             TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
                 model: model.geojson});
-            TG.featureCollectionEditor.$el.appendTo(that.parent());
+            TG.featureCollectionEditor.$el.appendTo(parents);
         } else{
             editor.slideToggle("fast");
         }

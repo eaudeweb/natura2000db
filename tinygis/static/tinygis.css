@@ -34,7 +34,7 @@ a {
 #sidebar .nav li {
     position: relative;
 }
-#sidebar .overlays li a {
+#sidebar .overlays li a.item {
     padding-left: 30px;
 }
 #sidebar .overlays li a:hover {
