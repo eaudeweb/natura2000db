@@ -178,9 +178,13 @@ TG.PolygonEditor = Backbone.View.extend({
     render: function() {
         var template = TG.templates[this.templateName];
         var coordinates = this.model.geometry.get('coordinates') || [];
-        this.$el.html(template({
-            coordinates: _(coordinates).initial() // last point is same as first
-        }));
+
+        var data = this.model.toJSON();
+        data['coordinates'] =  _(coordinates).initial() // last point is same as firstvar str = "";
+        this.$el.html(template(data));
+        var textarea = this.$el.find('textarea');
+        textarea.val($.trim(textarea.val()));
+
         var _importCoordinates = _.bind(this.importCoordinates, this);
         $('.import-coordinates-save', this.el).click(_importCoordinates);
         $('.feature-delete', this.el).click(_.bind(function(evt) {
@@ -191,7 +195,11 @@ TG.PolygonEditor = Backbone.View.extend({
 
     importCoordinates: function(evt) {
         evt.preventDefault();
+
         var coordinateData = $('[name=coordinate-data]', this.el).val();
+        var title = $('[name=title]', this.el).val();
+        var description = $('[name=description]', this.el).val();
+
         $('.modal', this.el).modal('hide');
         var newCoordinates = [];
         _(coordinateData.split(/\n/)).forEach(function(row) {
@@ -203,6 +211,9 @@ TG.PolygonEditor = Backbone.View.extend({
             newCoordinates.push(newCoordinates[0]);
         }
         this.model.geometry.set({coordinates: newCoordinates});
+        console.log(this.model.geometry);
+        this.model.set("title", title);
+        this.model.set("description", description);
     }
 });
 
@@ -267,7 +278,7 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
 
     createPolygon: function() {
         var geometry = new TG.GeoJSONGeometry({type: 'Polygon'});
-        var feature = new TG.GeoJSONFeature({}, {geometry: geometry});
+        var feature = new TG.GeoJSONFeature({'title': 'Untitled polygon'}, {geometry: geometry});
         this.model.features.add(feature);
     },
 

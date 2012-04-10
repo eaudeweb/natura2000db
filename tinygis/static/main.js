@@ -51,5 +51,4 @@ TG.main = function() {
 };
 
 $(document).ready(TG.main);
-
 })();
