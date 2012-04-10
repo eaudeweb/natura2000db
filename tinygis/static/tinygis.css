@@ -145,6 +145,9 @@ a {
     padding: 0;
     list-style: none;
 }
+.editor-features .btn-group {
+    display: none;
+}
 
 .point-geometry {
     margin-bottom: 5px;
@@ -203,4 +206,11 @@ a {
 
 .hide {
     display: none;
+}
+.delete {
+    background: no-repeat url("/map/static/trash.gif");
+    position: relative;
+    padding: 1px 6px;
+    margin-left: 10px;
+    top: 4px;
 }

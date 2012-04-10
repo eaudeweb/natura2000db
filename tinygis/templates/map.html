@@ -88,11 +88,11 @@
   <% var autoid = _.generateAutoId() %>
 
   <div class="btn-group pull-right">
-    <button data-toggle="modal"
+    <a data-toggle="modal"
             href="#import-coordinates-modal-<%= autoid %>"
-            class="btn btn-mini">edit</button>
-    <button class="btn btn-mini feature-delete">
-      <i class="icon icon-remove"></i></button>
+            class="">edit</a>
+    <a class="feature-delete">
+      <i class="icon delete"></i></a>
   </div>
 
   <div class="modal hide" id="import-coordinates-modal-<%= autoid %>">

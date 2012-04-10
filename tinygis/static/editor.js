@@ -185,8 +185,15 @@ TG.VectorLayer = Backbone.View.extend({
 
 TG.PointEditor = Backbone.View.extend({
     tagName: 'li',
+
     className: 'point-editor',
+
     templateName: 'point-editor',
+
+    events: {
+        "click .feature-delete": "featureDelete",
+        "change .point-geometry input": "uiChange"
+    },
 
     initialize: function() {
         this.render();
@@ -196,11 +203,11 @@ TG.PointEditor = Backbone.View.extend({
         var template = TG.templates[this.templateName];
         var coordinates = this.model.geometry.get('coordinates') || ['', ''];
         this.$el.html(template({lng: coordinates[0], lat: coordinates[1]}));
-        $('.point-geometry input', this.el).change(_.bind(this.uiChange, this));
-        $('.feature-delete', this.el).click(_.bind(function(evt) {
-            evt.preventDefault();
-            this.model.destroy();
-        }, this));
+    },
+
+    featureDelete: function (e) {
+        e.preventDefault();
+        this.model.destroy();
     },
 
     uiChange: function() {
@@ -220,7 +227,9 @@ TG.PolygonEditor = Backbone.View.extend({
 
     events: {
         "click .import-coordinates-save": "importCoordinates",
-        "click .feature-delete": "featureDelete"
+        "click .feature-delete": "featureDelete",
+        "mouseover": "over",
+        "mouseout": "out"
     },
 
     initialize: function() {
@@ -270,7 +279,16 @@ TG.PolygonEditor = Backbone.View.extend({
         this.model.set("title", title);
         this.model.set("description", description);
         this.render();
+    },
+
+    over: function () {
+        this.$el.find(".btn-group").show();
+    },
+
+    out: function () {
+        this.$el.find(".btn-group").hide();
     }
+
 });
 
 
@@ -310,8 +328,17 @@ TG.FeatureList = Backbone.View.extend({
 
 TG.FeatureCollectionEditor = Backbone.View.extend({
     tagName: 'div',
+
     className: 'editor',
+
     templateName: 'editor',
+
+    events: {
+        "click [name='add-point']": "createPoint",
+        "click [name='add-polygon']": "createPolygon",
+        "click .editor-save": "save",
+        "change select[name=crs]": "crsSelect"
+    },
 
     initialize: function() {
         this.features = new TG.FeatureList({model: this.model.features});
@@ -321,16 +348,15 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
     render: function() {
         var template = TG.templates[this.templateName];
         this.$el.html(template({model: this.model}));
-        $('[name="add-point"]', this.el).click(_.bind(this.createPoint, this));
-        $('[name="add-polygon"]', this.el).click(_.bind(this.createPolygon, this));
         this.$el.append(this.features.$el);
-        $('.editor-save', this.el).click(_.bind(this.save, this));
 
         var crsSelect = this.$el.find('select[name=crs]');
         crsSelect.val(this.model.getCrs());
-        crsSelect.on('change', _.bind(function() {
-            this.model.setCrs(crsSelect.val());
-        }, this));
+    },
+
+    crsSelect: function () {
+        var crsSelect = this.$el.find('select[name=crs]');
+        this.model.setCrs(crsSelect.val());
     },
 
     createPoint: function() {
