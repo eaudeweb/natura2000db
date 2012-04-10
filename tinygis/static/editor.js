@@ -23,6 +23,11 @@ _.mixin({
     }
 });
 
+if(Proj4js !== undefined) {
+    Proj4js.defs['EPSG:31700'] = ("+proj=sterea +lat_0=46 +lon_0=25 " +
+        "+k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +units=m +no_defs");
+}
+
 
 TG.GeoJSONGeometry = Backbone.Model.extend({
 });
@@ -132,15 +137,19 @@ TG.VectorFeature = Backbone.View.extend({
 TG.VectorLayer = Backbone.View.extend({
     initialize: function() {
         this.olLayer = new OpenLayers.Layer.Vector("Vector");
-        this.proj = this.options.proj;
+        this.mapCrs = this.options['mapCrs'];
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
+    },
+
+    proj: function(value) {
+        return value.transform(this.model.getCrs(), this.mapCrs);
     },
 
     addOne: function(feature) {
         var vectorFeature = new TG.VectorFeature({
             model: feature,
-            proj: this.proj
+            proj: _.bind(this.proj, this)
         });
         this.olLayer.addFeatures([vectorFeature.feature]);
         vectorFeature.on('geometry-change', function() {
