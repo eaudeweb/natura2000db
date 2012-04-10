@@ -69,16 +69,46 @@
 
 <script type="text/html" class="template-src" data-name="point-editor">
 
+  <% var autoid = _.generateAutoId() %>
+
   <div class="btn-group pull-right">
-    <button class="btn btn-mini feature-delete">
-      <i class="icon icon-remove"></i></button>
+    <a data-toggle="modal"
+            href="#edit-point-modal-<%= autoid %>"
+            class="">edit</a>
+    <a class="feature-delete">
+      <i class="icon delete"></i></a>
   </div>
 
-  <p class="point-label">ze point</p>
+  <div class="modal hide" id="edit-point-modal-<%= autoid %>">
 
-  <div class="point-geometry well form-inline">
-    <label>lng <input name="lng" class="span1" value=<%= lng %>></label>
-    <label>lat <input name="lat" class="span1" value=<%= lat %>></label>
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">×</a>
+      Edit point
+    </div>
+
+    <div class="modal-body">
+      <form>
+        <label>Title</label>
+        <input name="title" style="width: 98%" type="text" value="<%= properties.title %>" placeholder="Polygon title..." />
+
+        <div style="float: left; width: 100px; margin-top: 10px;">
+          <label>lng</label>
+          <input name="lng" class="span1" value=<%= lng %>></label>
+        </div>
+        <div style="float: left; width: 100px; margin-top: 10px;">
+          <label>lat</label>
+          <input name="lat" class="span1" value=<%= lat %>></label>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+      <a href="#" class="btn btn-primary edit-point-save">Save</a>
+    </div>
+  </div>
+
+  <p class="point-label"><%= properties.title %></p>
   </div>
 
 </script>

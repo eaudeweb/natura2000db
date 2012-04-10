@@ -192,7 +192,9 @@ TG.PointEditor = Backbone.View.extend({
 
     events: {
         "click .feature-delete": "featureDelete",
-        "change .point-geometry input": "uiChange"
+        "click .edit-point-save": "uiChange",
+        "mouseover": "over",
+        "mouseout": "out"
     },
 
     initialize: function() {
@@ -202,7 +204,12 @@ TG.PointEditor = Backbone.View.extend({
     render: function() {
         var template = TG.templates[this.templateName];
         var coordinates = this.model.geometry.get('coordinates') || ['', ''];
-        this.$el.html(template({lng: coordinates[0], lat: coordinates[1]}));
+
+        var data = this.model.toJSON()
+        data["lng"] = coordinates[0];
+        data["lat"] =  coordinates[1];
+
+        this.$el.html(template(data));
     },
 
     featureDelete: function (e) {
@@ -211,9 +218,23 @@ TG.PointEditor = Backbone.View.extend({
     },
 
     uiChange: function() {
-        var lat = parseFloat($('.point-geometry [name=lat]', this.el).val());
-        var lng = parseFloat($('.point-geometry [name=lng]', this.el).val());
-        this.model.geometry.set({coordinates: [lng, lat]});
+        var title = this.$el.find('[name=title]').val();
+        var lat = parseFloat(this.$el.find('[name=lat]').val());
+        var lng = parseFloat(this.$el.find('[name=lng]').val());
+
+        this.$el.find('.modal').modal('hide');
+
+        this.model.geometry.set("coordinates", [lng, lat]);
+        this.model.set("title", title);
+        this.render();
+    },
+
+    over: function () {
+        this.$el.find(".btn-group").show();
+    },
+
+    out: function () {
+        this.$el.find(".btn-group").hide();
     }
 });
 
@@ -265,7 +286,7 @@ TG.PolygonEditor = Backbone.View.extend({
         var title = $('[name=title]', this.el).val();
         var description = $('[name=description]', this.el).val();
 
-        $('.modal', this.el).modal('hide');
+        this.$el.find('.modal').modal('hide');
         var newCoordinates = [];
         _(coordinateData.split(/\n/)).forEach(function(row) {
             var m = row.match(/^\s*(\d+([.,]\d+)?)\s+(\d+([.,]\d+)?)\s*$/);
@@ -361,7 +382,7 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
 
     createPoint: function() {
         var geometry = new TG.GeoJSONGeometry({type: 'Point'});
-        var feature = new TG.GeoJSONFeature({}, {geometry: geometry});
+        var feature = new TG.GeoJSONFeature({'title': 'Untitled point'}, {geometry: geometry});
         this.model.features.add(feature);
     },
 
@@ -377,6 +398,5 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
     }
 
 });
-
 
 })();
