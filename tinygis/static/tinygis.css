@@ -20,37 +20,37 @@ a {
     display: none;
 }
 
-#sidebar .nav {
+#sidebar .nav-stacked {
     padding: 10px 0;
     overflow: hidden;
     width: 189px;
 }
-#sidebar .nav li .expand {
+#sidebar .nav-stacked li .expand {
     position: absolute;
     cursor: pointer;
     left: 10px;
     top: 10px;
 }
-#sidebar .nav li {
+#sidebar .nav-stacked li {
     position: relative;
 }
 #sidebar .overlays li a.item {
     padding-left: 30px;
 }
-#sidebar .overlays li a:hover {
+#sidebar .overlays li a.item:hover {
     background: #fff;
 }
 
-#sidebar .nav .show-more {
+#sidebar .nav-stacked .show-more {
     text-align: center;
 }
-#sidebar .nav .icon {
+#sidebar .nav-stacked .icon {
     opacity: .4;
     -moz-opacity: .4;
     filter:alpha(opacity=.44);
 }
 
-#sidebar .nav .selector {
+#sidebar .nav-stacked .selector {
     box-shadow: 0 0 2px #ccc inset;
     border: 1px solid #ccc;
     position: absolute;
@@ -62,16 +62,17 @@ a {
     width: 5px;
     top: 13px;
 }
-#sidebar .nav .selected {
+#sidebar .nav-stacked .selected {
     box-shadow: none;
 
 }
-#sidebar .nav .selected b {
+#sidebar .nav-stacked .selected b {
     display: block;
     width: 5px;
     height: 5px;
     background: green;
 }
+
 .menu {
     overflow: hidden;
 }

@@ -1,19 +1,5 @@
 (function () {
 
-var mapLayersTemplate = " \
-    <li class='hide <% if (visible) { %> visible <% } %>'> \
-        <a class='item' data-id=<%=cid%>><%=name%></a> \
-    </li>";
-
-var showMoreTemplate = "<li class='show-more' style='display: block'><a>show more</a>";
-
-var overlaysTemplate = "\
-    <li data-id='<%=cid%>'> \
-        <% if(geojson) { %> <div class='icon icon-play expand'></div> <% } %> \
-        <a class='item'><%=name%></a> \
-        <div class='selector <% if(visible) { %> selected <% } %>'><b></b></div> \
-    </li>";
-
 var Layers = Backbone.View.extend({
 
     tagName: "ul",
