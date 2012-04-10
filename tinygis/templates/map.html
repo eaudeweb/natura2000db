@@ -143,6 +143,11 @@
         <li><a href="#" class="editor-save">
           <i class="icon icon-share-alt"></i> Save
         </a></li>
+        <% if(model.id) { %>
+          <li><a href="<%= model.url() %>" target="_blank">
+            <i class="icon icon-download-alt"></i> Download GeoJSON
+          </a></li>
+        <% } %>
       </ul>
 
     </div>

@@ -279,7 +279,7 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
 
     render: function() {
         var template = TG.templates[this.templateName];
-        this.$el.html(template(this.model.attributes));
+        this.$el.html(template({model: this.model}));
         $('[name="add-point"]', this.el).click(_.bind(this.createPoint, this));
         $('[name="add-polygon"]', this.el).click(_.bind(this.createPolygon, this));
         this.$el.append(this.features.$el);
