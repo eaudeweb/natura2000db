@@ -216,10 +216,11 @@ TG.FeatureList = Backbone.View.extend({
     },
 
     initialize: function() {
+        this.featureViews = {};
+        this.addAll(this.model);
         this.model.on('add', this.addOne, this);
         this.model.on('reset', this.addAll, this);
         this.model.on('remove', this.removeOne, this);
-        this.featureViews = {};
     },
 
     addOne: function(feature) {
