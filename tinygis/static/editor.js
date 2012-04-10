@@ -140,6 +140,8 @@ TG.VectorLayer = Backbone.View.extend({
         this.mapCrs = this.options['mapCrs'];
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
+        this.model.features.on('destroy', this.destroyFeature, this);
+        this.vectorFeatures = {};
     },
 
     proj: function(value) {
@@ -155,10 +157,16 @@ TG.VectorLayer = Backbone.View.extend({
         vectorFeature.on('geometry-change', function() {
             this.olLayer.drawFeature(vectorFeature.feature);
         }, this);
+        this.vectorFeatures[feature.cid] = vectorFeature;
     },
 
     addAll: function(features) {
         features.each(this.addOne, this);
+    },
+
+    destroyFeature: function(model) {
+        var vectorFeature = this.vectorFeatures[model.cid];
+        this.olLayer.removeFeatures([vectorFeature.feature]);
     }
 });
 
