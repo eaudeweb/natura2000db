@@ -55,10 +55,10 @@ TG.Map = Backbone.View.extend({
 
         this.baseLayerCollection = new TG.MapLayerCollection;
         this.overlayCollection = new TG.MapLayerCollection;
-        this.olMap.events.register('addlayer', this, this.layerAdded);
 
         var osm_layer = new OpenLayers.Layer.OSM("OpenStreetMap");
         this.olMap.addLayer(osm_layer);
+        this.trackLayer(osm_layer);
         this.olMap.setCenter(this.project(new OpenLayers.LonLat(25, 46)), 7);
 
         this.olMap.events.register("mousemove", this, function(e) {
@@ -70,8 +70,7 @@ TG.Map = Backbone.View.extend({
         this.olMap.getNumZoomLevels = function() { return 14; }
     },
 
-    layerAdded: function(evt) {
-        var olLayer = evt.layer;
+    trackLayer: function(olLayer) {
         var collection = (olLayer.isBaseLayer
                           ? this.baseLayerCollection
                           : this.overlayCollection);
@@ -108,6 +107,7 @@ TG.Map = Backbone.View.extend({
             this.overlayCollection.add(options['model'], options);
         }
         this.olMap.addLayer(olLayer);
+        this.trackLayer(olLayer);
     },
 
     addBingLayers: function(bingKey) {
@@ -127,6 +127,9 @@ TG.Map = Backbone.View.extend({
             type: "Aerial"
         });
         this.olMap.addLayers([road, hybrid, aerial]);
+        this.trackLayer(road);
+        this.trackLayer(hybrid);
+        this.trackLayer(aerial);
     },
 
     addGoogleLayers: function() {
@@ -149,6 +152,10 @@ TG.Map = Backbone.View.extend({
             numZoomLevels: 22
         });
         this.olMap.addLayers([gsat, gphy, gmap, ghyb]);
+        this.trackLayer(gsat);
+        this.trackLayer(gphy);
+        this.trackLayer(gmap);
+        this.trackLayer(ghyb);
     }
 
 });
