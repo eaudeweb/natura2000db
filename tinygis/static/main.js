@@ -30,6 +30,9 @@ TG.main = function() {
         if(layer_id !== null) {
             TG.featureCollection.fetch();
         }
+        else {
+            TG.featureCollection.setCrs('EPSG:31700');
+        }
 
         TG.vectorLayer = new TG.VectorLayer({
             model: TG.featureCollection,

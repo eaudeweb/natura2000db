@@ -140,6 +140,11 @@ a {
     width: auto;
 }
 
+/* disable CRS editing */
+.editor label.label-crs {
+    display: none;
+}
+
 .editor-features {
     margin: 0;
     padding: 0;
