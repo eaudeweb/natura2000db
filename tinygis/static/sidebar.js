@@ -71,9 +71,8 @@ TG.Overlays = Layers.extend({
     templateName: "sidebar-overlays",
 
     initialize: function () {
-        this.collection.on("add", function () {
-            this.render();
-        }, this);
+        this.collection.on("add", this.render, this);
+        this.collection.on("change:visible", this.updateVisible, this);
     },
 
     render: function () {
@@ -87,7 +86,7 @@ TG.Overlays = Layers.extend({
             var data = model.toJSON();
             data["cid"] = model.cid;
             data["geojson"] = model.geojson ;
-            data["visible"] = data["visible"] || true;
+            data["visible"] = data["visible"] || false;
             this.$el.append(template(data));
         }, this));
 
@@ -96,14 +95,13 @@ TG.Overlays = Layers.extend({
 
     select: function (e) {
         var that = $(e.currentTarget);
-        that.toggleClass("selected");
-
         var model = this.collection.getByCid(that.parent().data("id"));
-        if(that.hasClass("selected")) {
-            model.set("visible", true);
-        } else {
-            model.set('visible', false);
-        }
+        model.set('visible', ! model.get('visible'));
+    },
+
+    updateVisible: function(model, newValue) {
+        var box = this.$el.find('[data-id=' + model.cid + '] .selector');
+        box.toggleClass('selected', !! newValue);
     },
 
     expand: function (e) {
