@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Map[
+  <!ENTITY EPSG_31700 "+proj=sterea +lat_0=46 +lon_0=25 +k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +units=m +no_defs">
+  <!ENTITY GOOGLE_MERCATOR "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs">
+  <!ENTITY WGS84 "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+
+  <!ENTITY color-Parcuri    "#FFD900">
+  <!ENTITY color-Rezervatii "#FF009A">
+  <!ENTITY fill-opacity     "0.2">
+]>
+
+<Map srs="&GOOGLE_MERCATOR;">
+
+  <Style name="Parcuri">
+    <Rule>
+      <PolygonSymbolizer fill="&color-Parcuri;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-Parcuri;" stroke-width="1.0" />
+    </Rule>
+  </Style>
+
+  <Layer name="Parcuri" srs="&EPSG_31700;">
+    <StyleName>Parcuri</StyleName>
+    <Datasource>
+      <Parameter name="type">shape</Parameter>
+      <Parameter name="file">../shapes/parcurinationale/parcuri_toate.shp</Parameter>
+    </Datasource>
+  </Layer>
+
+
+  <Style name="Rezervatii">
+    <Rule>
+      <PolygonSymbolizer fill="&color-Rezervatii;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-Rezervatii;" stroke-width="1.0" />
+    </Rule>
+  </Style>
+
+  <Layer name="Rezervatii" srs="&EPSG_31700;">
+    <StyleName>Rezervatii</StyleName>
+    <Datasource>
+      <Parameter name="type">shape</Parameter>
+      <Parameter name="file">../shapes/rezervatiinaturale/poligoane_rezervatii.shp</Parameter>
+    </Datasource>
+  </Layer>
+
+</Map>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Map[
+  <!ENTITY EPSG_31700 "+proj=sterea +lat_0=46 +lon_0=25 +k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +units=m +no_defs">
+  <!ENTITY GOOGLE_MERCATOR "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs">
+  <!ENTITY WGS84 "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+
+  <!ENTITY color-SCI        "#201F73">
+  <!ENTITY color-SPA        "#D91B0F">
+  <!ENTITY fill-opacity     "0.2">
+]>
+
+<Map srs="&GOOGLE_MERCATOR;">
+
+  <Style name="SCI">
+    <Rule>
+      <PolygonSymbolizer fill="&color-SCI;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-SCI;" stroke-width="1.0" />
+    </Rule>
+  </Style>
+
+  <Layer name="SCI" srs="&WGS84;">
+    <StyleName>SCI</StyleName>
+    <Datasource>
+      <Parameter name="type">ogr</Parameter>
+      <Parameter name="file">../static/sci-wgs84.geojson</Parameter>
+      <Parameter name="layer">OGRGeoJSON</Parameter>
+    </Datasource>
+  </Layer>
+
+  <Style name="SPA">
+    <Rule>
+      <PolygonSymbolizer fill="&color-SPA;" fill-opacity="&fill-opacity;" />
+      <LineSymbolizer stroke="&color-SPA;" stroke-width="1.0" />
+    </Rule>
+  </Style>
+
+  <Layer name="SPA" srs="&WGS84;">
+    <StyleName>SPA</StyleName>
+    <Datasource>
+      <Parameter name="type">ogr</Parameter>
+      <Parameter name="file">../static/spa-wgs84.geojson</Parameter>
+      <Parameter name="layer">OGRGeoJSON</Parameter>
+    </Datasource>
+  </Layer>
+
+</Map>

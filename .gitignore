@@ -6,3 +6,4 @@ instance
 sandbox
 fabfile/localcfg.py
 .vagrant
+geo/shapes
