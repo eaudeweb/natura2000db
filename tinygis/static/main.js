@@ -1,5 +1,13 @@
 (function() {
 
+
+TG.alertBox = function(options) {
+    _(options).defaults({category: 'info'});
+    var msg_html = TG.templates['message']({options: options});
+    $('.alert-container').append(msg_html);
+};
+
+
 TG.main = function() {
     TG.load_templates();
 

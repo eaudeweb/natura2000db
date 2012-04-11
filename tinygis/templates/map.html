@@ -33,7 +33,9 @@
   <title>{% block title %}Natura2000{% endblock %}</title>
 </head>
 
-<body></body>
+<body>
+  <div class="alert-container"></div>
+</body>
 
 <script type="text/html" class="template-src" data-name="login">
   <div class="menu">
@@ -47,6 +49,16 @@
       <a href="{{ url_for('auth.login') }}" class="btn btn-mini">Login <b class="openid-google">&nbsp;</b></a>
     </div>
   {% endif %}
+  </div>
+</script>
+
+<script type="text/html" class="template-src" data-name="message">
+  <div class="alert alert-<%= options['category'] %>">
+    <a class="close" data-dismiss="alert">×</a>
+      <% if(options['title']) { %>
+        <h4 class="alert-heading"><%= options['title'] %></h4>
+      <% } %>
+      <%= options['message'] %>
   </div>
 </script>
 

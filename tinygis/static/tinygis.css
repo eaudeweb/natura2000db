@@ -219,3 +219,15 @@ a {
     margin-left: 5px;
     top: 4px;
 }
+
+.alert-container {
+    z-index: 1100;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.alert {
+    float: right;
+    clear: right;
+}
