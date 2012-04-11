@@ -141,7 +141,7 @@ TG.VectorFeature = Backbone.View.extend({
 
 TG.VectorLayer = Backbone.View.extend({
     initialize: function() {
-        this.olLayer = new OpenLayers.Layer.Vector("Vector");
+        this.olLayer = new OpenLayers.Layer.Vector("Editabil");
         this.mapCrs = this.options['mapCrs'];
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
