@@ -23,7 +23,6 @@ default_config = {
     'HTTP_PROXIED': False,
     'HTTP_CHERRYPY': False,
     'STORAGE_ENGINE': 'solr',
-    'TILES_FOLDER': ppath(__file__).parent/'geo'/'tiles',
 
     'ZOPE_TEMPLATE_CACHE': True,
     'ZOPE_TEMPLATE_PATH': 'http://biodiversitate.mmediu.ro/rio/natura2000_templates/',
@@ -32,25 +31,18 @@ default_config = {
 
 
 def create_app():
-    from werkzeug.wsgi import SharedDataMiddleware
-
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.update(default_config)
     app.config.from_pyfile("settings.py", silent=True)
 
+    if 'STATIC_URL_MAP' in app.config:
+        from werkzeug.wsgi import SharedDataMiddleware
+        app.wsgi_app = SharedDataMiddleware(app.wsgi_app,
+                                            app.config['STATIC_URL_MAP'])
+
     naturasites.views.register(app)
     tinygis.views.register(app)
     auth.register(app)
-
-    static_url_map = {}
-    if 'PDF_FOLDER' in app.config:
-        static_url_map['/static/pdf'] = app.config['PDF_FOLDER']
-        app.config.setdefault('PDF_URL', '/static/pdf/')
-    if 'TILES_FOLDER' in app.config:
-        static_url_map['/static/tiles'] = app.config['TILES_FOLDER']
-        app.config.setdefault('TILES_URL', '/static/tiles/')
-    if static_url_map:
-        app.wsgi_app = SharedDataMiddleware(app.wsgi_app, static_url_map)
 
     return app
 
