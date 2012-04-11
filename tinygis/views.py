@@ -1,3 +1,4 @@
+# encoding: utf-8
 import random
 import string
 import flask
@@ -94,7 +95,29 @@ def userlayer_get(key):
     return flask.Response(db[key + '.geojson'], mimetype='application/json')
 
 
+TILE_TMPL = '/static/tiles/%(name)s/${z}/${x}/${y}.png'
+
+DEFAULT_OVERLAYS = [
+    {'name': u"SCI + SPA",
+     'urlTemplate': TILE_TMPL % {'name': 'conservare-scispa'},
+     'visible': True},
+    {'name': u"Alte zone protejate",
+     'urlTemplate': TILE_TMPL % {'name': 'conservare-etc'},
+     'visible': True},
+    {'name': u"Administrativ",
+     'urlTemplate': TILE_TMPL % {'name': 'administrativ'},
+     'visible': False},
+    {'name': u"Ape",
+     'urlTemplate': TILE_TMPL % {'name': 'ape'},
+     'visible': False},
+    {'name': u"Infrastructură",
+     'urlTemplate': TILE_TMPL % {'name': 'infrastructura'},
+     'visible': False},
+]
+
+
 def register(app, url_prefix='/map'):
     app.register_blueprint(tinygis, url_prefix=url_prefix)
+    app.config.setdefault('AVAILABLE_OVERLAYS', DEFAULT_OVERLAYS)
     db = SqliteDict(ppath(app.instance_path)/'tinygis.db', autocommit=True)
     app.extensions['tinygis-db'] = db

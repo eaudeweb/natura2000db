@@ -5,11 +5,10 @@ TG.main = function() {
 
     TG.map = new TG.Map({parent: $('body')[0]});
 
-    var sciSpaLayer = new TG.TileLayer({
-        name: "SCI + SPA",
-        url_template: '/static/tiles/all-sites/${z}/${x}/${y}.png'
-    })
-    TG.map.addOverlay(sciSpaLayer.olLayer);
+    _(TG['AVAILABLE_OVERLAYS']).forEach(function(overlay_options) {
+        var layer = new TG.TileLayer(overlay_options);
+        TG.map.addOverlay(layer.olLayer);
+    });
 
     if(window.google && window.google.maps) {
         TG.map.addGoogleLayers();

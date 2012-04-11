@@ -65,6 +65,9 @@ TG.Map = Backbone.View.extend({
             lonLat = this.invproject(this.olMap.getLonLatFromPixel(e.xy));
             this.trigger("mousemove", {lng: lonLat.lon, lat: lonLat.lat});
         });
+
+        // hack to restrict maximum zoom
+        this.olMap.getNumZoomLevels = function() { return 14; }
     },
 
     layerAdded: function(evt) {
@@ -154,11 +157,12 @@ TG.Map = Backbone.View.extend({
 TG.TileLayer = Backbone.Model.extend({
     initialize: function() {
         this.olLayer = new OpenLayers.Layer.XYZ(
-            this.attributes.name,
-            this.attributes.url_template,
+            this.get('name'),
+            this.get('urlTemplate'),
             {
                 isBaseLayer: false,
-                sphericalMercator: true
+                sphericalMercator: true,
+                visibility: !!this.get('visible')
             }
         );
     }
