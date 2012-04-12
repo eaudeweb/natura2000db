@@ -76,12 +76,6 @@ a {
 .menu {
     overflow: hidden;
 }
-.menu .title {
-    font-weight: bold;
-    font-size: 12px;
-    float: left;
-    color: #444;
-}
 .menu .btn-container {
     float: right;
 }
@@ -231,4 +225,10 @@ a {
 .alert {
     float: right;
     clear: right;
+}
+
+.btn-text {
+    position: relative;
+    font-size: 12px;
+    top: -5px;
 }
