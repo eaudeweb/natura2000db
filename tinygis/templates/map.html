@@ -28,6 +28,7 @@
   {{ script_src('tinygis.js', 'tinygis.static') }}
   {{ script_src('editor.js', 'tinygis.static') }}
   {{ script_src('sidebar.js', 'tinygis.static') }}
+  {{ script_src('measure.js', 'tinygis.static') }}
   {{ script_src('main.js', 'tinygis.static') }}
 
   <title>{% block title %}Natura2000{% endblock %}</title>
@@ -79,6 +80,27 @@
     <span class="error-text">error identifying features</span>
   <% } %>
 
+</script>
+
+
+<script type="text/html" class="template-src" data-name="measure">
+  <div class="btn-toolbar">
+    <span class="btn-text">Measure:</span>
+    <div class="btn-group">
+      <a class="btn btn-mini measure-begin <%= active=='line' ? 'active' : ''%>"
+         data-measure="line">distance</a>
+      <a class="btn btn-mini measure-begin <%= active=='polygon' ? 'active' : ''%>"
+         data-measure="polygon">area</a>
+    </div>
+  </div>
+  <% if(active) { %>
+    <% if(result) { %>
+      <%= result['value'] %>
+      <%= result['units'] %><% if(result['order'] > 1) {
+        %><sup><%= result['order'] %></sup><% } %>
+    <% } %>
+    <a class="close">&times;</a>
+  <% } %>
 </script>
 
 
