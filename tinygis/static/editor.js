@@ -141,7 +141,7 @@ TG.VectorFeature = Backbone.View.extend({
 
 TG.VectorLayer = Backbone.View.extend({
     initialize: function() {
-        this.olLayer = new OpenLayers.Layer.Vector("Vector");
+        this.olLayer = new OpenLayers.Layer.Vector("Editabil");
         this.mapCrs = this.options['mapCrs'];
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
@@ -394,7 +394,13 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
 
     save: function(e) {
         e.preventDefault();
-        this.model.save();
+        var xhr = this.model.save();
+        xhr.done(function() {
+            TG.alertBox({message: "Layer saved", category: 'success'});
+        });
+        xhr.fail(function() {
+            TG.alertBox({message: "Save failed", category: 'error'});
+        });
     }
 
 });

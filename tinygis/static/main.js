@@ -1,5 +1,13 @@
 (function() {
 
+
+TG.alertBox = function(options) {
+    _(options).defaults({category: 'info'});
+    var msg_html = TG.templates['message']({options: options});
+    $('.alert-container').append(msg_html);
+};
+
+
 TG.main = function() {
     TG.load_templates();
 
@@ -30,6 +38,9 @@ TG.main = function() {
         if(layer_id !== null) {
             TG.featureCollection.fetch();
         }
+        else {
+            TG.featureCollection.setCrs('EPSG:31700');
+        }
 
         TG.vectorLayer = new TG.VectorLayer({
             model: TG.featureCollection,
@@ -47,6 +58,9 @@ TG.main = function() {
     sidebar.on('resize', TG.map.updateSize, TG.map);
     var mapLayers = new TG.MapLayers({"collection": TG.map.baseLayerCollection});
     var overlayLayers = new TG.Overlays({"collection": TG.map.overlayCollection});
+
+    TG.mapMeasure = new TG.MapMeasure({olMap: TG.map.olMap});
+    TG.mapMeasure.$el.appendTo('#sidebar');
 };
 
 $(document).ready(TG.main);

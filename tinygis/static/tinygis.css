@@ -76,12 +76,6 @@ a {
 .menu {
     overflow: hidden;
 }
-.menu .title {
-    font-weight: bold;
-    font-size: 12px;
-    float: left;
-    color: #444;
-}
 .menu .btn-container {
     float: right;
 }
@@ -140,6 +134,11 @@ a {
     width: auto;
 }
 
+/* disable CRS editing */
+.editor label.label-crs {
+    display: none;
+}
+
 .editor-features {
     margin: 0;
     padding: 0;
@@ -172,6 +171,7 @@ a {
     position: absolute;
     background: #fff;
     overflow: hidden;
+    overflow-y: auto;
     padding: 20px;
     z-index: 9999;
     width: 180px;
@@ -213,4 +213,22 @@ a {
     padding: 1px 6px;
     margin-left: 5px;
     top: 4px;
+}
+
+.alert-container {
+    z-index: 1100;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.alert {
+    float: right;
+    clear: right;
+}
+
+.btn-text {
+    position: relative;
+    font-size: 12px;
+    top: -5px;
 }

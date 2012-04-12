@@ -95,29 +95,29 @@ def userlayer_get(key):
     return flask.Response(db[key + '.geojson'], mimetype='application/json')
 
 
-TILE_TMPL = '/static/tiles/%(name)s/${z}/${x}/${y}.png'
-
-DEFAULT_OVERLAYS = [
-    {'name': u"SCI + SPA",
-     'urlTemplate': TILE_TMPL % {'name': 'conservare-scispa'},
-     'visible': True},
-    {'name': u"Alte zone protejate",
-     'urlTemplate': TILE_TMPL % {'name': 'conservare-etc'},
-     'visible': True},
-    {'name': u"Administrativ",
-     'urlTemplate': TILE_TMPL % {'name': 'administrativ'},
-     'visible': False},
-    {'name': u"Ape",
-     'urlTemplate': TILE_TMPL % {'name': 'ape'},
-     'visible': False},
-    {'name': u"Infrastructură",
-     'urlTemplate': TILE_TMPL % {'name': 'infrastructura'},
-     'visible': False},
-]
+def default_overlays(app):
+    URL_TMPL = app.config.get('TILES_URL_TEMPLATE', '')
+    return [
+        {'name': u"SCI + SPA",
+         'urlTemplate': URL_TMPL % {'name': 'conservare-scispa'},
+         'visible': True},
+        {'name': u"Alte zone protejate",
+         'urlTemplate': URL_TMPL % {'name': 'conservare-etc'},
+         'visible': True},
+        {'name': u"Administrativ",
+         'urlTemplate': URL_TMPL % {'name': 'administrativ'},
+         'visible': False},
+        {'name': u"Ape",
+         'urlTemplate': URL_TMPL % {'name': 'ape'},
+         'visible': False},
+        {'name': u"Infrastructură",
+         'urlTemplate': URL_TMPL % {'name': 'infrastructura'},
+         'visible': False},
+    ]
 
 
 def register(app, url_prefix='/map'):
     app.register_blueprint(tinygis, url_prefix=url_prefix)
-    app.config.setdefault('AVAILABLE_OVERLAYS', DEFAULT_OVERLAYS)
+    app.config.setdefault('AVAILABLE_OVERLAYS', default_overlays(app))
     db = SqliteDict(ppath(app.instance_path)/'tinygis.db', autocommit=True)
     app.extensions['tinygis-db'] = db

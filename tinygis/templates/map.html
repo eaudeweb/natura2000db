@@ -28,12 +28,15 @@
   {{ script_src('tinygis.js', 'tinygis.static') }}
   {{ script_src('editor.js', 'tinygis.static') }}
   {{ script_src('sidebar.js', 'tinygis.static') }}
+  {{ script_src('measure.js', 'tinygis.static') }}
   {{ script_src('main.js', 'tinygis.static') }}
 
   <title>{% block title %}Natura2000{% endblock %}</title>
 </head>
 
-<body></body>
+<body>
+  <div class="alert-container"></div>
+</body>
 
 <script type="text/html" class="template-src" data-name="login">
   <div class="menu">
@@ -47,6 +50,16 @@
       <a href="{{ url_for('auth.login') }}" class="btn btn-mini">Login <b class="openid-google">&nbsp;</b></a>
     </div>
   {% endif %}
+  </div>
+</script>
+
+<script type="text/html" class="template-src" data-name="message">
+  <div class="alert alert-<%= options['category'] %>">
+    <a class="close" data-dismiss="alert">×</a>
+      <% if(options['title']) { %>
+        <h4 class="alert-heading"><%= options['title'] %></h4>
+      <% } %>
+      <%= options['message'] %>
   </div>
 </script>
 
@@ -67,6 +80,27 @@
     <span class="error-text">error identifying features</span>
   <% } %>
 
+</script>
+
+
+<script type="text/html" class="template-src" data-name="measure">
+  <div class="btn-toolbar">
+    <span class="btn-text">Measure:</span>
+    <div class="btn-group">
+      <a class="btn btn-mini measure-begin <%= active=='line' ? 'active' : ''%>"
+         data-measure="line">distance</a>
+      <a class="btn btn-mini measure-begin <%= active=='polygon' ? 'active' : ''%>"
+         data-measure="polygon">area</a>
+    </div>
+  </div>
+  <% if(active) { %>
+    <% if(result) { %>
+      <%= result['value'] %>
+      <%= result['units'] %><% if(result['order'] > 1) {
+        %><sup><%= result['order'] %></sup><% } %>
+    <% } %>
+    <a class="close">&times;</a>
+  <% } %>
 </script>
 
 
@@ -176,7 +210,7 @@
 
   <div class="btn-toolbar">
 
-    <span class="title">Create</span>
+    <span class="btn-text">Create</span>
     <div class="btn-group">
       <button class="btn btn-mini" name="add-point">point</button>
       <button class="btn btn-mini" name="add-polygon">polygon</button>
