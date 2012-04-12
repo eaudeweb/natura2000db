@@ -225,6 +225,7 @@ a {
 .alert {
     float: right;
     clear: right;
+    box-shadow: 0px 0px 6px 3px #888;
 }
 
 .btn-text {
