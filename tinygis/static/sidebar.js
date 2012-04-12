@@ -105,7 +105,6 @@ TG.Overlays = Layers.extend({
     },
 
     expand: function (e) {
-
         var that = $(e.currentTarget);
         var parents = that.parents("li");
         var editor = that.parents("li").find(".editor");
@@ -114,12 +113,13 @@ TG.Overlays = Layers.extend({
         icon.toggleClass("icon-play");
         icon.toggleClass("icon-minus");
 
-        if(editor.length == 0 ) {
-            var model = this.collection.getByCid(parents.data("id"));
-            TG.featureCollectionEditor = new TG.FeatureCollectionEditor({
-                model: model.geojson});
-            TG.featureCollectionEditor.$el.appendTo(parents);
-        } else{
+        if(editor.length == 0) {
+            var model = this.collection.getByCid(parents.data("id")).geojson;
+            if(model) {
+                var editor = new TG.FeatureCollectionEditor({model: model});
+                editor.$el.appendTo(parents);
+            };
+        } else {
             editor.slideToggle("fast");
         }
     }
