@@ -21,6 +21,30 @@ app.update({
 
 
 @task
+def i18n_extract():
+    local("pybabel extract --omit-header --mapping=babel.cfg "
+          "-o i18n/messages.pot '%(localrepo)s'" % app)
+
+@task
+def i18n_init(new_locale):
+    local("pybabel init -i '%(localrepo)s'/i18n/messages.pot "
+          "-d '%(localrepo)s'/i18n "
+          "-l %(new_locale)s" % {
+              'localrepo': app['localrepo'],
+              'new_locale': new_locale})
+
+@task
+def i18n_update():
+    local("pybabel update "
+          "-i '%(localrepo)s'/i18n/messages.pot "
+          "-d '%(localrepo)s'/i18n" % app)
+
+@task
+def i18n_compile():
+    local("pybabel compile -d '%(localrepo)s'/i18n" % app)
+
+
+@task
 def ssh():
     open_shell()
 

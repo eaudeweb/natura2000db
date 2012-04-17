@@ -14,3 +14,4 @@ requests==0.11.1
 python-openid==2.2.5
 Flask-OpenID==1.0.1
 sqlitedict==1.0.8
+Babel==0.9.6

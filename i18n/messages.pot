@@ -1,0 +1,109 @@
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:47
+msgid "Logout"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:52
+msgid "Login"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:83
+msgid "error identifying features"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:92
+msgid "Measure"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:95
+msgid "distance"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:97
+msgid "area"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:118
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:168
+msgid "edit"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:127
+msgid "Edit point"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:132
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:197
+msgid "Title"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:135
+msgid "Point title"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:138
+msgid "lng"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:142
+msgid "lat"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:150
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:218
+msgid "Cancel"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:152
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:220
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:250
+msgid "Save"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:177
+msgid "Edit polygon"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:184
+msgid "General"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:188
+msgid "Coordinates"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:200
+msgid "Polygon title"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:202
+msgid "Description"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:233
+msgid "Create"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:236
+msgid "point"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:238
+msgid "polygon"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:255
+msgid "Download GeoJSON"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:275
+msgid "Base Layers"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:288
+msgid "show more"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:294
+msgid "Overlays"
+msgstr ""
+
