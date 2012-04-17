@@ -246,28 +246,35 @@
 
 </script>
 
+
 <script type="text/html" class="template-src" data-name="sidebar-layers">
-
-   <li class='hide <% if (visible) { %> visible <% } %>'>
-     <a class='item' data-id=<%=cid%>> <%=name%> </a>
-   </li>
-
+  <li class="nav-header">Base Layers</li>
 </script>
+
+
+<script type="text/html" class="template-src" data-name="sidebar-layer-item">
+  <li class='hide <% if (visible) { %> visible <% } %>'>
+    <a class='item' data-id=<%=cid%>> <%=name%> </a>
+  </li>
+</script>
+
 
 <script type="text/html" class="template-src" data-name="sidebar-more">
-
   <li class='show-more' style='display: block'><a>show more</a>
-
 </script>
 
-<script type="text/html" class="template-src" data-name="sidebar-overlays">
 
+<script type="text/html" class="template-src" data-name="sidebar-overlays">
+  <li class="nav-header">Overlays</li>
+</script>
+
+
+<script type="text/html" class="template-src" data-name="sidebar-overlay-item">
   <li data-id='<%=cid%>'>
     <% if(geojson) { %> <div class='icon icon-play expand'></div> <% } %>
       <a class='item'> <%=name%> </a>
       <div class='selector <% if(visible) { %> selected <% } %>'><b></b></div>
   </li>
-
 </script>
 
 </html>
