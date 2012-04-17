@@ -54,10 +54,19 @@ TG.main = function() {
         TG.map.addOverlay(TG.vectorLayer.olLayer, {model: layerModel});
     });
 
-    var sidebar = new TG.Sidebar();
-    sidebar.on('resize', TG.map.updateSize, TG.map);
+    var sidebarContainer = new TG.SidebarContainer();
+    sidebarContainer.on('resize', TG.map.updateSize, TG.map);
+    $("body").append(sidebarContainer.$el);
+
+    var sidebar = new Backbone.View({
+        el: sidebarContainer.$el.find('#sidebar')
+    });
+
     var mapLayers = new TG.MapLayers({"collection": TG.map.baseLayerCollection});
+    sidebar.$el.append(mapLayers.$el);
+
     var overlayLayers = new TG.Overlays({"collection": TG.map.overlayCollection});
+    sidebar.$el.append(overlayLayers.$el);
 
     TG.mapMeasure = new TG.MapMeasure({olMap: TG.map.olMap});
     TG.mapMeasure.$el.appendTo('#sidebar');

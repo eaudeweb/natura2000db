@@ -13,28 +13,27 @@ var Layers = Backbone.View.extend({
 
 TG.MapLayers = Layers.extend({
 
+    templateName: "sidebar-layers",
+    itemTemplateName: "sidebar-layer-item",
+
     events: {
         "click a": "show",
         "click .show-more a": "more"
     },
 
-    templateName: "sidebar-layers",
-
     render: function () {
-        var self = this;
         var template = TG.templates[this.templateName];
+        var itemTemplate = TG.templates[this.itemTemplateName];
         var showMoreTemplate = TG.templates["sidebar-more"];
 
-        this.$el.append(this.make("li", {"class": "nav-header"}, "Base Layers"));
+        this.$el.html(template());
         this.collection.each(function (model, i) {
             var data = model.toJSON();
             data["cid"] = model.cid;
-            self.$el.append(template(data));
-        });
+            this.$el.append(itemTemplate(data));
+        }, this);
         this.$el.find("li").slice(0, 3).show();
         this.$el.append(showMoreTemplate());
-
-        $("#sidebar").append(this.$el);
     },
 
     show: function (e) {
@@ -60,6 +59,7 @@ TG.MapLayers = Layers.extend({
 
 });
 
+
 TG.Overlays = Layers.extend({
 
     events: {
@@ -68,7 +68,9 @@ TG.Overlays = Layers.extend({
         "click a.item": "expand"
     },
 
+    className: Layers.prototype.className + " overlays",
     templateName: "sidebar-overlays",
+    itemTemplateName: "sidebar-overlay-item",
 
     initialize: function () {
         this.collection.on("add", this.render, this);
@@ -77,20 +79,17 @@ TG.Overlays = Layers.extend({
 
     render: function () {
         var template = TG.templates[this.templateName];
+        var itemTemplate = TG.templates[this.itemTemplateName];
 
-        this.$el.addClass("overlays");
-        this.$el.empty();
-        this.$el.append(this.make("li", {"class": "nav-header"}, "Overlays"));
+        this.$el.html(template());
 
         this.collection.each(_.bind(function (model, i) {
             var data = model.toJSON();
             data["cid"] = model.cid;
             data["geojson"] = model.geojson ;
             data["visible"] = data["visible"] || false;
-            this.$el.append(template(data));
+            this.$el.append(itemTemplate(data));
         }, this));
-
-        $("#sidebar").append(this.$el);
     },
 
     select: function (e) {
@@ -126,7 +125,8 @@ TG.Overlays = Layers.extend({
 
 });
 
-TG.Sidebar = Backbone.View.extend({
+
+TG.SidebarContainer = Backbone.View.extend({
 
     id: "sidebar-container",
 
@@ -139,20 +139,15 @@ TG.Sidebar = Backbone.View.extend({
     },
 
     render: function () {
-
         var login = _.template($(".template-src[data-name=login]").html())();
         var togglebar = this.make("div", {"id": "togglebar"});
         var sidebar = this.make("div", {"id": "sidebar"}, login);
 
-        $("body").append(
-            this.$el
-                .append(togglebar)
-                .append(sidebar)
-        );
+        this.$el.append(togglebar).append(sidebar);
     },
 
     togglebar: function () {
-        var sidebar = $("#sidebar");
+        var sidebar = this.$el.find("#sidebar");
         var self = this;
         if(sidebar.width() === 0) {
             sidebar.animate({"width": 180, "padding": 20}, 250);
@@ -170,5 +165,6 @@ TG.Sidebar = Backbone.View.extend({
     }
 
 });
+
 
 })();
