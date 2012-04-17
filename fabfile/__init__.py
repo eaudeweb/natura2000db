@@ -21,6 +21,12 @@ app.update({
 
 
 @task
+def i18n_extract():
+    local("pybabel extract --omit-header --mapping=babel.cfg "
+          "-o i18n/messages.pot '%(localrepo)s'" % app)
+
+
+@task
 def ssh():
     open_shell()
 
