@@ -3,9 +3,10 @@
 import sys
 import os
 import logging
-from path import path as ppath
+from path import path
 import flask
 import flaskext.script
+import babel.support
 import naturasites.schema
 import naturasites.views
 from naturasites.storage import get_db
@@ -30,6 +31,10 @@ default_config = {
 }
 
 
+_i18n_path = path(__file__).parent/'i18n'
+translations = babel.support.Translations.load(_i18n_path, ['ro'])
+
+
 def create_app():
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config.update(default_config)
@@ -37,7 +42,7 @@ def create_app():
 
     _my_extensions = app.jinja_options["extensions"] + ['jinja2.ext.i18n']
     app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
-    app.jinja_env.install_null_translations()
+    app.jinja_env.install_gettext_translations(translations)
 
     if 'STATIC_URL_MAP' in app.config:
         from werkzeug.wsgi import SharedDataMiddleware
