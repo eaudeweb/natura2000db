@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-04-17 16:42+0300\n"
+"POT-Creation-Date: 2012-04-17 17:05+0300\n"
 "PO-Revision-Date: 2012-04-17 16:42+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: ro <LL@li.org>\n"
@@ -69,13 +69,13 @@ msgid "lat"
 msgstr "lat"
 
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:150
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:216
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:218
 msgid "Cancel"
 msgstr "Anulare"
 
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:152
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:218
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:248
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:220
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:250
 msgid "Save"
 msgstr "Salvare"
 
@@ -92,34 +92,38 @@ msgid "Coordinates"
 msgstr "Coordonate"
 
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:200
+msgid "Polygon title"
+msgstr "Titlu poligon"
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:202
 msgid "Description"
 msgstr "Descriere"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:231
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:233
 msgid "Create"
 msgstr "Creare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:234
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:236
 msgid "point"
 msgstr "punct"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:236
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:238
 msgid "polygon"
 msgstr "poligon"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:253
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:255
 msgid "Download GeoJSON"
 msgstr "Download GeoJSON"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:273
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:275
 msgid "Base Layers"
 msgstr "Straturi de bază"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:286
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:288
 msgid "show more"
 msgstr "vezi mai mult"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:292
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:294
 msgid "Overlays"
 msgstr "Straturi suprapuse"
 

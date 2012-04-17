@@ -195,7 +195,9 @@
         <div class="tab-pane active" id="modal-general-<%= autoid %>">
           <form>
             <label>{% trans %}Title{% endtrans %}</label>
-            <input name="title" style="width: 98%" type="text" value="<%= properties.title %>" placeholder="Polygon title..." />
+            <input name="title" type="text"
+                   style="width: 98%" value="<%= properties.title %>"
+                   placeholder="{% trans %}Polygon title{% endtrans %}..." />
 
             <label>{% trans %}Description{% endtrans %}</label>
             <textarea style="width: 98%" rows="10"
