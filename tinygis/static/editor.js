@@ -235,6 +235,10 @@ TG.PointEditor = Backbone.View.extend({
 
     out: function () {
         this.$el.find(".btn-group").hide();
+    },
+
+    launchEdit: function() {
+        this.$el.find(".modal").modal();
     }
 });
 
@@ -308,6 +312,10 @@ TG.PolygonEditor = Backbone.View.extend({
 
     out: function () {
         this.$el.find(".btn-group").hide();
+    },
+
+    launchEdit: function() {
+        this.$el.find(".modal").modal();
     }
 
 });
@@ -329,11 +337,14 @@ TG.FeatureList = Backbone.View.extend({
         this.model.on('remove', this.removeOne, this);
     },
 
-    addOne: function(feature) {
+    addOne: function(feature, collection, options) {
         var editorCls = this.editorClass[feature.geometry.get('type')];
         var view = new editorCls({model: feature});
         this.$el.append(view.$el);
         this.featureViews[view.model.cid] = view;
+        if(options && options['is_new']) {
+            view.launchEdit();
+        }
     },
 
     addAll: function(features) {
@@ -382,14 +393,14 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
 
     createPoint: function() {
         var geometry = new TG.GeoJSONGeometry({type: 'Point'});
-        var feature = new TG.GeoJSONFeature({'title': 'Untitled point'}, {geometry: geometry});
-        this.model.features.add(feature);
+        var feature = new TG.GeoJSONFeature({}, {geometry: geometry});
+        this.model.features.add(feature, {'is_new': true});
     },
 
     createPolygon: function() {
         var geometry = new TG.GeoJSONGeometry({type: 'Polygon'});
-        var feature = new TG.GeoJSONFeature({'title': 'Untitled polygon'}, {geometry: geometry});
-        this.model.features.add(feature);
+        var feature = new TG.GeoJSONFeature({}, {geometry: geometry});
+        this.model.features.add(feature, {'is_new': true});
     },
 
     save: function(e) {
