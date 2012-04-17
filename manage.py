@@ -35,6 +35,10 @@ def create_app():
     app.config.update(default_config)
     app.config.from_pyfile("settings.py", silent=True)
 
+    _my_extensions = app.jinja_options["extensions"] + ['jinja2.ext.i18n']
+    app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
+    app.jinja_env.install_null_translations()
+
     if 'STATIC_URL_MAP' in app.config:
         from werkzeug.wsgi import SharedDataMiddleware
         app.wsgi_app = SharedDataMiddleware(app.wsgi_app,
