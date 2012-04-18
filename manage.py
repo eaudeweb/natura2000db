@@ -6,6 +6,7 @@ import logging
 from path import path
 import flask
 import flaskext.script
+import jinja2
 import babel.support
 import naturasites.schema
 import naturasites.views
@@ -40,9 +41,17 @@ def create_app():
     app.config.update(default_config)
     app.config.from_pyfile("settings.py", silent=True)
 
-    _my_extensions = app.jinja_options["extensions"] + ['jinja2.ext.i18n']
-    app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
-    app.jinja_env.install_gettext_translations(translations)
+    app.jinja_options = app.jinja_options.copy()
+    app.jinja_options['extensions'] += ['jinja2.ext.i18n', 'jinja2.ext.do']
+
+    loaders = []
+    if app.config["ZOPE_TEMPLATE_PATH"]:
+        from naturasites.loader import ZopeTemplateLoader
+        loaders.append(ZopeTemplateLoader(app.config["ZOPE_TEMPLATE_PATH"],
+                                          app.config["ZOPE_TEMPLATE_CACHE"],
+                                          app.config["ZOPE_TEMPLATE_LIST"]))
+    loaders.append(app.create_global_jinja_loader())
+    app.jinja_options['loader'] = jinja2.ChoiceLoader(loaders)
 
     if 'STATIC_URL_MAP' in app.config:
         from werkzeug.wsgi import SharedDataMiddleware
@@ -52,6 +61,8 @@ def create_app():
     naturasites.views.register(app)
     tinygis.views.register(app)
     auth.register(app)
+
+    app.jinja_env.install_gettext_translations(translations)
 
     return app
 

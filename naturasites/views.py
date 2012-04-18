@@ -7,7 +7,6 @@ import widgets
 import statistics
 
 from storage import get_db, Or, And, AllowWildcards, StorageError, NotFound
-from jinja2 import ChoiceLoader, FileSystemLoader
 from loader import ZopeTemplateLoader
 
 
@@ -192,16 +191,3 @@ def dump():
 def register(app):
     app.register_blueprint(naturasites)
     app.document_signal = blinker.Signal()
-    _my_extensions = app.jinja_options['extensions'] + ['jinja2.ext.do']
-
-    loaders = []
-    if app.config["ZOPE_TEMPLATE_PATH"]:
-        loaders.append(ZopeTemplateLoader(app.config["ZOPE_TEMPLATE_PATH"],
-                                          app.config["ZOPE_TEMPLATE_CACHE"],
-                                          app.config["ZOPE_TEMPLATE_LIST"]))
-    loaders.append(app.create_global_jinja_loader())
-
-    app.jinja_options = dict(app.jinja_options,
-                             extensions=_my_extensions,
-                             loader=ChoiceLoader(loaders))
-
