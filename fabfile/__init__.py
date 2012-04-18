@@ -46,7 +46,16 @@ def i18n_compile():
 
 @task
 def ssh():
-    open_shell()
+    open_shell("cd '%(repo)s'" % app)
+
+
+def _install_random_key(remote_path, key_length=20, mode=0600):
+    import random
+    import string
+    from StringIO import StringIO
+    vocabulary = string.ascii_letters + string.digits
+    key = ''.join(random.choice(vocabulary) for c in xrange(key_length))
+    put(StringIO(key), remote_path, mode=mode)
 
 
 @task
@@ -65,7 +74,9 @@ def install(force=False):
             run("git merge incoming --ff-only")
 
     if not exists(app['sandbox']):
-        run("virtualenv -p python2.6 --no-site-packages '%(sandbox)s'" % app)
+        run("virtualenv -p python2.6 "
+            "--no-site-packages --distribute "
+            "'%(sandbox)s'" % app)
         run("echo '*' > '%(sandbox)s/.gitignore'" % app)
 
     run("%(sandbox)s/bin/pip install -r %(repo)s/requirements.txt" % app)
@@ -73,9 +84,12 @@ def install(force=False):
     if not exists(app['instance_var']):
         run("mkdir -p '%(instance_var)s'" % app)
 
-    upload_template(app['localrepo']/'fabfile'/'production-settings.py',
-                    str(app['instance_var']/'settings.py'),
-                    context=app, backup=False)
+    secret_key_path = app['instance_var']/'secret_key.txt'
+    if not exists(secret_key_path):
+        _install_random_key(str(secret_key_path))
+
+    put(app['localrepo']/'fabfile'/'production-settings.py',
+        str(app['instance_var']/'settings.py'))
 
     upload_template(app['localrepo']/'fabfile'/'supervisord.conf',
                     str(app['sandbox']/'supervisord.conf'),
