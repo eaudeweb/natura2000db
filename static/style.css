@@ -753,82 +753,6 @@ label[for="f_text"] {
   display: none;
 }
 
-.search-results .map {
-  width: 97%;/*98.5%;*/
-  height: 350px;
-  margin: 0px 10px;
-  border: 1px solid #CFCFCF;/*ADADAD;*/
-}
-
-.doc-view .map {
-  width: 100%;
-  height: 350px;
-  border: 1px solid #8F8F8F;
-}
-
-.map, .map .leaflet-clickable {
-  cursor: crosshair;
-}
-
-.map.disabled {
-  height: auto;
-  width: auto;
-}
-
-.map-hidden .map {
-  display: none;
-}
-
-.map-show {
-  display: none;
-}
-
-.map-hidden .map-show {
-  display: block;
-  margin-left: 345px; /* centered */
-}
-
-.map-hidden .below-map {
-  display: none;
-}
-
-.map .legend.leaflet-control {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: 0 5px;
-  background: white;
-  border: 1px solid #bbb;
-}
-
-.legend-sample {
-  display: inline-block;
-  width: 15px;
-  height: 10px;
-  border: 0px solid #999;
-  margin-right: 5px;
-}
-
-ul.layer-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-/*
-.legend.below-map ul.layer-list {
-  margin-bottom: 20px;
-}
-*/
-
-.legend.below-map ul.layer-list li {
-  color: #8F8F8F;
-  display: inline-block;
-  padding: 0px;
-  margin-left: 10px;
-  margin-right: 0px;
-}
-
 body.full-page-body {
   width: 100%;
   height: 100%;
@@ -842,52 +766,6 @@ body.full-page-body {
   right: 0;
   width: 100%;
   height: 100%;
-}
-
-.full-page-container .map {
-  width: 100%;
-  height: 100%;
-}
-
-.map-size-buttons {
-  padding-right: 7px;
-  -moz-border-radius: 7px;
-  -webkit-border-radius: 7px;
-  border-radius: 7px;
-  background-color: rgba(0, 0, 0, 0.25);
-  z-index: 10;
-}
-
-.map-size-buttons a {
-  display: block;
-  float: left;
-  width: 24px;
-  height: 24px;
-  margin: 7px;
-  margin-right: 0;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.75);
-  background-position: 50% 50%;
-  background-size: 75%;
-  background-repeat: no-repeat;
-}
-
-.map-size-buttons .full-page-button {
-  background-image: url(fullscreen.png);
-}
-
-.map-size-buttons .minimize-button {
-  background-image: url(minimize.png);
-}
-
-.full-page-container .map-size-buttons .full-page-button {
-  background-image: url(collapse.png);
-}
-
-.full-page-container .map-size-buttons .minimize-button {
-  display: none;
 }
 
 /* drop down list with habitat classes; to be shrunk from 510px to 124px when not focus, otherwise show its full width */
@@ -1145,8 +1023,7 @@ body.full-page-body {
       margin-left: 2px;
     }
 
-    .doc-view table,
-    .doc-view .map {
+    .doc-view table {
       page-break-inside: avoid !important;
     }
 
