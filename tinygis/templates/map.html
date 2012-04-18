@@ -38,6 +38,15 @@
   <div class="alert-container"></div>
 </body>
 
+<script>
+  {% set js_messages = {
+    'msg-layer-save-ok': _("Layer saved"),
+    'msg-layer-save-fail': _("Save failed"),
+  } %}
+  _(TG).defaults({message: {}});
+  _(TG.message).extend( {{ js_messages|tojson|safe }} );
+</script>
+
 <script type="text/html" class="template-src" data-name="login">
   <div class="menu">
   {% if g.user %}

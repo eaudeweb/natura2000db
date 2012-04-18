@@ -407,10 +407,12 @@ TG.FeatureCollectionEditor = Backbone.View.extend({
         e.preventDefault();
         var xhr = this.model.save();
         xhr.done(function() {
-            TG.alertBox({message: "Layer saved", category: 'success'});
+            var msg = TG.message['msg-layer-save-ok'];
+            TG.alertBox({message: msg, category: 'success'});
         });
         xhr.fail(function() {
-            TG.alertBox({message: "Save failed", category: 'error'});
+            var msg = TG.message['msg-layer-save-fail'];
+            TG.alertBox({message: msg, category: 'error'});
         });
     }
 
