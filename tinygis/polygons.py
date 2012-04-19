@@ -76,28 +76,17 @@ def hit_test_ring(ring, latlng):
 
 
 def hit_test_polygon(coordinates, latlng):
-    numRings = len(coordinates)
-    contained = False
-    if(numRings > 0):
-        # check exterior ring - 1 means on edge, boolean otherwise
-        contained = hit_test_ring(coordinates[0], latlng)
-        if(contained !=1):
-            if(contained and numRings > 1):
-                # check interior rings
-                for i in range(1, numRings): #for(i=1; i<numRings; ++i):
-                    hole = hit_test_ring(coordinates[i], latlng)
-                    if(hole):
-                        if(hole == 1):
-                            # on edge
-                            contained = 1
-                        else:
-                            # in hole
-                            contained = False
-                        break
-    return contained
+    if not coordinates:
+        return False
+    if not hit_test_ring(coordinates[0], latlng):
+        return False
+    for ring in coordinates[1:]:
+        if hit_test_ring(ring, latlng):
+            return False
+    return True
 
 
-def hit_test_multipolygon(coordinates, latlng):
+def hit_test_multipolygon(coordinates, latlng, geometry):
     for coord in coordinates:
         if hit_test_polygon(coord, latlng):
             return True
@@ -122,7 +111,7 @@ def hit_test(geometry, latlng):
     elif geometry['type'] == 'Polygon':
         return hit_test_polygon(geometry['coordinates'], latlng)
     elif geometry['type'] == 'MultiPolygon':
-        return hit_test_multipolygon(geometry['coordinates'], latlng)
+        return hit_test_multipolygon(geometry['coordinates'], latlng, geometry)
     else:
         return False
 
@@ -199,8 +188,6 @@ def features_at(latlng):
     for layer_name, layer in layers.items():
         for feature in layer['features']:
             feature_name = feature['properties']['name']
-            if feature_name == 'ROSPA0076':
-                print layer_name, feature_name
             if hit_test(feature['geometry'], latlng):
                 yield {
                     'layer': layer_name,
