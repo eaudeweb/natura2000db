@@ -170,20 +170,32 @@ _feature_name_map = {
 
 
 from flask import json
-from path import path as ppath
-layers = {}
-for geojson_file in (ppath(__file__).parent/'static').listdir('*.geojson'):
-    name = geojson_file.basename().split('-wgs84', 1)[0]
-    name_prop = _feature_name_map[name]
-    with open(geojson_file, 'rb') as f:
-        layers[name] = json.load(f)
+from path import path
 
-    for feature in layers[name]['features']:
-        feature['geometry']['bbox'] = bounding_box(feature['geometry'])
-        feature['properties']['name'] = feature['properties'].get(name_prop, "")
+
+_layers = None
+def get_layers():
+    global _layers
+    if _layers is None:
+        new_layers = {}
+        _layers = new_layers
+        static_path = path(__file__).parent.parent/'static'
+        for geojson_file in static_path.listdir('*.geojson'):
+            name = geojson_file.basename().split('-wgs84', 1)[0]
+            name_prop = _feature_name_map[name]
+            with open(geojson_file, 'rb') as f:
+                new_layers[name] = json.load(f)
+
+            for feature in new_layers[name]['features']:
+                name = feature['properties'].get(name_prop, "")
+                feature['properties']['name'] = name
+                feature['geometry']['bbox'] = bounding_box(feature['geometry'])
+
+    return _layers
 
 
 def features_at(latlng):
+    layers = get_layers()
     for layer_name, layer in layers.items():
         for feature in layer['features']:
             feature_name = feature['properties']['name']
