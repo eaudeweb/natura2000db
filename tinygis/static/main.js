@@ -25,9 +25,9 @@ TG.main = function() {
         TG.map.addBingLayers(TG['BING_MAPS_KEY']);
     }
 
-    TG.FeatureCollection.prototype.urlRoot = '/map/userlayers';
+    TG.FeatureCollection.prototype.urlRoot = TG.USERLAYERS_URL;
 
-    $.get('/map/userlayers').done(function(data) {
+    $.get(TG.USERLAYERS_URL).done(function(data) {
         var id_list = data['ids'];
         var layer_id = null;
         if(id_list.length > 0) {

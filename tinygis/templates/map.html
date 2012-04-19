@@ -14,7 +14,11 @@
   {{ script_src('lib/proj4js-1.1.0/proj4js-compressed.js') }}
   {{ script_src('lib/bootstrap-2.0.2/js/bootstrap.min.js') }}
 
-  <script>window.TG = {};</script>
+  <script>
+    window.TG = {
+      USERLAYERS_URL: {{ url_for('tinygis.userlayer_list')|tojson|safe }}
+    };
+  </script>
   {%- if config['BING_MAPS_KEY'] %}
     <script>window.TG['BING_MAPS_KEY'] = "{{ config['BING_MAPS_KEY'] }}";</script>
   {%- endif %}
