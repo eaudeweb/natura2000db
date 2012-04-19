@@ -1,8 +1,7 @@
-{%- from 'bits.html' import link_css, script_src, smart_html_tag -%}
-<!doctype html>
-{{ smart_html_tag() }}
-<head>
-  <meta charset="utf-8">
+{% extends "frame.html" %}
+{%- from 'bits.html' import link_css, script_src -%}
+
+{% block head %}
   {{ link_css('lib/bootstrap-2.0.2/css/bootstrap.min.css') }}
   {{ link_css('tinygis.css', 'tinygis.static') }}
 
@@ -37,11 +36,17 @@
   {{ script_src('main.js', 'tinygis.static') }}
 
   <title>{% block title %}Natura2000{% endblock %}</title>
-</head>
+  <style>
+    .natura2000-map { position: relative; height: 600px; }
+  </style>
+{% endblock %}
 
-<body>
-  <div class="alert-container"></div>
-</body>
+{% block natura2000_content %}
+<div class="natura2000-map">
+
+<div class="alert-container"></div>
+
+<div id="sidebar-container"></div>
 
 <script>
   {% set js_messages = {
@@ -315,4 +320,5 @@
   </li>
 </script>
 
-</html>
+</div>
+{% endblock %}

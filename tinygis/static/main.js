@@ -11,7 +11,7 @@ TG.alertBox = function(options) {
 TG.main = function() {
     TG.load_templates();
 
-    TG.map = new TG.Map({parent: $('body')[0]});
+    TG.map = new TG.Map({parent: $('.alert-container').parent()[0]});
 
     _(TG['AVAILABLE_OVERLAYS']).forEach(function(overlay_options) {
         var layer = new TG.TileLayer(overlay_options);
@@ -55,9 +55,10 @@ TG.main = function() {
         TG.map.addOverlay(TG.vectorLayer.olLayer, {model: layerModel});
     });
 
-    var sidebarContainer = new TG.SidebarContainer();
+    var sidebarContainer = new TG.SidebarContainer({
+        el: $('#sidebar-container')[0]
+    });
     sidebarContainer.on('resize', TG.map.updateSize, TG.map);
-    $("body").append(sidebarContainer.$el);
 
     var sidebar = new Backbone.View({
         el: sidebarContainer.$el.find('#sidebar')
