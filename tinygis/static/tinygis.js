@@ -184,7 +184,7 @@ TG.Identify = Backbone.Model.extend({
     },
 
     setCoordinates: function(coords) {
-        this.set(coords);
+        this.set({'coords': coords});
         this._next_coords = coords;
         this._pending = true;
         this._tick();
@@ -196,9 +196,10 @@ TG.Identify = Backbone.Model.extend({
         this._in_flight = true;
         this._pending = false;
         this.trigger('update-start');
+        var coords = this.get('coords');
         $.ajax({
             url: 'get_features_at',
-            data: {lat: this.get('lat'), lng: this.get('lng')},
+            data: {lat: coords['lat'], lng: coords['lng']},
             context: this
         }).done(function(data) {
             this.set(_.extend({error: false}, data));
@@ -245,7 +246,12 @@ TG.IdentifyView = Backbone.View.extend({
 
     render: function() {
         var template = TG.templates[this.templateName];
-        this.$el.html(template(this.model.toJSON()));
+        var context = this.model.toJSON();
+        var p = new OpenLayers.Geometry.Point(context['coords']['lng'],
+                                              context['coords']['lat']);
+        p = p.transform('EPSG:4326', 'EPSG:31700');
+        context['coords_s70'] = {'lng': p.x, 'lat': p.y};
+        this.$el.html(template(context));
     }
 
 });
