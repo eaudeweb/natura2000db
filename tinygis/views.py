@@ -4,7 +4,7 @@ import string
 import flask
 from path import path as ppath
 from sqlitedict import SqliteDict
-#import polygons
+import polygons
 import auth
 
 
@@ -23,7 +23,7 @@ def get_features_at():
     lat = float(flask.request.args.get('lat', float))
     lng = float(flask.request.args.get('lng', float))
     return flask.jsonify({
-        'hit_list': [],#list(polygons.features_at({'lat': lat, 'lng': lng})),
+        'hit_list': list(polygons.features_at({'lat': lat, 'lng': lng})),
     })
 
 

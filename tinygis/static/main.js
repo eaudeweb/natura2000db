@@ -70,6 +70,9 @@ TG.main = function() {
 
     TG.mapMeasure = new TG.MapMeasure({olMap: TG.map.olMap});
     TG.mapMeasure.$el.appendTo('#sidebar');
+
+    TG.identify = new TG.IdentifyView({map: TG.map});
+    TG.map.$el.parent().append(TG.identify.el);
 };
 
 $(document).ready(TG.main);

@@ -183,8 +183,8 @@ TG.Identify = Backbone.Model.extend({
         this._in_flight = false;
     },
 
-    updateCoordinates: function(coords) {
-        this.set(coords);
+    setCoordinates: function(coords) {
+        this.set({'coords': coords});
         this._next_coords = coords;
         this._pending = true;
         this._tick();
@@ -196,9 +196,10 @@ TG.Identify = Backbone.Model.extend({
         this._in_flight = true;
         this._pending = false;
         this.trigger('update-start');
+        var coords = this.get('coords');
         $.ajax({
             url: 'get_features_at',
-            data: {lat: this.get('lat'), lng: this.get('lng')},
+            data: {lat: coords['lat'], lng: coords['lng']},
             context: this
         }).done(function(data) {
             this.set(_.extend({error: false}, data));
@@ -222,7 +223,9 @@ TG.IdentifyView = Backbone.View.extend({
     className: 'identify',
     templateName: 'identify',
 
-    initialize: function() {
+    initialize: function(options) {
+        this.map = options['map'];
+        this.model = new TG.Identify;
         this.model.on('change', this.render, this);
         this.model.on('update-start', function() {
             this.$el.addClass('update-in-progress');
@@ -230,11 +233,25 @@ TG.IdentifyView = Backbone.View.extend({
         this.model.on('update-end', function() {
             this.$el.removeClass('update-in-progress');
         }, this);
+
+        this.clickHandler = new OpenLayers.Handler.Click(
+            this, {'click': this.mapClick}, {map: this.map.olMap, delay: 0});
+        this.clickHandler.activate();
+    },
+
+    mapClick: function(evt) {
+        var lonLat = this.map.invproject(this.map.olMap.getLonLatFromPixel(evt.xy));
+        this.model.setCoordinates({lng: lonLat.lon, lat: lonLat.lat});
     },
 
     render: function() {
         var template = TG.templates[this.templateName];
-        this.$el.html(template(this.model.attributes));
+        var context = this.model.toJSON();
+        var p = new OpenLayers.Geometry.Point(context['coords']['lng'],
+                                              context['coords']['lat']);
+        p = p.transform('EPSG:4326', 'EPSG:31700');
+        context['coords_s70'] = {'lng': p.x, 'lat': p.y};
+        this.$el.html(template(context));
     }
 
 });
