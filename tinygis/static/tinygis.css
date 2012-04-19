@@ -80,7 +80,7 @@ a {
     float: right;
 }
 .openid-google {
-    background: no-repeat url("/map/static/openid-google.png");
+    background: no-repeat url("openid-google.png");
     position: relative;
     padding: 0 5px;
     left: 2px;

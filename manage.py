@@ -26,8 +26,8 @@ default_config = {
     'HTTP_CHERRYPY': False,
     'STORAGE_ENGINE': 'solr',
 
-    'ZOPE_TEMPLATE_CACHE': True,
-    'ZOPE_TEMPLATE_PATH': 'http://biodiversitate.mmediu.ro/rio/natura2000_templates/',
+    'ZOPE_TEMPLATE_CACHE': False,
+    'ZOPE_TEMPLATE_PATH': None,
     'ZOPE_TEMPLATE_LIST': ['frame.html'],
 }
 
