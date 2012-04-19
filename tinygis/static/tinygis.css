@@ -90,9 +90,9 @@ a {
 .identify {
     z-index: 1100;
     position: absolute;
-    top: 50px;
+    top: 0;
     right: 0;
-    border: 2px solid #888; border-right: 0;
+    border: 2px solid #888; border-top: 0; border-right: 0;
     background: #fff;
 }
 

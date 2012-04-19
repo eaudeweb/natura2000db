@@ -183,7 +183,7 @@ TG.Identify = Backbone.Model.extend({
         this._in_flight = false;
     },
 
-    updateCoordinates: function(coords) {
+    setCoordinates: function(coords) {
         this.set(coords);
         this._next_coords = coords;
         this._pending = true;
@@ -222,7 +222,9 @@ TG.IdentifyView = Backbone.View.extend({
     className: 'identify',
     templateName: 'identify',
 
-    initialize: function() {
+    initialize: function(options) {
+        this.map = options['map'];
+        this.model = new TG.Identify;
         this.model.on('change', this.render, this);
         this.model.on('update-start', function() {
             this.$el.addClass('update-in-progress');
@@ -230,11 +232,20 @@ TG.IdentifyView = Backbone.View.extend({
         this.model.on('update-end', function() {
             this.$el.removeClass('update-in-progress');
         }, this);
+
+        this.clickHandler = new OpenLayers.Handler.Click(
+            this, {'click': this.mapClick}, {map: this.map.olMap, delay: 0});
+        this.clickHandler.activate();
+    },
+
+    mapClick: function(evt) {
+        var lonLat = this.map.invproject(this.map.olMap.getLonLatFromPixel(evt.xy));
+        this.model.setCoordinates({lng: lonLat.lon, lat: lonLat.lat});
     },
 
     render: function() {
         var template = TG.templates[this.templateName];
-        this.$el.html(template(this.model.attributes));
+        this.$el.html(template(this.model.toJSON()));
     }
 
 });
