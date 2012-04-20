@@ -78,7 +78,7 @@ TG.Map = Backbone.View.extend({
         if(layer === undefined) {
             layer = new TG.Layer({
                 id: olLayer.id,
-                name: olLayer.name
+                title: olLayer.name
             });
         }
         var mapLayer = new TG.MapLayer({model: layer, olLayer: olLayer});
@@ -164,7 +164,7 @@ TG.Map = Backbone.View.extend({
 TG.TileLayer = Backbone.Model.extend({
     initialize: function() {
         this.olLayer = new OpenLayers.Layer.XYZ(
-            this.get('name'),
+            this.get('title'),
             this.get('urlTemplate'),
             {
                 isBaseLayer: false,

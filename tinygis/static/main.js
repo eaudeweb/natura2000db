@@ -48,7 +48,7 @@ TG.main = function() {
         });
         var layerModel = new TG.Layer({
             id: TG.vectorLayer.olLayer.id,
-            name: TG.vectorLayer.olLayer.name
+            title: TG.vectorLayer.olLayer.name
         });
         layerModel.geojson = TG.featureCollection;
         TG.map.addOverlay(TG.vectorLayer.olLayer, {model: layerModel});
