@@ -1,7 +1,8 @@
-{%- from 'bits.html' import link_css, script_src -%}
+{%- from 'bits.html' import link_css, script_src, smart_html_tag -%}
 <!doctype html>
-<html>
+{{ smart_html_tag() }}
 <head>
+  <meta charset="utf-8">
   {{ link_css('lib/bootstrap-2.0.2/css/bootstrap.min.css') }}
   {{ link_css('tinygis.css', 'tinygis.static') }}
 
