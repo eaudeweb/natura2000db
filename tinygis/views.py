@@ -2,7 +2,7 @@
 import random
 import string
 import flask
-from path import path as ppath
+from path import path
 from sqlitedict import SqliteDict
 import polygons
 import auth
@@ -16,15 +16,6 @@ tinygis = flask.Blueprint('tinygis', __name__,
 @tinygis.route('/')
 def index():
     return flask.render_template('map.html')
-
-
-@tinygis.route('/get_features_at')
-def get_features_at():
-    lat = float(flask.request.args.get('lat', float))
-    lng = float(flask.request.args.get('lng', float))
-    return flask.jsonify({
-        'hit_list': list(polygons.features_at({'lat': lat, 'lng': lng})),
-    })
 
 
 def _get_db():
@@ -95,29 +86,46 @@ def userlayer_get(key):
     return flask.Response(db[key + '.geojson'], mimetype='application/json')
 
 
+@tinygis.route('/get_features_at')
+def get_features_at():
+    latlng = {
+        'lat': float(flask.request.args.get('lat', float)),
+        'lng': float(flask.request.args.get('lng', float)),
+    }
+    return flask.jsonify({
+        'hit_list': [{'layer': l.name, 'feature_name': f['properties']['name']}
+                     for l in _layer_data for f in l.features_at(latlng)]
+    })
+
+
+OVERLAYS = [
+    {'name': 'conservare-scispa', 'title': u"SCI + SPA"},
+    {'name': 'conservare-etc',    'title': u"Alte zone protejate"},
+    {'name': 'administrativ',     'title': u"Administrativ"},
+    {'name': 'ape',               'title': u"Ape"},
+    {'name': 'infrastructura',    'title': u"Infrastructură"},
+]
+
+
+_layer_data = []
+for spec in OVERLAYS:
+    geojson_folder = path(__file__).parent.parent/'geo'/'geojson-layers'
+    geojson_path = geojson_folder/('%s.geojson' % spec['name'])
+    if geojson_path.isfile():
+        _layer_data.append(polygons.Layer(spec['name'], geojson_path))
+
+
 def default_overlays(app):
     URL_TMPL = app.config.get('TILES_URL_TEMPLATE', '')
-    return [
-        {'name': u"SCI + SPA",
-         'urlTemplate': URL_TMPL % {'name': 'conservare-scispa'},
-         'visible': True},
-        {'name': u"Alte zone protejate",
-         'urlTemplate': URL_TMPL % {'name': 'conservare-etc'},
-         'visible': True},
-        {'name': u"Administrativ",
-         'urlTemplate': URL_TMPL % {'name': 'administrativ'},
-         'visible': False},
-        {'name': u"Ape",
-         'urlTemplate': URL_TMPL % {'name': 'ape'},
-         'visible': False},
-        {'name': u"Infrastructură",
-         'urlTemplate': URL_TMPL % {'name': 'infrastructura'},
-         'visible': False},
-    ]
+    visible = ['conservare-scispa', 'conservare-etc']
+    return [dict(spec, **{
+            'urlTemplate': URL_TMPL % {'name': spec['name']},
+            'visible': bool(spec['name'] in visible),
+        }) for spec in OVERLAYS]
 
 
 def register(app, url_prefix='/map'):
     app.register_blueprint(tinygis, url_prefix=url_prefix)
     app.config.setdefault('AVAILABLE_OVERLAYS', default_overlays(app))
-    db = SqliteDict(ppath(app.instance_path)/'tinygis.db', autocommit=True)
+    db = SqliteDict(path(app.instance_path)/'tinygis.db', autocommit=True)
     app.extensions['tinygis-db'] = db
