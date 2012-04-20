@@ -49,6 +49,9 @@ a {
     -moz-opacity: .4;
     filter:alpha(opacity=.44);
 }
+.lt-ie9 #sidebar .nav-stacked .icon {
+    filter: none;
+}
 
 #sidebar .nav-stacked .selector {
     box-shadow: 0 0 2px #ccc inset;

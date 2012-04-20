@@ -2,6 +2,16 @@
   <link rel="stylesheet" href="{{ url_for(endpoint, filename=filename) }}">
 {%- endmacro %}
 
+
 {% macro script_src(filename, endpoint='static') -%}
   <script src="{{ url_for(endpoint, filename=filename) }}"></script>
+{%- endmacro %}
+
+
+{% macro smart_html_tag() -%}
+{# paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -#}
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
 {%- endmacro %}
