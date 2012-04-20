@@ -5,7 +5,7 @@ TG.load_templates = function() {
     TG.templates = {};
     $('.template-src').each(function() {
         var name = $(this).attr('data-name');
-        var template = _.template($(this).text());
+        var template = _.template($(this).html());
         TG.templates[name] = template;
     });
 };
