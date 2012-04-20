@@ -81,11 +81,6 @@
 
 <script type="text/html" class="template-src" data-name="identify">
 
-  <p class="identify-coordinates">
-    <%= coords_s70['lng'].toFixed(0) %>
-    <%= coords_s70['lat'].toFixed(0) %>
-  </p>
-
   <ul class="identify-features">
   <% _(hit_list).map(function(hit) { %>
     <li><%= hit.feature %></li>
@@ -97,6 +92,11 @@
       {% trans %}error identifying features{% endtrans %}
     </span>
   <% } %>
+
+  <p class="identify-coordinates">
+    <%= coords_s70['lng'].toFixed(0) %>
+    <%= coords_s70['lat'].toFixed(0) %>
+  </p>
 
 </script>
 
