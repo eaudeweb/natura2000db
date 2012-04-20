@@ -45,6 +45,15 @@ def i18n_compile():
 
 
 @task
+def manual_html():
+    local("sphinx-build -b html "
+          "-d '%(localrepo)s'/manual/_build/doctrees " # spthinx cache
+          "'%(localrepo)s'/manual " # source
+          "'%(localrepo)s'/manual/_build/html" # destination
+          % app)
+
+
+@task
 def ssh():
     open_shell("cd '%(repo)s'" % app)
 

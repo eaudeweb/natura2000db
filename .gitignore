@@ -7,3 +7,4 @@ sandbox
 fabfile/localcfg.py
 .vagrant
 geo/shapes
+manual/_build
