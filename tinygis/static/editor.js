@@ -205,9 +205,9 @@ TG.PointEditor = Backbone.View.extend({
         var template = TG.templates[this.templateName];
         var coordinates = this.model.geometry.get('coordinates') || ['', ''];
 
-        var data = this.model.toJSON()
+        var data = this.model.toJSON();
         data["lng"] = coordinates[0];
-        data["lat"] =  coordinates[1];
+        data["lat"] = coordinates[1];
 
         this.$el.html(template(data));
     },
@@ -267,13 +267,14 @@ TG.PolygonEditor = Backbone.View.extend({
         var coordinates = this.model.geometry.get('coordinates') || [];
 
         var data = this.model.toJSON();
-        data['coordinates'] =  function () {
+        data['coordinates'] = function () {
+            // last point is same as first so we don't show it
             var str = "";
             _.each(_(coordinates).initial(), function (i) {
                 str += i[0] + " " + i[1] + "\n";
             });
             return str;
-        } // last point is same as firstvar str = "";
+        };
 
         this.$el.html(template(data));
     },
