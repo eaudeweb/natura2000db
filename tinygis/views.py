@@ -93,7 +93,7 @@ def get_features_at():
         'lng': float(flask.request.args.get('lng', float)),
     }
     return flask.jsonify({
-        'hit_list': [{'layer': l.name, 'feature_name': f['properties']['name']}
+        'hit_list': [{'layer': l.name, 'properties': f['properties']}
                      for l in _layer_data for f in l.features_at(latlng)]
     })
 

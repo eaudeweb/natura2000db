@@ -82,8 +82,8 @@
 <script type="text/html" class="template-src" data-name="identify">
 
   <ul class="identify-features">
-  <% _(hit_list).map(function(hit) { %>
-    <li><%= hit.feature_name %></li>
+  <% _(features).map(function(f) { %>
+    <li><%= f['name'] %></li>
   <% }); %>
   </ul>
 

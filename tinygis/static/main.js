@@ -15,7 +15,8 @@ TG.main = function() {
 
     _(TG['AVAILABLE_OVERLAYS']).forEach(function(overlay_options) {
         var layer = new TG.TileLayer(overlay_options);
-        TG.map.addOverlay(layer.olLayer);
+        layer.id = layer.olLayer.id;
+        TG.map.addOverlay(layer.olLayer, {model: layer});
     });
 
     if(window.google && window.google.maps) {
