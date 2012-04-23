@@ -221,11 +221,13 @@ TG.PointEditor = Backbone.View.extend({
         var title = this.$el.find('[name=title]').val();
         var lat = parseFloat(this.$el.find('[name=lat]').val());
         var lng = parseFloat(this.$el.find('[name=lng]').val());
+        var description = $('[name=description]', this.el).val();
 
         this.$el.find('.modal').modal('hide');
 
         this.model.geometry.set("coordinates", [lng, lat]);
         this.model.set("title", title);
+        this.model.set("description", description);
         this.render();
     },
 

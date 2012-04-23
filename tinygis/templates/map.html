@@ -188,6 +188,12 @@
           <label>{% trans %}lat{% endtrans %}</label>
           <input name="lat" class="span1" value=<%= lat %>></label>
         </div>
+
+        <div style="clear: left">
+          <label>{% trans %}Description{% endtrans %}</label>
+          <textarea style="width: 98%" rows="10"
+                    name="description"><%= properties.description %></textarea>
+        </div>
       </form>
     </div>
 
