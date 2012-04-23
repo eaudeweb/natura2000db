@@ -271,14 +271,21 @@ TG.IdentifyView = Backbone.View.extend({
             });
             if(layer && layer.get('visible')) {
                 var f = _.extend({}, hit['properties']);
-                if(_(f['id']).startswith('ROSCI', 'ROSPA')) {
+                if(_(f['id']).startswith('ROSCI')) {
                     f['extra'] = f['id'];
+                    f['legend'] = 'sci';
+                }
+                if(_(f['id']).startswith('ROSPA')) {
+                    f['extra'] = f['id'];
+                    f['legend'] = 'spa';
                 }
                 if(_(f['id']).startswith('rezervatie-')) {
                     f['extra'] = 'rezervație';
+                    f['legend'] = 'rezervatie';
                 }
                 if(_(f['id']).startswith('parc-')) {
                     f['extra'] = 'parc';
+                    f['legend'] = 'parc';
                 }
                 features.push(f);
             }
