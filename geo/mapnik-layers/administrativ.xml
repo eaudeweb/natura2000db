@@ -35,7 +35,7 @@
     <StyleName>Judete</StyleName>
     <Datasource>
       <Parameter name="type">ogr</Parameter>
-      <Parameter name="file">../../static/judete-wgs84.geojson</Parameter>
+      <Parameter name="file">../geojson-layers/administrativ.geojson</Parameter>
       <Parameter name="layer">OGRGeoJSON</Parameter>
     </Datasource>
   </Layer>
