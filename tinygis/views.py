@@ -94,8 +94,19 @@ def get_features_at():
     }
     return flask.jsonify({
         'hit_list': [{'layer': l.name, 'properties': f['properties']}
-                     for l in _layer_data for f in l.features_at(latlng)]
+                     for l in _layer_data.values()
+                     for f in l.features_at(latlng)]
     })
+
+
+@tinygis.route('/get_bbox_for_site')
+def get_bbox_for_site():
+    site_id = flask.request.args['site_id']
+    try:
+        feature = _layer_data['conservare-scispa'].feature_with_id(site_id)
+    except KeyError:
+        flask.abort(404)
+    return flask.jsonify({'bbox': feature['geometry']['bbox']})
 
 
 OVERLAYS = [
@@ -107,12 +118,12 @@ OVERLAYS = [
 ]
 
 
-_layer_data = []
+_layer_data = {}
 for spec in OVERLAYS:
     geojson_folder = path(__file__).parent.parent/'geo'/'geojson-layers'
     geojson_path = geojson_folder/('%s.geojson' % spec['name'])
     if geojson_path.isfile():
-        _layer_data.append(polygons.Layer(spec['name'], geojson_path))
+        _layer_data[spec['name']] = polygons.Layer(spec['name'], geojson_path)
 
 
 def default_overlays(app):

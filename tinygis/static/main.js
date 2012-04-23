@@ -75,6 +75,9 @@ TG.main = function() {
 
     TG.identify = new TG.IdentifyView({map: TG.map});
     TG.map.$el.parent().append(TG.identify.el);
+
+    TG.siteZoom = new TG.SiteZoom({map: TG.map});
+    TG.siteZoom.try_to_zoom();
 };
 
 $(document).ready(TG.main);

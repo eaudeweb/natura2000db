@@ -162,7 +162,7 @@ class Layer(object):
         self.geojson_path = geojson_path
         self.data = None
 
-    def features_at(self, latlng):
+    def _ensure_data(self):
         if self.data is None:
             with open(self.geojson_path, 'rb') as f:
                 self.data = json.load(f)
@@ -170,6 +170,16 @@ class Layer(object):
             for feature in self.data['features']:
                 feature['geometry']['bbox'] = bounding_box(feature['geometry'])
 
+    def features_at(self, latlng):
+        self._ensure_data()
         for feature in self.data['features']:
             if hit_test(feature['geometry'], latlng):
                 yield feature
+
+    def feature_with_id(self, feature_id):
+        self._ensure_data()
+        for feature in self.data['features']:
+            if feature['properties']['id'] == feature_id:
+                return feature
+        else:
+            raise KeyError('unknown feature %r' % feature_id)

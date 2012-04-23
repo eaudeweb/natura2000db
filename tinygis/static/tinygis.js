@@ -255,9 +255,7 @@ TG.IdentifyView = Backbone.View.extend({
                 return o.get('name') == hit['layer'];
             });
             if(layer && layer.get('visible')) {
-                features.push({
-                    'name': hit['properties']['name'],
-                });
+                features.push(hit['properties']);
             }
         }, this);
         this.$el.html(template({
@@ -268,5 +266,29 @@ TG.IdentifyView = Backbone.View.extend({
     }
 
 });
+
+
+TG.SiteZoom = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.map = options['map'];
+    },
+
+    try_to_zoom: function() {
+        var hash = window.location.hash;
+        if(hash && hash.slice(0, 6) == '#site=') {
+            var site_id = hash.slice(6);
+            $.get('get_bbox_for_site', {'site_id': site_id},
+                  _.bind(this.ajax_result, this));
+        }
+    },
+
+    ajax_result: function(result) {
+        var bbox = this.map.project(OpenLayers.Bounds.fromArray(result['bbox']));
+        this.map.olMap.zoomToExtent(bbox);
+    }
+
+});
+
 
 })();
