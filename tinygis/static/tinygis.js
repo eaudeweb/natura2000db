@@ -1,6 +1,21 @@
 (function() {
 
 
+_.mixin({
+    startswith: function(obj) {
+        if(! _.isString(obj)) return false;
+        for(var c = 1; c < arguments.length; c++) {
+            var prefix = arguments[c];
+            if(_.isString(prefix) &&
+               obj.slice(0, prefix.length) == prefix) {
+                return true;
+            }
+        }
+        return false;
+    }
+});
+
+
 TG.load_templates = function() {
     TG.templates = {};
     $('.template-src').each(function() {
@@ -255,7 +270,17 @@ TG.IdentifyView = Backbone.View.extend({
                 return o.get('name') == hit['layer'];
             });
             if(layer && layer.get('visible')) {
-                features.push(hit['properties']);
+                var f = _.extend({}, hit['properties']);
+                if(_(f['id']).startswith('ROSCI', 'ROSPA')) {
+                    f['extra'] = f['id'];
+                }
+                if(_(f['id']).startswith('rezervatie-')) {
+                    f['extra'] = 'rezervație';
+                }
+                if(_(f['id']).startswith('parc-')) {
+                    f['extra'] = 'parc';
+                }
+                features.push(f);
             }
         }, this);
         this.$el.html(template({
