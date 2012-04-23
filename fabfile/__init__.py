@@ -23,7 +23,11 @@ app.update({
 @task
 def i18n_extract():
     local("pybabel extract --omit-header --mapping=babel.cfg "
-          "-o i18n/messages.pot '%(localrepo)s'" % app)
+          "-o i18n/messages.pot "
+          "'%(localrepo)s'/templates "
+          "'%(localrepo)s'/naturasites "
+          "'%(localrepo)s'/tinygis"
+          % app)
 
 @task
 def i18n_init(new_locale):
