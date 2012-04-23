@@ -237,3 +237,27 @@ a {
     font-size: 12px;
     top: -5px;
 }
+
+.featurelegend {
+    display: inline-block;
+    width: 15px;
+    height: 10px;
+    border: 0px solid #999;
+    margin-right: 5px;
+}
+
+.featurelegend-sci {
+    background-color: #201F73;
+}
+
+.featurelegend-spa {
+    background-color: #D91B0F;
+}
+
+.featurelegend-parc {
+    background-color: #FFD900;
+}
+
+.featurelegend-rezervatie {
+    background-color: #FF009A;
+}

@@ -1,6 +1,21 @@
 (function() {
 
 
+_.mixin({
+    startswith: function(obj) {
+        if(! _.isString(obj)) return false;
+        for(var c = 1; c < arguments.length; c++) {
+            var prefix = arguments[c];
+            if(_.isString(prefix) &&
+               obj.slice(0, prefix.length) == prefix) {
+                return true;
+            }
+        }
+        return false;
+    }
+});
+
+
 TG.load_templates = function() {
     TG.templates = {};
     $('.template-src').each(function() {
@@ -255,9 +270,24 @@ TG.IdentifyView = Backbone.View.extend({
                 return o.get('name') == hit['layer'];
             });
             if(layer && layer.get('visible')) {
-                features.push({
-                    'name': hit['properties']['name'],
-                });
+                var f = _.extend({}, hit['properties']);
+                if(_(f['id']).startswith('ROSCI')) {
+                    f['extra'] = f['id'];
+                    f['legend'] = 'sci';
+                }
+                if(_(f['id']).startswith('ROSPA')) {
+                    f['extra'] = f['id'];
+                    f['legend'] = 'spa';
+                }
+                if(_(f['id']).startswith('rezervatie-')) {
+                    f['extra'] = 'rezervație';
+                    f['legend'] = 'rezervatie';
+                }
+                if(_(f['id']).startswith('parc-')) {
+                    f['extra'] = 'parc';
+                    f['legend'] = 'parc';
+                }
+                features.push(f);
             }
         }, this);
         this.$el.html(template({
@@ -268,5 +298,29 @@ TG.IdentifyView = Backbone.View.extend({
     }
 
 });
+
+
+TG.SiteZoom = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.map = options['map'];
+    },
+
+    try_to_zoom: function() {
+        var hash = window.location.hash;
+        if(hash && hash.slice(0, 6) == '#site=') {
+            var site_id = hash.slice(6);
+            $.get('get_bbox_for_site', {'site_id': site_id},
+                  _.bind(this.ajax_result, this));
+        }
+    },
+
+    ajax_result: function(result) {
+        var bbox = this.map.project(OpenLayers.Bounds.fromArray(result['bbox']));
+        this.map.olMap.zoomToExtent(bbox);
+    }
+
+});
+
 
 })();
