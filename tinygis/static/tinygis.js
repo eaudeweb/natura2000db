@@ -17,11 +17,15 @@ _.mixin({
 
 
 TG.load_templates = function() {
-    TG.templates = {};
+    var templates_map = TG.templates = {};
     $('.template-src').each(function() {
         var name = $(this).attr('data-name');
-        var template = _.template($(this).html());
-        TG.templates[name] = template;
+        var tmpl = _.template($(this).html());
+        function render(context) {
+            var full_context = _({templates: templates_map}).extend(context);
+            return tmpl(full_context);
+        }
+        TG.templates[name] = render;
     });
 };
 

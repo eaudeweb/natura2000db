@@ -18,7 +18,8 @@
 
   <script>
     window.TG = {
-      USERLAYERS_URL: {{ url_for('tinygis.userlayer_list')|tojson|safe }}
+      USERLAYERS_URL: {{ url_for('tinygis.userlayer_list')|tojson|safe }},
+      is_logged_in: function() { return {{ 'true' if g.user else 'false' }}; }
     };
   </script>
   {%- if config['BING_MAPS_KEY'] %}
@@ -143,6 +144,15 @@
 </script>
 
 
+<script type="text/html" class="template-src" data-name="login-save-warning">
+  <% if(! TG.is_logged_in()) { %>
+    <div class="alert alert-error">
+      {{ _("Features will not be saved because you are not logged in.") }}
+    </div>
+  <% } %>
+</script>
+
+
 <script type="text/html" class="template-src" data-name="point-editor">
 
   <% var autoid = _.generateAutoId() %>
@@ -163,6 +173,7 @@
     </div>
 
     <div class="modal-body">
+      <%= templates['login-save-warning']() %>
       <form>
         <label>{% trans %}Title{% endtrans %}</label>
         <input name="title" type="text"
@@ -227,6 +238,7 @@
       <div class="tab-content">
 
         <div class="tab-pane active" id="modal-general-<%= autoid %>">
+          <%= templates['login-save-warning']() %>
           <form>
             <label>{% trans %}Title{% endtrans %}</label>
             <input name="title" type="text"

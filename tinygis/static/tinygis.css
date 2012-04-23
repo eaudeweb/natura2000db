@@ -227,7 +227,7 @@ a {
     right: 0;
 }
 
-.alert {
+.alert-container > .alert {
     float: right;
     clear: right;
     box-shadow: 0px 0px 6px 3px #888;
