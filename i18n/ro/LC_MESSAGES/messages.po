@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-04-18 18:36+0300\n"
+"POT-Creation-Date: 2012-04-23 19:24+0300\n"
 "PO-Revision-Date: 2012-04-17 16:42+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: ro <LL@li.org>\n"
@@ -18,120 +18,126 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:47
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:55
 msgid "Layer saved"
 msgstr "Stratul a fost salvat"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:48
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:56
 msgid "Save failed"
 msgstr "Eroare la salvare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:60
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:68
 msgid "Logout"
 msgstr "Ieșire"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:65
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:73
 msgid "Login"
 msgstr "Autentificare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:96
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:109
 msgid "error identifying features"
 msgstr "eroare la identificarea zonelor"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:105
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:123
 msgid "Measure"
 msgstr "măsoară"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:108
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:126
 msgid "distance"
 msgstr "distanță"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:110
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:128
 msgid "area"
 msgstr "suprafață"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:131
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:181
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:139
+msgid "double-click to end"
+msgstr "dublu-clic la final"
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:141
+msgid "click on map to begin"
+msgstr "clic pe hartă pentru început"
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:153
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:202
 msgid "edit"
 msgstr "editare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:140
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:162
 msgid "Edit point"
 msgstr "Editare punct"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:145
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:210
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:167
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:231
 msgid "Title"
 msgstr "Titlu"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:148
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:170
 msgid "Point title"
 msgstr "Titlu punct"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:151
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:173
 msgid "lng"
 msgstr "lng"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:155
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:177
 msgid "lat"
 msgstr "lat"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:163
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:231
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:185
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:252
 msgid "Cancel"
 msgstr "Anulare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:165
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:233
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:263
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:187
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:254
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:284
 msgid "Save"
 msgstr "Salvare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:190
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:211
 msgid "Edit polygon"
 msgstr "Editare poligon"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:197
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:218
 msgid "General"
 msgstr "General"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:201
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:222
 msgid "Coordinates"
 msgstr "Coordonate"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:213
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:234
 msgid "Polygon title"
 msgstr "Titlu poligon"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:215
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:236
 msgid "Description"
 msgstr "Descriere"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:246
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:267
 msgid "Create"
 msgstr "Creare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:249
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:270
 msgid "point"
 msgstr "punct"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:251
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:272
 msgid "polygon"
 msgstr "poligon"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:268
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:289
 msgid "Download GeoJSON"
 msgstr "Download GeoJSON"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:288
-msgid "Base Layers"
-msgstr "Straturi de bază"
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:301
-msgid "show more"
-msgstr "vezi mai mult"
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:307
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:318
 msgid "Overlays"
 msgstr "Straturi suprapuse"
+
+#~ msgid "Base Layers"
+#~ msgstr "Straturi de bază"
+
+#~ msgid "show more"
+#~ msgstr "vezi mai mult"
 
