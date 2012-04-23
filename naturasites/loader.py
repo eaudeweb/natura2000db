@@ -1,3 +1,4 @@
+import flask
 import jinja2
 import requests
 
@@ -27,8 +28,16 @@ class ZopeTemplateLoader(jinja2.BaseLoader):
             source = source.strip()
             source = source.replace("{%", "{{ '{%' }}").replace("%}", "{{ '%}' }}")
             source = source.replace("{{", "{{ '{{' }}").replace("}}", "{{ '}}' }}")
-            source = source.replace("<!-- block_content -->", "{% block natura2000_content %}{% endblock %}")
-            source = source.replace("<!-- block_head -->", "{% block head %}{% endblock %}")
+
+            # template blocks
+            source = source.replace("<!-- block_content -->",
+                                    "{% block natura2000_content %}{% endblock %}")
+            source = source.replace("<!-- block_head -->",
+                                    "{% block head %}{% endblock %}")
+
+            # fix breadcrumb link
+            source = source.replace('"%s"' % self.path,
+                                    '"%s"' % flask.url_for('naturasites.index'))
 
             if self.cache_templates:
                 self.cache.set(path, source)
