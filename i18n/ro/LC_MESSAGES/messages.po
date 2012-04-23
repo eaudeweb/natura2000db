@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-04-23 19:24+0300\n"
+"POT-Creation-Date: 2012-04-23 19:37+0300\n"
 "PO-Revision-Date: 2012-04-17 16:42+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: ro <LL@li.org>\n"
@@ -95,6 +95,10 @@ msgstr "Anulare"
 msgid "Save"
 msgstr "Salvare"
 
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:191
+msgid "unnamed point"
+msgstr "punct fără nume"
+
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:211
 msgid "Edit polygon"
 msgstr "Editare poligon"
@@ -115,6 +119,10 @@ msgstr "Titlu poligon"
 msgid "Description"
 msgstr "Descriere"
 
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:259
+msgid "unnamed polygon"
+msgstr "poligon fără nume"
+
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:267
 msgid "Create"
 msgstr "Creare"
@@ -134,10 +142,4 @@ msgstr "Download GeoJSON"
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:318
 msgid "Overlays"
 msgstr "Straturi suprapuse"
-
-#~ msgid "Base Layers"
-#~ msgstr "Straturi de bază"
-
-#~ msgid "show more"
-#~ msgstr "vezi mai mult"
 

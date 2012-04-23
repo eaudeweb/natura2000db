@@ -75,6 +75,10 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:191
+msgid "unnamed point"
+msgstr ""
+
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:211
 msgid "Edit polygon"
 msgstr ""
@@ -93,6 +97,10 @@ msgstr ""
 
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:236
 msgid "Description"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:259
+msgid "unnamed polygon"
 msgstr ""
 
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:267
