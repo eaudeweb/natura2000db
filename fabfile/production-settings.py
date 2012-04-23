@@ -31,3 +31,4 @@ TILES_URL_TEMPLATE = 'http://biodiversitate.mmediu.ro/rio/natura2000/static/tile
 
 
 GOOGLE_MAPS = True
+BING_MAPS_KEY = 'AoU30aQ6OUO3EaSFp0X1SCn9vBxYbVOFI7VO7Xq8TA6fDxA7lq9aDjo16U892eSO'
