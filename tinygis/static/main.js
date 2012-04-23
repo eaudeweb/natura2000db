@@ -15,7 +15,8 @@ TG.main = function() {
 
     _(TG['AVAILABLE_OVERLAYS']).forEach(function(overlay_options) {
         var layer = new TG.TileLayer(overlay_options);
-        TG.map.addOverlay(layer.olLayer);
+        layer.id = layer.olLayer.id;
+        TG.map.addOverlay(layer.olLayer, {model: layer});
     });
 
     if(window.google && window.google.maps) {
@@ -48,7 +49,7 @@ TG.main = function() {
         });
         var layerModel = new TG.Layer({
             id: TG.vectorLayer.olLayer.id,
-            name: TG.vectorLayer.olLayer.name
+            title: TG.vectorLayer.olLayer.name
         });
         layerModel.geojson = TG.featureCollection;
         TG.map.addOverlay(TG.vectorLayer.olLayer, {model: layerModel});

@@ -78,7 +78,7 @@ TG.Map = Backbone.View.extend({
         if(layer === undefined) {
             layer = new TG.Layer({
                 id: olLayer.id,
-                name: olLayer.name
+                title: olLayer.name
             });
         }
         var mapLayer = new TG.MapLayer({model: layer, olLayer: olLayer});
@@ -164,7 +164,7 @@ TG.Map = Backbone.View.extend({
 TG.TileLayer = Backbone.Model.extend({
     initialize: function() {
         this.olLayer = new OpenLayers.Layer.XYZ(
-            this.get('name'),
+            this.get('title'),
             this.get('urlTemplate'),
             {
                 isBaseLayer: false,
@@ -246,12 +246,25 @@ TG.IdentifyView = Backbone.View.extend({
 
     render: function() {
         var template = TG.templates[this.templateName];
-        var context = this.model.toJSON();
-        var p = new OpenLayers.Geometry.Point(context['coords']['lng'],
-                                              context['coords']['lat']);
+        var coords = this.model.get('coords');
+        var p = new OpenLayers.Geometry.Point(coords['lng'], coords['lat']);
         p = p.transform('EPSG:4326', 'EPSG:31700');
-        context['coords_s70'] = {'lng': p.x, 'lat': p.y};
-        this.$el.html(template(context));
+        var features = [];
+        _(this.model.get('hit_list')).forEach(function(hit) {
+            var layer = this.map.overlayCollection.find(function(o){
+                return o.get('name') == hit['layer'];
+            });
+            if(layer && layer.get('visible')) {
+                features.push({
+                    'name': hit['properties']['name'],
+                });
+            }
+        }, this);
+        this.$el.html(template({
+            'coords_s70': {'lng': p.x, 'lat': p.y},
+            'features': features,
+            'error': this.model.get('error')
+        }));
     }
 
 });

@@ -93,15 +93,16 @@ a {
 .identify {
     z-index: 1100;
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 0;
-    border: 2px solid #888; border-top: 0; border-right: 0;
+    border: 2px solid #888; border-bottom: 0; border-right: 0;
     background: #fff;
 }
 
 .identify-coordinates {
     margin: 5px;
     padding: 0;
+    text-align: right;
 }
 
 .identify-features {
