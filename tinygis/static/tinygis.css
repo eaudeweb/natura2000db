@@ -20,6 +20,10 @@ a {
     display: none;
 }
 
+#sidebar .sidebar-layers select {
+    width: 180px;
+}
+
 #sidebar .nav-stacked {
     padding: 10px 0;
     overflow: hidden;

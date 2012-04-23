@@ -66,6 +66,7 @@ TG.main = function() {
 
     var mapLayers = new TG.MapLayers({"collection": TG.map.baseLayerCollection});
     sidebar.$el.append(mapLayers.$el);
+    mapLayers.render();
 
     var overlayLayers = new TG.Overlays({"collection": TG.map.overlayCollection});
     sidebar.$el.append(overlayLayers.$el);
