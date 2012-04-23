@@ -9,13 +9,6 @@
   <h1>Natura2000 - {{ title }}</h1>
 
   <span class="button">
-    <a href="{{ url_for('naturasites.edit', doc_id=doc_id) }}">
-      <img src="{{ url_for('static', filename='edit.png') }}">
-      modifică
-    </a>
-  </span>
-
-  <span class="button">
     <a href="javascript:window.print()">
       <img src="{{ url_for('static', filename='print.png') }}">
       tipăreşte
