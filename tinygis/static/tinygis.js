@@ -17,11 +17,15 @@ _.mixin({
 
 
 TG.load_templates = function() {
-    TG.templates = {};
+    var templates_map = TG.templates = {};
     $('.template-src').each(function() {
         var name = $(this).attr('data-name');
-        var template = _.template($(this).html());
-        TG.templates[name] = template;
+        var tmpl = _.template($(this).html());
+        function render(context) {
+            var full_context = _({templates: templates_map}).extend(context);
+            return tmpl(full_context);
+        }
+        TG.templates[name] = render;
     });
 };
 
@@ -176,6 +180,30 @@ TG.Map = Backbone.View.extend({
 });
 
 
+TG.MapInfoBox = Backbone.View.extend({
+
+    className: 'map-info-box',
+    templateName: 'info-box',
+
+    events: {
+        'click .close': 'close'
+    },
+
+    show: function(content) {
+        var template = TG.templates[this.templateName];
+        this.$el.empty().append(template(), content);
+        this.delegateEvents();
+    },
+
+    close: function(evt) {
+        evt.preventDefault();
+        this.$el.empty();
+        this.trigger('clear');
+    }
+
+});
+
+
 TG.TileLayer = Backbone.Model.extend({
     initialize: function() {
         this.olLayer = new OpenLayers.Layer.XYZ(
@@ -234,12 +262,12 @@ TG.Identify = Backbone.Model.extend({
 
 
 TG.IdentifyView = Backbone.View.extend({
-    tagName: 'div',
-    className: 'identify',
+
     templateName: 'identify',
 
     initialize: function(options) {
         this.map = options['map'];
+        this.infoBox = options['infoBox'];
         this.model = new TG.Identify;
         this.model.on('change', this.render, this);
         this.model.on('update-start', function() {
@@ -295,6 +323,7 @@ TG.IdentifyView = Backbone.View.extend({
             'features': features,
             'error': this.model.get('error')
         }));
+        this.infoBox.show(this.el);
     }
 
 });

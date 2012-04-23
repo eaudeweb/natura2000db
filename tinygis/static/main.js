@@ -60,21 +60,30 @@ TG.main = function() {
     });
     sidebarContainer.on('resize', TG.map.updateSize, TG.map);
 
+    TG.mapInfoBox = new TG.MapInfoBox;
+    TG.map.$el.parent().append(TG.mapInfoBox.el);
+
+    TG.mapMeasure = new TG.MapMeasure({
+        olMap: TG.map.olMap,
+        infoBox: TG.mapInfoBox
+    });
+    TG.mapMeasure.$el.appendTo('#sidebar');
+
+    TG.identify = new TG.IdentifyView({
+        map: TG.map,
+        infoBox: TG.mapInfoBox
+    });
+
     var sidebar = new Backbone.View({
         el: sidebarContainer.$el.find('#sidebar')
     });
 
     var mapLayers = new TG.MapLayers({"collection": TG.map.baseLayerCollection});
     sidebar.$el.append(mapLayers.$el);
+    mapLayers.render();
 
     var overlayLayers = new TG.Overlays({"collection": TG.map.overlayCollection});
     sidebar.$el.append(overlayLayers.$el);
-
-    TG.mapMeasure = new TG.MapMeasure({olMap: TG.map.olMap});
-    TG.mapMeasure.$el.appendTo('#sidebar');
-
-    TG.identify = new TG.IdentifyView({map: TG.map});
-    TG.map.$el.parent().append(TG.identify.el);
 
     TG.siteZoom = new TG.SiteZoom({map: TG.map});
     TG.siteZoom.try_to_zoom();

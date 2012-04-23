@@ -11,6 +11,7 @@ TG.MapMeasure = Backbone.View.extend({
 
     initialize: function(options) {
         this.olMap = options['olMap'];
+        this.infoBox = options['infoBox'];
         var sketchSymbolizers = {
             "Point": {
                 pointRadius: 4,
@@ -83,10 +84,16 @@ TG.MapMeasure = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.html(TG.templates['measure']({
-            active: this.active,
-            result: this.result
-        }));
+        this.$el.html(TG.templates['measure']({active: this.active}));
+        if(this.active) {
+            this.infoBox.on('clear', this.deactivate, this);
+            this.infoBox.show(TG.templates['measure-result']({
+                result: this.result
+            }));
+        }
+        else {
+            this.infoBox.off('clear', this.deactivate, this);
+        }
     },
 
     setActive: function(measurement) {

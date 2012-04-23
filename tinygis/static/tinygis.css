@@ -20,6 +20,10 @@ a {
     display: none;
 }
 
+#sidebar .sidebar-layers select {
+    width: 180px;
+}
+
 #sidebar .nav-stacked {
     padding: 10px 0;
     overflow: hidden;
@@ -33,9 +37,6 @@ a {
 }
 #sidebar .nav-stacked li {
     position: relative;
-}
-#sidebar .overlays li a.item {
-    padding-left: 30px;
 }
 #sidebar .overlays li a.item:hover {
     background: #fff;
@@ -90,7 +91,7 @@ a {
     top: 1px;
 }
 
-.identify {
+.map-info-box {
     z-index: 1100;
     position: absolute;
     bottom: 0;
@@ -226,7 +227,7 @@ a {
     right: 0;
 }
 
-.alert {
+.alert-container > .alert {
     float: right;
     clear: right;
     box-shadow: 0px 0px 6px 3px #888;

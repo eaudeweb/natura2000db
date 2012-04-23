@@ -56,40 +56,6 @@ def _doc_title(doc):
     return u"%s (%s)" % (doc['section1']['name'].u, doc['section1']['code'].u)
 
 
-@naturasites.route('/new', methods=['GET', 'POST'])
-@naturasites.route('/edit', methods=['GET', 'POST'])
-def edit():
-    doc_id = flask.request.args.get('doc_id', None)
-    db = get_db()
-    new_doc = bool(doc_id is None)
-
-    if flask.request.method == 'POST':
-        request_form = flask.request.form.to_dict()
-        request_form["section1_code"] = doc_id
-        doc = schema.SpaDoc.from_flat(request_form)
-
-        if doc.validate():
-            doc_id = db.save_document(doc_id, doc)
-            app = flask.current_app
-            app.document_signal.send('save', doc_id=doc_id, doc=doc)
-            flask.flash("Document %r saved" % doc_id)
-            return flask.redirect(flask.url_for('naturasites.view', doc_id=doc_id))
-
-        else:
-            flask.flash("Errors in document")
-
-    else:
-        if new_doc:
-            doc = schema.SpaDoc()
-        else:
-            doc = db.load_document(doc_id)
-
-    title = u"Introducere sit nou" if new_doc else _doc_title(doc)
-    form = widgets.MarkupGenerator(flask.current_app.jinja_env)
-    return flask.render_template('edit.html', title=title,
-                                 doc=doc, form=form)
-
-
 class SearchError(Exception):
     """ Error occurred during search """
 
