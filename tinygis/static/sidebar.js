@@ -64,8 +64,8 @@ TG.Overlays = Layers.extend({
 
     events: {
         "click .selector": "select",
-        "click .expand": "expand",
-        "click a.item": "expand"
+        "click .expand": "click_expand",
+        "click a.item": "click_expand"
     },
 
     className: Layers.prototype.className + " overlays",
@@ -88,7 +88,14 @@ TG.Overlays = Layers.extend({
             data["cid"] = model.cid;
             data["geojson"] = model.geojson ;
             data["visible"] = data["visible"] || false;
-            this.$el.append(itemTemplate(data));
+            var $item_el = $(itemTemplate(data));
+            this.$el.append($item_el);
+            if(model.geojson) {
+                var editor = new TG.FeatureCollectionEditor({
+                    model: this.collection.getByCid(model.cid).geojson
+                });
+                editor.$el.appendTo($item_el);
+            }
         }, this));
     },
 
@@ -103,24 +110,9 @@ TG.Overlays = Layers.extend({
         box.toggleClass('selected', !! newValue);
     },
 
-    expand: function (e) {
-        var that = $(e.currentTarget);
-        var parents = that.parents("li");
-        var editor = that.parents("li").find(".editor");
-        var icon = parents.find(".icon");
-
-        icon.toggleClass("icon-play");
-        icon.toggleClass("icon-minus");
-
-        if(editor.length == 0) {
-            var model = this.collection.getByCid(parents.data("id")).geojson;
-            if(model) {
-                var editor = new TG.FeatureCollectionEditor({model: model});
-                editor.$el.appendTo(parents);
-            };
-        } else {
-            editor.slideToggle("fast");
-        }
+    click_expand: function (e) {
+        var li = $(e.currentTarget).parents("li")[0];
+        this.expand(li);
     }
 
 });

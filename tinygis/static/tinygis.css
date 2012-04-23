@@ -34,9 +34,6 @@ a {
 #sidebar .nav-stacked li {
     position: relative;
 }
-#sidebar .overlays li a.item {
-    padding-left: 30px;
-}
 #sidebar .overlays li a.item:hover {
     background: #fff;
 }
