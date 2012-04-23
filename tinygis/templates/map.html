@@ -86,6 +86,12 @@
   </div>
 </script>
 
+
+<script type="text/html" class="template-src" data-name="info-box">
+  <a class="close">&times;</a>
+</script>
+
+
 <script type="text/html" class="template-src" data-name="identify">
 
   <ul class="identify-features">
@@ -122,13 +128,17 @@
          data-measure="polygon">{% trans %}area{% endtrans %}</a>
     </div>
   </div>
-  <% if(active) { %>
-    <% if(result) { %>
-      <%= result['value'] %>
-      <%= result['units'] %><% if(result['order'] > 1) {
-        %><sup><%= result['order'] %></sup><% } %>
-    <% } %>
-    <a class="close">&times;</a>
+</script>
+
+
+<script type="text/html" class="template-src" data-name="measure-result">
+  <% if(result) { %>
+    <%= result['value'] %>
+    <%= result['units'] %><% if(result['order'] > 1) {
+      %><sup><%= result['order'] %></sup><% } %>
+    <p>{% trans %}double-click to end{% endtrans %}</p>
+  <% } else { %>
+    <p>{% trans %}click on map to begin{% endtrans %}</p>
   <% } %>
 </script>
 

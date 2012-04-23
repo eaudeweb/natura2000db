@@ -71,11 +71,19 @@ TG.main = function() {
     var overlayLayers = new TG.Overlays({"collection": TG.map.overlayCollection});
     sidebar.$el.append(overlayLayers.$el);
 
-    TG.mapMeasure = new TG.MapMeasure({olMap: TG.map.olMap});
+    TG.mapInfoBox = new TG.MapInfoBox;
+    TG.map.$el.parent().append(TG.mapInfoBox.el);
+
+    TG.mapMeasure = new TG.MapMeasure({
+        olMap: TG.map.olMap,
+        infoBox: TG.mapInfoBox
+    });
     TG.mapMeasure.$el.appendTo('#sidebar');
 
-    TG.identify = new TG.IdentifyView({map: TG.map});
-    TG.map.$el.parent().append(TG.identify.el);
+    TG.identify = new TG.IdentifyView({
+        map: TG.map,
+        infoBox: TG.mapInfoBox
+    });
 
     TG.siteZoom = new TG.SiteZoom({map: TG.map});
     TG.siteZoom.try_to_zoom();

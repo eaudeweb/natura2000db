@@ -91,7 +91,7 @@ a {
     top: 1px;
 }
 
-.identify {
+.map-info-box {
     z-index: 1100;
     position: absolute;
     bottom: 0;
