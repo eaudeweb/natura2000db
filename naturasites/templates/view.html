@@ -31,6 +31,12 @@
   </span>
   {% endif %}
 
+  <span class="button">
+    <a href="{{ url_for('tinygis.index') }}#site={{ doc_id }}">
+      vezi pe hartă
+    </a>
+  </span>
+
   {% do form.begin(widgets_template='view') -%}
   {%- for name in form.order(doc) %}
     <div>{{ form.widget(doc[name]) }}</div>
