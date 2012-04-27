@@ -63,11 +63,14 @@
 <script type="text/html" class="template-src" data-name="login">
   <div class="menu">
   {% if g.user %}
-    <div class="title">{{ g.user['name'] }}</div>
     <div class="btn-container">
       <a href="{{ url_for('auth.logout') }}"
          class="btn btn-mini">{% trans %}Logout{% endtrans %}</a>
     </div>
+    <p class="title">
+      {% set name = ('<em>%s</em>' % (g.user['name']|escape,)) | safe %}
+      {% trans %}You are logged in as {{ name }}{% endtrans %}
+    </p>
   {% else %}
     <div class="btn-container">
       <a href="{{ url_for('auth.login') }}" class="btn btn-mini">
