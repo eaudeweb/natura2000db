@@ -57,10 +57,7 @@ a {
 #sidebar .nav-stacked .icon {
     opacity: .4;
     -moz-opacity: .4;
-    filter:alpha(opacity=.44);
-}
-.lt-ie9 #sidebar .nav-stacked .icon {
-    filter: none;
+    filter:alpha(opacity=40);
 }
 
 #sidebar .nav-stacked .selector {

@@ -30,7 +30,8 @@
   {%- endif %}
   <script>_(window.TG).extend({
     'AVAILABLE_OVERLAYS': {{- config['AVAILABLE_OVERLAYS']|tojson|safe }},
-    'NUTS2': {{ nuts2|tojson|safe }}
+    'NUTS2': {{ nuts2|tojson|safe }},
+    'BROWSEHAPPY': {{ url_for('tinygis.browsehappy')|tojson|safe }}
   });</script>
 
 

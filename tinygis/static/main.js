@@ -11,6 +11,11 @@ TG.alertBox = function(options) {
 TG.main = function() {
     TG.load_templates();
 
+    if($.browser.msie && Number($.browser.version) < 8) {
+        window.location.href = TG.BROWSEHAPPY;
+        return;
+    }
+
     TG.sidebarContainer = new TG.SidebarContainer({
         el: $('#sidebar-container')[0]
     });

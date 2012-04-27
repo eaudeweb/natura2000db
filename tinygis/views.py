@@ -21,6 +21,11 @@ def index():
     })
 
 
+@tinygis.route('/_browsehappy.html')
+def browsehappy():
+    return flask.render_template('browsehappy.html')
+
+
 def _get_db():
     return flask.current_app.extensions['tinygis-db']
 
