@@ -314,6 +314,12 @@ TG.IdentifyView = Backbone.View.extend({
                     f['extra'] = 'parc';
                     f['legend'] = 'parc';
                 }
+                if(hit['layer'] == 'administrativ') {
+                    var nuts3 = f['id'];
+                    var nuts2 = nuts3.slice(0,4);
+                    f['extra'] = nuts3 + ', ' + TG.NUTS2[nuts2];
+                    f['legend'] = 'judet';
+                }
                 features.push(f);
             }
         }, this);

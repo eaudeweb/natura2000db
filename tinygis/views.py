@@ -6,6 +6,7 @@ from path import path
 from sqlitedict import SqliteDict
 import polygons
 import auth
+import naturasites.schema
 
 
 tinygis = flask.Blueprint('tinygis', __name__,
@@ -15,7 +16,9 @@ tinygis = flask.Blueprint('tinygis', __name__,
 
 @tinygis.route('/')
 def index():
-    return flask.render_template('map.html')
+    return flask.render_template('map.html', **{
+        'nuts2': naturasites.schema.nuts2,
+    })
 
 
 def _get_db():
