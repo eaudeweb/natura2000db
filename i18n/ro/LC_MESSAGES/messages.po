@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-04-27 11:56+0300\n"
+"POT-Creation-Date: 2012-04-27 13:24+0300\n"
 "PO-Revision-Date: 2012-04-17 16:42+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: ro <LL@li.org>\n"
@@ -18,138 +18,150 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:56
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:54
 msgid "Layer saved"
 msgstr "Stratul a fost salvat"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:57
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:55
 msgid "Save failed"
 msgstr "Eroare la salvare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:68
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:76
 msgid "Logout"
 msgstr "Ieșire"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:72
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:80
 #, python-format
 msgid "You are logged in as %(name)s"
 msgstr "Sunteți autentificat ca %(name)s"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:77
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:85
 msgid "Login"
 msgstr "Autentificare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:113
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:127
 msgid "error identifying features"
 msgstr "eroare la identificarea zonelor"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:127
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:136
 msgid "Measure"
 msgstr "măsoară"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:130
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:139
 msgid "distance"
 msgstr "distanță"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:132
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:141
 msgid "area"
 msgstr "suprafață"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:143
-msgid "double-click to end"
-msgstr "dublu-clic la final"
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:145
-msgid "click on map to begin"
-msgstr "clic pe hartă pentru început"
-
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:153
+msgid "Distance:"
+msgstr "Distanță:"
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:156
+msgid "Trace the path, then double-click to end."
+msgstr "Trasați drumul, dublu-clic la final."
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:161
+msgid "Area:"
+msgstr "Suprafață:"
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:164
+msgid "Trace the polygon, then double-click to end."
+msgstr "Trasați poligonul, dublu-clic la final."
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:170
+msgid "Click on map to begin tracing."
+msgstr "Clic pe hartă să începeți trasarea."
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:179
 msgid "Features will not be saved because you are not logged in."
 msgstr "Informațiile se vor pierde pentru că nu sunteți autentificat."
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:166
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:222
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:192
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:248
 msgid "edit"
 msgstr "editare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:175
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:201
 msgid "Edit point"
 msgstr "Editare punct"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:181
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:252
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:207
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:278
 msgid "Title"
 msgstr "Titlu"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:184
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:210
 msgid "Point title"
 msgstr "Titlu punct"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:187
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:213
 msgid "lng"
 msgstr "lng"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:191
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:217
 msgid "lat"
 msgstr "lat"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:196
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:257
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:222
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:283
 msgid "Description"
 msgstr "Descriere"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:205
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:273
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:231
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:299
 msgid "Cancel"
 msgstr "Anulare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:207
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:275
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:305
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:233
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:301
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:331
 msgid "Save"
 msgstr "Salvare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:211
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:237
 msgid "unnamed point"
 msgstr "punct fără nume"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:231
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:257
 msgid "Edit polygon"
 msgstr "Editare poligon"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:238
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:264
 msgid "General"
 msgstr "General"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:242
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:268
 msgid "Coordinates"
 msgstr "Coordonate"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:255
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:281
 msgid "Polygon title"
 msgstr "Titlu poligon"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:280
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:306
 msgid "unnamed polygon"
 msgstr "poligon fără nume"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:288
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:314
 msgid "Create"
 msgstr "Creare"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:291
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:317
 msgid "point"
 msgstr "punct"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:293
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:319
 msgid "polygon"
 msgstr "poligon"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:310
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:336
 msgid "Download GeoJSON"
 msgstr "Download GeoJSON"
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:339
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:365
 msgid "Overlays"
 msgstr "Straturi suprapuse"
 

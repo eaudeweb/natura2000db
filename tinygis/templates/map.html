@@ -146,12 +146,29 @@
 
 <script type="text/html" class="template-src" data-name="measure-result">
   <% if(result) { %>
-    <%= result['value'] %>
-    <%= result['units'] %><% if(result['order'] > 1) {
-      %><sup><%= result['order'] %></sup><% } %>
-    <p>{% trans %}double-click to end{% endtrans %}</p>
+
+    <% if(result['order'] == 1) { %>
+
+      <p>
+        {{ _("Distance:") }} <b><%= result['value'] %></b>
+        <%= result['units'] %>
+      </p>
+      <p>{{ _("Trace the path, then double-click to end.") }}</p>
+
+    <% } else { %>
+
+      <p>
+        {{ _("Area:") }} <b><%= result['value'] %></b>
+        <%= result['units'] %><sup><%= result['order'] %></sup>
+      </p>
+      <p>{{ _("Trace the polygon, then double-click to end.") }}</p>
+
+    <% } %>
+
   <% } else { %>
-    <p>{% trans %}click on map to begin{% endtrans %}</p>
+
+    <p>{{ _("Click on map to begin tracing.") }}</p>
+
   <% } %>
 </script>
 
