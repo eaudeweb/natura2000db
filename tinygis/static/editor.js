@@ -141,7 +141,17 @@ TG.VectorFeature = Backbone.View.extend({
 
 TG.VectorLayer = Backbone.View.extend({
     initialize: function() {
-        this.olLayer = new OpenLayers.Layer.Vector("Editabil");
+        this.olLayer = new OpenLayers.Layer.Vector("Editabil", {
+            styleMap: new OpenLayers.StyleMap({
+                'default': {
+                    'fillColor': '#0033cc',
+                    'fillOpacity': 0.2,
+                    'strokeColor': '#0033cc',
+                    'strokeWidth': 2,
+                    'pointRadius': 6
+                }
+            })
+        });
         this.mapCrs = this.options['mapCrs'];
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
