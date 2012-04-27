@@ -223,6 +223,7 @@ TG.PointEditor = Backbone.View.extend({
         var lng = parseFloat(this.$el.find('[name=lng]').val());
         var description = $('[name=description]', this.el).val();
 
+        this.isNew = false;
         this.$el.find('.modal').modal('hide');
 
         this.model.geometry.set("coordinates", [lng, lat]);
@@ -239,8 +240,13 @@ TG.PointEditor = Backbone.View.extend({
         this.$el.find(".btn-group").hide();
     },
 
-    launchEdit: function() {
-        this.$el.find(".modal").modal();
+    editAsNew: function() {
+        this.isNew = true;
+        this.$el.find(".modal").modal().on('hide', _.bind(function() {
+            if(this.isNew) {
+                this.model.destroy();
+            }
+        }, this));
     }
 });
 
@@ -293,7 +299,9 @@ TG.PolygonEditor = Backbone.View.extend({
         var title = $('[name=title]', this.el).val();
         var description = $('[name=description]', this.el).val();
 
+        this.isNew = false;
         this.$el.find('.modal').modal('hide');
+
         var newCoordinates = [];
         _(coordinateData.split(/\n/)).forEach(function(row) {
             var m = row.match(/^\s*(\d+([.,]\d+)?)\s+(\d+([.,]\d+)?)\s*$/);
@@ -317,8 +325,13 @@ TG.PolygonEditor = Backbone.View.extend({
         this.$el.find(".btn-group").hide();
     },
 
-    launchEdit: function() {
-        this.$el.find(".modal").modal();
+    editAsNew: function() {
+        this.isNew = true;
+        this.$el.find(".modal").modal().on('hide', _.bind(function() {
+            if(this.isNew) {
+                this.model.destroy();
+            }
+        }, this));
     }
 
 });
@@ -346,7 +359,7 @@ TG.FeatureList = Backbone.View.extend({
         this.$el.append(view.$el);
         this.featureViews[view.model.cid] = view;
         if(options && options['is_new']) {
-            view.launchEdit();
+            view.editAsNew();
         }
     },
 
