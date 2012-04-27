@@ -104,6 +104,7 @@ TG.SidebarContainer = Backbone.View.extend({
 
     initialize: function () {
         this.render();
+        this.collapsed = false;
     },
 
     render: function () {
@@ -116,14 +117,16 @@ TG.SidebarContainer = Backbone.View.extend({
         var map_container = this.$el.find('.map-container');
         var trigger_resize = _.bind(this.trigger, this, 'resize');
 
-        if(sidebar.width() === 0) {
-            sidebar.animate({"width": 180, "padding": 20}, 250);
-             togglebar.animate({"left": 220}, 250);
-             map_container.animate({"left": 220}, 250, trigger_resize);
-        } else {
+        this.collapsed = ! this.collapsed;
+
+        if(this.collapsed) {
              sidebar.animate({"width": 0, "padding": 0}, 250);
              togglebar.animate({"left": 0}, 250);
-             map_container.animate({"left": 0}, 250, trigger_resize);
+             map_container.animate({"left": 7}, 250, trigger_resize);
+        } else {
+            sidebar.animate({"width": 180, "padding": 20}, 250);
+             togglebar.animate({"left": 220}, 250);
+             map_container.animate({"left": 227}, 250, trigger_resize);
         }
     }
 
