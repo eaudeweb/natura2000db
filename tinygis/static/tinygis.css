@@ -109,10 +109,6 @@ a {
     background: #fff;
 }
 
-.map-info-box:empty {
-    display: none;
-}
-
 .identify-coordinates {
     margin: 5px;
     margin-right: 20px;

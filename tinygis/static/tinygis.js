@@ -184,15 +184,19 @@ TG.MapInfoBox = Backbone.View.extend({
         'click .close': 'close'
     },
 
+    initialize: function() {
+        this.$el.hide();
+    },
+
     show: function(content) {
         var template = TG.templates[this.templateName];
-        this.$el.empty().append(template(), content);
+        this.$el.empty().append(template(), content).show();
         this.delegateEvents();
     },
 
     close: function(evt) {
-        evt.preventDefault();
-        this.$el.empty();
+        if(evt) { evt.preventDefault(); }
+        this.$el.empty().hide();
         this.trigger('clear');
     }
 
