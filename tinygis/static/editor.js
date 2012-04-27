@@ -202,7 +202,8 @@ TG.PointEditor = Backbone.View.extend({
 
     events: {
         "click .feature-delete": "featureDelete",
-        "click .edit-point-save": "uiChange",
+        "click .edit-point-save": "saveForm",
+        "submit form[name=edit-point]": "saveForm",
         "mouseover": "over",
         "mouseout": "out"
     },
@@ -227,7 +228,9 @@ TG.PointEditor = Backbone.View.extend({
         this.model.destroy();
     },
 
-    uiChange: function() {
+    saveForm: function(evt) {
+        evt.preventDefault();
+
         var title = this.$el.find('[name=title]').val();
         var lat = parseFloat(this.$el.find('[name=lat]').val());
         var lng = parseFloat(this.$el.find('[name=lng]').val());
@@ -269,8 +272,9 @@ TG.PolygonEditor = Backbone.View.extend({
     templateName: 'polygon-editor',
 
     events: {
-        "click .import-coordinates-save": "importCoordinates",
         "click .feature-delete": "featureDelete",
+        "click .import-coordinates-save": "saveForm",
+        "submit form[name=edit-polygon]": "saveForm",
         "mouseover": "over",
         "mouseout": "out"
     },
@@ -302,8 +306,8 @@ TG.PolygonEditor = Backbone.View.extend({
         this.model.destroy();
     },
 
-    importCoordinates: function(e) {
-        e.preventDefault();
+    saveForm: function(evt) {
+        evt.preventDefault();
 
         var coordinateData = $('[name=coordinate-data]', this.el).val();
         var title = $('[name=title]', this.el).val();
