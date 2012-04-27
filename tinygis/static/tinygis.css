@@ -6,11 +6,19 @@ a {
     cursor: pointer;
 }
 
+.map-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    left: 220px;
+}
+
 #tinygis-map {
     position: absolute;
     cursor: crosshair;
     z-index: 0;
-    left: 220px;
+    left: 0;
     bottom: 0;
     right: 0;
     top: 0;

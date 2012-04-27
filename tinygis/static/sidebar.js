@@ -96,6 +96,7 @@ TG.Overlays = Backbone.View.extend({
 TG.SidebarContainer = Backbone.View.extend({
 
     id: "sidebar-container",
+    templateName: "sidebar-container",
 
     events: {
         "click #togglebar": "togglebar"
@@ -106,28 +107,23 @@ TG.SidebarContainer = Backbone.View.extend({
     },
 
     render: function () {
-        var login = _.template($(".template-src[data-name=login]").html())();
-        var togglebar = this.make("div", {"id": "togglebar"});
-        var sidebar = this.make("div", {"id": "sidebar"}, login);
-
-        this.$el.append(togglebar).append(sidebar);
+        this.$el.html(TG.templates[this.templateName]());
     },
 
     togglebar: function () {
         var sidebar = this.$el.find("#sidebar");
-        var self = this;
+        var togglebar = this.$el.find('#togglebar');
+        var map_container = this.$el.find('.map-container');
+        var trigger_resize = _.bind(this.trigger, this, 'resize');
+
         if(sidebar.width() === 0) {
             sidebar.animate({"width": 180, "padding": 20}, 250);
-             $("#togglebar").animate({"left": 220}, 250);
-             $("#tinygis-map").animate({"left": 220}, 250, function () {
-                self.trigger("resize");
-             });
+             togglebar.animate({"left": 220}, 250);
+             map_container.animate({"left": 220}, 250, trigger_resize);
         } else {
              sidebar.animate({"width": 0, "padding": 0}, 250);
-             $("#togglebar").animate({"left": 0}, 250);
-             $("#tinygis-map").animate({"left": 0}, 250, function () {
-                self.trigger("resize");
-             });
+             togglebar.animate({"left": 0}, 250);
+             map_container.animate({"left": 0}, 250, trigger_resize);
         }
     }
 

@@ -47,8 +47,6 @@
 {% block natura2000_content %}
 <div class="natura2000-map">
 
-<div class="alert-container"></div>
-
 <div id="sidebar-container"></div>
 
 <script>
@@ -58,6 +56,15 @@
   } %}
   _(TG).defaults({message: {}});
   _(TG.message).extend( {{ js_messages|tojson|safe }} );
+</script>
+
+<script type="text/html" class="template-src" data-name="sidebar-container">
+  <div id="togglebar"></div>
+  <div id="sidebar">
+    <%= templates['login']() %>
+  </div>
+  <div class="alert-container"></div>
+  <div class="map-container"></div>
 </script>
 
 <script type="text/html" class="template-src" data-name="login">

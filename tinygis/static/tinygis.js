@@ -64,12 +64,7 @@ TG.MapLayer = Backbone.View.extend({
 
 TG.Map = Backbone.View.extend({
 
-    tagName: 'div',
-    id: 'tinygis-map',
-
     initialize: function() {
-        this.parent = this.options['parent'];
-        this.$el.prependTo(this.parent);
         this.olMap = new OpenLayers.Map(this.el.id);
 
         this.baseLayerCollection = new TG.MapLayerCollection;
