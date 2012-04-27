@@ -743,3 +743,33 @@ Statistics = fl.Dict.of(*(Search.field_schema + (
                    'external_antropic_activities') \
            .with_properties(widget='hidden'),
 )))
+
+
+
+
+reference_data = {
+    'corine': {
+        'title': u"Lista siturilor CORINE",
+        'mapping': corine_map,
+    },
+    'text': {
+        'title': u"Lista activităților antropice",
+        'mapping': antropic_activities_map,
+    },
+    'habitat': {
+        'title': u"Lista habitatelor",
+        'mapping': habitat_type_map,
+    },
+    'nuts2': {
+        'title': u"Lista regiunilor de dezvoltare",
+        'mapping': nuts2,
+    },
+    'nuts3': {
+        'title': u"Lista județelor cu coduri NUTS3",
+        'mapping': nuts3,
+    },
+    'protected_areas': {
+        'title': u"Clasificarea națională a siturilor",
+        'mapping': classification_map,
+    },
+}

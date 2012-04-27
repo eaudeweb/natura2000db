@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h1>Natura2000 - Lista siturilor CORINE</h1>
+<h1>Natura2000 - {{ dataset['title'] }}</h1>
 
 <p class="backToSearch">Înapoi la <a href="{{ url_for('naturasites.index') }}">căutare</a></p>
 
@@ -18,10 +18,11 @@
   </thead>
 
   <tbody>
-    {% for code, name in dataset|sort %}
+    {% for code, name in dataset['mapping'].items()|sort %}
     <tr>
       <td>{{ code }}</td>
-      <td><a href="{{ url_for('naturasites.search', **{dataset_name:code}) }}">{{ name }}</a></td>
+      {% set url = url_for('naturasites.search', **{dataset_name:code}) %}
+      <td><a href="{{ url }}">{{ name }}</a></td>
     </tr>
     {% endfor %}
   </tbody>
