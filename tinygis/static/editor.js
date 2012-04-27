@@ -141,7 +141,17 @@ TG.VectorFeature = Backbone.View.extend({
 
 TG.VectorLayer = Backbone.View.extend({
     initialize: function() {
-        this.olLayer = new OpenLayers.Layer.Vector("Editabil");
+        this.olLayer = new OpenLayers.Layer.Vector("Editabil", {
+            styleMap: new OpenLayers.StyleMap({
+                'default': {
+                    'fillColor': '#0033cc',
+                    'fillOpacity': 0.2,
+                    'strokeColor': '#0033cc',
+                    'strokeWidth': 2,
+                    'pointRadius': 6
+                }
+            })
+        });
         this.mapCrs = this.options['mapCrs'];
         this.model.features.on('add', this.addOne, this);
         this.model.features.on('reset', this.addAll, this);
@@ -192,7 +202,8 @@ TG.PointEditor = Backbone.View.extend({
 
     events: {
         "click .feature-delete": "featureDelete",
-        "click .edit-point-save": "uiChange",
+        "click .edit-point-save": "saveForm",
+        "submit form[name=edit-point]": "saveForm",
         "mouseover": "over",
         "mouseout": "out"
     },
@@ -217,12 +228,15 @@ TG.PointEditor = Backbone.View.extend({
         this.model.destroy();
     },
 
-    uiChange: function() {
+    saveForm: function(evt) {
+        evt.preventDefault();
+
         var title = this.$el.find('[name=title]').val();
         var lat = parseFloat(this.$el.find('[name=lat]').val());
         var lng = parseFloat(this.$el.find('[name=lng]').val());
         var description = $('[name=description]', this.el).val();
 
+        this.isNew = false;
         this.$el.find('.modal').modal('hide');
 
         this.model.geometry.set("coordinates", [lng, lat]);
@@ -239,8 +253,13 @@ TG.PointEditor = Backbone.View.extend({
         this.$el.find(".btn-group").hide();
     },
 
-    launchEdit: function() {
-        this.$el.find(".modal").modal();
+    editAsNew: function() {
+        this.isNew = true;
+        this.$el.find(".modal").modal().on('hide', _.bind(function() {
+            if(this.isNew) {
+                this.model.destroy();
+            }
+        }, this));
     }
 });
 
@@ -253,8 +272,9 @@ TG.PolygonEditor = Backbone.View.extend({
     templateName: 'polygon-editor',
 
     events: {
-        "click .import-coordinates-save": "importCoordinates",
         "click .feature-delete": "featureDelete",
+        "click .import-coordinates-save": "saveForm",
+        "submit form[name=edit-polygon]": "saveForm",
         "mouseover": "over",
         "mouseout": "out"
     },
@@ -286,14 +306,16 @@ TG.PolygonEditor = Backbone.View.extend({
         this.model.destroy();
     },
 
-    importCoordinates: function(e) {
-        e.preventDefault();
+    saveForm: function(evt) {
+        evt.preventDefault();
 
         var coordinateData = $('[name=coordinate-data]', this.el).val();
         var title = $('[name=title]', this.el).val();
         var description = $('[name=description]', this.el).val();
 
+        this.isNew = false;
         this.$el.find('.modal').modal('hide');
+
         var newCoordinates = [];
         _(coordinateData.split(/\n/)).forEach(function(row) {
             var m = row.match(/^\s*(\d+([.,]\d+)?)\s+(\d+([.,]\d+)?)\s*$/);
@@ -317,8 +339,13 @@ TG.PolygonEditor = Backbone.View.extend({
         this.$el.find(".btn-group").hide();
     },
 
-    launchEdit: function() {
-        this.$el.find(".modal").modal();
+    editAsNew: function() {
+        this.isNew = true;
+        this.$el.find(".modal").modal().on('hide', _.bind(function() {
+            if(this.isNew) {
+                this.model.destroy();
+            }
+        }, this));
     }
 
 });
@@ -346,7 +373,7 @@ TG.FeatureList = Backbone.View.extend({
         this.$el.append(view.$el);
         this.featureViews[view.model.cid] = view;
         if(options && options['is_new']) {
-            view.launchEdit();
+            view.editAsNew();
         }
     },
 

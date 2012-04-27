@@ -1,0 +1,49 @@
+{% extends "frame.html" %}
+{%- from 'bits.html' import link_css, script_src -%}
+
+{% block head %}
+  {{ link_css('lib/bootstrap-2.0.2/css/bootstrap.min.css') }}
+  {{ link_css('tinygis.css', 'tinygis.static') }}
+  <title>{% block title %}Natura2000{% endblock %}</title>
+  <style>
+    .natura2000-map h2 {
+        color: #A84913;
+    }
+    .natura2000-map .preview {
+        text-align: center;
+    }
+    .natura2000-map .preview img {
+        border: 2px solid #A84913;
+    }
+  </style>
+{% endblock %}
+
+{% block natura2000_content %}
+<div class="natura2000-map">
+
+  <h2>Ne pare rău, nu suportăm Internet Explorer mai vechi de versiunea 8.</h2>
+
+  <p>
+    * Am construit aplicația de hartă și a mers fără probleme pe toate
+    browserele principale. Această versiune de Internet Explorer este pur
+    și simplu prea veche și nu respectă standardele web. Efortul de a
+    modifica aplicația să funcționeze pe acest browser este prea mare; am
+    preferat să lucrăm la funcționalități utile.
+  </p>
+
+  <p>
+    Ne pare rău dacă ești atașat de Internet Explorer, știm că e greu să
+    treci la alt browser, dar merită efortul. Vezi captura de ecran de
+    mai jos. Poți încerca
+    <a href="http://www.google.com/chrome">Chrome</a>,
+    <a href="http://www.mozilla.com/firefox/">Firefox</a>,
+    <a href="http://www.opera.com/browser/">Opera</a> sau
+    <a href="http://www.apple.com/safari/">Safari</a>.
+  </p>
+
+  <p class="preview">
+    <img src="{{ url_for('tinygis.static', filename='preview.png') }}">
+  </p>
+
+</div>
+{% endblock %}

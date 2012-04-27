@@ -1,129 +1,147 @@
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:56
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:54
 msgid "Layer saved"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:57
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:55
 msgid "Save failed"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:69
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:76
 msgid "Logout"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:74
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:80
+#, python-format
+msgid "You are logged in as %(name)s"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:85
 msgid "Login"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:110
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:127
 msgid "error identifying features"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:124
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:136
 msgid "Measure"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:127
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:139
 msgid "distance"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:129
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:141
 msgid "area"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:140
-msgid "double-click to end"
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:153
+msgid "Distance:"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:142
-msgid "click on map to begin"
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:156
+msgid "Trace the path, then double-click to end."
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:150
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:161
+msgid "Area:"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:164
+msgid "Trace the polygon, then double-click to end."
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:170
+msgid "Click on map to begin tracing."
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:179
 msgid "Features will not be saved because you are not logged in."
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:163
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:213
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:192
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:248
 msgid "edit"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:172
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:201
 msgid "Edit point"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:178
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:243
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:207
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:278
 msgid "Title"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:181
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:210
 msgid "Point title"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:184
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:213
 msgid "lng"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:188
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:217
 msgid "lat"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:196
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:264
-msgid "Cancel"
-msgstr ""
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:198
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:266
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:296
-msgid "Save"
-msgstr ""
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:202
-msgid "unnamed point"
-msgstr ""
-
 #: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:222
-msgid "Edit polygon"
-msgstr ""
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:229
-msgid "General"
-msgstr ""
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:233
-msgid "Coordinates"
-msgstr ""
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:246
-msgid "Polygon title"
-msgstr ""
-
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:248
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:283
 msgid "Description"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:271
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:231
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:299
+msgid "Cancel"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:233
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:301
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:331
+msgid "Save"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:237
+msgid "unnamed point"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:257
+msgid "Edit polygon"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:264
+msgid "General"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:268
+msgid "Coordinates"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:281
+msgid "Polygon title"
+msgstr ""
+
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:306
 msgid "unnamed polygon"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:279
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:314
 msgid "Create"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:282
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:317
 msgid "point"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:284
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:319
 msgid "polygon"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:301
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:336
 msgid "Download GeoJSON"
 msgstr ""
 
-#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:330
+#: /ZeStuff/edw/natura2000db/tinygis/templates/map.html:365
 msgid "Overlays"
 msgstr ""
 

@@ -11,7 +11,19 @@ TG.alertBox = function(options) {
 TG.main = function() {
     TG.load_templates();
 
-    TG.map = new TG.Map({parent: $('.alert-container').parent()[0]});
+    if($.browser.msie && Number($.browser.version) < 8) {
+        window.location.href = TG.BROWSEHAPPY;
+        return;
+    }
+
+    TG.sidebarContainer = new TG.SidebarContainer({
+        el: $('#sidebar-container')[0]
+    });
+
+    var map_el = $('<div id="tinygis-map"></div>')[0];
+    TG.sidebarContainer.$el.find('.map-container').append(map_el);
+
+    TG.map = new TG.Map({el: map_el});
 
     _(TG['AVAILABLE_OVERLAYS']).forEach(function(overlay_options) {
         var layer = new TG.TileLayer(overlay_options);
@@ -55,10 +67,7 @@ TG.main = function() {
         TG.map.addOverlay(TG.vectorLayer.olLayer, {model: layerModel});
     });
 
-    var sidebarContainer = new TG.SidebarContainer({
-        el: $('#sidebar-container')[0]
-    });
-    sidebarContainer.on('resize', TG.map.updateSize, TG.map);
+    TG.sidebarContainer.on('resize', TG.map.updateSize, TG.map);
 
     TG.mapInfoBox = new TG.MapInfoBox;
     TG.map.$el.parent().append(TG.mapInfoBox.el);
@@ -75,7 +84,7 @@ TG.main = function() {
     });
 
     var sidebar = new Backbone.View({
-        el: sidebarContainer.$el.find('#sidebar')
+        el: TG.sidebarContainer.$el.find('#sidebar')
     });
 
     var mapLayers = new TG.MapLayers({"collection": TG.map.baseLayerCollection});

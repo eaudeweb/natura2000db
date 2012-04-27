@@ -28,8 +28,11 @@
   {%- if config['GOOGLE_MAPS'] %}
     <script src="http://maps.google.com/maps/api/js?v=3.6&amp;sensor=false"></script>
   {%- endif %}
-  <script>window.TG['AVAILABLE_OVERLAYS'] =
-    {{- config['AVAILABLE_OVERLAYS']|tojson|safe }};</script>
+  <script>_(window.TG).extend({
+    'AVAILABLE_OVERLAYS': {{- config['AVAILABLE_OVERLAYS']|tojson|safe }},
+    'NUTS2': {{ nuts2|tojson|safe }},
+    'BROWSEHAPPY': {{ url_for('tinygis.browsehappy')|tojson|safe }}
+  });</script>
 
 
   {{ script_src('tinygis.js', 'tinygis.static') }}
@@ -47,8 +50,6 @@
 {% block natura2000_content %}
 <div class="natura2000-map">
 
-<div class="alert-container"></div>
-
 <div id="sidebar-container"></div>
 
 <script>
@@ -60,14 +61,27 @@
   _(TG.message).extend( {{ js_messages|tojson|safe }} );
 </script>
 
+<script type="text/html" class="template-src" data-name="sidebar-container">
+  <div id="togglebar"></div>
+  <div id="sidebar">
+    <%= templates['login']() %>
+  </div>
+  <div class="map-container">
+    <div class="alert-container"></div>
+  </div>
+</script>
+
 <script type="text/html" class="template-src" data-name="login">
   <div class="menu">
   {% if g.user %}
-    <div class="title">{{ g.user['name'] }}</div>
     <div class="btn-container">
       <a href="{{ url_for('auth.logout') }}"
          class="btn btn-mini">{% trans %}Logout{% endtrans %}</a>
     </div>
+    <p class="title">
+      {% set name = ('<em>%s</em>' % (g.user['name']|escape,)) | safe %}
+      {% trans %}You are logged in as {{ name }}{% endtrans %}
+    </p>
   {% else %}
     <div class="btn-container">
       <a href="{{ url_for('auth.login') }}" class="btn btn-mini">
@@ -95,6 +109,12 @@
 
 <script type="text/html" class="template-src" data-name="identify">
 
+  <p class="identify-coordinates">
+    Stereo70 lat/lng:
+    <%= coords_s70['lng'].toFixed(0) %>
+    <%= coords_s70['lat'].toFixed(0) %>
+  </p>
+
   <ul class="identify-features">
   <% _(features).map(function(f) { %>
     <li>
@@ -110,11 +130,6 @@
       {% trans %}error identifying features{% endtrans %}
     </span>
   <% } %>
-
-  <p class="identify-coordinates">
-    <%= coords_s70['lng'].toFixed(0) %>
-    <%= coords_s70['lat'].toFixed(0) %>
-  </p>
 
 </script>
 
@@ -134,12 +149,29 @@
 
 <script type="text/html" class="template-src" data-name="measure-result">
   <% if(result) { %>
-    <%= result['value'] %>
-    <%= result['units'] %><% if(result['order'] > 1) {
-      %><sup><%= result['order'] %></sup><% } %>
-    <p>{% trans %}double-click to end{% endtrans %}</p>
+
+    <% if(result['order'] == 1) { %>
+
+      <p>
+        {{ _("Distance:") }} <b><%= result['value'] %></b>
+        <%= result['units'] %>
+      </p>
+      <p>{{ _("Trace the path, then double-click to end.") }}</p>
+
+    <% } else { %>
+
+      <p>
+        {{ _("Area:") }} <b><%= result['value'] %></b>
+        <%= result['units'] %><sup><%= result['order'] %></sup>
+      </p>
+      <p>{{ _("Trace the polygon, then double-click to end.") }}</p>
+
+    <% } %>
+
   <% } else { %>
-    <p>{% trans %}click on map to begin{% endtrans %}</p>
+
+    <p>{{ _("Click on map to begin tracing.") }}</p>
+
   <% } %>
 </script>
 
@@ -174,7 +206,7 @@
 
     <div class="modal-body">
       <%= templates['login-save-warning']() %>
-      <form>
+      <form name="edit-point">
         <label>{% trans %}Title{% endtrans %}</label>
         <input name="title" type="text"
                style="width: 98%" value="<%= properties.title %>"
@@ -245,7 +277,7 @@
 
         <div class="tab-pane active" id="modal-general-<%= autoid %>">
           <%= templates['login-save-warning']() %>
-          <form>
+          <form name="edit-polygon">
             <label>{% trans %}Title{% endtrans %}</label>
             <input name="title" type="text"
                    style="width: 98%" value="<%= properties.title %>"

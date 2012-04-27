@@ -108,7 +108,13 @@ TG.MapMeasure = Backbone.View.extend({
     },
 
     begin: function(evt) {
-        this.setActive($(evt.target).data('measure'));
+        var new_measurement = $(evt.target).data('measure');
+        if(this.active == new_measurement) {
+            this.infoBox.close();
+        }
+        else {
+            this.setActive(new_measurement);
+        }
     },
 
     deactivate: function(evt) {

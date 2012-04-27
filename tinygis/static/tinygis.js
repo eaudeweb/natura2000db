@@ -64,12 +64,7 @@ TG.MapLayer = Backbone.View.extend({
 
 TG.Map = Backbone.View.extend({
 
-    tagName: 'div',
-    id: 'tinygis-map',
-
     initialize: function() {
-        this.parent = this.options['parent'];
-        this.$el.prependTo(this.parent);
         this.olMap = new OpenLayers.Map(this.el.id);
 
         this.baseLayerCollection = new TG.MapLayerCollection;
@@ -189,15 +184,19 @@ TG.MapInfoBox = Backbone.View.extend({
         'click .close': 'close'
     },
 
+    initialize: function() {
+        this.$el.hide();
+    },
+
     show: function(content) {
         var template = TG.templates[this.templateName];
-        this.$el.empty().append(template(), content);
+        this.$el.empty().append(template(), content).show();
         this.delegateEvents();
     },
 
     close: function(evt) {
-        evt.preventDefault();
-        this.$el.empty();
+        if(evt) { evt.preventDefault(); }
+        this.$el.empty().hide();
         this.trigger('clear');
     }
 
@@ -314,6 +313,12 @@ TG.IdentifyView = Backbone.View.extend({
                 if(_(f['id']).startswith('parc-')) {
                     f['extra'] = 'parc';
                     f['legend'] = 'parc';
+                }
+                if(hit['layer'] == 'administrativ') {
+                    var nuts3 = f['id'];
+                    var nuts2 = nuts3.slice(0,4);
+                    f['extra'] = nuts3 + ', ' + TG.NUTS2[nuts2];
+                    f['legend'] = 'judet';
                 }
                 features.push(f);
             }

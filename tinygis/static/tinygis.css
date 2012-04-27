@@ -6,14 +6,22 @@ a {
     cursor: pointer;
 }
 
-#tinygis-map {
+.map-container {
     position: absolute;
-    cursor: crosshair;
-    z-index: 0;
-    left: 220px;
     bottom: 0;
     right: 0;
     top: 0;
+    left: 227px;
+    background-color: #bbb;
+}
+
+#tinygis-map {
+    position: absolute;
+    cursor: crosshair;
+    left: 2px;
+    bottom: 2px;
+    right: 2px;
+    top: 2px;
 }
 
 #tinygis-map .olImageLoadError {
@@ -48,10 +56,7 @@ a {
 #sidebar .nav-stacked .icon {
     opacity: .4;
     -moz-opacity: .4;
-    filter:alpha(opacity=.44);
-}
-.lt-ie9 #sidebar .nav-stacked .icon {
-    filter: none;
+    filter:alpha(opacity=40);
 }
 
 #sidebar .nav-stacked .selector {
@@ -92,16 +97,17 @@ a {
 }
 
 .map-info-box {
-    z-index: 1100;
+    z-index: 1020;
     position: absolute;
-    bottom: 0;
+    top: 0;
     right: 0;
-    border: 2px solid #888; border-bottom: 0; border-right: 0;
+    border: 2px solid #bbb;
     background: #fff;
 }
 
 .identify-coordinates {
     margin: 5px;
+    margin-right: 20px;
     padding: 0;
     text-align: right;
 }
@@ -178,7 +184,6 @@ a {
     overflow: hidden;
     overflow-y: auto;
     padding: 20px;
-    z-index: 9999;
     width: 180px;
     bottom: 0;
     left: 0;
@@ -198,11 +203,11 @@ a {
     position: absolute;
     background: #C3DDEB;
     cursor: pointer;
-    z-index: 9999;
     left: 220px;
     width: 8px;
     bottom: 0;
     top: 0;
+    z-index: 1020;
 }
 
 #togglebar:hover {
@@ -221,15 +226,15 @@ a {
 }
 
 .alert-container {
-    z-index: 1100;
+    z-index: 1020;
     position: absolute;
     top: 0;
-    right: 0;
+    left: 50px;
 }
 
 .alert-container > .alert {
-    float: right;
-    clear: right;
+    float: left;
+    clear: left;
     box-shadow: 0px 0px 6px 3px #888;
 }
 
@@ -261,4 +266,8 @@ a {
 
 .featurelegend-rezervatie {
     background-color: #FF009A;
+}
+
+.featurelegend-judet {
+    background-color: #73797B;
 }

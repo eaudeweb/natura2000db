@@ -17,8 +17,11 @@ naturasites = flask.Blueprint('naturasites', __name__,
 @naturasites.route('/')
 def index():
     form = widgets.MarkupGenerator(flask.current_app.jinja_env)
-    return flask.render_template('index.html', form=form,
-                                 search_form=schema.Search())
+    return flask.render_template('index.html', **{
+        'form': form,
+        'search_form': schema.Search(),
+        'reference_data': schema.reference_data,
+    })
 
 
 def _other_site_labels(doc):
@@ -126,26 +129,20 @@ def stats():
                                  stat_html=stat_html)
 
 @naturasites.route('/data/<string:name>')
-def corine_areas(name):
-    datasets = {
-        'corine': schema.corine_map,
-        'text': schema.antropic_activities_map,
-        'habitat': schema.habitat_type_map,
-        'nuts2': schema.nuts2,
-        'nuts3': schema.nuts3,
-        'protected_areas': schema.classification_map
-    }
-    format = flask.request.args.get('fmt', 'html')
+def reference_data(name):
     try:
-        dataset = datasets[name]
+        dataset = schema.reference_data[name]
     except KeyError:
         flask.abort(404)
 
-    if format == 'json':
-        return flask.jsonify(dataset)
-    return flask.render_template('datasets.html',
-                                dataset=dataset.items(),
-                                dataset_name=name)
+    fmt = flask.request.args.get('fmt', 'html')
+    if fmt == 'json':
+        return flask.jsonify(dataset['mapping'])
+
+    return flask.render_template('datasets.html', **{
+        'dataset_name': name,
+        'dataset': dataset,
+    })
 
 @naturasites.route('/dump')
 def dump():
