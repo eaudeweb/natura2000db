@@ -63,8 +63,9 @@
   <div id="sidebar">
     <%= templates['login']() %>
   </div>
-  <div class="alert-container"></div>
-  <div class="map-container"></div>
+  <div class="map-container">
+    <div class="alert-container"></div>
+  </div>
 </script>
 
 <script type="text/html" class="template-src" data-name="login">
@@ -105,6 +106,12 @@
 
 <script type="text/html" class="template-src" data-name="identify">
 
+  <p class="identify-coordinates">
+    Stereo70 lat/lng:
+    <%= coords_s70['lng'].toFixed(0) %>
+    <%= coords_s70['lat'].toFixed(0) %>
+  </p>
+
   <ul class="identify-features">
   <% _(features).map(function(f) { %>
     <li>
@@ -120,11 +127,6 @@
       {% trans %}error identifying features{% endtrans %}
     </span>
   <% } %>
-
-  <p class="identify-coordinates">
-    <%= coords_s70['lng'].toFixed(0) %>
-    <%= coords_s70['lat'].toFixed(0) %>
-  </p>
 
 </script>
 

@@ -12,16 +12,17 @@ a {
     right: 0;
     top: 0;
     left: 220px;
+    background-color: #bbb;
 }
 
 #tinygis-map {
     position: absolute;
     cursor: crosshair;
     z-index: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    top: 0;
+    left: 2px;
+    bottom: 2px;
+    right: 2px;
+    top: 2px;
 }
 
 #tinygis-map .olImageLoadError {
@@ -102,14 +103,19 @@ a {
 .map-info-box {
     z-index: 1100;
     position: absolute;
-    bottom: 0;
+    top: 0;
     right: 0;
-    border: 2px solid #888; border-bottom: 0; border-right: 0;
+    border: 2px solid #bbb;
     background: #fff;
+}
+
+.map-info-box:empty {
+    display: none;
 }
 
 .identify-coordinates {
     margin: 5px;
+    margin-right: 20px;
     padding: 0;
     text-align: right;
 }
@@ -232,12 +238,12 @@ a {
     z-index: 1100;
     position: absolute;
     top: 0;
-    right: 0;
+    left: 50px;
 }
 
 .alert-container > .alert {
-    float: right;
-    clear: right;
+    float: left;
+    clear: left;
     box-shadow: 0px 0px 6px 3px #888;
 }
 
