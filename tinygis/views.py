@@ -118,11 +118,11 @@ def get_bbox_for_site():
 
 
 OVERLAYS = [
-    {'name': 'conservare-scispa', 'title': u"SCI + SPA"},
-    {'name': 'conservare-etc',    'title': u"Alte zone protejate"},
-    {'name': 'administrativ',     'title': u"Administrativ"},
-    {'name': 'ape',               'title': u"Ape"},
-    {'name': 'infrastructura',    'title': u"Infrastructură"},
+    {'name': 'conservare-scispa-2011', 'title': u"SCI + SPA"},
+    {'name': 'conservare-etc',         'title': u"Alte zone protejate"},
+    {'name': 'administrativ',          'title': u"Administrativ"},
+    {'name': 'ape',                    'title': u"Ape"},
+    {'name': 'infrastructura',         'title': u"Infrastructură"},
 ]
 
 
@@ -136,7 +136,7 @@ for spec in OVERLAYS:
 
 def default_overlays(app):
     URL_TMPL = app.config.get('TILES_URL_TEMPLATE', '')
-    visible = ['conservare-scispa', 'conservare-etc']
+    visible = ['conservare-scispa-2011', 'conservare-etc']
     return [dict(spec, **{
             'urlTemplate': URL_TMPL % {'name': spec['name']},
             'visible': bool(spec['name'] in visible),
