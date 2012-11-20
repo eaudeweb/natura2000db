@@ -4,13 +4,13 @@ from path import path as ppath
 
 
 app = env.app = {
-    'repo': ppath('/var/local'),
+    'repo': ppath('/var/local/chm/natura2000'),
     'localrepo': ppath(__file__).abspath().parent.parent,
 }
 
 
-try: from localcfg import *
-except: pass
+env['use_ssh_config'] = True
+env.hosts = ['zope@puma']
 
 
 app.update({
