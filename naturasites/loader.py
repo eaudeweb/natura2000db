@@ -6,22 +6,35 @@ from werkzeug.contrib.cache import SimpleCache
 
 class ZopeTemplateLoader(jinja2.BaseLoader):
 
-    def __init__(self, base_path, cache_templates=True, template_list=[]):
+    def __init__(self, parent_loader, base_path,
+                 cache_templates=True, template_list=[]):
+        self.parent_loader = parent_loader
         self.cache = SimpleCache()
         self.cache_templates = cache_templates
         self.path = base_path
         self.template_list = template_list
 
     def get_source(self, environment, template):
+        def passthrough(cachable=True):
+            up = self.parent_loader
+            source, path, uptodate = up.get_source(environment, template)
+            if not cachable:
+                uptodate = lambda: False
+            return source, path, uptodate
+
         if not template in self.template_list:
-            raise jinja2.TemplateNotFound(template)
+            return passthrough()
 
         path = "%s%s" % (self.path, template)
         source = self.cache.get(path)
         if not source:
-            response = requests.get(path)
+            try:
+                response = requests.get(path)
+            except requests.exceptions.ConnectionError:
+                return passthrough(cachable=False)
+
             if response.status_code != 200:
-                raise jinja2.TemplateNotFound(template)
+                return passthrough(cachable=False)
 
             # escape jinja tags
             source = response.text

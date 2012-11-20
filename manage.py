@@ -44,14 +44,14 @@ def create_app():
     app.jinja_options = app.jinja_options.copy()
     app.jinja_options['extensions'] += ['jinja2.ext.i18n', 'jinja2.ext.do']
 
-    loaders = []
+    template_loader = app.create_global_jinja_loader()
     if app.config["ZOPE_TEMPLATE_PATH"]:
         from naturasites.loader import ZopeTemplateLoader
-        loaders.append(ZopeTemplateLoader(app.config["ZOPE_TEMPLATE_PATH"],
-                                          app.config["ZOPE_TEMPLATE_CACHE"],
-                                          app.config["ZOPE_TEMPLATE_LIST"]))
-    loaders.append(app.create_global_jinja_loader())
-    app.jinja_options['loader'] = jinja2.ChoiceLoader(loaders)
+        template_loader = ZopeTemplateLoader(template_loader,
+                                             app.config["ZOPE_TEMPLATE_PATH"],
+                                             app.config["ZOPE_TEMPLATE_CACHE"],
+                                             app.config["ZOPE_TEMPLATE_LIST"])
+    app.jinja_options['loader'] = template_loader
 
     if 'STATIC_URL_MAP' in app.config:
         from werkzeug.wsgi import SharedDataMiddleware
