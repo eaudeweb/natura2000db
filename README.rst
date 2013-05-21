@@ -1,5 +1,8 @@
 Natura2000 database
 ===================
+
+http://biodiversitate.mmediu.ro/rio/natura2000
+
 A database and search interface for natura2000 sites in Romania. For
 every protected area the database contains a document with a complex
 schema, that is indexed in Solr. The database can be searched via a
@@ -8,6 +11,27 @@ faceted search interface through the web app.
 The website also contains an interactive map with point and polygon
 editor, for use by environment experts, to mark industrial and other
 man-made sites within a protected area.
+
+
+Map workflow
+============
+
+http://biodiversitate.mmediu.ro/rio/natura2000/map/
+
+The map displays several layers :SCIs and SPAs and other protected areas
+by default; administrative borders, water bodies, and infrastructure can
+be turned on. Clicking on the map shows information about the features
+at those coordinates in a box in the top-right corner of the map. There
+is also a measurement functionality (distances and areas) at the
+top part of the left-side menu. The base layer can be switched between
+OpenStreetMap, Bing maps, and Google maps.
+
+There is an additional editable layer that is tied to the
+user's gmail account if they log in. Users can create points and
+polygons by entering coordinates in the Stereo70 projection. For
+instance, lng=500000 lat=500000 is near the center of Romania. A user
+must explicitly save the layer (from the cog-wheel menu next to the
+point/polygon creation functions) for it to be persisted.
 
 
 Setup
