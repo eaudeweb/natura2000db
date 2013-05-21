@@ -1,3 +1,15 @@
+Natura2000 database
+===================
+A database and search interface for natura2000 sites in Romania. For
+every protected area the database contains a document with a complex
+schema, that is indexed in Solr. The database can be searched via a
+faceted search interface through the web app.
+
+The website also contains an interactive map with point and polygon
+editor, for use by environment experts, to mark industrial and other
+man-made sites within a protected area.
+
+
 Setup
 =====
 
