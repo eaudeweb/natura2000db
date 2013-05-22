@@ -13,6 +13,13 @@ editor, for use by environment experts, to mark industrial and other
 man-made sites within a protected area.
 
 
+Requirements
+============
+The application is implemented in Flask, with Backbone on the front-end,
+with solr acting as index and also primary data store. It runs on any
+Unix-like or Windows OS with Python 2.6 or 2.7 and Java 1.5 for Solr.
+
+
 Map workflow
 ============
 
